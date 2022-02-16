@@ -22,9 +22,7 @@ public class SudokuModel {
 	    			} else {
 	    				sudoku[i][j]=Character.getNumericValue(line.charAt(j*2));
 	    			}
-	    			System.out.print(sudoku[i][j]);
 	    		}
-	    		System.out.println();
 	    	}
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
