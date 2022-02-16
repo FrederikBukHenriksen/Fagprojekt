@@ -32,7 +32,9 @@ public class GUI {
 	    		System.out.println();
 	    	}
 		
-	    f=new JFrame(); 
+	    f=new JFrame();
+	    JPanel mainGui = new JPanel(new GridLayout(1,2,50,0));
+	    JPanel panelGui = new JPanel(new GridLayout(3,3,10,10));
 	    for (int l = 0; l<9; l++) {
 	    	JPanel panel = new JPanel(new GridLayout(3,3));
 	    	for(int i = 0; i<3; i++) {
@@ -48,11 +50,19 @@ public class GUI {
 	    					panel.add(l1);
 	    				}     	       
 	    }}
-	    f.add(panel);
+	    panelGui.add(panel);
 	    }
-	    // setting grid layout of 3 rows and 3 columns    
-	    f.setLayout(new GridLayout(3,3,10,10));    
-	    f.setSize(300,300);    
+	    mainGui.add(panelGui);
+	    JPanel buttonGui = new JPanel(new GridLayout(3,3,20,20));
+	    for (int i = 1; i<10; i++) {
+	    	JButton t1=new JButton(String.valueOf(i));
+	    	buttonGui.add(t1);
+	    }
+	    mainGui.add(buttonGui);
+	    
+	    f.add(mainGui);
+	    // setting grid layout of 3 rows and 3 columns           
+	    f.setSize(1000,1000);  
 	    f.setVisible(true); 
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
