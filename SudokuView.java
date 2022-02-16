@@ -1,18 +1,16 @@
 package sudoku;
-import java.awt.*;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.Scanner;
+import java.awt.GridLayout;
 
-import javax.swing.*;   
-public class GUI {
-	public static void main(String[] args) {
-		int[][] sudoku = ReadSudoku.Read();
-		new GUI(sudoku);    
-	}
-	  
-	GUI(int [][] sudoku){ 
-		JFrame f;  
+import javax.swing.*;
+
+public class SudokuView {
+	
+	private SudokuModel model;
+	
+	public JFrame f = new JFrame();
+	
+	public SudokuView(SudokuModel model) {
+		int[][] sudoku = model.sudoku;
 	    f=new JFrame();
 	    JPanel mainGui = new JPanel(new GridLayout(1,2,50,0));
 	    JPanel panelGui = new JPanel(new GridLayout(3,3,10,10));
@@ -44,8 +42,10 @@ public class GUI {
 	    f.add(mainGui);
 	    // setting grid layout of 3 rows and 3 columns           
 	    f.setSize(1000,1000);  
-	    f.setVisible(true); 
 		} 
-	}    
-
-
+	
+	public void setVisible(JFrame frame) {
+		f.setVisible(true);
+	}
+	
+}
