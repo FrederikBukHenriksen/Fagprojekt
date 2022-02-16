@@ -6,32 +6,11 @@ import java.util.Scanner;
 import javax.swing.*;   
 public class GUI {
 	public static void main(String[] args) {
-		new GUI();    
+		int[][] sudoku = ReadSudoku.Read();
+		new GUI(sudoku);    
 	}
 	JFrame f;    
-	GUI(){ 
-		Scanner scanner;
-		try {
-			File file = new File("C:\\Users\\Candytom\\eclipse-workspace\\Sudoku\\src\\filename.txt");
-			scanner = new Scanner(file);
-			String setup = scanner.next();
-			int n = Character.getNumericValue(setup.charAt(0));
-			int k = Character.getNumericValue(setup.charAt(2));
-
-			int[][] sudoku = new int[n*n][n*n];
-	    	for (int i = 0; i< n*n; i++) {
-	        String line = scanner.next();
-	    		for(int j = 0; j < n*n; j++) {
-	    			if(line.charAt(j*2)=='.') {
-	    				sudoku[i][j]=0;
-	    			} else {
-	    				sudoku[i][j]=Character.getNumericValue(line.charAt(j*2));
-	    			}
-	    			System.out.print(sudoku[i][j]);
-	    		}
-	    		System.out.println();
-	    	}
-		
+	GUI(int [][] sudoku){ 	
 	    f=new JFrame();
 	    JPanel mainGui = new JPanel(new GridLayout(1,2,50,0));
 	    JPanel panelGui = new JPanel(new GridLayout(3,3,10,10));
@@ -64,10 +43,7 @@ public class GUI {
 	    // setting grid layout of 3 rows and 3 columns           
 	    f.setSize(1000,1000);  
 	    f.setVisible(true); 
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		} 
 	}    
-}
+
 

@@ -9,7 +9,7 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 
 public class ReadSudoku {
-	public static void main(String[] args) {		
+	public static int[][] Read(){		
 		File file = new File("C:\\Users\\Candytom\\eclipse-workspace\\Sudoku\\src\\filename.txt");
 		Scanner scanner;
 		try {
@@ -30,10 +30,13 @@ public class ReadSudoku {
 	    			System.out.print(sudoku[i][j]);
 	    		}
 	    		System.out.println();
+	    		
 	    	}
+	    	return sudoku;
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		return null;
     }
 }
