@@ -1,5 +1,6 @@
 package sudoku;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -57,6 +58,7 @@ public class SudokuView {
 	    					      }
 	    					    };
 	    					fields.get(i+3*(l/3)).get((j+3*l)%9).addActionListener(actionListener);
+	    					fields.get(i+3*(l/3)).get((j+3*l)%9).setFont(new Font("Serif", Font.PLAIN, 72));
 	    					panel.add(fields.get(i+3*(l/3)).get((j+3*l)%9));
 	    					
 	    					
@@ -64,8 +66,9 @@ public class SudokuView {
 	    				else {
 	    					//JLabel l1 = new JLabel(String.valueOf(sudoku[i+3*(l/3)][(j+3*l)%9]));
 	    					JButton l1 = new JButton(String.valueOf(sudoku[i+3*(l/3)][(j+3*l)%9]));
-	    					l1.setForeground(Color.DARK_GRAY);
-	    					l1.setBackground(Color.GRAY);
+	    					l1.setFont(new Font("Serif", Font.PLAIN, 68));
+	    					l1.setEnabled(false);
+
 	    					panel.add(l1);
 	    				}     	       
 	    }}
@@ -117,6 +120,7 @@ public class SudokuView {
 			      
 			 };
 			button.get(i-1).addActionListener(actionListener);
+			button.get(i-1).setFont(new Font("Serif", Font.PLAIN, 72));
 			buttonGui.add(button.get(i-1));	
 			
 	    }
