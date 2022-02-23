@@ -5,9 +5,11 @@ import java.io.File;
 import java.io.FileNotFoundException;
 
 public class SudokuModel {
-	public int[][] sudoku = new int[0][0];
-    public SudokuModel (File file){
-    	
+
+
+	[][] sudoku = new nt[0][0]; 
+
+		ic SudokuModel (File file){
         Scanner scanner;
 		try {
 			scanner = new Scanner(file);
@@ -31,4 +33,9 @@ public class SudokuModel {
 			e.printStackTrace();
 		}
     }
+
+	public int[][] getSudoku(){
+		return sudoku;
+	}
+
 }
