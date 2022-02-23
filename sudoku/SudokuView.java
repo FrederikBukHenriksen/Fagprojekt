@@ -15,6 +15,7 @@ public class SudokuView {
 		frame.add(button);
 		frame.setSize(400,500);
 		frame.setLayout(null);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		if (SudokuController.checkValidity(model.sudoku)){
 			frame.setTitle("Valid puzzle");
 		}
