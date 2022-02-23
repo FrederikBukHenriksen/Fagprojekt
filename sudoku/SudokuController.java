@@ -16,13 +16,13 @@ public class SudokuController {
 	public static boolean checkValidity(int[][] sudoku){
 		boolean valid = new Boolean(true);
 		int[][] sortedGrid = new int[sudoku.length][sudoku.length];
-		for(int i = 0; i < sudoku.length; i++){
+		/*for(int i = sudoku.length-1; i >= 0; i--){
 			for(int k = 0; k < sudoku.length; k++){
 				sortedGrid[i][k] = 0;
 			}
 		}
 		
-		for(int i = 0; i < sudoku.length; i++){
+		for(int i = sudoku.length-1; i >= 0; i--){
 			for(int k = 0; k < sudoku.length; k++){
 				int cur = sudoku[k][i];
 				if(sortedGrid[i][cur] == 0){
@@ -32,7 +32,7 @@ public class SudokuController {
 					valid = false;
 				}
 			}
-		}
+		}*/
 
 		return valid;
 	}
