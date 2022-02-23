@@ -68,7 +68,24 @@ public class SudokuView {
 	    panelGui.add(panel);
 	    }
 	    mainGui.add(panelGui);
-	    JPanel buttonGui = new JPanel(new GridLayout(3,3,20,20));
+	    JPanel sideButtonGui = new JPanel(new GridLayout(2,1,0,10));
+	    JPanel specialButton = new JPanel(new GridLayout(1,4,0,0));
+	    JButton undo = new JButton("undo");
+	    JButton remove = new JButton("remove");
+	    JButton note = new JButton("note");
+	    JButton newSudoku = new JButton("newSudoku");
+	    ActionListener specialAction = new ActionListener() {
+		      public void actionPerformed(ActionEvent actionEvent) {
+		        AbstractButton abstractButton = (AbstractButton) actionEvent.getSource();
+		        boolean selected = abstractButton.getModel().isSelected();
+                    if (xGrid != -1) {
+		        		if (fields.get(xGrid).get(yGrid).isSelected()) {
+		        				fields.get(xGrid).get(yGrid).setText(null);     			
+		        			}}}};
+		remove.addActionListener(specialAction);       			
+	    specialButton.add(undo); specialButton.add(remove); specialButton.add(note); specialButton.add(newSudoku);
+	    sideButtonGui.add(specialButton);
+ 	    JPanel buttonGui = new JPanel(new GridLayout(3,3,20,20));
 			ArrayList<JButton> button = new ArrayList();
 			for (int j = 0; j < 9; j++) {
 				button.add(new JButton(j+1 +""));
@@ -99,7 +116,8 @@ public class SudokuView {
 			buttonGui.add(button.get(i-1));	
 			
 	    }
-	    mainGui.add(buttonGui);
+	    sideButtonGui.add(buttonGui);
+	    mainGui.add(sideButtonGui);
 	   
 	    
 	    f.add(mainGui);
