@@ -1,5 +1,3 @@
-package sudoku;
-
 public class SudokuController {
 
 	// Creating variables
