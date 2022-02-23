@@ -1,4 +1,5 @@
 package sudoku;
+import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -61,7 +62,10 @@ public class SudokuView {
 	    					
 	    				}
 	    				else {
-	    					JLabel l1 = new JLabel(String.valueOf(sudoku[i+3*(l/3)][(j+3*l)%9]));
+	    					//JLabel l1 = new JLabel(String.valueOf(sudoku[i+3*(l/3)][(j+3*l)%9]));
+	    					JButton l1 = new JButton(String.valueOf(sudoku[i+3*(l/3)][(j+3*l)%9]));
+	    					l1.setForeground(Color.DARK_GRAY);
+	    					l1.setBackground(Color.GRAY);
 	    					panel.add(l1);
 	    				}     	       
 	    }}
