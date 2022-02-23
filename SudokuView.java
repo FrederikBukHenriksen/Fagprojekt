@@ -9,6 +9,8 @@ import javax.swing.*;
 
 public class SudokuView {
 	public int test = 1;
+	public int xGrid = -1;
+	public int yGrid = -1;
 
 	
 	private SudokuModel model;
@@ -37,22 +39,19 @@ public class SudokuView {
 	    		for(int j = 0; j<3; j++) {
 	    				if(sudoku[i+3*(l/3)][(j+3*l)%9]==0) {
 	    					fields.get(i+3*(l/3)).get((j+3*l)%9).setActionCommand(((i+3*(l/3)+1)*10)+((j+3*l)%9+1)+"");;
-
-	    					//String numbers[]={"","1","2","3","4","5","6","7","8","9"}; 
 	    					 ActionListener actionListener = new ActionListener() {
 	    					      public void actionPerformed(ActionEvent actionEvent) {
 	    					        AbstractButton abstractButton = (AbstractButton) actionEvent.getSource();
 	    					        boolean selected = abstractButton.getModel().isSelected();
 	    					        int p = Integer.parseInt(actionEvent.getActionCommand());
 	    					        for (int i = 0; i<9; i++) {
-	    					        	for (int j = 0; j<9; j++) {
-	    					        		
+	    					        	for (int j = 0; j<9; j++) {	        		
 	    					        		fields.get(i).get(j).setSelected(false);
-	    					        		
 	    					        	}
 	    					        }
-	    					        int floor = (int) (Math.floor(p)/10);
-	    					        fields.get(floor-1).get(p%10-1).setSelected(true);
+	    					        xGrid = (int) (Math.floor(p)/10)-1;
+	    					        yGrid = p%10-1;
+	    					        fields.get(xGrid).get(yGrid).setSelected(true);
 	    					        
 	    					      }
 	    					    };
@@ -82,21 +81,20 @@ public class SudokuView {
 			      public void actionPerformed(ActionEvent actionEvent) {
 			        AbstractButton abstractButton = (AbstractButton) actionEvent.getSource();
 			        boolean selected = abstractButton.getModel().isSelected();
-			        for(int i = 0; i<9; i++) {
-			        	for(int j = 0; j<9; j++) {
-			        		if (fields.get(i).get(j).isSelected()) {
-			        			if(actionEvent.getActionCommand().equals(fields.get(i).get(j).getText())){
-			        				fields.get(i).get(j).setText(null);
+                          if (xGrid != -1) {
+			        		if (fields.get(xGrid).get(yGrid).isSelected()) {
+			        			if(actionEvent.getActionCommand().equals(fields.get(xGrid).get(yGrid).getText())){
+			        				fields.get(xGrid).get(yGrid).setText(null);
 			        			}
 			        			else {
-			        				fields.get(i).get(j).setText(actionEvent.getActionCommand());
+			        				fields.get(xGrid).get(yGrid).setText(actionEvent.getActionCommand());
 			        			
 			        			}
 			        		}
 			        	}
 			        }
-			      }
-			    };
+			      
+			 };
 			button.get(i-1).addActionListener(actionListener);
 			buttonGui.add(button.get(i-1));	
 			
