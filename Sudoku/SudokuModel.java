@@ -1,3 +1,5 @@
+package sudoku;
+
 import java.util.Scanner;
 import java.util.Stack;
 import java.io.File;
@@ -12,7 +14,7 @@ public class SudokuModel {
 
 	// constructor for the model
 	public SudokuModel() {
-		File file = new File("test.txt");
+		File file = new File("sudoku/test.txt");
 
 		Scanner scanner;
 		// reading the input
