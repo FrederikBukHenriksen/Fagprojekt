@@ -98,4 +98,17 @@ public class SudokuModel {
 		return result;
 	}
 
+	//Methods for pushing, peeking and popping from the stack
+	public void pushStack(int[][] newBoard){
+		sudokuStack.push(newBoard);
+	}
+
+	public int[][] popStack(){
+		return sudokuStack.pop();
+	}
+
+	public int[][] peekStack(){
+		return sudokuStack.peek();
+	}
+
 }

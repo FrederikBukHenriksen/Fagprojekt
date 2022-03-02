@@ -36,9 +36,9 @@ public class SudokuController {
 
 			// Update sudoku board
 			model.setSudokuCell(coordinate[0], coordinate[1], Integer.valueOf(pressedNumboard.getText()));
-
+			model.pushStack(model.getSudoku());
 			// Update the board visuals
-			view.updateBoard(model.getSudoku());
+			view.updateBoard(model.getSudoku()); //TODO: Ændr til peekStack()
 
 			// NEDENSTÅENE BRUGES KUN TIL DE-BUG.
 			view.updateFrameTitle(checkValidity(model.getSudoku()), model.isFilled());
@@ -52,8 +52,8 @@ public class SudokuController {
 	public SudokuController() {
 		model = new SudokuModel();
 		view = new SudokuView();
-
-		view.showFrame(model.getSudoku());
+		model.pushStack(model.getSudoku());
+		view.showFrame(model.peekStack());
 
 		view.addSudokuboardListener(new SodukoboardListener());
 		view.addNumboardListener(new NumboardListener());
