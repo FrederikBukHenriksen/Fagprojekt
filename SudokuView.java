@@ -13,63 +13,63 @@ public class SudokuView {
 	public int xGrid = -1;
 	public int yGrid = -1;
 
-	
-	private SudokuModel model;
-	
+
+	// private SudokuModel model;
+
 	public JFrame f = new JFrame();
 	
 	public SudokuView(SudokuModel model) {
+
 		int[][] sudoku = model.sudoku;
 	    f=new JFrame();
 	    JPanel mainGui = new JPanel(new GridLayout(1,2,50,0));
 	    JPanel panelGui = new JPanel(new GridLayout(3,3,10,10));
-	    ArrayList<ArrayList<JToggleButton>> fields = new ArrayList();
-	    for (int i = 0; i < 9; i++) {
-			ArrayList<JToggleButton> rows = new ArrayList();
-			for (int j = 0; j < 9; j++) {
-				rows.add(new JToggleButton(""));
-				// System.out.println((i + 1) * (j + 1));
-			}
-			fields.add(rows);
-		}
+		ArrayList<ArrayList<JToggleButton>> buttons = createSudokuButtons();
+		CreateActionlistenersSudokuBoard(buttons);
+
 	    for (int l = 0; l<9; l++) {
 	    	JPanel panel = new JPanel(new GridLayout(3,3));
 	    	
 	    	for(int i = 0; i<3; i++) {
 
-	    		for(int j = 0; j<3; j++) {
-	    				if(sudoku[i+3*(l/3)][(j+3*l)%9]==0) {
-	    					fields.get(i+3*(l/3)).get((j+3*l)%9).setActionCommand(((i+3*(l/3)+1)*10)+((j+3*l)%9+1)+"");;
-	    					 ActionListener actionListener = new ActionListener() {
-	    					      public void actionPerformed(ActionEvent actionEvent) {
-	    					        AbstractButton abstractButton = (AbstractButton) actionEvent.getSource();
-	    					        boolean selected = abstractButton.getModel().isSelected();
-	    					        int p = Integer.parseInt(actionEvent.getActionCommand());
-	    					        for (int i = 0; i<9; i++) {
-	    					        	for (int j = 0; j<9; j++) {	        		
-	    					        		fields.get(i).get(j).setSelected(false);
-	    					        	}
-	    					        }
-	    					        xGrid = (int) (Math.floor(p)/10)-1;
-	    					        yGrid = p%10-1;
-	    					        fields.get(xGrid).get(yGrid).setSelected(true);
-	    					        
-	    					      }
-	    					    };
-	    					fields.get(i+3*(l/3)).get((j+3*l)%9).addActionListener(actionListener);
-	    					fields.get(i+3*(l/3)).get((j+3*l)%9).setFont(new Font("Serif", Font.PLAIN, 72));
-	    					panel.add(fields.get(i+3*(l/3)).get((j+3*l)%9));
-	    					
-	    					
-	    				}
-	    				else {
-	    					//JLabel l1 = new JLabel(String.valueOf(sudoku[i+3*(l/3)][(j+3*l)%9]));
-	    					JButton l1 = new JButton(String.valueOf(sudoku[i+3*(l/3)][(j+3*l)%9]));
-	    					l1.setFont(new Font("Serif", Font.PLAIN, 68));
-	    					l1.setEnabled(false);
+				for (int j = 0; j < 3; j++) {
+					panel.add(buttons.get(i + 3 * (l / 3)).get((j + 3 * l) % 9));
+					// if(sudoku[i+3*(l/3)][(j+3*l)%9]==0) {
+					// buttons.get(i + 3 * (l / 3)).get((j + 3 * l) % 9)
+					// .setActionCommand(((i + 3 * (l / 3) + 1) * 10) + ((j + 3 * l) % 9 + 1) + "");
+					// ;
+					// ActionListener actionListener = new ActionListener() {
+					// public void actionPerformed(ActionEvent actionEvent) {
+					// AbstractButton abstractButton = (AbstractButton) actionEvent.getSource();
+					// boolean selected = abstractButton.getModel().isSelected();
+					// int p = Integer.parseInt(actionEvent.getActionCommand());
+					// for (int i = 0; i<9; i++) {
+					// for (int j = 0; j<9; j++) {
+					// buttons.get(i).get(j).setSelected(false);
+					// }
+					// }
+					// xGrid = (int) (Math.floor(p)/10)-1;
+					// yGrid = p%10-1;
+					// buttons.get(xGrid).get(yGrid).setSelected(true);
 
-	    					panel.add(l1);
-	    				}     	       
+					// }
+					// };
+					// buttons.get(i + 3 * (l / 3)).get((j + 3 * l) %
+					// 9).addActionListener(actionListener);
+					// buttons.get(i + 3 * (l / 3)).get((j + 3 * l) % 9)
+					// .setFont(new Font("Serif", Font.PLAIN, 72));
+					// panel.add(buttons.get(i + 3 * (l / 3)).get((j + 3 * l) % 9));
+	    					
+	    					
+					// }
+					// else {
+					// //JLabel l1 = new JLabel(String.valueOf(sudoku[i+3*(l/3)][(j+3*l)%9]));
+					// JButton l1 = new JButton(String.valueOf(sudoku[i+3*(l/3)][(j+3*l)%9]));
+					// l1.setFont(new Font("Serif", Font.PLAIN, 68));
+					// l1.setEnabled(false);
+
+					// panel.add(l1);
+					// }
 	    }}
 	    panelGui.add(panel);
 	    }
@@ -85,8 +85,8 @@ public class SudokuView {
 		        AbstractButton abstractButton = (AbstractButton) actionEvent.getSource();
 		        boolean selected = abstractButton.getModel().isSelected();
                     if (xGrid != -1) {
-		        		if (fields.get(xGrid).get(yGrid).isSelected()) {
-		        				fields.get(xGrid).get(yGrid).setText(null);     			
+					if (buttons.get(xGrid).get(yGrid).isSelected()) {
+						buttons.get(xGrid).get(yGrid).setText(null);
 		        			}}}};
 		remove.addActionListener(specialAction);       			
 	    specialButton.add(undo); specialButton.add(remove); specialButton.add(note); specialButton.add(newSudoku);
@@ -105,12 +105,12 @@ public class SudokuView {
 			        AbstractButton abstractButton = (AbstractButton) actionEvent.getSource();
 			        boolean selected = abstractButton.getModel().isSelected();
                           if (xGrid != -1) {
-			        		if (fields.get(xGrid).get(yGrid).isSelected()) {
-			        			if(actionEvent.getActionCommand().equals(fields.get(xGrid).get(yGrid).getText())){
-			        				fields.get(xGrid).get(yGrid).setText(null);
+							if (buttons.get(xGrid).get(yGrid).isSelected()) {
+								if (actionEvent.getActionCommand().equals(buttons.get(xGrid).get(yGrid).getText())) {
+									buttons.get(xGrid).get(yGrid).setText(null);
 			        			}
 			        			else {
-			        				fields.get(xGrid).get(yGrid).setText(actionEvent.getActionCommand());
+									buttons.get(xGrid).get(yGrid).setText(actionEvent.getActionCommand());
 			        			
 			        			}
 			        		}
@@ -130,12 +130,44 @@ public class SudokuView {
 	    f.add(mainGui);
 	    // setting grid layout of 3 rows and 3 columns           
 	    f.setSize(1000,1000);  
-		} 
+	}
+
 
 	
 	
 	public void setVisible(JFrame frame) {
 		f.setVisible(true);
 	}
-	
+
+	public ArrayList<ArrayList<JToggleButton>> createSudokuButtons() {
+		ArrayList<ArrayList<JToggleButton>> fields = new ArrayList();
+		for (int i = 0; i < 9; i++) {
+			ArrayList<JToggleButton> rows = new ArrayList();
+			for (int j = 0; j < 9; j++) {
+				rows.add(new JToggleButton((i + 1) + " " + (j + 1)));
+				// System.out.println((i + 1) * (j + 1));
+			}
+			fields.add(rows);
+		}
+		return fields;
+	}
+
+	// NEDENSTÅENDE SKAL RYKKES TIL CONTROLLER-KLASSEN:
+	public void CreateActionlistenersSudokuBoard(ArrayList<ArrayList<JToggleButton>> buttons) {
+		for (int axisZero = 0; axisZero < buttons.size(); axisZero++) {
+			for (int axisOne = 0; axisOne < buttons.get(0).size(); axisOne++) {
+				JToggleButton button = buttons.get(axisZero).get(axisOne);
+				button.setActionCommand(Integer.toString(axisZero) + "," + Integer.toString(axisOne));
+				button.addActionListener(sudokuButtonActionListener());
+			}
+		}
+	}
+
+	public ActionListener sudokuButtonActionListener() {
+		return new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.out.println(e.getActionCommand());
+			}
+		};
+	}
 }

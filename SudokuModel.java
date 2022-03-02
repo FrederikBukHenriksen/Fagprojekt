@@ -41,25 +41,6 @@ public class SudokuModel {
 		}
 	}
 
-	public void createSudokuSections() {
-		// Controls the shifting between sections.
-		for (int x = 0; x < 3; x++) {
-			ArrayList<int[][]> rowSections = new ArrayList<>();
-			for (int i = 0; i < 3; i++) {
-
-				// Runs through a single section.
-				int[][] section = new int[3][3];
-				for (int l = 0; l < 3; l++) {
-					for (int m = 0; m < 3; m++) {
-						section[l][m] = sudoku[l + x * 3][m + i * 3];
-					}
-				}
-				rowSections.add(section);
-			}
-			allSections.add(rowSections);
-		}
-	}
-
 	public ArrayList<ArrayList<int[][]>> getSections() {
 		return allSections;
 	}

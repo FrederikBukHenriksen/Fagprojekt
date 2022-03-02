@@ -1,3 +1,9 @@
+import java.util.ArrayList;
+
+import javax.swing.AbstractButton;
+import javax.swing.JToggleButton;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 public class SudokuController {
 
 	// Creating variables
@@ -10,6 +16,12 @@ public class SudokuController {
 		this.model = model;
 		this.view = view;
 	}
+
+	/*
+	 * @param s
+	 * 
+	 * @see The methos is adjust according to sudoku board size.
+	 */
 
 	public static boolean checkValidity(int[][] sudoku) {
 		boolean valid = new Boolean(true);
