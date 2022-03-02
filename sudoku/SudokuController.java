@@ -18,10 +18,41 @@ public class SudokuController {
 	SudokuView view;
 
 	// ACTIONLISTENER FOR SUDOKUBOARDET.
-	class SodukoboardListener implements ActionListener {
+	class SudokuboardListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			JToggleButton pressed = (JToggleButton) e.getSource(); // Grabs the button pressed
 			view.getSelected(pressed);
+		}
+	}
+
+	class SudokuUndoListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			JButton pressed = (JButton) e.getSource(); // Grabs the button pressed
+			System.out.println("Undo");
+		}
+	}
+
+	class SudokuRemoveListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			JButton pressed = (JButton) e.getSource(); // Grabs the button pressed
+			System.out.println("Remove");
+
+		}
+	}
+
+	class SudokuNoteListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			JButton pressed = (JButton) e.getSource(); // Grabs the button pressed
+			System.out.println("Note");
+
+		}
+	}
+
+	class SudokuNewListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			JButton pressed = (JButton) e.getSource(); // Grabs the button pressed
+			System.out.println("New Sudoku");
+
 		}
 	}
 
@@ -31,7 +62,7 @@ public class SudokuController {
 			JButton pressedNumboard = (JButton) e.getSource();
 
 			// Find the placement of the pressed board button
-			JToggleButton pressedSudokuboard = view.isSelected();
+			JToggleButton pressedSudokuboard = view.getButtonSelected();
 			int[] coordinate = view.getCellCoordinate(pressedSudokuboard);
 
 			// Update sudoku board
@@ -42,7 +73,6 @@ public class SudokuController {
 
 			// NEDENSTÅENE BRUGES KUN TIL DE-BUG.
 			view.updateFrameTitle(checkValidity(model.getSudoku()), model.isFilled());
-
 
 		}
 
@@ -55,8 +85,11 @@ public class SudokuController {
 		model.pushStack(model.getSudoku());
 		view.showFrame(model.peekStack());
 
-		view.addSudokuboardListener(new SodukoboardListener());
+		view.addSudokuboardListener(new SudokuboardListener());
 		view.addNumboardListener(new NumboardListener());
+		view.addSudokuControlsListener(new SudokuUndoListener(), new SudokuRemoveListener(), new SudokuNoteListener(),
+				new SudokuNewListener());
+
 	}
 
 	public static boolean checkValidity(int[][] sudoku) {
