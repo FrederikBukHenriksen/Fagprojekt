@@ -90,10 +90,20 @@ public class SudokuView {
 		        				fields.get(xGrid).get(yGrid).setText(null);
 		        				model.sudoku[xGrid][yGrid]=0;
 		        				if (SudokuController.checkValidity(sudoku)) { //calls controller to check if valid
-		        					f.setTitle("Valid");
+		        					if(SudokuController.isFilled(sudoku)){
+										f.setTitle("Filled and valid");
+									}
+									else{
+										f.setTitle("Valid");
+									}
 		        				}
 		        				else {
-		        					f.setTitle("Invalid");
+		        					if(SudokuController.isFilled(sudoku)){
+										f.setTitle("Filled, invalid");
+									}
+									else{
+										f.setTitle("Invalid");
+									}
 		        				}
 		        			}
 		        		
@@ -119,20 +129,27 @@ public class SudokuView {
 			        			if(actionEvent.getActionCommand().equals(fields.get(xGrid).get(yGrid).getText())){//check for what fields is selected. Sets number to 0, if the same number was already selected
 			        				fields.get(xGrid).get(yGrid).setText(null);
 			        				model.sudoku[xGrid][yGrid]=0;
-									
 			        			}
 			        			else {
 			        				fields.get(xGrid).get(yGrid).setText(actionEvent.getActionCommand());//check for fields is selected, to cell to number
 			        				model.sudoku[xGrid][yGrid]=Integer.parseInt(actionEvent.getActionCommand());
-			        				
-
 			        			}
 								model.sudokuStack.push(model.sudoku);
-		        				if (SudokuController.checkValidity(sudoku)) { //checks for validity
-		        					f.setTitle("Valid");
+		        				if (SudokuController.checkValidity(sudoku)) { //calls controller to check if valid
+		        					if(SudokuController.isFilled(sudoku)){
+										f.setTitle("Filled and valid");
+									}
+									else{
+										f.setTitle("Valid");
+									}
 		        				}
 		        				else {
-		        					f.setTitle("Invalid");
+		        					if(SudokuController.isFilled(sudoku)){
+										f.setTitle("Filled, invalid");
+									}
+									else{
+										f.setTitle("Invalid");
+									}
 		        				}
 			        		}
 			        	}

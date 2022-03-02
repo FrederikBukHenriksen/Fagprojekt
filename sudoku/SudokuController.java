@@ -119,4 +119,22 @@ public class SudokuController {
 		return model.sudokuStack.pop();
 	}
 
+	//Method for returning sudoku array
+	public int[][] getSudoku(){
+		return model.sudoku;
+	}
+
+	//Method for checking if sudoku is filled
+	public static boolean isFilled(int[][] sudoku){
+		boolean result = true;
+		for(int i = 0; i < sudoku.length; i++){
+			for(int j = 0; j < sudoku.length; j++){
+				if(sudoku[i][j] == 0){
+					result = false;
+				}
+			}
+		}
+		return result;
+	}
+
 }
