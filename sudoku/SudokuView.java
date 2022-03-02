@@ -49,8 +49,8 @@ public class SudokuView {
 
 			for (int i = 0; i < n; i++) {
 
-				for (int j = 0; j < n; j++) {
-					if (sudoku[(i + n * (l /k))][(j + n* l) % (k*n)] == 0) {
+				for (int j = 0; j < n; j++) {//l/k benytter sig af hvordan java runder op. det er n hvor mange felter den skal rygge, og den skal rygge det hver gang l har bevæget sig k felter.
+					if (sudoku[(i + n * (l /k))][(j + n* l) % (k*n)] == 0) { 
 						
 						
 						sudokuboardCells.get((i + n * (l /k))).get((j + n* l) % (k*n))
