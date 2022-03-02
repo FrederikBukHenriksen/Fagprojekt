@@ -8,6 +8,6 @@ public class SudokuMain {
 		SudokuModel model = new SudokuModel(file);
 		SudokuView view = new SudokuView(model);
 		SudokuController controller = new SudokuController(model, view);
-		view.setVisible(view.frame);
+		view.setVisible(view.f);
 	}
 }

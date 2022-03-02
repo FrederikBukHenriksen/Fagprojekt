@@ -105,4 +105,18 @@ public class SudokuController {
 
 		return valid;
 	}
+
+	//Methods for peeking, pushing and popping from stack
+	public int[][] peekStack(int a){
+		return model.sudokuStack.peek();
+	}
+
+	public void pushStack(int[][] sudoku){
+		model.sudokuStack.push(sudoku);
+	}
+
+	public int[][] popStack(){
+		return model.sudokuStack.pop();
+	}
+
 }

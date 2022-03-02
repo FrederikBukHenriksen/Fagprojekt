@@ -1,5 +1,6 @@
 package sudoku;
 
+import java.util.Stack;
 import java.util.Scanner;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -7,7 +8,8 @@ import java.io.FileNotFoundException;
 public class SudokuModel {
 
 	int[][] sudoku = new int[0][0];
-
+	Stack<int[][]> sudokuStack = new Stack<int[][]>();
+	
     public SudokuModel (File file){
         Scanner scanner;
 		try {
