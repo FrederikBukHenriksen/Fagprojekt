@@ -1,49 +1,99 @@
+// package sudoku;
+
+import java.util.ArrayList;
+
+import javax.swing.AbstractButton;
+import javax.swing.JToggleButton;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 public class SudokuController {
 
 	// Creating variables
-	private SudokuModel model;
+	SudokuModel model;
 
-	private SudokuView view;
+	SudokuView view;
+
+	int[][] sudoku;
+
+	// ACTIONLISTENER FOR SUDOKUBOARDET.
+	class SodukoboardListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			System.out.println(e.getActionCommand()); // Her modtages JToggle's koordinat.
+		}
+	}
 
 	// Simple constructor
-	public SudokuController(SudokuModel model, SudokuView view) {
-		this.model = model;
-		this.view = view;
+	public SudokuController() {
+		this.model = new SudokuModel();
+		sudoku = model.getSudoku();
+		this.view = new SudokuView();
+
+		view.setBoard(model.getSudoku());
+		view.showFrame(); // Den gamle konstruktør for view, som nu er blevet en metode.
+
+		view.addSudokuboardListener(new SodukoboardListener());
 	}
 
 	public static boolean checkValidity(int[][] sudoku) {
 		boolean valid = new Boolean(true);
-		int[][] sortedGrid = new int[sudoku.length + 1][sudoku.length + 1];
+		// Grid for storing already found values
+		// int[][] sortedGrid = new int[sudoku.length+1][sudoku.length+1];
+		int[][] sortedGrid = new int[sudoku.length][sudoku.length];
+		// for(int i = sortedGrid.length-1; i >= 0; i--){
 		for (int i = sortedGrid.length - 1; i >= 0; i--) {
 			for (int k = 0; k < sortedGrid.length; k++) {
 				sortedGrid[i][k] = 0;
 			}
 		}
 
+		// Checking rows for duplicates
 		for (int i = 0; i < sudoku.length; i++) {
 			for (int k = 0; k < sudoku.length; k++) {
 				int cur = (sudoku[i][k]);
-				System.out.print(cur + " ");
 				if (cur != 0) {
-					if (sortedGrid[i][cur] == 0) {
-						sortedGrid[i][cur] = 1;
+					if (sortedGrid[i][cur - 1] == 0) {
+						sortedGrid[i][cur - 1] = 1;
 					} else {
 						valid = false;
 					}
 				}
 
 			}
-			System.out.println();
 		}
 
-		System.out.println();
-		for (int i = 0; i < sortedGrid.length; i++) {
+		/*
+		 * for(int i = 0; i < sortedGrid.length; i++){
+		 * for(int k = 0; k < sortedGrid.length; k++){
+		 * System.out.print(sortedGrid[i][k] + " ");
+		 * }
+		 * System.out.println();
+		 * }
+		 * System.out.println();
+		 */
+
+		// Resetting the sorted grid
+		for (int i = sortedGrid.length - 1; i >= 0; i--) {
 			for (int k = 0; k < sortedGrid.length; k++) {
-				System.out.print(sortedGrid[i][k] + " ");
+				sortedGrid[i][k] = 0;
 			}
-			System.out.println();
 		}
 
+		// Checking columns for duplicates
+		for (int i = 0; i < sudoku.length; i++) {
+			for (int k = 0; k < sudoku.length; k++) {
+				int cur = (sudoku[k][i]);
+				if (cur != 0) {
+					if (sortedGrid[i][cur - 1] == 0) {
+						sortedGrid[i][cur - 1] = 1;
+					} else {
+						valid = false;
+					}
+				}
+			}
+		}
+
+		// Resetting the sorted grid
 		for (int i = sortedGrid.length - 1; i >= 0; i--) {
 			for (int k = 0; k < sortedGrid.length; k++) {
 				sortedGrid[i][k] = 0;
@@ -56,26 +106,26 @@ public class SudokuController {
 					for (int bc = 0; bc < Math.sqrt(sudoku.length); bc++) {
 						int cur = sudoku[(c * 3) + bc][(r * 3) + br];
 						if (cur != 0) {
-							if (sortedGrid[c + r * 3][cur] == 0) {
-								sortedGrid[c + r * 3][cur] = 1;
+							if (sortedGrid[c + r * 3][cur - 1] == 0) {
+								sortedGrid[c + r * 3][cur - 1] = 1;
 							} else {
 								valid = false;
 							}
 						}
-
 					}
 				}
 			}
 		}
-
-		System.out.println();
-		for (int i = 0; i < sortedGrid.length; i++) {
-			for (int k = 0; k < sortedGrid.length; k++) {
-				System.out.print(sortedGrid[i][k] + " ");
-			}
-			System.out.println();
-		}
+		/*
+		 * for(int i = 0; i < sortedGrid.length; i++){
+		 * for(int k = 0; k < sortedGrid.length; k++){
+		 * System.out.print(sortedGrid[i][k] + " ");
+		 * }
+		 * System.out.println();
+		 * }
+		 */
 
 		return valid;
 	}
+
 }

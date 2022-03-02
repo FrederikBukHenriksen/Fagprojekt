@@ -6,7 +6,9 @@ public class SudokuModel {
 
 	int[][] sudoku = new int[0][0];
 
-	public SudokuModel(File file) {
+	public SudokuModel() {
+		File file = new File("test.txt");
+
 		Scanner scanner;
 		try {
 			scanner = new Scanner(file);
