@@ -252,16 +252,14 @@ public class SudokuView {
 
 	public int[] getCellCoordinate(JToggleButton selected) {
 		int[] coordinate = new int[2];
-		int x = -1, y = -1; // Used to give the button an ActionCommand
-		for (ArrayList<JToggleButton> arraylist : sudokuboardCells) {
-			x++;
-			for (JToggleButton cell : arraylist) {
-				y++;
-				if (cell.equals(selected)) {
+
+		for (int x = 0; x < 9; x++) {
+			for (int y = 0; y < 9; y++) {
+				JToggleButton button = sudokuboardCells.get(x).get(y);
+				if (button.equals(selected)) {
 					coordinate[0] = x;
 					coordinate[1] = y;
 				}
-
 			}
 		}
 		return coordinate;

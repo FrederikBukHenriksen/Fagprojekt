@@ -38,6 +38,7 @@ public class SudokuModel {
 	}
 
 	public void setSudokuCell(int x, int y, int value) {
+		System.out.println(x + " " + y);
 		sudoku[x][y] = value;
 	}
 
