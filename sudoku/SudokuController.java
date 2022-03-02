@@ -66,7 +66,6 @@ public class SudokuController {
 								valid = false;
 							}
 						}
-						
 					}
 				}
 			}
@@ -79,7 +78,6 @@ public class SudokuController {
 			}
 			System.out.println();
 		}
-
 		return valid;
 	}
 }
