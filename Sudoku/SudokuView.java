@@ -31,7 +31,7 @@ public class SudokuView {
 
 	}
 
-	public void showFrame() {
+	public void showFrame(int[][] sudoku) {
 
 		JPanel mainGui = new JPanel(new GridLayout(1, 2, 50, 0));
 		JPanel panelGui = new JPanel(new GridLayout(3, 3, 10, 10));
@@ -46,23 +46,6 @@ public class SudokuView {
 
 				for (int j = 0; j < 3; j++) {
 					if (sudoku[i + 3 * (l / 3)][(j + 3 * l) % 9] == 0) {
-						// ActionListener actionListener = new ActionListener() {
-						// public void actionPerformed(ActionEvent actionEvent) {
-						// AbstractButton abstractButton = (AbstractButton) actionEvent.getSource();
-						// boolean selected = abstractButton.getModel().isSelected();
-						// int p = Integer.parseInt(actionEvent.getActionCommand());
-						// for (int i = 0; i<9; i++) {
-						// for (int j = 0; j<9; j++) {
-						// fields.get(i).get(j).setSelected(false);
-						// }
-						// }
-						// xGrid = (int) (Math.floor(p)/10)-1;
-						// yGrid = p%10-1;
-						// fields.get(xGrid).get(yGrid).setSelected(true);
-
-						// }
-						// };
-						// fields.get(i+3*(l/3)).get((j+3*l)%9).addActionListener(actionListener);
 						sudokuboardCells.get(i + 3 * (l / 3)).get((j + 3 * l) % 9)
 								.setFont(new Font("Serif", Font.PLAIN, 72));
 						// fields.get(i + 3 * (l / 3)).get((j + 3 * l) % 9).setEnabled(false);
@@ -202,9 +185,6 @@ public class SudokuView {
 		}
 	}
 
-	public void setBoard(int[][] sudoku) {
-		this.sudoku = sudoku;
-	}
 
 	public void createFields(int[][] sudoku) {
 		for (int i = 0; i < 9; i++) {
@@ -217,7 +197,7 @@ public class SudokuView {
 		}
 	}
 
-	public void boardButtonSelected(JToggleButton buttonSelected) {
+	public void getSelected(JToggleButton buttonSelected) {
 		getButtons().forEach(b -> b.setSelected(false));
 		buttonSelected.setSelected(true);
 
@@ -235,9 +215,6 @@ public class SudokuView {
 	}
 
 	public JToggleButton isSelected() { // TODO: ret til abstractbutton
-		// return (JToggleButton) getButtons()
-		// .stream()
-		// .filter(b -> b.isSelected().Collectors.to);
 
 		ArrayList<JToggleButton> result = (ArrayList<JToggleButton>) getButtons().stream()
 				.filter(b -> b.isSelected())
@@ -276,6 +253,23 @@ public class SudokuView {
 
 	public void setTitle(String string) {
 		f.setTitle(string);
+	}
+
+	public void updateFrameTitle(boolean checkValidity, boolean isFilled) {
+		if (checkValidity) {
+			if (isFilled) {
+				f.setTitle("Filled and valid");
+			} else {
+				f.setTitle("Valid");
+			}
+		} else {
+			if (isFilled) {
+				f.setTitle("Filled and invalid");
+			} else {
+				f.setTitle("Invalid");
+			}
+
+		}
 	}
 
 }

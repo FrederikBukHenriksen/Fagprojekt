@@ -21,7 +21,7 @@ public class SudokuController {
 	class SodukoboardListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			JToggleButton pressed = (JToggleButton) e.getSource(); // Grabs the button pressed
-			view.boardButtonSelected(pressed);
+			view.getSelected(pressed);
 		}
 	}
 
@@ -41,20 +41,8 @@ public class SudokuController {
 			view.updateBoard(model.getSudoku());
 
 			// NEDENSTÅENE BRUGES KUN TIL DE-BUG.
-			if (checkValidity(model.getSudoku())) {
-				if (model.isFilled()) {
-					view.setTitle("Filled and valid");
-				} else {
-					view.setTitle("Valid");
-				}
-			} else {
-				if (model.isFilled()) {
-					view.setTitle("Filled and invalid");
-				} else {
-					view.setTitle("Invalid");
-				}
+			view.updateFrameTitle(checkValidity(model.getSudoku()), model.isFilled());
 
-			}
 
 		}
 
@@ -65,8 +53,7 @@ public class SudokuController {
 		model = new SudokuModel();
 		view = new SudokuView();
 
-		view.setBoard(model.getSudoku());
-		view.showFrame();
+		view.showFrame(model.getSudoku());
 
 		view.addSudokuboardListener(new SodukoboardListener());
 		view.addNumboardListener(new NumboardListener());
