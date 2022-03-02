@@ -39,6 +39,7 @@ public class SudokuView {
 		for (int l = 0; l < 9; l++) {
 			JPanel panel = new JPanel(new GridLayout(3, 3));
 
+
 			for (int i = 0; i < 3; i++) {
 
 				for (int j = 0; j < 3; j++) {
@@ -231,20 +232,13 @@ public class SudokuView {
 		return buttonsArray;
 	}
 
-	public void setBoardButton(int i) {
-		getButtons().forEach(b -> {
-			if (b.isSelected())
-				b.setText(String.valueOf(i));
-		});
-	}
-
 	public JToggleButton isSelected() { // TODO: ret til abstractbutton
 		// return (JToggleButton) getButtons()
 		// .stream()
 		// .filter(b -> b.isSelected().Collectors.to);
 
 		ArrayList<JToggleButton> result = (ArrayList<JToggleButton>) getButtons().stream()
-				.filter(b -> b.isSelected() == true)
+				.filter(b -> b.isSelected())
 				.collect(Collectors.toList());
 		return result.get(0);
 
@@ -266,6 +260,8 @@ public class SudokuView {
 	}
 
 	public void updateBoard(int[][] sudoku) {
+
+		// Run through all the cells and assign text
 		for (int x = 0; x < sudoku.length; x++) {
 			for (int y = 0; y < sudoku.length; y++) {
 				if (sudoku[x][y] != 0) {
@@ -274,6 +270,10 @@ public class SudokuView {
 				}
 			}
 		}
+	}
+
+	public void setTitle(String string) {
+		f.setTitle(string);
 	}
 
 }

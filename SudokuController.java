@@ -17,36 +17,53 @@ public class SudokuController {
 
 	SudokuView view;
 
-	int[][] sudoku;
-
 	// ACTIONLISTENER FOR SUDOKUBOARDET.
 	class SodukoboardListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			JToggleButton pressed = (JToggleButton) e.getSource(); // Grabs the button pressed
 			view.boardButtonSelected(pressed);
-
 		}
 	}
 
 	class NumboardListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			JButton pressed = (JButton) e.getSource(); // Grabs the button pressed
-			// System.out.println(pressed.getText()); //Værdien af knappen som trykkes.
+			// Grabs the button pressed
+			JButton pressedNumboard = (JButton) e.getSource();
 
-			int[] coordinates = view.getCellCoordinate(view.isSelected());
+			// Find the placement of the pressed board button
+			JToggleButton pressedSudokuboard = view.isSelected();
+			int[] coordinate = view.getCellCoordinate(pressedSudokuboard);
 
-			model.setSudokuCell(coordinates[0], coordinates[1], Integer.valueOf(pressed.getText()));
+			// Update sudoku board
+			model.setSudokuCell(coordinate[0], coordinate[1], Integer.valueOf(pressedNumboard.getText()));
 
+			// Update the board visuals
 			view.updateBoard(model.getSudoku());
-			System.out.println(model.getSudoku()[0][0]);
+
+			// NEDENSTÅENE BRUGES KUN TIL DE-BUG.
+			if (checkValidity(model.getSudoku())) {
+				if (model.isFilled()) {
+					view.setTitle("Filled and valid");
+				} else {
+					view.setTitle("Valid");
+				}
+			} else {
+				if (model.isFilled()) {
+					view.setTitle("Filled and invalid");
+				} else {
+					view.setTitle("Invalid");
+				}
+
+			}
+
 		}
+
 	}
 
 	// Simple constructor
 	public SudokuController() {
-		this.model = new SudokuModel();
-		sudoku = model.getSudoku();
-		this.view = new SudokuView();
+		model = new SudokuModel();
+		view = new SudokuView();
 
 		view.setBoard(model.getSudoku());
 		view.showFrame();
