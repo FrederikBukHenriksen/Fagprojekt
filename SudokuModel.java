@@ -1,28 +1,18 @@
-import java.util.ArrayList;
 import java.util.Scanner;
-
-import javax.swing.JToggleButton;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 
 public class SudokuModel {
 
 	int[][] sudoku = new int[0][0];
-	ArrayList<ArrayList<int[][]>> allSections = new ArrayList<>();
 
-	int n, k;
-
-	public SudokuModel() {
-	}
-
-	public void loadASCIIFile(File file) {
+	public SudokuModel(File file) {
 		Scanner scanner;
 		try {
 			scanner = new Scanner(file);
 			String setup = scanner.next();
-			n = Character.getNumericValue(setup.charAt(0));
-			k = Character.getNumericValue(setup.charAt(2));
+			int n = Character.getNumericValue(setup.charAt(0));
+			int k = Character.getNumericValue(setup.charAt(2));
 
 			sudoku = new int[n * n][n * n];
 			for (int i = 0; i < n * n; i++) {
@@ -41,6 +31,7 @@ public class SudokuModel {
 		}
 	}
 
+<<<<<<< HEAD
 	public ArrayList<ArrayList<int[][]>> getSections() {
 		return allSections;
 	}
@@ -68,6 +59,8 @@ public class SudokuModel {
 	/**
 	 * @return a primitive 2D-array containing the sudoku board's numbers
 	 */
+=======
+>>>>>>> parent of 0d2340b (funktionalitet i Model)
 	public int[][] getSudoku() {
 		return sudoku;
 	}
