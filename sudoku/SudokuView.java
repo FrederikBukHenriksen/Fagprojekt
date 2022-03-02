@@ -137,7 +137,6 @@ public class SudokuView {
 			        		}
 			        	}
 			        }
-			      
 			 };
 			button.get(i-1).addActionListener(actionListener);
 			button.get(i-1).setFont(new Font("Serif", Font.PLAIN, 72));
@@ -150,7 +149,8 @@ public class SudokuView {
 	    
 	    f.add(mainGui);
 	    // setting grid layout of 3 rows and 3 columns           
-	    f.setSize(1000,1000);  
+	    f.setSize(1000,1000);
+		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  
 		} 
 
 	
