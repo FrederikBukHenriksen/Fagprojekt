@@ -1,9 +1,14 @@
+<<<<<<< HEAD
 import java.util.ArrayList;
 
 import javax.swing.AbstractButton;
 import javax.swing.JToggleButton;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+=======
+package sudoku;
+
+>>>>>>> parent of 39df90c (stable merge af de to)
 public class SudokuController {
 
 	// Creating variables
