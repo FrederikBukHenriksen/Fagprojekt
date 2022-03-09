@@ -82,14 +82,14 @@ public class SudokuController {
 	public SudokuController() {
 		model = new SudokuModel();
 		view = new SudokuView();
-
+		view.getBoardValues(model.getN(), model.getK());
 		view.showFrame(model.getSudoku());
 
-		view.addSudokuboardListener(new SudokuboardListener());
+		view.addSudokuboardListener(new SodukoboardListener());
 		view.addNumboardListener(new NumboardListener());
+
 		view.addSudokuControlsListener(new SudokuUndoListener(), new SudokuRemoveListener(), new SudokuNoteListener(),
 				new SudokuNewListener());
-
 	}
 
 	public static boolean checkValidity(int[][] sudoku) {

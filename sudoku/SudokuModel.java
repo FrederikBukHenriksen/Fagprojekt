@@ -16,6 +16,7 @@ public class SudokuModel {
 	public SudokuModel() {
 		File file = new File("sudoku/Puzzles_1/Puzzle_3_01.dat");
 
+
 		Scanner scanner;
 		// reading the input
 		try {
@@ -97,5 +98,11 @@ public class SudokuModel {
 		}
 		return result;
 	}
-
+	public int getN() {
+		return n;
+	}
+	public int getK() {
+		return k;
+	}
 }
+

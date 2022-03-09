@@ -16,6 +16,8 @@ public class SudokuView {
 	public int test = 1;
 	public int xGrid = -1;
 	public int yGrid = -1;
+	public int n;
+	public int k;
 
 	ArrayList<ArrayList<JToggleButton>> sudokuboardCells = new ArrayList();
 	ArrayList<JButton> numboardButtons = new ArrayList();
@@ -38,26 +40,30 @@ public class SudokuView {
 	public void showFrame(int[][] sudoku) {
 
 		JPanel mainGui = new JPanel(new GridLayout(1, 2, 50, 0));
-		JPanel panelGui = new JPanel(new GridLayout(3, 3, 10, 10));
-
+		JPanel panelGui = new JPanel(new GridLayout(k,k, 10, 10));
 		createFields(sudoku);
+		
+		for (int l = 0; l < k*k; l++) {
+			JPanel panel = new JPanel(new GridLayout(n, n));
 
-		for (int l = 0; l < 9; l++) {
-			JPanel panel = new JPanel(new GridLayout(3, 3));
+			for (int i = 0; i < n; i++) {
 
-			for (int i = 0; i < 3; i++) {
-
-				for (int j = 0; j < 3; j++) {
-					if (sudoku[i + 3 * (l / 3)][(j + 3 * l) % 9] == 0) {
-						sudokuboardCells.get(i + 3 * (l / 3)).get((j + 3 * l) % 9)
+				for (int j = 0; j < n; j++) {//l/k benytter sig af hvordan java runder op. det er n hvor mange felter den skal rygge, og den skal rygge det hver gang l har bev�get sig k felter.
+					if (sudoku[(i + n * (l /k))][(j + n* l) % (k*n)] == 0) { 
+						
+						
+						sudokuboardCells.get((i + n * (l /k))).get((j + n* l) % (k*n))
 								.setFont(new Font("Serif", Font.PLAIN, 72));
-						panel.add(sudokuboardCells.get(i + 3 * (l / 3)).get((j + 3 * l) % 9));
+						// fields.get(i + 3 * (l / 3)).get((j + 3 * l) % 9).setEnabled(false);
+						panel.add(sudokuboardCells.get((i + n * (l /k))).get((j + n* l) % (k*n)));
 
 					} else {
-						sudokuboardCells.get(i + 3 * (l / 3)).get((j + 3 * l) % 9).setText(
-								String.valueOf(sudoku[i + 3 * (l / 3)][(j + 3 * l) % 9]));
-						sudokuboardCells.get(i + 3 * (l / 3)).get((j + 3 * l) % 9).setEnabled(false);
-						panel.add(sudokuboardCells.get(i + 3 * (l / 3)).get((j + 3 * l) % 9));
+						// JLabel l1 = new JLabel(String.valueOf(sudoku[i+3*(l/3)][(j+3*l)%9]));
+						sudokuboardCells.get((i + n * (l /k))).get((j + n* l) % (k*n)).setText(
+								String.valueOf(sudoku[(i + n * (l /k))][(j + n* l) % (k*n)]));
+						sudokuboardCells.get((i + n * (l /k))).get((j + n* l) % (k*n)).setEnabled(false);
+						panel.add(sudokuboardCells.get((i + n * (l /k))).get((j + n* l) % (k*n)));
+
 					}
 				}
 			}
@@ -66,10 +72,6 @@ public class SudokuView {
 		mainGui.add(panelGui);
 		JPanel sideButtonGui = new JPanel(new GridLayout(2, 1, 0, 10));// creates buttons panels on the right side
 		JPanel specialButton = new JPanel(new GridLayout(1, 4, 0, 0));
-		// JButton undo = new JButton("undo");
-		// JButton remove = new JButton("remove");
-		// JButton note = new JButton("note");
-		// JButton newSudoku = new JButton("newSudoku");
 		ActionListener specialAction = new ActionListener() {
 			public void actionPerformed(ActionEvent actionEvent) {
 				AbstractButton abstractButton = (AbstractButton) actionEvent.getSource();
@@ -81,7 +83,6 @@ public class SudokuView {
 						sudokuboardCells.get(xGrid).get(yGrid).setText(null);
 						sudoku[xGrid][yGrid] = 0;
 					}
-
 				}
 			}
 		};
@@ -112,18 +113,8 @@ public class SudokuView {
 								sudokuboardCells.get(xGrid).get(yGrid).setText(null);
 								sudoku[xGrid][yGrid] = 0;
 							} else {
-								sudokuboardCells.get(xGrid).get(yGrid).setText(actionEvent.getActionCommand());// check
-																												// for
-																												// if
-																												// field
-																												// is
-																												// selected,
-																												// sets
-																												// cell
-																												// to
-																												// number
+								sudokuboardCells.get(xGrid).get(yGrid).setText(actionEvent.getActionCommand());
 								sudoku[xGrid][yGrid] = Integer.parseInt(actionEvent.getActionCommand());
-
 							}
 						}
 					}
@@ -151,7 +142,6 @@ public class SudokuView {
 	void addNumboardListener(ActionListener listenForNumboardButtons) {
 		numboardButtons.forEach(b -> b.addActionListener(listenForNumboardButtons));
 	}
-
 	void addSudokuControlsListener(ActionListener listenForUndo, ActionListener listenForRemove,
 			ActionListener listenForNote, ActionListener listenForNew) {
 		undo.addActionListener(listenForUndo);
@@ -159,7 +149,6 @@ public class SudokuView {
 		note.addActionListener(listenForNote);
 		newSudoku.addActionListener(listenForNew);
 	}
-
 	void addSudokuboardListener(ActionListener listenForSudokuboardButtons) {
 		int x = 0, y = 0; // Used to give the button an ActionCommand
 		for (ArrayList<JToggleButton> arraylist : sudokuboardCells) {
@@ -172,10 +161,11 @@ public class SudokuView {
 	}
 
 	public void createFields(int[][] sudoku) {
-		for (int i = 0; i < 9; i++) {
+		for (int i = 0; i < n*k; i++) {
 			ArrayList<JToggleButton> rows = new ArrayList();
-			for (int j = 0; j < 9; j++) {
+			for (int j = 0; j < n*k; j++) {
 				rows.add(new JToggleButton(""));
+				// System.out.println((i + 1) * (j + 1));
 			}
 			sudokuboardCells.add(rows);
 		}
@@ -209,9 +199,8 @@ public class SudokuView {
 
 	public int[] getCellCoordinate(JToggleButton selected) {
 		int[] coordinate = new int[2];
-
-		for (int x = 0; x < 9; x++) {
-			for (int y = 0; y < 9; y++) {
+		for (int x = 0; x < n*k; x++) {
+			for (int y = 0; y < n*k; y++) {
 				JToggleButton button = sudokuboardCells.get(x).get(y);
 				if (button.equals(selected)) {
 					coordinate[0] = x;
@@ -223,10 +212,8 @@ public class SudokuView {
 	}
 
 	public void updateBoard(int[][] sudoku) {
-
-		// Run through all the cells and assign text
-		for (int x = 0; x < sudoku.length; x++) {
-			for (int y = 0; y < sudoku.length; y++) {
+		for (int x = 0; x < n*k; x++) {
+			for (int y = 0; y < n*k; y++) {
 				if (sudoku[x][y] != 0) {
 					JToggleButton button = sudokuboardCells.get(x).get(y);
 					button.setText(String.valueOf(sudoku[x][y]));
@@ -235,6 +222,11 @@ public class SudokuView {
 		}
 	}
 
+
+  public void getBoardValues(int n, int k) {
+	  this.n = n;
+	  this.k = k;
+  }
 	public void setTitle(String string) {
 		f.setTitle(string);
 	}
@@ -252,8 +244,6 @@ public class SudokuView {
 			} else {
 				f.setTitle("Invalid");
 			}
-
 		}
 	}
-
 }
