@@ -53,7 +53,7 @@ public class SudokuView {
 						
 						
 						sudokuboardCells.get((i + n * (l /k))).get((j + n* l) % (k*n))
-								.setFont(new Font("Serif", Font.PLAIN, 72));
+								.setFont(new Font("Serif", Font.PLAIN, 12));
 						// fields.get(i + 3 * (l / 3)).get((j + 3 * l) % 9).setEnabled(false);
 						panel.add(sudokuboardCells.get((i + n * (l /k))).get((j + n* l) % (k*n)));
 
