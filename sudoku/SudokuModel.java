@@ -14,7 +14,7 @@ public class SudokuModel {
 
 	// constructor for the model
 	public SudokuModel() {
-		File file = new File("sudoku/test.txt");
+		File file = new File("sudoku/Puzzles_1/Puzzle_3_01.dat");
 
 		Scanner scanner;
 		// reading the input
