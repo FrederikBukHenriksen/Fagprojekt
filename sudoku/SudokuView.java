@@ -12,19 +12,19 @@ import java.lang.Math;
 
 import javax.swing.*;
 
-import sudoku.SudokuModel;
-
-
 public class SudokuView {
 	public int test = 1;
 	public int xGrid = -1;
 	public int yGrid = -1;
 	public int n;
 	public int k;
-	private SudokuModel model;
-	
+
 	ArrayList<ArrayList<JToggleButton>> sudokuboardCells = new ArrayList();
 	ArrayList<JButton> numboardButtons = new ArrayList();
+	JButton undo = new JButton("Undo");
+	JButton remove = new JButton("Remove");
+	JButton note = new JButton("note");
+	JButton newSudoku = new JButton("newSudoku");
 
 	int[][] sudoku;
 
@@ -38,7 +38,6 @@ public class SudokuView {
 	}
 
 	public void showFrame(int[][] sudoku) {
-		
 
 		JPanel mainGui = new JPanel(new GridLayout(1, 2, 50, 0));
 		JPanel panelGui = new JPanel(new GridLayout(k,k, 10, 10));
@@ -49,7 +48,7 @@ public class SudokuView {
 
 			for (int i = 0; i < n; i++) {
 
-				for (int j = 0; j < n; j++) {//l/k benytter sig af hvordan java runder op. det er n hvor mange felter den skal rygge, og den skal rygge det hver gang l har bevæget sig k felter.
+				for (int j = 0; j < n; j++) {//l/k benytter sig af hvordan java runder op. det er n hvor mange felter den skal rygge, og den skal rygge det hver gang l har bevï¿½get sig k felter.
 					if (sudoku[(i + n * (l /k))][(j + n* l) % (k*n)] == 0) { 
 						
 						
@@ -64,36 +63,26 @@ public class SudokuView {
 								String.valueOf(sudoku[(i + n * (l /k))][(j + n* l) % (k*n)]));
 						sudokuboardCells.get((i + n * (l /k))).get((j + n* l) % (k*n)).setEnabled(false);
 						panel.add(sudokuboardCells.get((i + n * (l /k))).get((j + n* l) % (k*n)));
+
 					}
 				}
 			}
 			panelGui.add(panel);
 		}
-
 		mainGui.add(panelGui);
 		JPanel sideButtonGui = new JPanel(new GridLayout(2, 1, 0, 10));// creates buttons panels on the right side
 		JPanel specialButton = new JPanel(new GridLayout(1, 4, 0, 0));
-		JButton undo = new JButton("undo");
-		JButton remove = new JButton("remove");
-		JButton note = new JButton("note");
-		JButton newSudoku = new JButton("newSudoku");
 		ActionListener specialAction = new ActionListener() {
 			public void actionPerformed(ActionEvent actionEvent) {
 				AbstractButton abstractButton = (AbstractButton) actionEvent.getSource();
 				boolean selected = abstractButton.getModel().isSelected();
 				if (xGrid != -1) {
-					if (sudokuboardCells.get(xGrid).get(yGrid).isSelected()) { // deletes number from grid, if a cell
-																				// is selected.
+					if (sudokuboardCells.get(xGrid).get(yGrid).isSelected()) {
+						// deletes number from grid, if a cell is selected
 						// Does nothing if no cell is selected
 						sudokuboardCells.get(xGrid).get(yGrid).setText(null);
 						sudoku[xGrid][yGrid] = 0;
-						if (SudokuController.checkValidity(sudoku)) { // calls controller to check if valid
-							f.setTitle("Valid");
-						} else {
-							f.setTitle("Invalid");
-						}
 					}
-
 				}
 			}
 		};
@@ -118,38 +107,14 @@ public class SudokuView {
 					if (xGrid != -1) {
 						if (sudokuboardCells.get(xGrid).get(yGrid).isSelected()) {
 							if (actionEvent.getActionCommand()
-									.equals(sudokuboardCells.get(xGrid).get(yGrid).getText())) {// check
-								// for
-								// what
-								// fields
-								// is
-								// selected.
-								// Sets
-								// number
-								// to 0,
-								// if
-								// the
-								// same
-								// number
-								// was
-								// already
-								// selected
+									.equals(sudokuboardCells.get(xGrid).get(yGrid).getText())) {
+								// Check for what field is selected. Sets number to 0, if the same number was
+								// already selected
 								sudokuboardCells.get(xGrid).get(yGrid).setText(null);
 								sudoku[xGrid][yGrid] = 0;
 							} else {
-								sudokuboardCells.get(xGrid).get(yGrid).setText(actionEvent.getActionCommand());// check
-																												// for
-																												// fields
-								// is selected,
-								// to cell to
-								// number
+								sudokuboardCells.get(xGrid).get(yGrid).setText(actionEvent.getActionCommand());
 								sudoku[xGrid][yGrid] = Integer.parseInt(actionEvent.getActionCommand());
-
-							}
-							if (SudokuController.checkValidity(sudoku)) { // checks for validity
-								f.setTitle("Valid");
-							} else {
-								f.setTitle("Invalid");
 							}
 						}
 					}
@@ -175,19 +140,21 @@ public class SudokuView {
 
 	// Actionlisteners
 	void addNumboardListener(ActionListener listenForNumboardButtons) {
-		// for (JButton button : numboardButtons) {
-		// button.addActionListener(listenForNumboardButtons);
-		// }
 		numboardButtons.forEach(b -> b.addActionListener(listenForNumboardButtons));
 	}
-
+	void addSudokuControlsListener(ActionListener listenForUndo, ActionListener listenForRemove,
+			ActionListener listenForNote, ActionListener listenForNew) {
+		undo.addActionListener(listenForUndo);
+		remove.addActionListener(listenForRemove);
+		note.addActionListener(listenForNote);
+		newSudoku.addActionListener(listenForNew);
+	}
 	void addSudokuboardListener(ActionListener listenForSudokuboardButtons) {
 		int x = 0, y = 0; // Used to give the button an ActionCommand
 		for (ArrayList<JToggleButton> arraylist : sudokuboardCells) {
 			x++;
 			for (JToggleButton button : arraylist) {
 				y++;
-				button.setActionCommand(x + " " + y);
 				button.addActionListener(listenForSudokuboardButtons);
 			}
 		}
@@ -204,7 +171,7 @@ public class SudokuView {
 		}
 	}
 
-	public void boardButtonSelected(JToggleButton buttonSelected) {
+	public void getSelected(JToggleButton buttonSelected) {
 		getButtons().forEach(b -> b.setSelected(false));
 		buttonSelected.setSelected(true);
 
@@ -221,22 +188,10 @@ public class SudokuView {
 		return buttonsArray;
 	}
 
-	public void setBoardButton(int i) {
-		getButtons().forEach(b -> {
-			if (b.isSelected())
-				b.setText(String.valueOf(i));
-		});
-	}
-	
-
-
-	public JToggleButton isSelected() { // TODO: ret til abstractbutton
-		// return (JToggleButton) getButtons()
-		// .stream()
-		// .filter(b -> b.isSelected().Collectors.to);
+	public JToggleButton getButtonSelected() { // TODO: ret til abstractbutton
 
 		ArrayList<JToggleButton> result = (ArrayList<JToggleButton>) getButtons().stream()
-				.filter(b -> b.isSelected() == true)
+				.filter(b -> b.isSelected())
 				.collect(Collectors.toList());
 		return result.get(0);
 
@@ -244,7 +199,6 @@ public class SudokuView {
 
 	public int[] getCellCoordinate(JToggleButton selected) {
 		int[] coordinate = new int[2];
-
 		for (int x = 0; x < n*k; x++) {
 			for (int y = 0; y < n*k; y++) {
 				JToggleButton button = sudokuboardCells.get(x).get(y);
@@ -268,29 +222,28 @@ public class SudokuView {
 		}
 	}
 
+
   public void getBoardValues(int n, int k) {
 	  this.n = n;
 	  this.k = k;
   }
-  public void setTitle(String string) {
+	public void setTitle(String string) {
 		f.setTitle(string);
 	}
+
+	public void updateFrameTitle(boolean checkValidity, boolean isFilled) {
+		if (checkValidity) {
+			if (isFilled) {
+				f.setTitle("Filled and valid");
+			} else {
+				f.setTitle("Valid");
+			}
+		} else {
+			if (isFilled) {
+				f.setTitle("Filled and invalid");
+			} else {
+				f.setTitle("Invalid");
+			}
+		}
+	}
 }
-
-// ActionListener actionListener = new ActionListener() {
-// public void actionPerformed(ActionEvent actionEvent) {
-// AbstractButton abstractButton = (AbstractButton) actionEvent.getSource();
-// boolean selected = abstractButton.getModel().isSelected();
-// int p = Integer.parseInt(actionEvent.getActionCommand());
-// for (int i = 0; i<9; i++) {
-// for (int j = 0; j<9; j++) {
-// fields.get(i).get(j).setSelected(false);
-// }
-// }
-// xGrid = (int) (Math.floor(p)/10)-1;
-// yGrid = p%10-1;
-// fields.get(xGrid).get(yGrid).setSelected(true);
-
-// }
-// };
-// fields.get(i+3*(l/3)).get((j+3*l)%9).addActionListener(actionListener);

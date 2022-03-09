@@ -14,7 +14,8 @@ public class SudokuModel {
 
 	// constructor for the model
 	public SudokuModel() {
-		File file = new File("E:\\Eclibse\\Sudoku\\src\\testing.txt");
+		File file = new File("sudoku/Puzzles_1/Puzzle_3_01.dat");
+
 
 		Scanner scanner;
 		// reading the input
@@ -38,18 +39,6 @@ public class SudokuModel {
 
 			// Creating the board
 			sudoku = new int[n * k][n * k];
-			/*
-			 * for (int i = 0; i< n*n; i++) {
-			 * String line = scanner.next();
-			 * for(int j = 0; j < n*n; j++) {
-			 * if(line.charAt(j*2)=='.') {
-			 * sudoku[i][j]=0;
-			 * } else {
-			 * sudoku[i][j]=Character.getNumericValue(line.charAt(j*2));
-			 * }
-			 * }
-			 * }
-			 */
 			// Creating variables for looping through input
 			int c = 0;
 			int d = 0;
@@ -63,35 +52,14 @@ public class SudokuModel {
 					// Reads the next input on the line, separated by ";"
 					String str = lineScanner.next();
 					if (str.equals(".")) {
-						// System.out.println("c: " + c);
 						// If input is ".", convert to a "0"
 						sudoku[c][d] = 0;
-						// System.out.println("i: " + d + ", j: " + c);
 						// Go to next entry
 						d++;
-						/*
-						 * for(int a = 0; a < sudoku.length; a++){
-						 * for(int b = 0; b < sudoku.length; b++){
-						 * System.out.print(sudoku[a][b] + " ");
-						 * }
-						 * System.out.println();
-						 * }
-						 * System.out.println();
-						 */
 					} else {
 						try {
 							// If input isn't ".", read the number and insert into array
 							sudoku[c][d] = Integer.parseInt(str);
-							/*
-							 * System.out.println("i: " + d + ", j: " + c);
-							 * for(int a = 0; a < sudoku.length; a++){
-							 * for(int b = 0; b < sudoku.length; b++){
-							 * System.out.print(sudoku[a][b] + " ");
-							 * }
-							 * System.out.println();
-							 * }
-							 * System.out.println();
-							 */
 						} catch (NumberFormatException ex) {
 							ex.printStackTrace();
 						}
@@ -116,7 +84,6 @@ public class SudokuModel {
 	}
 
 	public void setSudokuCell(int x, int y, int value) {
-		//System.out.println(x + " " + y);
 		sudoku[x][y] = value;
 	}
 
@@ -138,3 +105,4 @@ public class SudokuModel {
 		return k;
 	}
 }
+
