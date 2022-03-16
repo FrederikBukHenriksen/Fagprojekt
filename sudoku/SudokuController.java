@@ -28,6 +28,18 @@ public class SudokuController {
 		public void actionPerformed(ActionEvent e) {
 			JButton pressed = (JButton) e.getSource(); // Grabs the button pressed
 			System.out.println("Undo");
+			model.popStack();
+			model.setSudoku(model.peekStack());
+			view.updateBoard(model.peekStack());
+			/*int[][] temp = new int[model.getSudoku().length][model.getSudoku().length];
+			for(int i = 0; i < model.moves; i++){
+				for(int j = 0; j < model.getSudoku().length; j++){
+					for(int z = 0; z < model.getSudoku().length; z++){
+						temp[j][z] = model.sudokuStack[i][j][z];
+					}
+				}
+				printSudoku(temp);
+			}*/
 		}
 	}
 
@@ -35,7 +47,6 @@ public class SudokuController {
 		public void actionPerformed(ActionEvent e) {
 			JButton pressed = (JButton) e.getSource(); // Grabs the button pressed
 			System.out.println("Remove");
-
 		}
 	}
 
@@ -67,8 +78,11 @@ public class SudokuController {
 			// Update sudoku board
 			model.setSudokuCell(coordinate[0], coordinate[1], Integer.valueOf(pressedNumboard.getText()));
 
+			//update sudoku Stack
+			model.pushStack(model.getSudoku());
+
 			// Update the board visuals
-			view.updateBoard(model.getSudoku());
+			view.updateBoard(model.peekStack());
 
 			// NEDENSTÅENE BRUGES KUN TIL DE-BUG.
 			view.updateFrameTitle(checkValidity(model.getSudoku(), model.getN(), model.getK()), model.isFilled());
@@ -82,7 +96,8 @@ public class SudokuController {
 		model = new SudokuModel();
 		view = new SudokuView();
 		view.getBoardValues(model.getN(), model.getK());
-		view.showFrame(model.getSudoku());
+		model.pushStack(model.getSudoku());
+		view.showFrame(model.peekStack());
 
 		view.addSudokuboardListener(new SudokuboardListener());
 		view.addNumboardListener(new NumboardListener());
@@ -119,15 +134,7 @@ public class SudokuController {
 			}
 		}
 
-		/*
-		 * for(int i = 0; i < sortedGrid.length; i++){
-		 * for(int k = 0; k < sortedGrid.length; k++){
-		 * System.out.print(sortedGrid[i][k] + " ");
-		 * }
-		 * System.out.println();
-		 * }
-		 * System.out.println();
-		 */
+		
 
 		// Resetting the sorted grid
 		for (int i = sortedGrid.length - 1; i >= 0; i--) {
@@ -205,6 +212,16 @@ public class SudokuController {
 		 */
 
 		return valid;
+	}
+
+	public void printSudoku(int[][] sudokuBoard){
+		for(int i = 0; i < sudokuBoard.length; i++){
+			for(int k = 0; k < sudokuBoard.length; k++){
+				System.out.print(sudokuBoard[i][k] + " ");
+			}
+			System.out.println();
+		}
+		System.out.println();
 	}
 
 }
