@@ -16,6 +16,7 @@ public class SudokuModel {
 	int k = 0;
 	int n = 0;
 	int moves = 0;
+	boolean change = false;
 
 	// constructor for the model
 	public SudokuModel() {
@@ -84,18 +85,22 @@ public class SudokuModel {
 		}
 	}
 
+	//Method for getting the board
 	public int[][] getSudoku() {
 		return sudoku;
 	}
 
-	public void setSudoku(int[][] board) {
+	//Method for setting the entire board
+	public void setSudoku(int[][] board){
 		sudoku = board;
 	}
 
+	//Method for changing a single cell in the board
 	public void setSudokuCell(int x, int y, int value) {
 		sudoku[x][y] = value;
 	}
 
+	//Method for checking if the entire board is filled
 	public boolean isFilled() {
 		boolean result = true;
 		for (int i = 0; i < sudoku.length; i++) {
@@ -108,6 +113,7 @@ public class SudokuModel {
 		return result;
 	}
 
+	//Methods for returning N and K
 	public int getN() {
 		return n;
 	}
@@ -116,9 +122,10 @@ public class SudokuModel {
 		return k;
 	}
 
-	public void pushStack(int[][] newBoard) {
-		for (int i = 0; i < sudoku.length; i++) {
-			for (int j = 0; j < sudoku.length; j++) {
+	//Methods for pushing, popping and peeking stack
+	public void pushStack(int[][] newBoard){
+		for(int i = 0; i < sudoku.length; i++){
+			for(int j = 0; j < sudoku.length; j++){
 				sudokuStack[moves][i][j] = sudoku[i][j];
 			}
 		}
@@ -146,9 +153,77 @@ public class SudokuModel {
 		return temp;
 	}
 
-	public int getStackSize() {
+	//Returns the size of the stack
+	public int getStackSize(){
 		return moves;
 	}
+	
+	//Method for updating the markUp board, given a set of possible entries and their coordinates
+	public ArrayList<ArrayList<ArrayList<Integer>>> updateMarkup(ArrayList<ArrayList<ArrayList<Integer>>> markupBoard, ArrayList<Integer> set, ArrayList<Integer> xCoords, ArrayList<Integer> yCoords){
+		int m = set.size();
+		boolean sameRow = true;
+		boolean sameCol = true;
+		boolean sameSquare = true;
+		//The next 3 loops check if the entries are in the same row, column and/or square
+		for(int i = 1; i < m; i++){
+			if(xCoords.get(0) != xCoords.get(i)){
+				sameCol = false;
+			}
+		}
+		for(int i = 1; i < m; i++){
+			if(yCoords.get(0) != yCoords.get(i)){
+				sameRow = false;
+			}
+		}
+		for(int i = 1; i < m; i++){
+			if(!((xCoords.get(0) % n == xCoords.get(i) % n) && (yCoords.get(0) % n == yCoords.get(i) % n))){
+				sameSquare = false;
+			}
+		}
+
+		if(sameRow){
+			for(int i = 0; i < getSudoku().length; i++){
+				if(!(xCoords.contains(i))){
+					markupBoard.get(i).get(yCoords.get(0)).removeAll(set);
+					change = true;
+				}
+			}
+		}
+
+		if(sameCol){
+			for(int i = 0; i < getSudoku().length; i++){
+				if(!(yCoords.contains(i))){
+					markupBoard.get(xCoords.get(0)).get(i).removeAll(set);
+					change = true;
+				}
+			}
+		}
+
+		if(sameSquare){
+			boolean delete = true;
+			for(int i = (xCoords.get(0) - xCoords.get(0) % n); i < ((xCoords.get(0) - xCoords.get(0) % n) + n); i++){
+				for(int j = (yCoords.get(0) - yCoords.get(0) % n); j < ((yCoords.get(0) - yCoords.get(0) % n) + n); j++){
+					for(int l = 0; l < xCoords.size(); l++){
+						if(((i == xCoords.get(l)) && j == yCoords.get(l))){
+							delete = false;
+							break;
+							
+						}
+					}
+					if(delete){
+						markupBoard.get(i).get(j).removeAll(set);
+						change = true;
+					}
+					delete = true;
+				}
+			}
+		}
+
+
+		return markupBoard;
+	}
+
+}
 
 	public ArrayList<ArrayList<ArrayList<Integer>>> markUpCells() {
 
