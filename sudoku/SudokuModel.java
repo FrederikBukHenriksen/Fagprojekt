@@ -4,11 +4,12 @@ import java.util.Scanner;
 import java.util.Stack;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 
 public class SudokuModel {
 	// Setting up variables
 	int[][] sudoku = new int[0][0];
-	Stack<int[][]> sudokuStack = new Stack<int[][]>();
+	ArrayList<int[][]> sudokuStack = new ArrayList<int[][]>();
 	int k = 0;
 	int n = 0;
 
@@ -83,6 +84,10 @@ public class SudokuModel {
 		return sudoku;
 	}
 
+	public void setSudoku(int[][] board){
+		sudoku = board;
+	}
+
 	public void setSudokuCell(int x, int y, int value) {
 		sudoku[x][y] = value;
 	}
@@ -103,6 +108,22 @@ public class SudokuModel {
 	}
 	public int getK() {
 		return k;
+	}
+
+	public void pushStack(int[][] newBoard){
+		sudokuStack.add(newBoard);
+	}
+
+	public int[][] popStack(){
+		return sudokuStack.remove(sudokuStack.size() - 1);
+	}
+
+	public int[][] peekStack(){
+		return sudokuStack.get(sudokuStack.size() - 1);
+	}
+
+	public int getStackSize(){
+		return sudokuStack.size();
 	}
 }
 
