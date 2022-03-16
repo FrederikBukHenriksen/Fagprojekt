@@ -223,7 +223,6 @@ public class SudokuModel {
 		return markupBoard;
 	}
 
-}
 
 	public ArrayList<ArrayList<ArrayList<Integer>>> markUpCells() {
 
