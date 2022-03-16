@@ -149,23 +149,23 @@ public class SudokuModel {
 		int flag = 0;
 		int numberOfRuns = 0;
 		while (change == 0) {
-			ArrayList<Integer> xcord = new ArrayList<Integer>();
+			ArrayList<Integer> xcord = new ArrayList<Integer>(); //arraylist to find all elements that matches 
 			ArrayList<Integer> ycord = new ArrayList<Integer>();
-			ArrayList<Integer> xcordSend = new ArrayList<Integer>();
+			ArrayList<Integer> xcordSend = new ArrayList<Integer>(); //arraylist i send. Have required size
 			ArrayList<Integer> ycordSend = new ArrayList<Integer>();
-			ArrayList<Integer> numbers = new ArrayList<Integer>();
+			ArrayList<Integer> numbers = new ArrayList<Integer>();  //array of numbers for algorithm
 				for (int i = 0; i < k*n; i++) {
-					for (int j = 0; j < k*n; j++) {//l/k benytter sig af hvordan java runder op. det er n hvor mange felter den skal rygge, og den skal rygge det hver gang l har bev�get sig k felter.
-						if(sudokuPre.get(i).get(j).size() == sizeOfSet) {
+					for (int j = 0; j < k*n; j++) {
+						if(sudokuPre.get(i).get(j).size() == sizeOfSet) { //checks if given square is an arraylist of the size we are intrested in
 							numbers = sudokuPre.get(i).get(j);
 							xcord.add(i);
 							ycord.add(j);
 							int skipX = 0;
 							int skipY = 0;
-								for (int l = skipX; l< k*n; l++) {
+								for (int l = skipX; l< k*n; l++) { 
 									for (int m = skipY; m< k*n; m++) {
-										if(numbers.containsAll(sudokuPre.get(l).get(m)) && (l!=i && m!=j) && sudokuPre.get(l).get(m).size()>1) {
-											xcord.add(l);
+										if(numbers.containsAll(sudokuPre.get(l).get(m)) && (l!=i && m!=j) && sudokuPre.get(l).get(m).size()>1) { //checks if all of another array is in the main array and is larger than 1
+											xcord.add(l); //adds if true
 											ycord.add(m);			
 											}	
 										}
@@ -174,21 +174,21 @@ public class SudokuModel {
 
 					}
 				}
-				if (xcord.size() >= sizeOfSet) {
-						for (int i = numberOfRuns; i <n*k; i++) {
+				if (xcord.size() >= sizeOfSet) { //checks if xcord is bigger than sets. We are not intrested in sending sets, if they are not bigger
+						for (int i = numberOfRuns; i <n*k; i++) { //goes through all numbers in sudoku
 							
-							if(Collections.frequency(xcord, i) == sizeOfSet) {
+							if(Collections.frequency(xcord, i) == sizeOfSet) { //checks if there are more in a given xcord 
 								for(int j=0; j < xcord.size();j++) {
 									if (xcord.get(j) == i) {
 										xcordSend.add(xcord.get(j));
 										ycordSend.add(ycord.get(j));
 									}
 								}
-								sudokuPre = updateMarkup(sudokuPre,numbers,xcordSend,ycordSend);
+								sudokuPre = updateMarkup(sudokuPre,numbers,xcordSend,ycordSend); 
 								xcordSend.removeAll(xcordSend);
 								ycordSend.removeAll(ycordSend);
 							}
-							if(Collections.frequency(ycord, i) == sizeOfSet) {
+							if(Collections.frequency(ycord, i) == sizeOfSet) { //checks if there are more in a gived ycord
 								for(int j=0; j < xcord.size();j++) {
 									if (ycord.get(j) == i) {
 										xcordSend.add(xcord.get(j));
@@ -199,7 +199,7 @@ public class SudokuModel {
 								xcordSend.removeAll(xcordSend);
 								ycordSend.removeAll(ycordSend);
 							}
-							int[] kArray = new int[k*k];
+							int[] kArray = new int[k*k]; //checks if there are more in a given box
 							for(int j=0; j<xcord.size();j++) {
 								kArray[(xcord.get(j)%k+1+(ycord.get(j)%k*k+1))-1] += 1;
 							}
