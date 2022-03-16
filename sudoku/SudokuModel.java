@@ -9,9 +9,10 @@ import java.util.ArrayList;
 public class SudokuModel {
 	// Setting up variables
 	int[][] sudoku = new int[0][0];
-	ArrayList<int[][]> sudokuStack = new ArrayList<int[][]>();
+	int[][][] sudokuStack = new int[10][sudoku.length][sudoku.length];
 	int k = 0;
 	int n = 0;
+	int moves = 0;
 
 	// constructor for the model
 	public SudokuModel() {
@@ -41,6 +42,7 @@ public class SudokuModel {
 			// Creating the board
 			sudoku = new int[n * k][n * k];
 			// Creating variables for looping through input
+			sudokuStack = new int[10][sudoku.length][sudoku.length];
 			int c = 0;
 			int d = 0;
 			scanner.nextLine();
@@ -111,19 +113,37 @@ public class SudokuModel {
 	}
 
 	public void pushStack(int[][] newBoard){
-		sudokuStack.add(newBoard);
+		for(int i = 0; i < sudoku.length; i++){
+			for(int j = 0; j < sudoku.length; j++){
+				sudokuStack[moves][i][j] = sudoku[i][j];
+			}
+		}
+		moves ++;
 	}
 
 	public int[][] popStack(){
-		return sudokuStack.remove(sudokuStack.size() - 1);
+		int[][] temp = new int[sudoku.length][sudoku.length];
+		for(int i = 0; i < sudoku.length; i++){
+			for(int j = 0; j < sudoku.length; j++){
+				temp[i][j] = sudokuStack[moves][i][j];
+			}
+		}
+		moves --;
+		return temp;
 	}
 
 	public int[][] peekStack(){
-		return sudokuStack.get(sudokuStack.size() - 1);
+		int[][] temp = new int[sudoku.length][sudoku.length];
+		for(int i = 0; i < sudoku.length; i++){
+			for(int j = 0; j < sudoku.length; j++){
+				temp[i][j] = sudokuStack[moves-1][i][j];
+			}
+		}
+		return temp;
 	}
 
 	public int getStackSize(){
-		return sudokuStack.size();
+		return moves;
 	}
 }
 

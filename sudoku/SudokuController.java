@@ -28,12 +28,18 @@ public class SudokuController {
 		public void actionPerformed(ActionEvent e) {
 			JButton pressed = (JButton) e.getSource(); // Grabs the button pressed
 			System.out.println("Undo");
-			//System.out.println("Stack: " + model.getStackSize());
 			model.popStack();
-			//System.out.println("Stack: " + model.getStackSize());
 			model.setSudoku(model.peekStack());
 			view.updateBoard(model.peekStack());
-			System.out.println(model.sudokuStack);
+			/*int[][] temp = new int[model.getSudoku().length][model.getSudoku().length];
+			for(int i = 0; i < model.moves; i++){
+				for(int j = 0; j < model.getSudoku().length; j++){
+					for(int z = 0; z < model.getSudoku().length; z++){
+						temp[j][z] = model.sudokuStack[i][j][z];
+					}
+				}
+				printSudoku(temp);
+			}*/
 		}
 	}
 
