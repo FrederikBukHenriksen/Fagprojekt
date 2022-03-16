@@ -24,13 +24,14 @@ public class SudokuController {
 		}
 	}
 
+	//Code for undo-button
 	class SudokuUndoListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			JButton pressed = (JButton) e.getSource(); // Grabs the button pressed
-			System.out.println("Undo");
-			model.popStack();
-			model.setSudoku(model.peekStack());
-			view.updateBoard(model.peekStack());
+			System.out.println("Undo"); //Prints "Undo" FOR DEBUG
+			model.popStack(); //Removes the last element of the stack
+			model.setSudoku(model.peekStack()); //Updates the board 
+			view.updateBoard(model.peekStack()); //Updates the visuals
 			/*int[][] temp = new int[model.getSudoku().length][model.getSudoku().length];
 			for(int i = 0; i < model.moves; i++){
 				for(int j = 0; j < model.getSudoku().length; j++){
@@ -106,7 +107,7 @@ public class SudokuController {
 				new SudokuNewListener());
 	}
 
-
+	//Method for checking if a given board is valid (i.e. returning valid if no elements are illegally placed)
 	public static boolean checkValidity(int[][] sudoku, int n, int k) {
 		boolean valid = new Boolean(true);
 		// Grid for storing already found values
@@ -184,6 +185,7 @@ public class SudokuController {
 		}
 		*/
 
+		//Checking each square
 		for (int l = 0; l < k*k; l++) {
 
 			for (int i = 0; i < n; i++) {
@@ -213,7 +215,7 @@ public class SudokuController {
 
 		return valid;
 	}
-
+	//Method for printing the sudoku-board
 	public void printSudoku(int[][] sudokuBoard){
 		for(int i = 0; i < sudokuBoard.length; i++){
 			for(int k = 0; k < sudokuBoard.length; k++){

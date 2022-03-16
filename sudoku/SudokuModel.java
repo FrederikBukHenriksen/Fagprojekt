@@ -82,18 +82,22 @@ public class SudokuModel {
 		}
 	}
 
+	//Method for getting the board
 	public int[][] getSudoku() {
 		return sudoku;
 	}
 
+	//Method for setting the entire board
 	public void setSudoku(int[][] board){
 		sudoku = board;
 	}
 
+	//Method for changing a single cell in the board
 	public void setSudokuCell(int x, int y, int value) {
 		sudoku[x][y] = value;
 	}
 
+	//Method for checking if the entire board is filled
 	public boolean isFilled() {
 		boolean result = true;
 		for (int i = 0; i < sudoku.length; i++) {
@@ -105,6 +109,8 @@ public class SudokuModel {
 		}
 		return result;
 	}
+
+	//Methods for returning N and K
 	public int getN() {
 		return n;
 	}
@@ -112,6 +118,7 @@ public class SudokuModel {
 		return k;
 	}
 
+	//Methods for pushing, popping and peeking stack
 	public void pushStack(int[][] newBoard){
 		for(int i = 0; i < sudoku.length; i++){
 			for(int j = 0; j < sudoku.length; j++){
@@ -142,6 +149,7 @@ public class SudokuModel {
 		return temp;
 	}
 
+	//Returns the size of the stack
 	public int getStackSize(){
 		return moves;
 	}
