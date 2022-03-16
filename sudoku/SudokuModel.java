@@ -14,7 +14,7 @@ public class SudokuModel {
 
 	// constructor for the model
 	public SudokuModel() {
-		File file = new File("sudoku/test.txt");
+		File file = new File("sudoku/Puzzles_1/Puzzle_4_01.dat");
 
 		Scanner scanner;
 		// reading the input
@@ -98,17 +98,11 @@ public class SudokuModel {
 		return result;
 	}
 
-	//Methods for pushing, peeking and popping from the stack
-	public void pushStack(int[][] newBoard){
-		sudokuStack.push(newBoard);
+	public int getN() {
+		return n;
 	}
 
-	public int[][] popStack(){
-		return sudokuStack.pop();
+	public int getK() {
+		return k;
 	}
-
-	public int[][] peekStack(){
-		return sudokuStack.peek();
-	}
-
 }
