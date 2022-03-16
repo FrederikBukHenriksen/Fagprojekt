@@ -228,10 +228,6 @@ public class SudokuView {
 					button.setText(String.valueOf(sudoku[x][y]));
 				} else {
 					JToggleButton button = sudokuboardCells.get(x).get(y);
-					button.setText(String.valueOf(""));
-				}
-				else {
-					JToggleButton button = sudokuboardCells.get(x).get(y);
 					button.setText("");
 				}
 			}
