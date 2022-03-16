@@ -5,6 +5,7 @@ import java.util.Stack;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class SudokuModel {
 	// Setting up variables
@@ -163,9 +164,10 @@ public class SudokuModel {
 							int skipY = 0;
 								for (int l = skipX; l< k*n; l++) {
 									for (int m = skipY; m< k*n; m++) {
-										if(numbers.containsAll(sudokuPre.get(l).get(m)) && (l!=i && m!=j)) {
+										if(numbers.containsAll(sudokuPre.get(l).get(m)) && (l!=i && m!=j) && sudokuPre.get(l).get(m).size()>1) {
 											xcord.add(l);
-											ycord.add(m);			}	
+											ycord.add(m);			
+											}	
 										}
 									}	
 						}
@@ -173,21 +175,50 @@ public class SudokuModel {
 					}
 				}
 				if (xcord.size() >= sizeOfSet) {
-					while(flag != 1) {
-						for (int i = numberOfRuns; i <sizeOfSet; i++) {
-							xcordSend.set(i, xcord.get(i));
-							ycordSend.set(i, ycord.get(i));
-							if(xcordSend.size() == sizeOfSet) {
-								sudokuPre = updateMarkup(sudokuPre, numbers, xcordSend, ycordSend);
-							}
+						for (int i = numberOfRuns; i <n*k; i++) {
 							
-						}
-						numberOfRuns++;
-						if (numberOfRuns + sizeOfSet > xcord.size()) {
-							flag = 1;
-						}
+							if(Collections.frequency(xcord, i) == sizeOfSet) {
+								for(int j=0; j < xcord.size();j++) {
+									if (xcord.get(j) == i) {
+										xcordSend.add(xcord.get(j));
+										ycordSend.add(ycord.get(j));
+									}
+								}
+								sudokuPre = updateMarkup(sudokuPre,numbers,xcordSend,ycordSend);
+								xcordSend.removeAll(xcordSend);
+								ycordSend.removeAll(ycordSend);
+							}
+							if(Collections.frequency(ycord, i) == sizeOfSet) {
+								for(int j=0; j < xcord.size();j++) {
+									if (ycord.get(j) == i) {
+										xcordSend.add(xcord.get(j));
+										ycordSend.add(ycord.get(j));
+									}
+								}
+								sudokuPre = updateMarkup(sudokuPre,numbers,xcordSend,ycordSend);
+								xcordSend.removeAll(xcordSend);
+								ycordSend.removeAll(ycordSend);
+							}
+							int[] kArray = new int[k*k];
+							for(int j=0; j<xcord.size();j++) {
+								kArray[(xcord.get(j)%k+1+(ycord.get(j)%k*k+1))-1] += 1;
+							}
+							for(int j = 0; j<kArray.length; j++) {
+								if (kArray[j] == sizeOfSet) {
+									for (int l = 0; l<xcord.size(); l++) {
+										if((xcord.get(l)%k+1+(ycord.get(l)%k*k+1))-1 == j) {
+											xcordSend.add(xcord.get(l));
+											ycordSend.add(ycord.get(l));
+										}
+									}
+									sudokuPre = updateMarkup(sudokuPre,numbers,xcordSend,ycordSend);
+									xcordSend.removeAll(xcordSend);
+									ycordSend.removeAll(ycordSend);
+								}
+							}
+							}
 					}
-				}
+			
 			
 			sizeOfSet++;
 			if (sizeOfSet > 8) {
