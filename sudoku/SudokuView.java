@@ -231,10 +231,6 @@ public class SudokuView {
 					JToggleButton button = sudokuboardCells.get(x).get(y);
 					button.setText("");
 				}
-				else {
-					JToggleButton button = sudokuboardCells.get(x).get(y);
-					button.setText("");
-				}
 			}
 		}
 	}

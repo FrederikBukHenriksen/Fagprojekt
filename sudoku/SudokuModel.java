@@ -23,7 +23,7 @@ public class SudokuModel {
 
 	// constructor for the model
 	public SudokuModel() {
-		File file = new File("E:\\Eclibse\\Sudoku\\src\\Puzzle_4_01.dat");
+		File file = new File("C:\\Users\\Candytom\\eclipse-workspace\\Sudoku\\src\\test.txt");
 
 		Scanner scanner;
 		// reading the input
@@ -86,7 +86,9 @@ public class SudokuModel {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}
+		
+		preemtiveSets(markUpCells());	
+		}
 
 	//Method for getting the board
 	public int[][] getSudoku() {
@@ -129,11 +131,11 @@ public class SudokuModel {
 	}
 
 	public void preemtiveSets(ArrayList<ArrayList<ArrayList<Integer>>> sudokuPre) {
-		change = 0;
+		change = false;
 		int sizeOfSet = 2;
 		int flag = 0;
 		int numberOfRuns = 0;
-		while (change == 0) {
+		while (change == false) {
 			ArrayList<Integer> xcord = new ArrayList<Integer>(); //arraylist to find all elements that matches 
 			ArrayList<Integer> ycord = new ArrayList<Integer>();
 			ArrayList<Integer> xcordSend = new ArrayList<Integer>(); //arraylist i send. Have required size
@@ -208,18 +210,13 @@ public class SudokuModel {
 			
 			sizeOfSet++;
 			if (sizeOfSet > 8) {
+				System.out.print("test");
 				break;
 			}
 		}
 	}
-	public ArrayList<ArrayList<ArrayList<Integer>>> updateMarkup(ArrayList<ArrayList<ArrayList<Integer>>> sudokuPre, ArrayList<Integer> numbers, ArrayList<Integer> xcord, ArrayList<Integer> ycord) {
-		return sudokuPre;
-	}
 
-	public int getStackSize(){
-		return moves;
-	}
-}
+
 
 
 	//Methods for pushing, popping and peeking stack
@@ -265,6 +262,7 @@ public class SudokuModel {
 		boolean sameCol = true;
 		boolean sameSquare = true;
 		//The next 3 loops check if the entries are in the same row, column and/or square
+		
 		for(int i = 1; i < m; i++){
 			if(xCoords.get(0) != xCoords.get(i)){
 				sameCol = false;

@@ -119,19 +119,6 @@ public class SudokuController {
 		for(int i = 0; i < sudokuBoard.length; i++){
 			for(int k = 0; k < sudokuBoard.length; k++){
 				System.out.print(sudokuBoard[i][k] + " ");
-
-			}
-			System.out.println();
-		}
-
-		System.out.println();
-
-	}
-
-	public void printSudoku(int[][] sudokuBoard){
-		for(int i = 0; i < sudokuBoard.length; i++){
-			for(int k = 0; k < sudokuBoard.length; k++){
-				System.out.print(sudokuBoard[i][k] + " ");
 			}
 			System.out.println();
 		}
