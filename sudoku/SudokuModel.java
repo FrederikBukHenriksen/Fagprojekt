@@ -117,8 +117,6 @@ public class SudokuModel {
 		return k;
 	}
 
-<<<<<<< Updated upstream
-=======
 	public int[][] createSudoku() {
 
 		List<Integer> chooseNumberList = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9);
@@ -187,7 +185,6 @@ public class SudokuModel {
 		return peers.stream().mapToInt(i -> i).toArray();
 	}
 
->>>>>>> Stashed changes
 	public void pushStack(int[][] newBoard) {
 		for (int i = 0; i < sudoku.length; i++) {
 			for (int j = 0; j < sudoku.length; j++) {
