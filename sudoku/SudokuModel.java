@@ -170,29 +170,26 @@ public class SudokuModel {
 											}	
 										}
 									}	
-						}
-
-					}
-				}
+		
 				if (xcord.size() >= sizeOfSet) { //checks if xcord is bigger than sets. We are not intrested in sending sets, if they are not bigger
-						for (int i = numberOfRuns; i <n*k; i++) { //goes through all numbers in sudoku
+						for (int l = numberOfRuns; l <n*k; l++) { //goes through all numbers in sudoku
 							
-							if(Collections.frequency(xcord, i) == sizeOfSet) { //checks if there are more in a given xcord 
-								for(int j=0; j < xcord.size();j++) {
-									if (xcord.get(j) == i) {
-										xcordSend.add(xcord.get(j));
-										ycordSend.add(ycord.get(j));
+							if(Collections.frequency(xcord, l) == sizeOfSet) { //checks if there are more in a given xcord 
+								for(int m=0; m < xcord.size();m++) {
+									if (xcord.get(m) == l) {
+										xcordSend.add(xcord.get(m));
+										ycordSend.add(ycord.get(m));
 									}
 								}
 								sudokuPre = updateMarkup(sudokuPre,numbers,xcordSend,ycordSend); 
 								xcordSend.removeAll(xcordSend);
 								ycordSend.removeAll(ycordSend);
 							}
-							if(Collections.frequency(ycord, i) == sizeOfSet) { //checks if there are more in a gived ycord
-								for(int j=0; j < xcord.size();j++) {
-									if (ycord.get(j) == i) {
-										xcordSend.add(xcord.get(j));
-										ycordSend.add(ycord.get(j));
+							if(Collections.frequency(ycord, l) == sizeOfSet) { //checks if there are more in a gived ycord
+								for(int m=0; m < xcord.size();m++) {
+									if (ycord.get(m) == l) {
+										xcordSend.add(xcord.get(m));
+										ycordSend.add(ycord.get(m));
 									}
 								}
 								sudokuPre = updateMarkup(sudokuPre,numbers,xcordSend,ycordSend);
@@ -200,15 +197,15 @@ public class SudokuModel {
 								ycordSend.removeAll(ycordSend);
 							}
 							int[] kArray = new int[k*k]; //checks if there are more in a given box
-							for(int j=0; j<xcord.size();j++) {
-								kArray[(xcord.get(j)%k+1+(ycord.get(j)%k*k+1))-1] += 1;
+							for(int m=0; m<xcord.size();m++) {
+								kArray[(xcord.get(m)%k+1+(ycord.get(m)%k*k+1))-1] += 1;
 							}
-							for(int j = 0; j<kArray.length; j++) {
-								if (kArray[j] == sizeOfSet) {
-									for (int l = 0; l<xcord.size(); l++) {
-										if((xcord.get(l)%k+1+(ycord.get(l)%k*k+1))-1 == j) {
-											xcordSend.add(xcord.get(l));
-											ycordSend.add(ycord.get(l));
+							for(int m = 0; m<kArray.length; m++) {
+								if (kArray[m] == sizeOfSet) {
+									for (int p = 0; p<xcord.size(); p++) {
+										if((xcord.get(p)%k+1+(ycord.get(p)%k*k+1))-1 == j) {
+											xcordSend.add(xcord.get(p));
+											ycordSend.add(ycord.get(p));
 										}
 									}
 									sudokuPre = updateMarkup(sudokuPre,numbers,xcordSend,ycordSend);
@@ -218,6 +215,10 @@ public class SudokuModel {
 							}
 							}
 					}
+				}
+
+					}
+				}
 			
 			
 			sizeOfSet++;
