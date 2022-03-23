@@ -74,18 +74,24 @@ public class SudokuController {
 		}
 	}
 
+	//Code for undo-button
 	class SudokuUndoListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			JButton pressed = (JButton) e.getSource(); // Grabs the button pressed
-			try {
 
-				model.popStack();
-				model.setSudoku(model.peekStack());
-				view.updateBoard(model.peekStack());
-			} catch (Exception ArrayIndexOutOfBoundsException) {
-				System.out.println("Der er ikke flere undo's tilgængelig");
-			}
-
+			System.out.println("Undo"); //Prints "Undo" FOR DEBUG
+			model.popStack(); //Removes the last element of the stack
+			model.setSudoku(model.peekStack()); //Updates the board 
+			view.updateBoard(model.peekStack()); //Updates the visuals
+			/*int[][] temp = new int[model.getSudoku().length][model.getSudoku().length];
+			for(int i = 0; i < model.moves; i++){
+				for(int j = 0; j < model.getSudoku().length; j++){
+					for(int z = 0; z < model.getSudoku().length; z++){
+						temp[j][z] = model.sudokuStack[i][j][z];
+					}
+				}
+				printSudoku(temp);
+			}*/
 		}
 	}
 
@@ -167,6 +173,17 @@ public class SudokuController {
 
 		model.markUpCells();
 
+	}
+
+	//Method for printing the sudoku-board
+	public void printSudoku(int[][] sudokuBoard){
+		for(int i = 0; i < sudokuBoard.length; i++){
+			for(int k = 0; k < sudokuBoard.length; k++){
+				System.out.print(sudokuBoard[i][k] + " ");
+			}
+			System.out.println();
+		}
+		System.out.println();
 	}
 
 }
