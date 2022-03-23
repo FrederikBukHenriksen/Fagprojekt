@@ -303,7 +303,7 @@ public class SudokuModel {
 				ArrayList<Integer> markUpsCells = new ArrayList<>();
 				rows.add(markUpsCells);
 			}
-			board.add(rows);
+			markUpBoard.add(rows);
 		}
 
 		// Overskriv det primitive array's værider til 3D-ArrayList
@@ -311,7 +311,7 @@ public class SudokuModel {
 		for (int i = 0; i < SudukoSize; i++) {
 			for (int j = 0; j < SudukoSize; j++) {
 				if (getSudoku()[i][j] != 0) {
-					board.get(i).get(j).add(getSudoku()[i][j]);
+					markUpBoard.get(i).get(j).add(getSudoku()[i][j]);
 				}
 			}
 		}
@@ -338,13 +338,13 @@ public class SudokuModel {
 						// Indsæt gyldige tal fra 1-9
 						copyOfSudoku[i][j] = q;
 						if (checkValidity(copyOfSudoku)) {
-							board.get(i).get(j).add(q);
+							markUpBoard.get(i).get(j).add(q);
 						}
 					}
 				}
 			}
 		}
-		return board;
+		return markUpBoard;
 	}
 
 	public static boolean checkValidity(int[][] sudoku) {
