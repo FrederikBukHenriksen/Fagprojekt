@@ -16,8 +16,8 @@ public class SudokuModel {
 	// Setting up variables
 	int[][] sudoku = new int[0][0];
 	int[][][] sudokuStack = new int[1000][sudoku.length][sudoku.length];
-	int k = 0;
-	int n = 0;
+	static int k = 0;
+	static int n = 0;
 	int moves = 0;
 	boolean change = false;
 
@@ -276,7 +276,6 @@ public class SudokuModel {
 			for (int j = squareY * n; j < squareY * n + n; j++) {
 				square.add(board[i][j]);
 			}
-
 		}
 		// Convert arraylist to primitive array
 		return square.stream().mapToInt(i -> i).toArray();
