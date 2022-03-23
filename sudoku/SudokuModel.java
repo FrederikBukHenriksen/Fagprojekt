@@ -179,7 +179,7 @@ public class SudokuModel {
 									}
 								}
 								//System.out.print(numbers);
-								sudokuPre = updateMarkup(sudokuPre,numbers,xcordSend,ycordSend); 
+								sudokuPre = updateMarkup(sudokuPre,numbers,xcordSend,ycordSend, 1); 
 								xcordSend.removeAll(xcordSend);
 								ycordSend.removeAll(ycordSend);
 							}
@@ -191,7 +191,7 @@ public class SudokuModel {
 										ycordSend.add(ycord.get(m));
 									}
 								}
-								sudokuPre = updateMarkup(sudokuPre,numbers,xcordSend,ycordSend); 
+								sudokuPre = updateMarkup(sudokuPre,numbers,xcordSend,ycordSend, 2); 
 								xcordSend.removeAll(xcordSend);
 								ycordSend.removeAll(ycordSend);
 							}
@@ -217,7 +217,7 @@ public class SudokuModel {
 									}
 									//System.out.print(numbers);
 									//System.out.println("set: " + numbers + " xCoords: " +xcordSend +" yCoords: " + ycordSend);
-									sudokuPre = updateMarkup(sudokuPre,numbers,xcordSend,ycordSend); 
+									sudokuPre = updateMarkup(sudokuPre,numbers,xcordSend,ycordSend, 3); 
 									xcordSend.removeAll(xcordSend);
 									ycordSend.removeAll(ycordSend);
 
@@ -271,14 +271,14 @@ public class SudokuModel {
 	}
 	
 	//Method for updating the markUp board, given a set of possible entries and their coordinates
-	public ArrayList<ArrayList<ArrayList<Integer>>> updateMarkup(ArrayList<ArrayList<ArrayList<Integer>>> markupBoard, ArrayList<Integer> set, ArrayList<Integer> xCoords, ArrayList<Integer> yCoords){
+	public ArrayList<ArrayList<ArrayList<Integer>>> updateMarkup(ArrayList<ArrayList<ArrayList<Integer>>> markupBoard, ArrayList<Integer> set, ArrayList<Integer> xCoords, ArrayList<Integer> yCoords, int mode){
 		int m = set.size();
 		boolean sameRow = true;
 		boolean sameCol = true;
 		boolean sameSquare = true;
 		//The next 3 loops check if the entries are in the same row, column and/or square
 		
-		for(int i = 1; i < m; i++){
+		/*for(int i = 1; i < m; i++){
 			if(xCoords.get(0) != xCoords.get(i)){
 				sameCol = false;
 			}
@@ -292,9 +292,9 @@ public class SudokuModel {
 			if(!((xCoords.get(0) % n == xCoords.get(i) % n) && (yCoords.get(0) % n == yCoords.get(i) % n))){
 				sameSquare = false;
 			}
-		}
+		}*/
 
-		if(sameRow){
+		if(mode == 1){
 			for(int i = 0; i < getSudoku().length; i++){
 				if(!(xCoords.contains(i))){					
 					markupBoard.get(i).get(yCoords.get(0)).removeAll(set);			
@@ -303,7 +303,7 @@ public class SudokuModel {
 			}
 		}
 
-		if(sameCol){
+		if(mode == 2){
 			for(int i = 0; i < getSudoku().length; i++){
 				if(!(yCoords.contains(i))){
 					markupBoard.get(xCoords.get(0)).get(i).removeAll(set);
@@ -312,7 +312,7 @@ public class SudokuModel {
 			}
 		}
 
-		if(sameSquare){
+		if(mode == 3){
 			boolean delete = true;
 			for(int i = (xCoords.get(0) - xCoords.get(0) % n); i < ((xCoords.get(0) - xCoords.get(0) % n) + n); i++){
 				for(int j = (yCoords.get(0) - yCoords.get(0) % n); j < ((yCoords.get(0) - yCoords.get(0) % n) + n); j++){
