@@ -168,6 +168,7 @@ public class SudokuModel {
 										ycordSend.add(ycord.get(m));
 									}
 								}
+								System.out.println("Hori");
 								sudokuPre = updateMarkup(sudokuPre,numbers,xcordSend,ycordSend); 
 								xcordSend.removeAll(xcordSend);
 								ycordSend.removeAll(ycordSend);
@@ -179,6 +180,7 @@ public class SudokuModel {
 										ycordSend.add(ycord.get(m));
 									}
 								}
+								System.out.println("Vert");
 								sudokuPre = updateMarkup(sudokuPre,numbers,xcordSend,ycordSend);
 								xcordSend.removeAll(xcordSend);
 								ycordSend.removeAll(ycordSend);
@@ -195,6 +197,10 @@ public class SudokuModel {
 											ycordSend.add(ycord.get(p));
 										}
 									}
+									System.out.println("Cube");
+									System.out.println(xcord);
+									System.out.println(ycord);
+									System.out.println(numbers);
 									sudokuPre = updateMarkup(sudokuPre,numbers,xcordSend,ycordSend);
 									xcordSend.removeAll(xcordSend);
 									ycordSend.removeAll(ycordSend);
