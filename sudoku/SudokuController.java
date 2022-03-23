@@ -142,14 +142,18 @@ public class SudokuController {
 			int[] coordinate = view.getCellCoordinate(pressedSudokuboard);
 			model.setSudokuCell(coordinate[0], coordinate[1], Integer.valueOf(cellNew));
 
-			// update sudoku Stack
+
+			//update sudoku Stack
+
 			model.pushStack(model.getSudoku());
 
 			// Update the board visuals
 			view.updateBoard(model.peekStack());
 
+
 			// TODO:NEDENSTÅENE BRUGES KUN TIL DE-BUG.
 			view.updateFrameTitle(model.checkValidity(model.getSudoku()), model.isFilled());
+
 
 		}
 
@@ -168,6 +172,7 @@ public class SudokuController {
 		view.addNumboardListener(new NumboardListener());
 
 		view.addSudokuControlsListener(new SudokuUndoListener(), new SudokuRemoveListener(), new SudokuNoteListener(),
+
 				new SudokuNewBoardListener());
 		view.addSudokuboardKeyboardBinding(new KeyboardSudokuListener());
 
