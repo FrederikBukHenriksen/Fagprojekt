@@ -45,7 +45,7 @@ public class SudokuModel {
 			// Creating the board
 			sudoku = new int[n * k][n * k];
 			// Creating variables for looping through input
-			sudokuStack = new int[10][sudoku.length][sudoku.length];
+			sudokuStack = new int[1000][sudoku.length][sudoku.length];
 			int c = 0;
 			int d = 0;
 			scanner.nextLine();
@@ -226,7 +226,7 @@ public class SudokuModel {
 
 	public ArrayList<ArrayList<ArrayList<Integer>>> markUpCells() {
 
-		ArrayList<ArrayList<ArrayList<Integer>>> markUpBoard = new ArrayList();
+		ArrayList<ArrayList<ArrayList<Integer>>> markUpBoard = new ArrayList<>();
 		for (int j = 0; j < 9; j++) {
 			ArrayList<ArrayList<Integer>> rows = new ArrayList<>();
 			for (int k = 0; k < 9; k++) {
