@@ -3,6 +3,7 @@ package sudoku;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 import java.util.Scanner;
 import java.util.Stack;
 import java.io.File;
@@ -23,7 +24,7 @@ public class SudokuModel {
 
 	// constructor for the model
 	public SudokuModel() {
-		File file = new File("C:\\Users\\Candytom\\eclipse-workspace\\Sudoku\\src\\puzzle_3_02.dat");
+		File file = new File("sudoku/Puzzles_1/Puzzle_4_01.dat");
 
 		Scanner scanner;
 		// reading the input
@@ -234,7 +235,75 @@ public class SudokuModel {
 		return sudokuPre;
 	}
 
-	//Methods for pushing, popping and peeking stack
+	public int[][] createSudoku() {
+
+		List<Integer> chooseNumberList = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9);
+		Random random = new Random();
+
+		int[][] newSudoku = new int[n * k][n * k];
+
+		for (int i = 0; i < newSudoku[0].length; i++) {
+			for (int j = 0; j < newSudoku[1].length; j++) {
+
+				while (true) {
+					int number = chooseNumberList.get(random.nextInt(chooseNumberList.size()));
+					int[] square = getSquare(i, j, newSudoku);
+					int[] peers = getPeers(i, j, newSudoku);
+					boolean cond1 = Arrays.stream(square).anyMatch(l -> l != number);
+					boolean cond2 = Arrays.stream(peers).anyMatch(l -> l != number);
+
+					if (cond1 && cond2) {
+						newSudoku[i][j] = number;
+						break;
+					}
+				}
+
+			}
+		}
+
+		return newSudoku;
+	}
+
+	public int[] getSquare(int axis0, int axis1, int[][] board) {
+		ArrayList<Integer> square = new ArrayList<Integer>();
+
+		// Determent the position of upper left corner of the square
+		int squareX = axis0 / n; // 2
+		int squareY = axis1 / n; // 1
+
+		// Run through the scare
+		for (int i = squareX * n; i < squareX * n + n; i++) {
+			for (int j = squareY * n; j < squareY * n + n; j++) {
+				square.add(board[i][j]);
+			}
+
+		}
+		// Convert arraylist to primitive array
+		return square.stream().mapToInt(i -> i).toArray();
+
+	}
+
+	public int[] getPeers(int axis0, int axis1, int[][] board) {
+		ArrayList<Integer> peers = new ArrayList<Integer>();
+
+		// Run through the cells two axis
+		for (int i = 0; i < n * k; i++) {
+			peers.add(board[axis0][i]);
+		}
+		for (int i = 0; i < n * k; i++) {
+			peers.add(board[i][axis1]);
+		}
+
+		// Remove the duplicated cell itself.
+		peers.remove((Integer) board[axis0][axis1]);
+
+		// Convert arraylist to primitive array
+		int[] lol = peers.stream().mapToInt(i -> i).toArray();
+
+		return peers.stream().mapToInt(i -> i).toArray();
+	}
+
+  //Methods for pushing, popping and peeking stack
 	public void pushStack(int[][] newBoard){
 		for(int i = 0; i < sudoku.length; i++){
 			for(int j = 0; j < sudoku.length; j++){
@@ -339,18 +408,18 @@ public class SudokuModel {
 
 	public ArrayList<ArrayList<ArrayList<Integer>>> markUpCells() {
 
-		ArrayList<ArrayList<ArrayList<Integer>>> markUpBoard = new ArrayList();
+		ArrayList<ArrayList<ArrayList<Integer>>> markUpBoard = new ArrayList<>();
 		for (int j = 0; j < 9; j++) {
 			ArrayList<ArrayList<Integer>> rows = new ArrayList<>();
 			for (int k = 0; k < 9; k++) {
-				ArrayList<Integer> markUps = new ArrayList<>();
-				rows.add(markUps);
+				ArrayList<Integer> markUpsCells = new ArrayList<>();
+				rows.add(markUpsCells);
 			}
 			markUpBoard.add(rows);
 		}
 
-		// Overskriv det primitive array til 3D-ArrayList
-		int SudukoSize = 9;
+		// Overskriv det primitive array's værider til 3D-ArrayList
+		int SudukoSize = n * k;
 		for (int i = 0; i < SudukoSize; i++) {
 			for (int j = 0; j < SudukoSize; j++) {
 				if (getSudoku()[i][j] != 0) {
@@ -363,6 +432,7 @@ public class SudokuModel {
 		for (int i = 0; i < SudukoSize; i++) {
 			for (int j = 0; j < SudukoSize; j++) {
 				if (getSudoku()[i][j] == 0) {
+
 					// KOPIER SUDOKUBOARDET
 					int[][] copyOfSudoku = new int[getSudoku().length][];
 					for (int p = 0; p < copyOfSudoku.length; ++p) {
@@ -374,11 +444,12 @@ public class SudokuModel {
 							copyOfSudoku[p][o] = getSudoku()[p][o];
 						}
 					}
+
 					for (int q = 1; q <= 9; q++) { // Mulige tal som kan indsættes på boarded
 
-						// Indsæt gyldige tal fra 1.9
+						// Indsæt gyldige tal fra 1-9
 						copyOfSudoku[i][j] = q;
-						if (checkValidity(copyOfSudoku, getN(), getK())) {
+						if (checkValidity(copyOfSudoku)) {
 							markUpBoard.get(i).get(j).add(q);
 						}
 					}
@@ -388,7 +459,7 @@ public class SudokuModel {
 		return markUpBoard;
 	}
 
-	public static boolean checkValidity(int[][] sudoku, int n, int k) {
+	public static boolean checkValidity(int[][] sudoku) {
 		boolean valid = new Boolean(true);
 		// Grid for storing already found values
 		// int[][] sortedGrid = new int[sudoku.length+1][sudoku.length+1];
@@ -502,6 +573,16 @@ public class SudokuModel {
 		 */
 
 		return valid;
+	}
+
+	public void printSudoku(int[][] sudokuBoard) {
+		for (int i = 0; i < sudokuBoard.length; i++) {
+			for (int k = 0; k < sudokuBoard.length; k++) {
+				System.out.print(sudokuBoard[i][k] + " ");
+			}
+			System.out.println();
+		}
+		System.out.println();
 	}
 
 }
