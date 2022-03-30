@@ -24,7 +24,8 @@ public class SudokuModel {
 
 	// constructor for the model
 	public SudokuModel() {
-		File file = new File("E:\\Eclibse\\Sudoku\\src\\Puzzle_3_06.dat");
+		File file = new File("sudoku\\Puzzles_1\\Puzzle_4_01.dat");
+
 
 		Scanner scanner;
 		// reading the input
@@ -325,7 +326,9 @@ public class SudokuModel {
 				temp[i][j] = sudokuStack[moves][i][j];
 			}
 		}
-		moves--;
+		if(moves > 1){
+			moves--;
+		}
 		return temp;
 	}
 
@@ -421,9 +424,9 @@ public class SudokuModel {
 	public ArrayList<ArrayList<ArrayList<Integer>>> markUpCells() {
 
 		ArrayList<ArrayList<ArrayList<Integer>>> markUpBoard = new ArrayList<>();
-		for (int j = 0; j < 9; j++) {
+		for (int j = 0; j < n * k; j++) {
 			ArrayList<ArrayList<Integer>> rows = new ArrayList<>();
-			for (int k = 0; k < 9; k++) {
+			for (int i = 0; i < n * k; i++) {
 				ArrayList<Integer> markUpsCells = new ArrayList<>();
 				rows.add(markUpsCells);
 			}
