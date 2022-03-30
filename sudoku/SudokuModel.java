@@ -24,7 +24,7 @@ public class SudokuModel {
 
 	// constructor for the model
 	public SudokuModel() {
-		File file = new File("C:\\Users\\Candytom\\eclipse-workspace\\Sudoku\\src\\Puzzle_3_04.dat");
+		File file = new File("E:\\Eclibse\\Sudoku\\src\\Puzzle_3_06.dat");
 
 		Scanner scanner;
 		// reading the input
@@ -206,17 +206,21 @@ public class SudokuModel {
 								System.out.println("cellxcord: "+ (xcord.get(m)/k+1) + " cellycord: "+ (ycord.get(m)/k+1)*(3-1));
 								int a = (xcord.get(m)/k+1) +(ycord.get(m)/k+1)*(3-1)-1;
 								System.out.println("kArray: "+ a);*/
-								kArray[(xcord.get(m)/k+1) +(ycord.get(m)/k+1)*(3-1)-1] += 1;
+								kArray[(ycord.get(m)/k+1) +(xcord.get(m)/k+1)*(k-1)-1] += 1;
 							}
 							for(int m = 0; m<kArray.length; m++) {
 								if (kArray[m] == sizeOfSet) {
 									for (int p = 0; p<xcord.size(); p++) {
-										if((xcord.get(p)/k+1) +(ycord.get(p)/k+1)*(3-1)-1 == m) {
+										if((ycord.get(p)/k+1) +(xcord.get(p)/k+1)*(k-1)-1 == m) {
 											
 											xcordSend.add(xcord.get(p));
 											ycordSend.add(ycord.get(p));
 										}
 									}
+									for (int b = 0; b<kArray.length;b++) {
+									//System.out.println(kArray[b]);
+									}
+									//System.out.println("");
 									//System.out.print(numbers);
 									//System.out.println("set: " + numbers + " xCoords: " +xcordSend +" yCoords: " + ycordSend);
 									sudokuPre = updateMarkup(sudokuPre,numbers,xcordSend,ycordSend, 3); 
@@ -345,7 +349,8 @@ public class SudokuModel {
 	public ArrayList<ArrayList<ArrayList<Integer>>> updateMarkup(ArrayList<ArrayList<ArrayList<Integer>>> markupBoard, ArrayList<Integer> set, ArrayList<Integer> xCoords, ArrayList<Integer> yCoords, int mode){
 		//System.out.print("Ycords markup: "+ yCoords);
 		//System.out.print("Xcords markup: "+ xCoords);
-		//System.out.println("set: "+ set);
+		//System.out.print("set: "+ set);
+		//System.out.println("mode: "+ mode);
 		int m = set.size();
 		boolean sameRow = true;
 		boolean sameCol = true;
