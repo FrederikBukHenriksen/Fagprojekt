@@ -23,6 +23,7 @@ public class SudokuView {
 	JButton remove = new JButton("Remove");
 	JButton note = new JButton("note");
 	JButton newSudoku = new JButton("newSudoku");
+	Cell trash = new Cell();
 
 	public JFrame f;
 
@@ -178,16 +179,17 @@ public class SudokuView {
 	}
 
 	public Cell getButtonSelected() { // TODO: ret til abstractbutton
-
 		ArrayList<Cell> result = (ArrayList<Cell>) getButtons().stream()
 				.filter(b -> b.isSelected())
 				.collect(Collectors.toList());
-		return result.get(0);
-
+		try{return result.get(0);}
+		catch(Exception e){
+			return trash;
+		}
 	}
 
 	public int[] getCellCoordinate(Cell selected) {
-		int[] coordinate = new int[2];
+		int[] coordinate = new int[]{-1,-1};
 		for (int x = 0; x < n * k; x++) {
 			for (int y = 0; y < n * k; y++) {
 				Cell button = sudokuboardCells.get(x).get(y);
@@ -218,34 +220,36 @@ public class SudokuView {
 		// ###PRESSED BUTTON###
 		Cell pressedButton = getButtonSelected();
 		int[] coordinates = getCellCoordinate(pressedButton);
-		String cellText = pressedButton.getText();
+		if(coordinates[0]!=-1){
+			String cellText = pressedButton.getText();
 
-		// ###SQUARE###
-		// Determent the position of upper left corner of the square
-		int squareX = coordinates[0] / n;
-		int squareY = coordinates[1] / n;
+			// ###SQUARE###
+			// Determent the position of upper left corner of the square
+			int squareX = coordinates[0] / n;
+			int squareY = coordinates[1] / n;
 
-		// Run through the square
-		for (int i = squareX * n; i < squareX * n + n; i++) {
-			for (int j = squareY * n; j < squareY * n + n; j++) {
-				sudokuboardCells.get(i).get(j).square();
-			}
-		}
-		// ###PEERS###
-		for (int i = 0; i < (n * k); i++) {
-			sudokuboardCells.get(coordinates[0]).get(i).peer();
-			sudokuboardCells.get(i).get(coordinates[1]).peer();
-		}
-
-		// ###SIMILAR NUMBER###
-		for (ArrayList<Cell> array : sudokuboardCells) {
-			for (Cell button : array) {
-				if (!cellText.equals("") && button.getText().equals(cellText)) {
-					button.similar();
+			// Run through the square
+			for (int i = squareX * n; i < squareX * n + n; i++) {
+				for (int j = squareY * n; j < squareY * n + n; j++) {
+					sudokuboardCells.get(i).get(j).square();
 				}
 			}
-		}
+			// ###PEERS###
+			for (int i = 0; i < (n * k); i++) {
+				sudokuboardCells.get(coordinates[0]).get(i).peer();
+				sudokuboardCells.get(i).get(coordinates[1]).peer();
+			}
 
+			// ###SIMILAR NUMBER###
+			for (ArrayList<Cell> array : sudokuboardCells) {
+				for (Cell button : array) {
+					if (!cellText.equals("") && button.getText().equals(cellText)) {
+						button.similar();
+					}
+				}	
+			}
+		}
+		
 	}
 
 	public void clearMarkedCells() {
@@ -271,5 +275,4 @@ public class SudokuView {
 			}
 		}
 	}
-
 }

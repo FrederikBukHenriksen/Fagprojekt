@@ -170,7 +170,9 @@ public class SudokuController {
 
 			// Update sudoku cell
 			int[] coordinate = view.getCellCoordinate(pressedSudokuboard);
-			model.setSudokuCell(coordinate[0], coordinate[1], Integer.valueOf(cellNew));
+			if(coordinate[0] != -1){
+				model.setSudokuCell(coordinate[0], coordinate[1], Integer.valueOf(cellNew));
+			}
 
 			//update sudoku Stack
 
@@ -183,9 +185,8 @@ public class SudokuController {
 			// TODO:NEDENSTÅENE BRUGES KUN TIL DE-BUG.
 			view.updateFrameTitle(model.checkValidity(model.getSudoku()), model.isFilled());
 
-
+			pressedSudokuboard.requestFocus();
 		}
-
 	}
 
 	// Simple constructor
