@@ -245,7 +245,6 @@ public class SudokuView {
 				}
 			}
 		}
-
 	}
 
 	public void clearMarkedCells() {
@@ -271,5 +270,4 @@ public class SudokuView {
 			}
 		}
 	}
-
 }

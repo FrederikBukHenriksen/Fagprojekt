@@ -360,9 +360,6 @@ public class SudokuModel {
 		// Remove the duplicated cell itself.
 		peers.remove((Integer) board[axis0][axis1]);
 
-		// Convert arraylist to primitive array
-		int[] lol = peers.stream().mapToInt(i -> i).toArray();
-
 		return peers.stream().mapToInt(i -> i).toArray();
 	}
 
@@ -410,10 +407,10 @@ public class SudokuModel {
 		//System.out.print("Xcords markup: "+ xCoords);
 		//System.out.print("set: "+ set);
 		//System.out.println("mode: "+ mode);
-		int m = set.size();
+		/*int m = set.size();
 		boolean sameRow = true;
 		boolean sameCol = true;
-		boolean sameSquare = true;
+		boolean sameSquare = true;*/
 		if (xCoords.get(0)== xCoords.get(1) && yCoords.get(0)== yCoords.get(1)) {
 			System.out.println("test");
 		}
@@ -437,9 +434,12 @@ public class SudokuModel {
 
 		if(mode == 1){
 			for(int i = 0; i < getSudoku().length; i++){
-				if(!(xCoords.contains(i))){					
+				if(!(xCoords.contains(i))){	
+					int size = markupBoard.get(i).get(yCoords.get(0)).size();	
 					markupBoard.get(i).get(yCoords.get(0)).removeAll(set);			
-					change = true;
+					if(!(size == markupBoard.get(i).get(yCoords.get(0)).size())){
+						change = true;
+					}
 				}
 			}
 		}
@@ -447,8 +447,11 @@ public class SudokuModel {
 		if(mode == 2){
 			for(int i = 0; i < getSudoku().length; i++){
 				if(!(yCoords.contains(i))){
+					int size = markupBoard.get(xCoords.get(0)).get(i).size();
 					markupBoard.get(xCoords.get(0)).get(i).removeAll(set);
-					change = true;
+					if(!(size == markupBoard.get(i).get(yCoords.get(0)).size())){
+						change = true;
+					}
 				}
 			}
 		}
@@ -465,15 +468,16 @@ public class SudokuModel {
 						}
 					}
 					if(delete){
+						int size = markupBoard.get(i).get(j).size();
 						markupBoard.get(i).get(j).removeAll(set);
-						change = true;
+						if(!(size == markupBoard.get(i).get(yCoords.get(0)).size())){
+							change = true;
+						}
 					}
 					delete = true;
 				}
 			}
 		}
-
-
 		return markupBoard;
 	}
 
