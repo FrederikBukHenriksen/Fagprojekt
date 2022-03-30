@@ -48,42 +48,45 @@ public class SudokuModel {
 				}
 			}
 			setupScanner.close();
-
-			// Creating the board
-			sudoku = new int[n * k][n * k];
-			// Creating variables for looping through input
-			sudokuStack = new int[1000][sudoku.length][sudoku.length];
-			int c = 0;
-			int d = 0;
-			scanner.nextLine();
-			while (scanner.hasNextLine()) {
-				// Reads the next line
-				String line = scanner.nextLine();
-				Scanner lineScanner = new Scanner(line);
-				lineScanner.useDelimiter(";");
-				while (lineScanner.hasNext()) {
-					// Reads the next input on the line, separated by ";"
-					String str = lineScanner.next();
-					if (str.equals(".")) {
-						// If input is ".", convert to a "0"
-						sudoku[c][d] = 0;
-						// Go to next entry
-						d++;
-					} else {
-						try {
-							// If input isn't ".", read the number and insert into array
-							sudoku[c][d] = Integer.parseInt(str);
-						} catch (NumberFormatException ex) {
-							ex.printStackTrace();
+			if(k > n){
+				System.out.println("Not a valid sudoku-size, k cannot exceed n");
+			}
+			else{// Creating the board
+				sudoku = new int[n * k][n * k];
+				// Creating variables for looping through input
+				sudokuStack = new int[1000][sudoku.length][sudoku.length];
+				int c = 0;
+				int d = 0;
+				scanner.nextLine();
+				while (scanner.hasNextLine()) {
+					// Reads the next line
+					String line = scanner.nextLine();
+					Scanner lineScanner = new Scanner(line);
+					lineScanner.useDelimiter(";");
+					while (lineScanner.hasNext()) {
+						// Reads the next input on the line, separated by ";"
+						String str = lineScanner.next();
+						if (str.equals(".")) {
+							// If input is ".", convert to a "0"
+							sudoku[c][d] = 0;
+							// Go to next entry
+							d++;
+						} else {
+							try {
+								// If input isn't ".", read the number and insert into array
+								sudoku[c][d] = Integer.parseInt(str);
+							} catch (NumberFormatException ex) {
+								ex.printStackTrace();
+							}
+							// Go to next entry
+							d++;
 						}
-						// Go to next entry
-						d++;
 					}
+					// Go to next line, and start from first entry
+					c++;
+					d = 0;
+					lineScanner.close();
 				}
-				// Go to next line, and start from first entry
-				c++;
-				d = 0;
-				lineScanner.close();
 			}
 
 		} catch (FileNotFoundException e) {
