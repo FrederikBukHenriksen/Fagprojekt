@@ -321,7 +321,9 @@ public class SudokuModel {
 				temp[i][j] = sudokuStack[moves][i][j];
 			}
 		}
-		moves--;
+		if(moves > 1){
+			moves--;
+		}
 		return temp;
 	}
 

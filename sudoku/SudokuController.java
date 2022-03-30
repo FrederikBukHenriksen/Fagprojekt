@@ -17,15 +17,19 @@ public class SudokuController {
 	// KEY EVENT FOR ALLE JTOGGLEBUTTONS PÅ BOARDET.
 	class KeyboardSudokuListener extends KeyAdapter {
 		public void keyPressed(KeyEvent e) {
+			System.out.println("Tast");
 			JToggleButton pressedSudokuboard = view.getButtonSelected();
 
+			//Variables for the new cell-content and the button pressed
 			String cellNew = "";
 			String keyPressed = "";
 			String cellCurrent = pressedSudokuboard.getText();
+			//If the cell isn't empty, we attempt to concatinate the new entry on the old one
 			if (!cellCurrent.equals("")) {
 				cellNew = cellCurrent;
 			}
 
+			//Gets the digit entered
 			int keyCode = e.getKeyCode();
 			if (keyCode == KeyEvent.VK_1 || keyCode == KeyEvent.VK_NUMPAD1) {
 				keyPressed = "1";
@@ -45,6 +49,9 @@ public class SudokuController {
 				keyPressed = "8";
 			} else if (keyCode == KeyEvent.VK_9 || keyCode == KeyEvent.VK_NUMPAD9) {
 				keyPressed = "9";
+			} else if (keyCode == KeyEvent.VK_0 || keyCode == KeyEvent.VK_NUMPAD0) {
+				keyPressed = "0";
+			//Backspace deletes 1 digit of the number in the cell
 			} else if (keyCode == KeyEvent.VK_BACK_SPACE || keyCode == KeyEvent.VK_DELETE) {
 				if (cellNew.length() > 1) {
 					cellNew = cellNew.substring(0, cellNew.length() - 1);
@@ -55,18 +62,25 @@ public class SudokuController {
 				return;
 			}
 
-			// Grab the inital cell number.
+			// Check if the concatinated number is larger than allowed, if so, just enter the new number
 			int maxNumber = model.getN() * model.getK(); // TODO: Er dette det maksimale nummer pba. n og k?
-			if (Integer.valueOf(cellNew + keyPressed) > maxNumber) {
-				cellNew = keyPressed;
-			}
-			else{
-				cellNew = cellNew + keyPressed;
-			}
+			if(!(cellNew + keyPressed).equals("")){
+				if (Integer.valueOf(cellNew + keyPressed) > maxNumber) {
+					cellNew = keyPressed;
+				}
+				else{
+					cellNew = cellNew + keyPressed;
+				}
+			}  
 
-			int[] coordinate = view.getCellCoordinate(pressedSudokuboard);
-			model.setSudokuCell(coordinate[0], coordinate[1], Integer.valueOf(cellNew));
-			view.updateBoard(model.getSudoku());
+			if(!cellNew.equals("")){
+				//Update board both in data and visually
+				int[] coordinate = view.getCellCoordinate(pressedSudokuboard);
+				model.setSudokuCell(coordinate[0], coordinate[1], Integer.valueOf(cellNew));
+				model.pushStack(model.getSudoku());
+				view.updateBoard(model.getSudoku());
+				view.updateFrameTitle(model.checkValidity(model.getSudoku()), model.isFilled());
+			}
 		}
 	}
 
@@ -103,6 +117,13 @@ public class SudokuController {
 		public void actionPerformed(ActionEvent e) {
 			JButton pressed = (JButton) e.getSource(); // Grabs the button pressed
 			System.out.println("Remove");
+			int[] coordinate = view.getCellCoordinate(view.getButtonSelected());
+			if(!(model.sudoku[coordinate[0]][coordinate[1]] == 0)){
+				model.setSudokuCell(coordinate[0], coordinate[1], 0);
+				model.pushStack(model.getSudoku());
+				view.updateBoard(model.getSudoku());
+				view.updateFrameTitle(model.checkValidity(model.getSudoku()), model.isFilled());
+			}
 		}
 	}
 
@@ -145,7 +166,6 @@ public class SudokuController {
 			// Update sudoku cell
 			int[] coordinate = view.getCellCoordinate(pressedSudokuboard);
 			model.setSudokuCell(coordinate[0], coordinate[1], Integer.valueOf(cellNew));
-
 
 			//update sudoku Stack
 
