@@ -24,7 +24,7 @@ public class SudokuModel {
 
 	// constructor for the model
 	public SudokuModel() {
-		File file = new File("sudoku/Puzzles_1/Puzzle_4_01.dat");
+		File file = new File("C:\\Users\\Candytom\\eclipse-workspace\\Sudoku\\src\\Puzzle_3_04.dat");
 
 		Scanner scanner;
 		// reading the input
@@ -88,11 +88,11 @@ public class SudokuModel {
 			e.printStackTrace();
 		}
 		
-		ArrayList<ArrayList<ArrayList<Integer>>> prem = preemtiveSets(markUpCells());
-		//for(int i = 0; i<81; i++) {
-		//	prem = preemtiveSets(prem);
-		//}
-		//System.out.print(prem);
+		ArrayList<ArrayList<ArrayList<Integer>>> prem = preemtiveSets(singleton(markUpCells()));
+		for(int i = 0; i<10; i++) {
+			prem = preemtiveSets(singleton(prem));
+		}
+		System.out.print(prem);
 		}
 
 	//Method for getting the board
@@ -180,19 +180,20 @@ public class SudokuModel {
 									}
 								}
 								//System.out.print(numbers);
-								sudokuPre = updateMarkup(sudokuPre,numbers,xcordSend,ycordSend, 1); 
+								sudokuPre = updateMarkup(sudokuPre,numbers,xcordSend,ycordSend, 2); 
 								xcordSend.removeAll(xcordSend);
 								ycordSend.removeAll(ycordSend);
 							}
 							if(Collections.frequency(ycord, l) == sizeOfSet) { //checks if there are more in a gived ycord
-								System.out.println("set: " + numbers + " xCoords: " +xcord +" yCoords: " + ycord);
+								//System.out.println("set: " + numbers + " xCoords: " +xcord +" yCoords: " + ycord);
 								for(int m=0; m < xcord.size();m++) {
 									if (ycord.get(m) == l) {	
 										xcordSend.add(xcord.get(m));
 										ycordSend.add(ycord.get(m));
 									}
 								}
-								sudokuPre = updateMarkup(sudokuPre,numbers,xcordSend,ycordSend, 2); 
+								//System.out.println("ycord: " +ycord);
+								sudokuPre = updateMarkup(sudokuPre,numbers,xcordSend,ycordSend, 1); 
 								xcordSend.removeAll(xcordSend);
 								ycordSend.removeAll(ycordSend);
 							}
@@ -223,11 +224,12 @@ public class SudokuModel {
 									ycordSend.removeAll(ycordSend);
 
 								}}}}}}
-					System.out.println(sudokuPre);
+					//System.out.println(sudokuPre);
 					}
 			
-				
+				//System.out.println("m: " + sizeOfSet);	
 			sizeOfSet++;
+			
 			if (sizeOfSet > 8) {		
 				break;
 			}
@@ -340,10 +342,16 @@ public class SudokuModel {
 	
 	//Method for updating the markUp board, given a set of possible entries and their coordinates
 	public ArrayList<ArrayList<ArrayList<Integer>>> updateMarkup(ArrayList<ArrayList<ArrayList<Integer>>> markupBoard, ArrayList<Integer> set, ArrayList<Integer> xCoords, ArrayList<Integer> yCoords, int mode){
+		//System.out.print("Ycords markup: "+ yCoords);
+		//System.out.print("Xcords markup: "+ xCoords);
+		//System.out.println("set: "+ set);
 		int m = set.size();
 		boolean sameRow = true;
 		boolean sameCol = true;
 		boolean sameSquare = true;
+		if (xCoords.get(0)== xCoords.get(1) && yCoords.get(0)== yCoords.get(1)) {
+			System.out.println("test");
+		}
 		//The next 3 loops check if the entries are in the same row, column and/or square
 		
 		/*for(int i = 1; i < m; i++){
@@ -457,7 +465,33 @@ public class SudokuModel {
 		}
 		return markUpBoard;
 	}
+	public ArrayList<ArrayList<ArrayList<Integer>>> singleton(ArrayList<ArrayList<ArrayList<Integer>>> sudokuSing) {
+		//System.out.println("start: "+sudokuSing);
+		for(int i = 0; i< n*k ; i++) {
+			for(int j = 0; j< n*k ; j++) {
+				if (sudokuSing.get(i).get(j).size() == 1) {
 
+					for (int l = 0; l < n*k; l++ ) {
+						if ( j!=l) {
+							sudokuSing.get(i).get(l).remove(sudokuSing.get(i).get(j).get(0));
+						} if (i!=l ) {
+				
+							sudokuSing.get(l).get(j).remove(sudokuSing.get(i).get(j).get(0));
+						} if (i!=(i/n)*n+l%n || j!=(j/n)*n+l%n) {
+							
+							sudokuSing.get((i/n)*n+l%n).get((j/n)*n+l%n).remove(sudokuSing.get(i).get(j).get(0));
+						}
+				
+		}
+		
+	}}
+}
+
+
+		//System.out.println("end: "+sudokuSing);	
+		return sudokuSing;
+	}
+	
 	public static boolean checkValidity(int[][] sudoku) {
 		boolean valid = new Boolean(true);
 		// Grid for storing already found values
