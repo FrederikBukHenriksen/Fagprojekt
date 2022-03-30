@@ -20,6 +20,7 @@ public class SudokuController {
 			JToggleButton pressedSudokuboard = view.getButtonSelected();
 
 			String cellNew = "";
+			String keyPressed = "";
 			String cellCurrent = pressedSudokuboard.getText();
 			if (!cellCurrent.equals("")) {
 				cellNew = cellCurrent;
@@ -27,23 +28,23 @@ public class SudokuController {
 
 			int keyCode = e.getKeyCode();
 			if (keyCode == KeyEvent.VK_1 || keyCode == KeyEvent.VK_NUMPAD1) {
-				cellNew += "1";
+				keyPressed = "1";
 			} else if (keyCode == KeyEvent.VK_2 || keyCode == KeyEvent.VK_NUMPAD2) {
-				cellNew += "2";
+				keyPressed = "2";
 			} else if (keyCode == KeyEvent.VK_3 || keyCode == KeyEvent.VK_NUMPAD3) {
-				cellNew += "3";
+				keyPressed = "3";
 			} else if (keyCode == KeyEvent.VK_4 || keyCode == KeyEvent.VK_NUMPAD4) {
-				cellNew += "4";
+				keyPressed = "4";
 			} else if (keyCode == KeyEvent.VK_5 || keyCode == KeyEvent.VK_NUMPAD5) {
-				cellNew += "5";
+				keyPressed = "5";
 			} else if (keyCode == KeyEvent.VK_6 || keyCode == KeyEvent.VK_NUMPAD6) {
-				cellNew += "6";
+				keyPressed = "6";
 			} else if (keyCode == KeyEvent.VK_7 || keyCode == KeyEvent.VK_NUMPAD7) {
-				cellNew += "7";
+				keyPressed = "7";
 			} else if (keyCode == KeyEvent.VK_8 || keyCode == KeyEvent.VK_NUMPAD8) {
-				cellNew += "8";
+				keyPressed = "8";
 			} else if (keyCode == KeyEvent.VK_9 || keyCode == KeyEvent.VK_NUMPAD9) {
-				cellNew += "9";
+				keyPressed = "9";
 			} else if (keyCode == KeyEvent.VK_BACK_SPACE || keyCode == KeyEvent.VK_DELETE) {
 				if (cellNew.length() > 1) {
 					cellNew = cellNew.substring(0, cellNew.length() - 1);
@@ -56,8 +57,11 @@ public class SudokuController {
 
 			// Grab the inital cell number.
 			int maxNumber = model.getN() * model.getK(); // TODO: Er dette det maksimale nummer pba. n og k?
-			if (Integer.valueOf(cellNew) > maxNumber) {
-				cellNew = cellCurrent;
+			if (Integer.valueOf(cellNew + keyPressed) > maxNumber) {
+				cellNew = keyPressed;
+			}
+			else{
+				cellNew = cellNew + keyPressed;
 			}
 
 			int[] coordinate = view.getCellCoordinate(pressedSudokuboard);
