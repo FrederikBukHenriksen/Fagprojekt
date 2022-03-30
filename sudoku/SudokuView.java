@@ -2,10 +2,13 @@ package sudoku;
 
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 import javax.swing.*;
+
+import java.awt.*;
 
 import sudoku.SudokuController.KeyboardSudokuListener;
 
@@ -13,9 +16,10 @@ public class SudokuView {
 	public int n;
 	public int k;
 
-	ArrayList<ArrayList<JToggleButton>> sudokuboardCells = new ArrayList();
+	ArrayList<ArrayList<Cell>> sudokuboardCells = new ArrayList();
 	ArrayList<JButton> numboardButtons = new ArrayList();
 	JButton undo = new JButton("Undo");
+
 	JButton remove = new JButton("Remove");
 	JButton note = new JButton("note");
 	JButton newSudoku = new JButton("newSudoku");
@@ -106,9 +110,9 @@ public class SudokuView {
 
 	void addSudokuboardListener(ActionListener listenForSudokuboardButtons) {
 		int x = 0, y = 0; // Used to give the button an ActionCommand
-		for (ArrayList<JToggleButton> arraylist : sudokuboardCells) {
+		for (ArrayList<Cell> arraylist : sudokuboardCells) {
 			x++;
-			for (JToggleButton button : arraylist) {
+			for (Cell button : arraylist) {
 				y++;
 				button.addActionListener(listenForSudokuboardButtons);
 			}
@@ -116,7 +120,7 @@ public class SudokuView {
 	}
 
 	public void addSudokuboardKeyboardBinding(KeyboardSudokuListener keysListenerLolcat) {
-		for (JToggleButton button : getButtons()) {
+		for (Cell button : getButtons()) {
 			button.addKeyListener(keysListenerLolcat);
 		}
 
@@ -133,16 +137,16 @@ public class SudokuView {
 
 	}
 
-	public ArrayList<ArrayList<JToggleButton>> createCells(int[][] sudoku) {
+	public ArrayList<ArrayList<Cell>> createCells(int[][] sudoku) {
 		/*
 		 * @return a simpel (n*K)*(n*K) 2d array with JToggleButtons
 		 */
-		ArrayList<ArrayList<JToggleButton>> board = new ArrayList<>();
+		ArrayList<ArrayList<Cell>> board = new ArrayList<>();
 		for (int i = 0; i < n * k; i++) {
-			ArrayList<JToggleButton> rows = new ArrayList();
+			ArrayList<Cell> rows = new ArrayList();
 			for (int j = 0; j < n * k; j++) {
-				JToggleButton button = new JToggleButton("");
-				button.setFont(new Font("Serif", Font.PLAIN, 12));
+				Cell button = new Cell();
+
 				rows.add(button);
 			}
 			board.add(rows);
@@ -150,7 +154,7 @@ public class SudokuView {
 		return board;
 	}
 
-	public void onlySelectThePressed(JToggleButton buttonSelected) {
+	public void onlySelectThePressed(Cell buttonSelected) {
 
 		// Pressing an already selected button causes it to become unselected.
 		if (buttonSelected.isSelected() == false) {
@@ -162,31 +166,31 @@ public class SudokuView {
 
 	}
 
-	public ArrayList<JToggleButton> getButtons() {
-		ArrayList<JToggleButton> buttonsArray = new ArrayList<>();
+	public ArrayList<Cell> getButtons() {
+		ArrayList<Cell> buttonsArray = new ArrayList<>();
 
-		for (ArrayList<JToggleButton> arraylist : sudokuboardCells) {
-			for (JToggleButton button : arraylist) {
+		for (ArrayList<Cell> arraylist : sudokuboardCells) {
+			for (Cell button : arraylist) {
 				buttonsArray.add(button);
 			}
 		}
 		return buttonsArray;
 	}
 
-	public JToggleButton getButtonSelected() { // TODO: ret til abstractbutton
+	public Cell getButtonSelected() { // TODO: ret til abstractbutton
 
-		ArrayList<JToggleButton> result = (ArrayList<JToggleButton>) getButtons().stream()
+		ArrayList<Cell> result = (ArrayList<Cell>) getButtons().stream()
 				.filter(b -> b.isSelected())
 				.collect(Collectors.toList());
 		return result.get(0);
 
 	}
 
-	public int[] getCellCoordinate(JToggleButton selected) {
+	public int[] getCellCoordinate(Cell selected) {
 		int[] coordinate = new int[2];
 		for (int x = 0; x < n * k; x++) {
 			for (int y = 0; y < n * k; y++) {
-				JToggleButton button = sudokuboardCells.get(x).get(y);
+				Cell button = sudokuboardCells.get(x).get(y);
 				if (button.equals(selected)) {
 					coordinate[0] = x;
 					coordinate[1] = y;
@@ -200,12 +204,54 @@ public class SudokuView {
 		for (int x = 0; x < n * k; x++) {
 			for (int y = 0; y < n * k; y++) {
 				if (sudoku[x][y] != 0) {
-					JToggleButton button = sudokuboardCells.get(x).get(y);
+					Cell button = sudokuboardCells.get(x).get(y);
 					button.setText(String.valueOf(sudoku[x][y]));
 				} else {
-					JToggleButton button = sudokuboardCells.get(x).get(y);
+					Cell button = sudokuboardCells.get(x).get(y);
 					button.setText("");
 				}
+			}
+		}
+	}
+
+	public void markCells() {
+		// ###PRESSED BUTTON###
+		Cell pressedButton = getButtonSelected();
+		int[] coordinates = getCellCoordinate(pressedButton);
+		String cellText = pressedButton.getText();
+
+		// ###SQUARE###
+		// Determent the position of upper left corner of the square
+		int squareX = coordinates[0] / n;
+		int squareY = coordinates[1] / n;
+
+		// Run through the square
+		for (int i = squareX * n; i < squareX * n + n; i++) {
+			for (int j = squareY * n; j < squareY * n + n; j++) {
+				sudokuboardCells.get(i).get(j).square();
+			}
+		}
+		// ###PEERS###
+		for (int i = 0; i < (n * k); i++) {
+			sudokuboardCells.get(coordinates[0]).get(i).peer();
+			sudokuboardCells.get(i).get(coordinates[1]).peer();
+		}
+
+		// ###SIMILAR NUMBER###
+		for (ArrayList<Cell> array : sudokuboardCells) {
+			for (Cell button : array) {
+				if (!cellText.equals("") && button.getText().equals(cellText)) {
+					button.similar();
+				}
+			}
+		}
+
+	}
+
+	public void clearMarkedCells() {
+		for (ArrayList<Cell> array : sudokuboardCells) {
+			for (Cell button : array) {
+				button.unSelected();
 			}
 		}
 	}

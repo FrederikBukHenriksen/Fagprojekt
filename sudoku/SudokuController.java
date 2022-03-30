@@ -17,8 +17,8 @@ public class SudokuController {
 	// KEY EVENT FOR ALLE JTOGGLEBUTTONS PÅ BOARDET.
 	class KeyboardSudokuListener extends KeyAdapter {
 		public void keyPressed(KeyEvent e) {
-			System.out.println("Tast");
-			JToggleButton pressedSudokuboard = view.getButtonSelected();
+			Cell pressedSudokuboard = view.getButtonSelected();
+
 
 			//Variables for the new cell-content and the button pressed
 			String cellNew = "";
@@ -87,29 +87,36 @@ public class SudokuController {
 	// ACTIONLISTENER FOR SUDOKUBOARDET.
 	class SudokuboardListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			JToggleButton pressed = (JToggleButton) e.getSource(); // Grabs the button pressed
+			Cell pressed = (Cell) e.getSource(); // Grabs the button pressed
 			view.onlySelectThePressed(pressed);
+			view.clearMarkedCells();
+			view.markCells();
+			if (!pressed.isSelected()) {
+				view.clearMarkedCells();
+			}
 		}
 	}
 
-	//Code for undo-button
+	// Code for undo-button
 	class SudokuUndoListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			JButton pressed = (JButton) e.getSource(); // Grabs the button pressed
 
-			System.out.println("Undo"); //Prints "Undo" FOR DEBUG
-			model.popStack(); //Removes the last element of the stack
-			model.setSudoku(model.peekStack()); //Updates the board 
-			view.updateBoard(model.peekStack()); //Updates the visuals
-			/*int[][] temp = new int[model.getSudoku().length][model.getSudoku().length];
-			for(int i = 0; i < model.moves; i++){
-				for(int j = 0; j < model.getSudoku().length; j++){
-					for(int z = 0; z < model.getSudoku().length; z++){
-						temp[j][z] = model.sudokuStack[i][j][z];
-					}
-				}
-				printSudoku(temp);
-			}*/
+			System.out.println("Undo"); // Prints "Undo" FOR DEBUG
+			model.popStack(); // Removes the last element of the stack
+			model.setSudoku(model.peekStack()); // Updates the board
+			view.updateBoard(model.peekStack()); // Updates the visuals
+			/*
+			 * int[][] temp = new int[model.getSudoku().length][model.getSudoku().length];
+			 * for(int i = 0; i < model.moves; i++){
+			 * for(int j = 0; j < model.getSudoku().length; j++){
+			 * for(int z = 0; z < model.getSudoku().length; z++){
+			 * temp[j][z] = model.sudokuStack[i][j][z];
+			 * }
+			 * }
+			 * printSudoku(temp);
+			 * }
+			 */
 		}
 	}
 
@@ -131,7 +138,6 @@ public class SudokuController {
 		public void actionPerformed(ActionEvent e) {
 			JButton pressed = (JButton) e.getSource(); // Grabs the button pressed
 			System.out.println("Note");
-
 		}
 	}
 
@@ -139,7 +145,6 @@ public class SudokuController {
 		public void actionPerformed(ActionEvent e) {
 			JButton pressed = (JButton) e.getSource(); // Grabs the button pressed
 			System.out.println("New Sudoku");
-
 		}
 	}
 
@@ -149,10 +154,10 @@ public class SudokuController {
 			JButton pressedNumboard = (JButton) e.getSource();
 
 			// Find the placement of the pressed board button
-			JToggleButton pressedSudokuboard = view.getButtonSelected();
+			Cell pressedSudokuboard = view.getButtonSelected();
 			String cellNew = "";
 			String cellCurrent = pressedSudokuboard.getText();
-			if (!cellCurrent.equals("")) {
+			if (!cellCurrent.equals("")) { // Hvis der står noget i cellen
 				cellNew = cellCurrent;
 			}
 			cellNew = cellNew + pressedNumboard.getText();
@@ -185,8 +190,8 @@ public class SudokuController {
 
 	// Simple constructor
 	public SudokuController() {
-		model = new SudokuModel();
 		view = new SudokuView();
+		model = new SudokuModel(view);
 		view.setViewGlobals(model.getN(), model.getK());
 		model.pushStack(model.getSudoku());
 		view.showFrame(model.peekStack());
@@ -200,14 +205,14 @@ public class SudokuController {
 				new SudokuNewBoardListener());
 		view.addSudokuboardKeyboardBinding(new KeyboardSudokuListener());
 
-		model.markUpCells();
-
+		// model.markUpCells();
+		model.createSudoku();
 	}
 
-	//Method for printing the sudoku-board
-	public void printSudoku(int[][] sudokuBoard){
-		for(int i = 0; i < sudokuBoard.length; i++){
-			for(int k = 0; k < sudokuBoard.length; k++){
+	// Method for printing the sudoku-board
+	public void printSudoku(int[][] sudokuBoard) { // TODO: Bruges kun til de-bugging
+		for (int i = 0; i < sudokuBoard.length; i++) {
+			for (int k = 0; k < sudokuBoard.length; k++) {
 				System.out.print(sudokuBoard[i][k] + " ");
 			}
 			System.out.println();

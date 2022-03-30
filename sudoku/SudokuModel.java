@@ -21,10 +21,12 @@ public class SudokuModel {
 	int moves = 0;
 	boolean change = false;
 
+	SudokuView view;
 
 	// constructor for the model
-	public SudokuModel() {
-		File file = new File("sudoku\\Puzzles_1\\Puzzle_4_01.dat");
+	public SudokuModel(SudokuView view) {
+		this.view = view;
+		File file = new File("sudoku/Puzzles_1/Puzzle_3_01.dat");
 
 
 		Scanner scanner;
@@ -249,24 +251,79 @@ public class SudokuModel {
 
 		int[][] newSudoku = new int[n * k][n * k];
 
-		for (int i = 0; i < newSudoku[0].length; i++) {
-			for (int j = 0; j < newSudoku[1].length; j++) {
+		// Generate a board with aprox. 16 randomly places numbers.
+		int numberCounter = 0;
+		int maxAttempts = 50;
 
-				while (true) {
-					int number = chooseNumberList.get(random.nextInt(chooseNumberList.size()));
-					int[] square = getSquare(i, j, newSudoku);
-					int[] peers = getPeers(i, j, newSudoku);
-					boolean cond1 = Arrays.stream(square).anyMatch(l -> l != number);
-					boolean cond2 = Arrays.stream(peers).anyMatch(l -> l != number);
+		while (numberCounter < 17) { // 17 i while-loopet vil medføre 17 tal.
+			int x = random.nextInt(n * k);
+			int y = random.nextInt(n * k);
+			int cellNumber = random.nextInt(n * k) + 1;
 
-					if (cond1 && cond2) {
-						newSudoku[i][j] = number;
-						break;
-					}
+			if (maxAttempts == 0) {
+				newSudoku = new int[n * k][n * k];
+				maxAttempts = 50;
+			}
+
+			if (newSudoku[x][y] == 0) {
+				if (checkValidity(newSudoku)) {
+
+					newSudoku[x][y] = cellNumber;
+					numberCounter++;
+
+				} else {
+					maxAttempts--;
 				}
-
 			}
 		}
+		System.out.println("hej");
+
+		ArrayList<int[][]> listOfBoards = new ArrayList<>();
+		listOfBoards.add(newSudoku);
+
+		for (int i = 0; i < listOfBoards.size(); i++) {
+			newSudoku = listOfBoards.get(i);
+
+			for (int x = 0; x < (getN() * getK()); x++) {
+				for (int y = 0; y < (getN() * getK()); y++) {
+					int[][] newSudokuTemp = newSudoku.clone();
+
+					boolean numFound = false;
+					for (int num = 0; num < chooseNumberList.size(); num++) {
+						newSudokuTemp[x][y] = chooseNumberList.get(num);
+						if (checkValidity(newSudokuTemp) && !numFound) {
+							int save[][] = newSudoku.clone();
+							save[x][y] = chooseNumberList.get(num);
+							listOfBoards.add(save);
+							// newSudoku[x][y] = chooseNumberList.get(num);
+						}
+
+					}
+				}
+			}
+
+		}
+
+		System.out.println("hej");
+
+		// for (int i = 0; i < newSudoku[0].length; i++) {
+		// for (int j = 0; j < newSudoku[1].length; j++) {
+
+		// while (true) {
+		// int number = chooseNumberList.get(random.nextInt(chooseNumberList.size()));
+		// int[] square = getSquare(i, j, newSudoku);
+		// int[] peers = getPeers(i, j, newSudoku);
+		// boolean cond1 = Arrays.stream(square).anyMatch(n -> n != number);
+		// boolean cond2 = Arrays.stream(peers).anyMatch(n -> n != number);
+
+		// if (cond1 && cond2) {
+		// newSudoku[i][j] = number;
+		// break;
+		// }
+		// }
+
+		// }
+		// }
 
 		return newSudoku;
 	}
