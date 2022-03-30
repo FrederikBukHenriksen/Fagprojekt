@@ -7,30 +7,28 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 
 import java.awt.*;
 
 import sudoku.SudokuController.KeyboardSudokuListener;
 
-public class SudokuView {
+public class SudokuView extends JFrame {
+
 	public int n;
 	public int k;
 
 	ArrayList<ArrayList<Cell>> sudokuboardCells = new ArrayList();
 	ArrayList<JButton> numboardButtons = new ArrayList();
 	JButton undo = new JButton("Undo");
-
 	JButton remove = new JButton("Remove");
 	JButton note = new JButton("note");
 	JButton newSudoku = new JButton("newSudoku");
 	Cell trash = new Cell();
 
-	public JFrame f;
-
 	public SudokuView() {
-		f = new JFrame();
-		f.setVisible(true);
-		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setVisible(true);
+		setDefaultCloseOperation(this.EXIT_ON_CLOSE);
 	}
 
 	public void setViewGlobals(int n, int k) {
@@ -40,14 +38,21 @@ public class SudokuView {
 
 	public void showFrame(int[][] sudoku) {
 
-		JPanel mainGui = new JPanel(new GridLayout(1, 2, 50, 0));
-		JPanel board = new JPanel(new GridLayout(k, k, 10, 10));
+		JPanel board = new JPanel(new GridLayout(k, k));
+		board.setBounds(0, 0, 500, 500);
+		board.setBackground(Color.black);
 
 		sudokuboardCells = createCells(sudoku);
 		// Separate into squares.
 
 		for (int l = 0; l < k * k; l++) {
-			JPanel square = new JPanel(new GridLayout(n, n));
+			GridLayout grid = new GridLayout(n, n, 10, 10);
+			grid.setHgap(1);
+			grid.setVgap(1);
+
+			JPanel square = new JPanel(grid);
+			square.setBorder(new LineBorder(Color.black, 1));
+
 			// Løber gennem størrelsen på én square
 			for (int i = 0; i < n; i++) {
 				for (int j = 0; j < n; j++) {// l/k benytter sig af hvordan java runder op. det er n hvor mange felter
@@ -67,9 +72,10 @@ public class SudokuView {
 			}
 			board.add(square);
 		}
-		mainGui.add(board);
 
 		JPanel sideButtonGui = new JPanel(new GridLayout(2, 1, 0, 10));// creates buttons panels on the right side
+		sideButtonGui.setBounds(500, 0, 500, 500);
+
 		JPanel specialButton = new JPanel(new GridLayout(1, 4, 0, 0));
 
 		specialButton.add(undo);
@@ -88,11 +94,12 @@ public class SudokuView {
 		}
 
 		sideButtonGui.add(buttonGui);
-		mainGui.add(sideButtonGui);
 
-		f.add(mainGui);
+		add(board);
+		add(sideButtonGui);
 		// setting grid layout of 3 rows and 3 columns
-		f.setSize(1000, 1000);
+		setLayout(null);
+		setSize(1280, 720);
 	}
 
 	// Actionlistener
@@ -255,7 +262,7 @@ public class SudokuView {
 	public void clearMarkedCells() {
 		for (ArrayList<Cell> array : sudokuboardCells) {
 			for (Cell button : array) {
-				button.unSelected();
+				button.defaultColor();
 			}
 		}
 	}
@@ -263,15 +270,15 @@ public class SudokuView {
 	public void updateFrameTitle(boolean checkValidity, boolean isFilled) {
 		if (checkValidity) {
 			if (isFilled) {
-				f.setTitle("Filled and valid");
+				setTitle("Filled and valid");
 			} else {
-				f.setTitle("Valid");
+				setTitle("Valid");
 			}
 		} else {
 			if (isFilled) {
-				f.setTitle("Filled and invalid");
+				setTitle("Filled and invalid");
 			} else {
-				f.setTitle("Invalid");
+				setTitle("Invalid");
 			}
 		}
 	}
