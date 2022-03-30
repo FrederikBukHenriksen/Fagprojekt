@@ -20,8 +20,9 @@ public class SudokuModel {
 	static int n = 0;
 	int moves = 0;
 	boolean change = false;
+	static ArrayList<Cell> failedCoords = new ArrayList<Cell>();
 
-	SudokuView view;
+	static SudokuView view;
 
 	// constructor for the model
 	public SudokuModel(SudokuView view) {
@@ -561,6 +562,7 @@ public class SudokuModel {
 	}
 	
 	public static boolean checkValidity(int[][] sudoku) {
+		failedCoords.clear();
 		boolean valid = new Boolean(true);
 		// Grid for storing already found values
 		// int[][] sortedGrid = new int[sudoku.length+1][sudoku.length+1];
@@ -581,6 +583,7 @@ public class SudokuModel {
 						sortedGrid[i][cur - 1] = 1;
 					} else {
 						valid = false;
+						failedCoords.add(view.getCellFromCoord(i,j));
 					}
 				}
 
@@ -613,6 +616,7 @@ public class SudokuModel {
 						sortedGrid[i][cur - 1] = 1;
 					} else {
 						valid = false;
+						failedCoords.add(view.getCellFromCoord(i,j));
 					}
 				}
 			}
@@ -658,6 +662,7 @@ public class SudokuModel {
 							sortedGrid[l][cur - 1] = 1;
 						} else {
 							valid = false;
+							failedCoords.add(view.getCellFromCoord((i + n * (l / k)),(j + n * l) % (k * n)));
 						}
 					}
 				}
@@ -686,4 +691,9 @@ public class SudokuModel {
 		System.out.println();
 	}
 
+	public ArrayList<Cell> getFailedCells(){
+		return this.getFailedCells();
+	}
 }
+
+	

@@ -282,4 +282,8 @@ public class SudokuView extends JFrame {
 			}
 		}
 	}
+
+	public Cell getCellFromCoord(int x, int y){
+		return sudokuboardCells.get(x).get(y);
+	}
 }
