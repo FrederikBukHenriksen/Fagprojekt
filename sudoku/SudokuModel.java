@@ -26,7 +26,7 @@ public class SudokuModel {
 	// constructor for the model
 	public SudokuModel(SudokuView view) {
 		this.view = view;
-		File file = new File("sudoku/Puzzles_1/Puzzle_3_01.dat");
+		File file = new File("sudoku/Puzzles_1/Puzzle_4_01.dat");
 
 
 		Scanner scanner;
@@ -48,42 +48,45 @@ public class SudokuModel {
 				}
 			}
 			setupScanner.close();
-
-			// Creating the board
-			sudoku = new int[n * k][n * k];
-			// Creating variables for looping through input
-			sudokuStack = new int[1000][sudoku.length][sudoku.length];
-			int c = 0;
-			int d = 0;
-			scanner.nextLine();
-			while (scanner.hasNextLine()) {
-				// Reads the next line
-				String line = scanner.nextLine();
-				Scanner lineScanner = new Scanner(line);
-				lineScanner.useDelimiter(";");
-				while (lineScanner.hasNext()) {
-					// Reads the next input on the line, separated by ";"
-					String str = lineScanner.next();
-					if (str.equals(".")) {
-						// If input is ".", convert to a "0"
-						sudoku[c][d] = 0;
-						// Go to next entry
-						d++;
-					} else {
-						try {
-							// If input isn't ".", read the number and insert into array
-							sudoku[c][d] = Integer.parseInt(str);
-						} catch (NumberFormatException ex) {
-							ex.printStackTrace();
+			if(k > n){
+				System.out.println("Not a valid sudoku-size, k cannot exceed n");
+			}
+			else{// Creating the board
+				sudoku = new int[n * k][n * k];
+				// Creating variables for looping through input
+				sudokuStack = new int[1000][sudoku.length][sudoku.length];
+				int c = 0;
+				int d = 0;
+				scanner.nextLine();
+				while (scanner.hasNextLine()) {
+					// Reads the next line
+					String line = scanner.nextLine();
+					Scanner lineScanner = new Scanner(line);
+					lineScanner.useDelimiter(";");
+					while (lineScanner.hasNext()) {
+						// Reads the next input on the line, separated by ";"
+						String str = lineScanner.next();
+						if (str.equals(".")) {
+							// If input is ".", convert to a "0"
+							sudoku[c][d] = 0;
+							// Go to next entry
+							d++;
+						} else {
+							try {
+								// If input isn't ".", read the number and insert into array
+								sudoku[c][d] = Integer.parseInt(str);
+							} catch (NumberFormatException ex) {
+								ex.printStackTrace();
+							}
+							// Go to next entry
+							d++;
 						}
-						// Go to next entry
-						d++;
 					}
+					// Go to next line, and start from first entry
+					c++;
+					d = 0;
+					lineScanner.close();
 				}
-				// Go to next line, and start from first entry
-				c++;
-				d = 0;
-				lineScanner.close();
 			}
 
 		} catch (FileNotFoundException e) {
@@ -95,7 +98,7 @@ public class SudokuModel {
 		for(int i = 0; i<10; i++) {
 			prem = preemtiveSets(singleton(prem));
 		}
-		System.out.print(prem);
+		//System.out.print(prem);
 		}
 
 	//Method for getting the board
@@ -220,16 +223,15 @@ public class SudokuModel {
 											ycordSend.add(ycord.get(p));
 										}
 									}
-									for (int b = 0; b<kArray.length;b++) {
-									//System.out.println(kArray[b]);
+									/*for (int b = 0; b<kArray.length;b++) {
+									System.out.println(kArray[b]);
 									}
 									//System.out.println("");
 									//System.out.print(numbers);
-									//System.out.println("set: " + numbers + " xCoords: " +xcordSend +" yCoords: " + ycordSend);
+									//System.out.println("set: " + numbers + " xCoords: " +xcordSend +" yCoords: " + ycordSend);*/
 									sudokuPre = updateMarkup(sudokuPre,numbers,xcordSend,ycordSend, 3); 
 									xcordSend.removeAll(xcordSend);
 									ycordSend.removeAll(ycordSend);
-
 								}}}}}}
 					//System.out.println(sudokuPre);
 					}
@@ -276,7 +278,6 @@ public class SudokuModel {
 				}
 			}
 		}
-		System.out.println("hej");
 
 		ArrayList<int[][]> listOfBoards = new ArrayList<>();
 		listOfBoards.add(newSudoku);
@@ -303,8 +304,6 @@ public class SudokuModel {
 			}
 
 		}
-
-		System.out.println("hej");
 
 		// for (int i = 0; i < newSudoku[0].length; i++) {
 		// for (int j = 0; j < newSudoku[1].length; j++) {
@@ -360,9 +359,6 @@ public class SudokuModel {
 		// Remove the duplicated cell itself.
 		peers.remove((Integer) board[axis0][axis1]);
 
-		// Convert arraylist to primitive array
-		int[] lol = peers.stream().mapToInt(i -> i).toArray();
-
 		return peers.stream().mapToInt(i -> i).toArray();
 	}
 
@@ -410,13 +406,13 @@ public class SudokuModel {
 		//System.out.print("Xcords markup: "+ xCoords);
 		//System.out.print("set: "+ set);
 		//System.out.println("mode: "+ mode);
-		int m = set.size();
+		/*int m = set.size();
 		boolean sameRow = true;
 		boolean sameCol = true;
 		boolean sameSquare = true;
 		if (xCoords.get(0)== xCoords.get(1) && yCoords.get(0)== yCoords.get(1)) {
 			System.out.println("test");
-		}
+		}*/
 		//The next 3 loops check if the entries are in the same row, column and/or square
 		
 		/*for(int i = 1; i < m; i++){
@@ -437,9 +433,12 @@ public class SudokuModel {
 
 		if(mode == 1){
 			for(int i = 0; i < getSudoku().length; i++){
-				if(!(xCoords.contains(i))){					
+				if(!(xCoords.contains(i))){	
+					int size = markupBoard.get(i).get(yCoords.get(0)).size();	
 					markupBoard.get(i).get(yCoords.get(0)).removeAll(set);			
-					change = true;
+					if(!(size == markupBoard.get(i).get(yCoords.get(0)).size())){
+						change = true;
+					}
 				}
 			}
 		}
@@ -447,8 +446,11 @@ public class SudokuModel {
 		if(mode == 2){
 			for(int i = 0; i < getSudoku().length; i++){
 				if(!(yCoords.contains(i))){
+					int size = markupBoard.get(xCoords.get(0)).get(i).size();
 					markupBoard.get(xCoords.get(0)).get(i).removeAll(set);
-					change = true;
+					if(!(size == markupBoard.get(i).get(yCoords.get(0)).size())){
+						change = true;
+					}
 				}
 			}
 		}
@@ -465,15 +467,16 @@ public class SudokuModel {
 						}
 					}
 					if(delete){
+						int size = markupBoard.get(i).get(j).size();
 						markupBoard.get(i).get(j).removeAll(set);
-						change = true;
+						if(!(size == markupBoard.get(i).get(yCoords.get(0)).size())){
+							change = true;
+						}
 					}
 					delete = true;
 				}
 			}
 		}
-
-
 		return markupBoard;
 	}
 
