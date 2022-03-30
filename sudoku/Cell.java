@@ -40,7 +40,7 @@ public class Cell extends JToggleButton implements ActionListener {
         setBackground(def);
     }
 
-    public boolean getEnable() {
+    public boolean getEnabled() {
         return enabled;
     }
 
