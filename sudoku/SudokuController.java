@@ -183,9 +183,8 @@ public class SudokuController {
 			// TODO:NEDENSTÅENE BRUGES KUN TIL DE-BUG.
 			view.updateFrameTitle(model.checkValidity(model.getSudoku()), model.isFilled());
 
-
+			pressedSudokuboard.requestFocus();
 		}
-
 	}
 
 	// Simple constructor
