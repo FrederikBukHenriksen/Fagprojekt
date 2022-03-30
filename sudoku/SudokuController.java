@@ -130,12 +130,12 @@ public class SudokuController {
 			if (!cellCurrent.equals("")) {
 				cellNew = cellCurrent;
 			}
-			cellNew += pressedNumboard.getText();
+			cellNew = cellNew + pressedNumboard.getText();
 
 			int maxNumber = model.getN() * model.getK(); // TODO: Er dette det maksimale nummer pba. n og
 			// k?
 			if (Integer.valueOf(cellNew) > maxNumber) {
-				cellNew = cellCurrent;
+				cellNew = pressedNumboard.getText();
 			}
 
 			// Update sudoku cell
