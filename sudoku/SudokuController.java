@@ -81,19 +81,17 @@ public class SudokuController {
 				view.updateBoard(model.getSudoku());
 				view.updateFrameTitle(model.checkValidity(model.getSudoku(), true), model.isFilled());
 			}
+			updateColours();
 		}
 	}
+}
 
 	// ACTIONLISTENER FOR SUDOKUBOARDET.
 	class SudokuboardListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			Cell pressed = (Cell) e.getSource(); // Grabs the button pressed
 			view.onlySelectThePressed(pressed);
-			view.clearMarkedCells();
-			view.markCells();
-			if (!pressed.isSelected()) {
-				view.clearMarkedCells();
-			}
+			updateColours();
 		}
 	}
 
@@ -117,6 +115,7 @@ public class SudokuController {
 			 * printSudoku(temp);
 			 * }
 			 */
+			updateColours();
 		}
 	}
 
@@ -131,6 +130,7 @@ public class SudokuController {
 				view.updateBoard(model.getSudoku());
 				view.updateFrameTitle(model.checkValidity(model.getSudoku(), true), model.isFilled());
 			}
+			updateColours();
 		}
 	}
 
@@ -187,7 +187,16 @@ public class SudokuController {
 
 				pressedSudokuboard.requestFocus();
 			}
+			updateColours();
 		}
+	}
+
+	public void updateColours(){
+		view.clearMarkedCells();
+		if(!(view.getButtonSelected().equals(view.trash))){
+			view.markCells();
+		}
+		model.checkValidity(model.getSudoku(), false);
 	}
 
 	// Simple constructor
@@ -210,5 +219,5 @@ public class SudokuController {
 
 		// model.markUpCells();
 		model.createSudoku();
+		}
 	}
-}

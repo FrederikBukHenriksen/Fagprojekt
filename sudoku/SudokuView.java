@@ -260,12 +260,10 @@ public class SudokuView extends JFrame {
 	public void clearMarkedCells() {
 		for (ArrayList<Cell> array : sudokuboardCells) {
 			for (Cell button : array) {
-				if(!(button.getBackground().equals(button.conflict))){
-					button.defaultColor();
-				}
+				button.defaultColor();
 			}
 		}
-	}
+	}	
 
 	public void updateFrameTitle(boolean checkValidity, boolean isFilled) {
 		if (checkValidity) {

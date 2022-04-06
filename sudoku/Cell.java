@@ -13,19 +13,20 @@ import java.awt.Color;
 public class Cell extends JToggleButton implements ActionListener {
 
     Color selected = new Color(161, 205, 240);
-    Color conflict = Color.red;
+    Color conflict = new Color(240, 192, 193);
     Color square = new Color(199, 219, 235);
     Color similar = new Color(144, 182, 212);
     Color peer = new Color(199, 219, 235);
-    Color conflictFont = Color.green;
+    Color conflictFont = new Color(230, 67, 70);
     Color def = Color.white;
-    Color defFont = Color.black;
+    Color defFont = new Color(80, 110, 242);
 
     boolean enabled = true;
 
     public Cell() {
         setText("");
         setBackground(def);
+        setForeground(defFont);
         setFont(new Font("Serif", Font.PLAIN, 32));
         this.addActionListener(this);
         setBorder(new LineBorder(Color.black, 1));
@@ -36,9 +37,10 @@ public class Cell extends JToggleButton implements ActionListener {
 
     @Override
     public void setEnabled(boolean b) {
-        def = Color.gray;
+        defFont = Color.black;
         enabled = false;
         setBackground(def);
+        setForeground(defFont);
     }
 
     @Override

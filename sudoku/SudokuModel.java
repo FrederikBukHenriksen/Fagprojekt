@@ -566,7 +566,7 @@ public class SudokuModel {
 		return sudokuSing;
 	}
 	
-	public static boolean checkValidity(int[][] sudoku, boolean print) {
+	public boolean checkValidity(int[][] sudoku, boolean print) {
 		failedCoords.clear();
 		boolean valid = new Boolean(true);
 		// Grid for storing already found values
@@ -692,10 +692,11 @@ public class SudokuModel {
 		if(print){
 			for(int i = 0; i < failedCoords.size(); i++){
 				System.out.print(view.getCellCoordinate(failedCoords.get(i))[0] + "," + view.getCellCoordinate(failedCoords.get(i))[1] + " ");
-				failedCoords.get(i).conflict();
 			}
 		}
-		
+		for(int i = 0; i < failedCoords.size(); i++){
+			failedCoords.get(i).conflict();
+		}
 		return valid;
 	}
 
