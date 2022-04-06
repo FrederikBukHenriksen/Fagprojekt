@@ -94,19 +94,21 @@ public class SudokuModel {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		ArrayList<ArrayList<ArrayList<Integer>>> prem = preemtiveSets(singleton(markUpCells()));
-		for(int i = 0; i<10; i++) {
-			prem = preemtiveSets(singleton(prem));
-		}
-		//System.out.print(prem);
-		}
+	}
 
 	//Method for getting the board
 	public int[][] getSudoku() {
 		return sudoku;
 	}
 
+	public ArrayList<ArrayList<ArrayList<Integer>>> createPreemtiveSets (){
+		ArrayList<ArrayList<ArrayList<Integer>>> prem = preemtiveSets(singleton(markUpCells()));
+		for(int i = 0; i<10; i++) {
+			prem = preemtiveSets(singleton(prem));
+		}
+		//System.out.print(prem);
+		return prem;
+	}
 
 	//Method for setting the entire board
 
@@ -269,7 +271,7 @@ public class SudokuModel {
 			}
 
 			if (newSudoku[x][y] == 0) {
-				if (checkValidity(newSudoku)) {
+				if (checkValidity(newSudoku, false)) {
 
 					newSudoku[x][y] = cellNumber;
 					numberCounter++;
@@ -293,7 +295,7 @@ public class SudokuModel {
 					boolean numFound = false;
 					for (int num = 0; num < chooseNumberList.size(); num++) {
 						newSudokuTemp[x][y] = chooseNumberList.get(num);
-						if (checkValidity(newSudokuTemp) && !numFound) {
+						if (checkValidity(newSudokuTemp, false) && !numFound) {
 							int save[][] = newSudoku.clone();
 							save[x][y] = chooseNumberList.get(num);
 							listOfBoards.add(save);
@@ -521,11 +523,11 @@ public class SudokuModel {
 						}
 					}
 
-					for (int q = 1; q <= 9; q++) { // Mulige tal som kan indsættes på boarded
+					for (int q = 1; q <= n*k; q++) { // Mulige tal som kan indsættes på boarded
 
 						// Indsæt gyldige tal fra 1-9
 						copyOfSudoku[i][j] = q;
-						if (checkValidity(copyOfSudoku)) {
+						if (checkValidity(copyOfSudoku,false)) {
 							markUpBoard.get(i).get(j).add(q);
 						}
 					}
@@ -561,7 +563,7 @@ public class SudokuModel {
 		return sudokuSing;
 	}
 	
-	public static boolean checkValidity(int[][] sudoku) {
+	public static boolean checkValidity(int[][] sudoku, boolean print) {
 		failedCoords.clear();
 		boolean valid = new Boolean(true);
 		// Grid for storing already found values
@@ -583,6 +585,10 @@ public class SudokuModel {
 						sortedGrid[i][cur - 1] = 1;
 					} else {
 						valid = false;
+						if(print){
+							System.out.println("Row:  j: " + i + ", i: " + j);
+						}
+						
 						failedCoords.add(view.getCellFromCoord(i,j));
 					}
 				}
@@ -616,7 +622,10 @@ public class SudokuModel {
 						sortedGrid[i][cur - 1] = 1;
 					} else {
 						valid = false;
-						failedCoords.add(view.getCellFromCoord(i,j));
+						if(print){
+							System.out.println("Column:  j: " + j + ", i: " + i);
+						}
+						failedCoords.add(view.getCellFromCoord(j,i));
 					}
 				}
 			}
@@ -662,6 +671,9 @@ public class SudokuModel {
 							sortedGrid[l][cur - 1] = 1;
 						} else {
 							valid = false;
+							if(print){
+								System.out.println("Square:  j: " +(i + n * (l / k))+ ", i: " + (j + n * l) % (k * n));
+							}
 							failedCoords.add(view.getCellFromCoord((i + n * (l / k)),(j + n * l) % (k * n)));
 						}
 					}
@@ -677,19 +689,26 @@ public class SudokuModel {
 		 * System.out.println();
 		 * }
 		 */
-
+		if(print){
+			for(int i = 0; i < failedCoords.size(); i++){
+				System.out.print(view.getCellCoordinate(failedCoords.get(i))[0] + "," + view.getCellCoordinate(failedCoords.get(i))[1] + " ");
+				failedCoords.get(i).conflict();
+			}
+		}
+		
 		return valid;
 	}
 
-	public void printSudoku(int[][] sudokuBoard) {
-		for (int i = 0; i < sudokuBoard.length; i++) {
-			for (int k = 0; k < sudokuBoard.length; k++) {
-				System.out.print(sudokuBoard[i][k] + " ");
+		// Method for printing the sudoku-board
+		public void printSudoku(int[][] sudokuBoard) { // TODO: Bruges kun til de-bugging
+			for (int i = 0; i < sudokuBoard.length; i++) {
+				for (int k = 0; k < sudokuBoard.length; k++) {
+					System.out.print(sudokuBoard[i][k] + " ");
+				}
+				System.out.println();
 			}
 			System.out.println();
 		}
-		System.out.println();
-	}
 
 	public ArrayList<Cell> getFailedCells(){
 		return this.getFailedCells();

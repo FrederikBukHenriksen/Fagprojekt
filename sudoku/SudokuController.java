@@ -79,7 +79,7 @@ public class SudokuController {
 				model.setSudokuCell(coordinate[0], coordinate[1], Integer.valueOf(cellNew));
 				model.pushStack(model.getSudoku());
 				view.updateBoard(model.getSudoku());
-				view.updateFrameTitle(model.checkValidity(model.getSudoku()), model.isFilled());
+				view.updateFrameTitle(model.checkValidity(model.getSudoku(), true), model.isFilled());
 			}
 		}
 	}
@@ -129,7 +129,7 @@ public class SudokuController {
 				model.setSudokuCell(coordinate[0], coordinate[1], 0);
 				model.pushStack(model.getSudoku());
 				view.updateBoard(model.getSudoku());
-				view.updateFrameTitle(model.checkValidity(model.getSudoku()), model.isFilled());
+				view.updateFrameTitle(model.checkValidity(model.getSudoku(), true), model.isFilled());
 			}
 		}
 	}
@@ -183,7 +183,7 @@ public class SudokuController {
 
 
 			// TODO:NEDENSTÅENE BRUGES KUN TIL DE-BUG.
-			view.updateFrameTitle(model.checkValidity(model.getSudoku()), model.isFilled());
+			view.updateFrameTitle(model.checkValidity(model.getSudoku(), true), model.isFilled());
 
 			pressedSudokuboard.requestFocus();
 		}
@@ -196,7 +196,7 @@ public class SudokuController {
 		view.setViewGlobals(model.getN(), model.getK());
 		model.pushStack(model.getSudoku());
 		view.showFrame(model.peekStack());
-
+		model.createPreemtiveSets();
 		view.addSudokuboardListener(new SudokuboardListener());
 
 		view.addNumboardListener(new NumboardListener());
@@ -209,16 +209,4 @@ public class SudokuController {
 		// model.markUpCells();
 		model.createSudoku();
 	}
-
-	// Method for printing the sudoku-board
-	public void printSudoku(int[][] sudokuBoard) { // TODO: Bruges kun til de-bugging
-		for (int i = 0; i < sudokuBoard.length; i++) {
-			for (int k = 0; k < sudokuBoard.length; k++) {
-				System.out.print(sudokuBoard[i][k] + " ");
-			}
-			System.out.println();
-		}
-		System.out.println();
-	}
-
 }
