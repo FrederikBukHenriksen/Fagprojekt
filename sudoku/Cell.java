@@ -17,8 +17,9 @@ public class Cell extends JToggleButton implements ActionListener {
     Color square = new Color(199, 219, 235);
     Color similar = new Color(144, 182, 212);
     Color peer = new Color(199, 219, 235);
-
+    Color conflictFont = Color.green;
     Color def = Color.white;
+    Color defFont = Color.black;
 
     boolean enabled = true;
 
@@ -40,10 +41,6 @@ public class Cell extends JToggleButton implements ActionListener {
         setBackground(def);
     }
 
-    public boolean getEnabled() {
-        return enabled;
-    }
-
     @Override
     public void setText(String text) {
         if (enabled) {
@@ -53,13 +50,18 @@ public class Cell extends JToggleButton implements ActionListener {
 
     public void defaultColor() {
         setBackground(def);
+        setForeground(defFont);
     }
 
     public void conflict() {
+        if (enabled) {
+            setForeground(conflictFont);
+        }
         setBackground(conflict);
     }
 
-    public void unSelected() {
+    public void unSelected() { // TODO: Tjek om vi bruger
+        setForeground(defFont);
         setBackground(def);
     }
 

@@ -15,8 +15,8 @@ import sudoku.SudokuController.KeyboardSudokuListener;
 
 public class SudokuView extends JFrame {
 
-	public int n;
-	public int k;
+	public int n = SudokuModel.n;
+	public int k = SudokuModel.k;
 
 	ArrayList<ArrayList<Cell>> sudokuboardCells = new ArrayList();
 	ArrayList<JButton> numboardButtons = new ArrayList();
@@ -29,11 +29,7 @@ public class SudokuView extends JFrame {
 	public SudokuView() {
 		setVisible(true);
 		setDefaultCloseOperation(this.EXIT_ON_CLOSE);
-	}
 
-	public void setViewGlobals(int n, int k) {
-		this.n = n;
-		this.k = k;
 	}
 
 	public void showFrame(int[][] sudoku) {
@@ -123,6 +119,7 @@ public class SudokuView extends JFrame {
 			for (Cell button : arraylist) {
 				y++;
 				button.addActionListener(listenForSudokuboardButtons);
+
 			}
 		}
 	}
@@ -189,14 +186,15 @@ public class SudokuView extends JFrame {
 		ArrayList<Cell> result = (ArrayList<Cell>) getButtons().stream()
 				.filter(b -> b.isSelected())
 				.collect(Collectors.toList());
-		try{return result.get(0);}
-		catch(Exception e){
+		try {
+			return result.get(0);
+		} catch (Exception e) {
 			return trash;
 		}
 	}
 
 	public int[] getCellCoordinate(Cell selected) {
-		int[] coordinate = new int[]{-1,-1};
+		int[] coordinate = new int[] { -1, -1 };
 		for (int x = 0; x < n * k; x++) {
 			for (int y = 0; y < n * k; y++) {
 				Cell button = sudokuboardCells.get(x).get(y);
@@ -227,7 +225,7 @@ public class SudokuView extends JFrame {
 		// ###PRESSED BUTTON###
 		Cell pressedButton = getButtonSelected();
 		int[] coordinates = getCellCoordinate(pressedButton);
-		if(coordinates[0]!=-1){
+		if (coordinates[0] != -1) {
 			String cellText = pressedButton.getText();
 
 			// ###SQUARE###
@@ -253,10 +251,10 @@ public class SudokuView extends JFrame {
 					if (!cellText.equals("") && button.getText().equals(cellText)) {
 						button.similar();
 					}
-				}	
+				}
 			}
 		}
-		
+
 	}
 
 	public void clearMarkedCells() {
