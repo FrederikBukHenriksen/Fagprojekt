@@ -27,7 +27,7 @@ public class SudokuModel {
 	// constructor for the model
 	public SudokuModel(SudokuView view) {
 		this.view = view;
-		File file = new File("sudoku/Puzzles_1/Puzzle_4_01.dat");
+		File file = new File("sudoku/Puzzles_1/Puzzle_3_01.dat");
 
 
 		Scanner scanner;
@@ -588,11 +588,9 @@ public class SudokuModel {
 						if(print){
 							System.out.println("Row:  j: " + i + ", i: " + j);
 						}
-						
 						failedCoords.add(view.getCellFromCoord(i,j));
 					}
 				}
-
 			}
 		}
 
@@ -657,7 +655,6 @@ public class SudokuModel {
 		 * }
 		 * }
 		 */
-
 		for (int l = 0; l < k * k; l++) {
 
 			for (int i = 0; i < n; i++) {
@@ -710,8 +707,8 @@ public class SudokuModel {
 			System.out.println();
 		}
 
-	public ArrayList<Cell> getFailedCells(){
-		return this.getFailedCells();
+	public static ArrayList<Cell> getFailedCells(){
+		return failedCoords;
 	}
 }
 

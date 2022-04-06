@@ -12,11 +12,11 @@ import java.awt.Color;
 
 public class Cell extends JToggleButton implements ActionListener {
 
-    Color selected = Color.BLUE;
+    Color selected = new Color(161, 205, 240);
     Color conflict = Color.red;
-    Color square = new Color(0, 96, 255);
-    Color similar = new Color(0, 32, 255);
-    Color peer = new Color(0, 64, 255);
+    Color square = new Color(199, 219, 235);
+    Color similar = new Color(144, 182, 212);
+    Color peer = new Color(199, 219, 235);
 
     Color def = Color.white;
 
@@ -64,25 +64,31 @@ public class Cell extends JToggleButton implements ActionListener {
     }
 
     public void similar() {
-        setBackground(similar);
+        if(!(this.getBackground().equals(this.conflict))){
+            setBackground(similar);
+        }
     }
 
     public void peer() {
-        setBackground(peer);
+        if(!(this.getBackground().equals(this.conflict))){
+            setBackground(peer);
+        }
     }
 
     public void square() {
-        setBackground(square);
+        if(!(this.getBackground().equals(this.conflict))){
+            setBackground(square);
+        }
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (isSelected()) {
+        /*if (isSelected()) {
             System.out.println("LOLCAT1");
 
         } else {
             System.out.println("LOLCAT2");
 
-        }
+        }*/
     }
 }
