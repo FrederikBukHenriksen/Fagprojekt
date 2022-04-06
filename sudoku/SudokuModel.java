@@ -24,7 +24,7 @@ public class SudokuModel {
 
 	// constructor for the model
 	public SudokuModel() {
-		File file = new File("E:\\Eclibse\\Sudoku\\src\\Puzzle_3_03.dat");
+		File file = new File("E:\\Eclibse\\Sudoku\\src\\Puzzle_5_01.dat");
 
 		Scanner scanner;
 		// reading the input
@@ -105,9 +105,13 @@ public class SudokuModel {
 				}
 			}
 		}
+		int loopCount = 0;
 		while(!checkValidity(sudokuSimpleArray) || !isFilledLoop(sudokuSimpleArray)) {
 			//System.out.println("test");
+			loopCount++;
+			System.out.println(loopCount);
 			prem = loop(prem);
+			
 			for(int l = 0; l< n*k; l++) {
 				for(int m = 0; m<n*k; m++) {
 					if(prem.get(l).get(m).size() == 1) {
@@ -119,8 +123,16 @@ public class SudokuModel {
 				}
 			}
 		}
-        System.out.println(prem);
-        System.out.print("done");
+       // System.out.println(prem);
+        //System.out.print("done");
+        for(int i = 0; i<n*k;i++) {
+        	  for(int j = 0; j<n*k;j++) {
+        		  System.out.print(prem.get(i).get(j));
+              	
+              }
+        	  System.out.println("");
+        	
+        }
 		}
 
 	//Method for getting the board
@@ -459,9 +471,9 @@ public class SudokuModel {
 	public ArrayList<ArrayList<ArrayList<Integer>>> markUpCells() {
 
 		ArrayList<ArrayList<ArrayList<Integer>>> markUpBoard = new ArrayList<>();
-		for (int j = 0; j < 9; j++) {
+		for (int j = 0; j < n*k; j++) {
 			ArrayList<ArrayList<Integer>> rows = new ArrayList<>();
-			for (int k = 0; k < 9; k++) {
+			for (int m = 0; m < n*k; m++) {
 				ArrayList<Integer> markUpsCells = new ArrayList<>();
 				rows.add(markUpsCells);
 			}
@@ -545,7 +557,7 @@ public class SudokuModel {
 	}
 	
 	public ArrayList<ArrayList<ArrayList<Integer>>> loop(ArrayList<ArrayList<ArrayList<Integer>>> sudokuLoop) {
-		System.out.println(sudokuLoop);
+		//System.out.println(sudokuLoop);
 		int[][] sudokuSimpleArray = new int[n*k][n*k];
 		for(int l = 0; l< n*k; l++) {
 			for(int m = 0; m<n*k; m++) {
@@ -583,9 +595,9 @@ public class SudokuModel {
 		int sizeOfArrayLoop = 2;
 	
 		ArrayList<ArrayList<ArrayList<Integer>>> sudokuClone = new ArrayList<>();
-		for (int j = 0; j < 9; j++) {
+		for (int j = 0; j < n*k; j++) {
 			ArrayList<ArrayList<Integer>> rows = new ArrayList<>();
-			for (int k = 0; k < 9; k++) {
+			for (int m = 0; m < n*k; m++) {
 				ArrayList<Integer> markUpsCells = new ArrayList<>();
 				rows.add(markUpsCells);
 			}
@@ -643,6 +655,7 @@ public class SudokuModel {
 							if(sudokuClone.get(l).get(m).size() == 0) {
 								sudokuLoop.get(i).get(j).clear();
 								sudokuLoop.get(i).get(j).addAll(returner);
+								change = true;
 								return sudokuLoop;
 							}
 							else if(sudokuClone.get(l).get(m).size() == 1) {
@@ -671,50 +684,12 @@ public class SudokuModel {
 
 		}
 		sizeOfArrayLoop++;
-		if (sizeOfArrayLoop >9 ) {
-			/*sizeOfArrayLoop = 2;
-			test = test +1;
-			
-			if (test>10) {
-				for(int l = 0; l< n*k; l++) {
-					for(int m = 0; m<n*k; m++) {
-						if(sudokuClone.get(l).get(m).size() == 1) {
-							sudokuSimpleArray[l][m] = sudokuClone.get(l).get(m).get(0);
-						}
-						else {
-							sudokuSimpleArray[l][m] = 0;
-						}
-					}
-				}
-
-				if(checkValidity(sudokuSimpleArray) && isFilledLoop(sudokuSimpleArray)) {
-					//System.out.println("test");
-					return sudokuClone;
-				}
-				sudokuClone = loop(sudokuClone);
-				for(int l = 0; l< n*k; l++) {
-					for(int m = 0; m<n*k; m++) {
-						if(sudokuClone.get(l).get(m).size() == 1) {
-							sudokuSimpleArray[l][m] = sudokuClone.get(l).get(m).get(0);
-						}
-						else {
-							sudokuSimpleArray[l][m] = 0;
-						}
-					}
-				}
-				if(checkValidity(sudokuSimpleArray) && isFilledLoop(sudokuSimpleArray)) {
-					//System.out.println("test");
-					return sudokuClone;
-				}
-			}*/
-			
-			return sudokuLoop;
-			
-		}
+		
 		
 			
 		
 		}
+		change = true;
 		return sudokuLoop;
 	}
 	
@@ -783,25 +758,7 @@ public class SudokuModel {
 			}
 		}
 
-		// Checking each square
-		/*
-		 * for (int r = 0; r < Math.sqrt(sudoku.length); r++) {
-		 * for (int c = 0; c < Math.sqrt(sudoku.length); c++) {
-		 * for (int br = 0; br < Math.sqrt(sudoku.length); br++) {
-		 * for (int bc = 0; bc < Math.sqrt(sudoku.length); bc++) {
-		 * int cur = sudoku[(c * 3) + bc][(r * 3) + br];
-		 * if (cur != 0) {
-		 * if (sortedGrid[c + r * 3][cur - 1] == 0) {
-		 * sortedGrid[c + r * 3][cur - 1] = 1;
-		 * } else {
-		 * valid = false;
-		 * }
-		 * }
-		 * }
-		 * }
-		 * }
-		 * }
-		 */
+
 
 		for (int l = 0; l < k * k; l++) {
 
