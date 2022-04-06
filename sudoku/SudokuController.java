@@ -204,7 +204,6 @@ public class SudokuController {
 		model = new SudokuModel();
 		view = new SudokuView();
 		model.giveAccessToView(view);
-
 		model.pushStack(model.getSudoku());
 		view.showFrame(model.peekStack());
 		model.createPreemtiveSets();
@@ -213,11 +212,13 @@ public class SudokuController {
 		view.addNumboardListener(new NumboardListener());
 
 		view.addSudokuControlsListener(new SudokuUndoListener(), new SudokuRemoveListener(), new SudokuNoteListener(),
+		new SudokuNewBoardListener());
 
-				new SudokuNewBoardListener());
 		view.addSudokuboardKeyboardBinding(new KeyboardSudokuListener());
 
 		// model.markUpCells();
 		model.createSudoku();
+		updateColours();
 		}
+		
 	}
