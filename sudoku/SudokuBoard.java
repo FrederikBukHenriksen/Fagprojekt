@@ -76,23 +76,21 @@ public class SudokuBoard extends JPanel {
 
     class Cell extends JToggleButton {
 
-        Color selected = Color.BLUE;
-        Color conflict = Color.red;
-        Color conflictFont = Color.green;
-
-        Color square = new Color(0, 96, 255);
-        Color similar = new Color(0, 32, 255);
-        Color peer = new Color(0, 64, 255);
-
+        Color selected = new Color(161, 205, 240);
+        Color conflict = new Color(240, 192, 193);
+        Color square = new Color(199, 219, 235);
+        Color similar = new Color(144, 182, 212);
+        Color peer = new Color(199, 219, 235);
+        Color conflictFont = new Color(230, 67, 70);
         Color def = Color.white;
-        Color defFont = Color.black;
+        Color defFont = new Color(80, 110, 242);
 
         boolean enabled = true;
 
         public Cell() {
-
             setText("");
             setBackground(def);
+            setForeground(defFont);
             setFont(new Font("Serif", Font.PLAIN, 32));
             setBorder(new LineBorder(Color.black, 1));
             UIManager.put("ToggleButton.highlight", Color.red);
@@ -102,9 +100,10 @@ public class SudokuBoard extends JPanel {
 
         @Override
         public void setEnabled(boolean b) {
-            def = Color.gray;
+            defFont = Color.black;
             enabled = false;
             setBackground(def);
+            setForeground(defFont);
         }
 
         @Override
@@ -126,18 +125,28 @@ public class SudokuBoard extends JPanel {
             setBackground(conflict);
         }
 
+        public void unSelected() { // TODO: Tjek om vi bruger
+            setForeground(defFont);
+            setBackground(def);
+        }
+
         public void similar() {
-            setBackground(similar);
+            if (!(this.getBackground().equals(this.conflict))) {
+                setBackground(similar);
+            }
         }
 
         public void peer() {
-            setBackground(peer);
+            if (!(this.getBackground().equals(this.conflict))) {
+                setBackground(peer);
+            }
         }
 
         public void square() {
-            setBackground(square);
+            if (!(this.getBackground().equals(this.conflict))) {
+                setBackground(square);
+            }
         }
-
     }
 
     public ArrayList<Cell> getCells() {
