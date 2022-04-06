@@ -16,17 +16,20 @@ public class SudokuModel {
 	// Setting up variables
 	int[][] sudoku = new int[0][0];
 	int[][][] sudokuStack = new int[1000][sudoku.length][sudoku.length];
-	static int k = 0;
-	static int n = 0;
+	public static int k = 0;
+	public static int n = 0;
 	int moves = 0;
 	boolean change = false;
 
 	SudokuView view;
 
-	// constructor for the model
-	public SudokuModel(SudokuView view) {
+	public void giveAccessToView(SudokuView view) {
 		this.view = view;
-		File file = new File("sudoku/Puzzles_1/Puzzle_4_01.dat");
+	}
+
+	// constructor for the model
+	public SudokuModel() {
+		File file = new File("sudoku/Puzzles_1/Puzzle_3_01.dat");
 
 
 		Scanner scanner;
