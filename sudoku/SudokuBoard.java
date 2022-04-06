@@ -71,5 +71,79 @@ public class SudokuBoard extends JPanel {
         }
     }
 
+    class Cell extends JToggleButton {
+
+        Color selected = Color.BLUE;
+        Color conflict = Color.red;
+        Color conflictFont = Color.green;
+
+        Color square = new Color(0, 96, 255);
+        Color similar = new Color(0, 32, 255);
+        Color peer = new Color(0, 64, 255);
+
+        Color def = Color.white;
+        Color defFont = Color.black;
+
+        boolean enabled = true;
+
+        public Cell() {
+            setText("");
+            setBackground(def);
+            setFont(new Font("Serif", Font.PLAIN, 32));
+            setBorder(new LineBorder(Color.black, 1));
+            UIManager.put("ToggleButton.highlight", Color.red);
+            UIManager.put("ToggleButton.select", selected);
+            SwingUtilities.updateComponentTreeUI(this);
+        }
+
+        @Override
+        public void setEnabled(boolean b) {
+            def = Color.gray;
+            enabled = false;
+            setBackground(def);
+        }
+
+        @Override
+        public void setText(String text) {
+            if (enabled) {
+                super.setText(text);
+            }
+        }
+
+        public void defaultColor() {
+            setBackground(def);
+            setForeground(defFont);
+        }
+
+        public void conflict() {
+            if (enabled) {
+                setForeground(conflictFont);
+            }
+            setBackground(conflict);
+        }
+
+        public void similar() {
+            setBackground(similar);
+        }
+
+        public void peer() {
+            setBackground(peer);
+        }
+
+        public void square() {
+            setBackground(square);
+        }
+
+    }
+
+    public ArrayList<Cell> getCells() {
+        ArrayList<Cell> temp = new ArrayList<>();
+        for (ArrayList<Cell> arraylist : cells) {
+            for (Cell cell : arraylist) {
+                temp.add(cell);
+            }
+        }
+        return temp;
+    }
 
 }

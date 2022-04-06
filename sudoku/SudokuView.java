@@ -11,6 +11,7 @@ import javax.swing.border.LineBorder;
 
 import java.awt.*;
 
+import sudoku.SudokuBoard.Cell;
 import sudoku.SudokuController.KeyboardSudokuListener;
 
 public class SudokuView extends JFrame {
@@ -18,7 +19,6 @@ public class SudokuView extends JFrame {
 	public int n = SudokuModel.n;
 	public int k = SudokuModel.k;
 	SudokuBoard sudokuBoard;
-	ArrayList<ArrayList<Cell>> sudokuboardCells;
 	ArrayList<JButton> numboardButtons = new ArrayList();
 	JButton undo = new JButton("Undo");
 	JButton remove = new JButton("Remove");
@@ -33,7 +33,6 @@ public class SudokuView extends JFrame {
 	public void showFrame(int[][] sudoku) {
 
 		sudokuBoard = new SudokuBoard(sudoku);
-		sudokuboardCells = sudokuBoard.cells;
 
 		// JPanel board = new JPanel(new GridLayout(k, k));
 		// board.setBounds(0, 0, 500, 500);
@@ -118,46 +117,16 @@ public class SudokuView extends JFrame {
 	}
 
 	void addSudokuboardListener(ActionListener listenForSudokuboardButtons) {
-		for (ArrayList<Cell> arraylist : sudokuboardCells) {
-			for (Cell button : arraylist) {
-				button.addActionListener(listenForSudokuboardButtons);
-			}
+		for (Cell cell : sudokuBoard.getCells()) {
+			cell.addActionListener(listenForSudokuboardButtons);
+
 		}
 	}
 
 	public void addSudokuboardKeyboardBinding(KeyboardSudokuListener keysListenerLolcat) {
-		for (Cell button : getButtons()) {
-			button.addKeyListener(keysListenerLolcat);
+		for (Cell cell : sudokuBoard.getCells()) {
+			cell.addKeyListener(keysListenerLolcat);
 		}
-
-		// EKSEMPEL PÅ KEY-BINDING !!!! MÅ IKKE SLETTES.
-		// button.getInputMap().put(KeyStroke.getKeyStroke("1"),
-		// "check");
-
-		// button.getActionMap().put("check", new AbstractAction() {
-		// public void actionPerformed(ActionEvent e) {
-		// button.setText("2");
-		// }
-		// });
-		// }
-
-	}
-
-	public ArrayList<ArrayList<Cell>> createCells(int[][] sudoku) {
-		/*
-		 * @return a simpel (n*K)*(n*K) 2d array with JToggleButtons
-		 */
-		ArrayList<ArrayList<Cell>> board = new ArrayList<>();
-		for (int i = 0; i < n * k; i++) {
-			ArrayList<Cell> rows = new ArrayList();
-			for (int j = 0; j < n * k; j++) {
-				Cell button = new Cell();
-
-				rows.add(button);
-			}
-			board.add(rows);
-		}
-		return board;
 	}
 
 	public void onlySelectThePressed(Cell buttonSelected) {
@@ -167,24 +136,13 @@ public class SudokuView extends JFrame {
 			return;
 		}
 
-		getButtons().forEach(b -> b.setSelected(false));
+		sudokuBoard.getCells().forEach(b -> b.setSelected(false));
 		buttonSelected.setSelected(true);
 
 	}
 
-	public ArrayList<Cell> getButtons() {
-		ArrayList<Cell> buttonsArray = new ArrayList<>();
-
-		for (ArrayList<Cell> arraylist : sudokuboardCells) {
-			for (Cell button : arraylist) {
-				buttonsArray.add(button);
-			}
-		}
-		return buttonsArray;
-	}
-
 	public Cell getButtonSelected() throws Exception {
-		ArrayList<Cell> result = (ArrayList<Cell>) getButtons().stream()
+		ArrayList<Cell> result = (ArrayList<Cell>) sudokuBoard.getCells().stream()
 				.filter(b -> b.isSelected())
 				.collect(Collectors.toList());
 		try {
@@ -199,7 +157,7 @@ public class SudokuView extends JFrame {
 		int[] coordinate = new int[] { -1, -1 };
 		for (int x = 0; x < n * k; x++) {
 			for (int y = 0; y < n * k; y++) {
-				Cell button = sudokuboardCells.get(x).get(y);
+				Cell button = sudokuBoard.cells.get(x).get(y);
 				if (button.equals(selected)) {
 					coordinate[0] = x;
 					coordinate[1] = y;
@@ -213,10 +171,10 @@ public class SudokuView extends JFrame {
 		for (int x = 0; x < n * k; x++) {
 			for (int y = 0; y < n * k; y++) {
 				if (sudoku[x][y] != 0) {
-					Cell button = sudokuboardCells.get(x).get(y);
+					Cell button = sudokuBoard.cells.get(x).get(y);
 					button.setText(String.valueOf(sudoku[x][y]));
 				} else {
-					Cell button = sudokuboardCells.get(x).get(y);
+					Cell button = sudokuBoard.cells.get(x).get(y);
 					button.setText("");
 				}
 			}
@@ -244,17 +202,17 @@ public class SudokuView extends JFrame {
 				// Run through the square
 				for (int i = squareX * n; i < squareX * n + n; i++) {
 					for (int j = squareY * n; j < squareY * n + n; j++) {
-						sudokuboardCells.get(i).get(j).square();
+						sudokuBoard.cells.get(i).get(j).square();
 					}
 				}
 				// ###PEERS###
 				for (int i = 0; i < (n * k); i++) {
-					sudokuboardCells.get(coordinates[0]).get(i).peer();
-					sudokuboardCells.get(i).get(coordinates[1]).peer();
+					sudokuBoard.cells.get(coordinates[0]).get(i).peer();
+					sudokuBoard.cells.get(i).get(coordinates[1]).peer();
 				}
 
 				// ###SIMILAR NUMBER###
-				for (ArrayList<Cell> array : sudokuboardCells) {
+				for (ArrayList<Cell> array : sudokuBoard.cells) {
 					for (Cell button : array) {
 						if (!cellText.equals("") && button.getText().equals(cellText)) {
 							button.similar();
@@ -269,10 +227,9 @@ public class SudokuView extends JFrame {
 	}
 
 	public void clearMarkedCells() {
-		for (ArrayList<Cell> array : sudokuboardCells) {
-			for (Cell button : array) {
-				button.defaultColor();
-			}
+		for (Cell cell : sudokuBoard.getCells()) {
+			cell.defaultColor();
+
 		}
 	}
 
