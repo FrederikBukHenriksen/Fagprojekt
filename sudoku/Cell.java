@@ -10,7 +10,7 @@ import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.Color;
 
-public class Cell extends JToggleButton implements ActionListener {
+class Cell extends JToggleButton {
 
     Color selected = Color.BLUE;
     Color conflict = Color.red;
@@ -29,7 +29,6 @@ public class Cell extends JToggleButton implements ActionListener {
         setText("");
         setBackground(def);
         setFont(new Font("Serif", Font.PLAIN, 32));
-        this.addActionListener(this);
         setBorder(new LineBorder(Color.black, 1));
         UIManager.put("ToggleButton.highlight", Color.red);
         UIManager.put("ToggleButton.select", selected);
@@ -62,11 +61,6 @@ public class Cell extends JToggleButton implements ActionListener {
         setBackground(conflict);
     }
 
-    public void unSelected() { // TODO: Tjek om vi bruger
-        setForeground(defFont);
-        setBackground(def);
-    }
-
     public void similar() {
         setBackground(similar);
     }
@@ -77,16 +71,5 @@ public class Cell extends JToggleButton implements ActionListener {
 
     public void square() {
         setBackground(square);
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        if (isSelected()) {
-            System.out.println("LOLCAT1");
-
-        } else {
-            System.out.println("LOLCAT2");
-
-        }
     }
 }
