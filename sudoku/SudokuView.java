@@ -34,45 +34,6 @@ public class SudokuView extends JFrame {
 
 		sudokuBoard = new SudokuBoard(sudoku);
 
-		// JPanel board = new JPanel(new GridLayout(k, k));
-		// board.setBounds(0, 0, 500, 500);
-		// board.setBackground(Color.black);
-
-		// sudokuboardCells = createCells(sudoku);
-		// // Separate into squares.
-
-		// for (int l = 0; l < k * k; l++) {
-		// GridLayout grid = new GridLayout(n, n, 10, 10);
-		// grid.setHgap(1);
-		// grid.setVgap(1);
-
-		// JPanel square = new JPanel(grid);
-		// square.setBorder(new LineBorder(Color.black, 1));
-
-		// // Løber gennem størrelsen på én square
-		// for (int i = 0; i < n; i++) {
-		// for (int j = 0; j < n; j++) {// l/k benytter sig af hvordan java runder op.
-		// det er n hvor mange felter
-		// // den skal rygge, og den skal rygge det hver gang l har bev�get sig k
-		// // felter.
-		// if (sudoku[(i + n * (l / k))][(j + n * l) % (k * n)] == 0) {
-		// square.add(sudokuboardCells.get((i + n * (l / k))).get((j + n * l) % (k *
-		// n)));
-
-		// } else {
-		// // JLabel l1 = new JLabel(String.valueOf(sudoku[i+3*(l/3)][(j+3*l)%9]));
-		// sudokuboardCells.get((i + n * (l / k))).get((j + n * l) % (k * n)).setText(
-		// String.valueOf(sudoku[(i + n * (l / k))][(j + n * l) % (k * n)]));
-		// sudokuboardCells.get((i + n * (l / k))).get((j + n * l) % (k *
-		// n)).setEnabled(false);
-		// square.add(sudokuboardCells.get((i + n * (l / k))).get((j + n * l) % (k *
-		// n)));
-		// }
-		// }
-		// }
-		// board.add(square);
-		// }
-
 		JPanel sideButtonGui = new JPanel(new GridLayout(2, 1, 0, 10));// creates buttons panels on the right side
 		sideButtonGui.setBounds(500, 0, 500, 500);
 
@@ -142,15 +103,19 @@ public class SudokuView extends JFrame {
 	}
 
 	public Cell getButtonSelected() throws Exception {
-		ArrayList<Cell> result = (ArrayList<Cell>) sudokuBoard.getCells().stream()
-				.filter(b -> b.isSelected())
-				.collect(Collectors.toList());
-		try {
-			return result.get(0);
-		} catch (Exception e) {
-			// return trash;
+		// ArrayList<Cell> result = (ArrayList<Cell>) sudokuBoard.getCells().stream()
+		// .filter(b -> b.isSelected())
+		// .collect(Collectors.toList());
+		Cell selected = null;
+		for (Cell cell : sudokuBoard.getCells()) {
+			if (cell.isSelected()) {
+				selected = cell;
+			}
+		}
+		if (selected == null) {
 			throw new Exception("No cell selected");
 		}
+		return selected;
 	}
 
 	public int[] getCellCoordinate(Cell selected) {
@@ -179,10 +144,6 @@ public class SudokuView extends JFrame {
 				}
 			}
 		}
-	}
-
-	public void update() {
-
 	}
 
 	public void markCells() {
@@ -220,8 +181,8 @@ public class SudokuView extends JFrame {
 					}
 				}
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (Exception exc) {
+			System.out.println(exc.getMessage());
 		}
 
 	}

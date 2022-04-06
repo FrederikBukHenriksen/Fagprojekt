@@ -2,6 +2,9 @@ package sudoku;
 
 import java.util.ArrayList;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 
@@ -87,6 +90,7 @@ public class SudokuBoard extends JPanel {
         boolean enabled = true;
 
         public Cell() {
+
             setText("");
             setBackground(def);
             setFont(new Font("Serif", Font.PLAIN, 32));
@@ -145,5 +149,4 @@ public class SudokuBoard extends JPanel {
         }
         return temp;
     }
-
 }

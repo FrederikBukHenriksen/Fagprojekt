@@ -113,6 +113,14 @@ public class SudokuController {
 	class SudokuUndoListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			System.out.println("Undo"); // Prints "Undo" FOR DEBUG
+
+			try {
+				view.getButtonSelected().setSelected(false);
+				// TODO: indsæt Rasmus' generelle funktion for farver
+			} catch (Exception exc) {
+				System.out.println(exc.getMessage());
+			}
+
 			model.popStack(); // Removes the last element of the stack
 			model.setSudoku(model.peekStack()); // Updates the board
 			view.updateBoard(model.peekStack()); // Updates the visuals
@@ -207,16 +215,13 @@ public class SudokuController {
 
 		view.addSudokuboardListener(new SudokuboardListener());
 
-		// for (ArrayList<Cell> arraylist : view.sudokuBoard.sudokuboardCells) {
-		// for (Cell button : arraylist) {
-		// button.addActionListener(new SudokuboardListener());
-		// }
-		// }
+		for (Cell cell : view.sudokuBoard.getCells()) {
+			cell.addActionListener(new SudokuboardListener());
+		}
 
 		view.addNumboardListener(new NumboardListener());
 
 		view.addSudokuControlsListener(new SudokuUndoListener(), new SudokuRemoveListener(), new SudokuNoteListener(),
-
 				new SudokuNewBoardListener());
 		view.addSudokuboardKeyboardBinding(new KeyboardSudokuListener());
 
