@@ -21,7 +21,6 @@ public class SudokuController {
 	// KEY EVENT FOR ALLE JTOGGLEBUTTONS PÅ BOARDET.
 	class KeyboardSudokuListener extends KeyAdapter {
 		public void keyPressed(KeyEvent e) {
-
 			try {
 				Cell pressedSudokuboard = view.getButtonSelected();
 				if (pressedSudokuboard.enabled) { // Only the available buttons
@@ -86,6 +85,7 @@ public class SudokuController {
 						model.setSudokuCell(coordinate[0], coordinate[1], Integer.valueOf(cellNew));
 						model.pushStack(model.getSudoku());
 						view.updateBoard(model.getSudoku());
+						updateColours();
 						view.updateFrameTitle(model.checkValidity(model.getSudoku(), true), model.isFilled());
 					}
 				}
@@ -95,7 +95,6 @@ public class SudokuController {
 
 		}
 	}
-}
 
 	// ACTIONLISTENER FOR SUDOKUBOARDET.
 	class SudokuboardListener implements ActionListener {
@@ -129,6 +128,7 @@ public class SudokuController {
 		public void actionPerformed(ActionEvent e) {
 			System.out.println("Remove");
 			try {
+				if (view.getButtonSelected().enabled){
 				int[] coordinate = view.getCellCoordinate(view.getButtonSelected());
 				if (!(model.sudoku[coordinate[0]][coordinate[1]] == 0)) {
 					model.setSudokuCell(coordinate[0], coordinate[1], 0);
@@ -136,6 +136,7 @@ public class SudokuController {
 					view.updateBoard(model.getSudoku());
 					view.updateFrameTitle(model.checkValidity(model.getSudoku(), true), model.isFilled());
 				}
+			}
 			} catch (Exception exc) {
 				System.out.println(exc.getMessage());
 			}
@@ -205,20 +206,18 @@ public class SudokuController {
 
 	public void updateColours(){
 		view.clearMarkedCells();
-		if(!(view.getButtonSelected().equals(view.trash))){
 			view.markCells();
-		}
 		model.checkValidity(model.getSudoku(), false);
 	}
 
 	// Simple constructor
 	public SudokuController() {
-		model = new SudokuModel();
 		view = new SudokuView();
-		model.giveAccessToView(view);
+		model = new SudokuModel(view);
 		model.pushStack(model.getSudoku());
 		view.showFrame(model.peekStack());
-		model.createPreemtiveSets();
+		model.solver();
+		//model.createPreemtiveSets();
 		view.addSudokuboardListener(new SudokuboardListener());
 
 		for (Cell cell : view.sudokuBoard.getCells()) {
@@ -233,7 +232,7 @@ public class SudokuController {
 		view.addSudokuboardKeyboardBinding(new KeyboardSudokuListener());
 
 		// model.markUpCells();
-		model.createSudoku();
+		// model.createSudoku();
 		updateColours();
 		}
 		

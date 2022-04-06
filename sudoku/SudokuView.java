@@ -16,14 +16,15 @@ import sudoku.SudokuController.KeyboardSudokuListener;
 
 public class SudokuView extends JFrame {
 
-	public int n = SudokuModel.n;
-	public int k = SudokuModel.k;
+	public int n;
+	public int k;
 	SudokuBoard sudokuBoard;
 	ArrayList<JButton> numboardButtons = new ArrayList();
 	JButton undo = new JButton("Undo");
 	JButton remove = new JButton("Remove");
 	JButton note = new JButton("note");
 	JButton newSudoku = new JButton("newSudoku");
+	
 
 	public SudokuView() {
 		setVisible(true);
@@ -31,7 +32,8 @@ public class SudokuView extends JFrame {
 	}
 
 	public void showFrame(int[][] sudoku) {
-
+		n = SudokuModel.n;
+		k = SudokuModel.k;
 		sudokuBoard = new SudokuBoard(sudoku);
 
 		JPanel sideButtonGui = new JPanel(new GridLayout(2, 1, 0, 10));// creates buttons panels on the right side
@@ -211,6 +213,6 @@ public class SudokuView extends JFrame {
 	}
 
 	public Cell getCellFromCoord(int x, int y){
-		return sudokuboardCells.get(x).get(y);
+		return sudokuBoard.cells.get(x).get(y);
 	}
 }

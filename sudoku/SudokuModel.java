@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.Stack;
+import sudoku.SudokuBoard.Cell;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -29,7 +30,8 @@ public class SudokuModel {
 	}
 
 	// constructor for the model
-	public SudokuModel() {
+	public SudokuModel(SudokuView view) {
+		this.view = view;
 		File file = new File("sudoku/Puzzles_1/Puzzle_3_01.dat");
 
 		Scanner scanner;
@@ -96,7 +98,9 @@ public class SudokuModel {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+	}
+
+	public void solver(){
 		ArrayList<ArrayList<ArrayList<Integer>>> prem = preemtiveSets(singleton(markUpCells()));
 		//System.out.println(prem);
 		change = true;
@@ -115,7 +119,7 @@ public class SudokuModel {
 				}
 			}
 		}
-		while(!checkValidity(sudokuSimpleArray) || !isFilledLoop(sudokuSimpleArray)) {
+		while(!checkValidity(sudokuSimpleArray, false) || !isFilledLoop(sudokuSimpleArray)) {
 			//System.out.println("test");
 			prem = loop(prem);
 			for(int l = 0; l< n*k; l++) {
@@ -131,7 +135,7 @@ public class SudokuModel {
 		}
        // System.out.println(prem);
         //System.out.print("done");
-		}
+	}
 
 	//Method for getting the board
 	public int[][] getSudoku() {
@@ -182,7 +186,7 @@ public class SudokuModel {
 	}
 
 	public ArrayList<ArrayList<ArrayList<Integer>>> preemtiveSets(ArrayList<ArrayList<ArrayList<Integer>>> sudokuPre) {
-		System.out.println(sudokuPre);
+		//System.out.println(sudokuPre);
 		change = false;
 		int sizeOfSet = 2;
 		int flag = 0;
@@ -644,7 +648,7 @@ public class SudokuModel {
 			}
 		}
 
-		if(checkValidity(sudokuSimpleArray) && isFilledLoop(sudokuSimpleArray)) {
+		if(checkValidity(sudokuSimpleArray, false) && isFilledLoop(sudokuSimpleArray)) {
 			return sudokuLoop;
 		}
 		change = true;
@@ -652,9 +656,9 @@ public class SudokuModel {
 		int sizeOfArrayLoop = 2;
 	
 		ArrayList<ArrayList<ArrayList<Integer>>> sudokuClone = new ArrayList<>();
-		for (int j = 0; j < 9; j++) {
+		for (int j = 0; j < n * k; j++) {
 			ArrayList<ArrayList<Integer>> rows = new ArrayList<>();
-			for (int k = 0; k < 9; k++) {
+			for (int m = 0; m < n * k; m++) {
 				ArrayList<Integer> markUpsCells = new ArrayList<>();
 				rows.add(markUpsCells);
 			}
@@ -690,10 +694,10 @@ public class SudokuModel {
 						}
 					}
 
-					if(checkValidity(sudokuSimpleArray) && isFilledLoop(sudokuSimpleArray)) {
+					if(checkValidity(sudokuSimpleArray, false) && isFilledLoop(sudokuSimpleArray)) {
 						return sudokuClone;
 					}
-					else if (!checkValidity(sudokuSimpleArray)) {
+					else if (!checkValidity(sudokuSimpleArray, false)) {
 						sudokuLoop.get(i).get(j).clear();
 						sudokuLoop.get(i).get(j).addAll(returner);
 						change = true;
@@ -722,11 +726,11 @@ public class SudokuModel {
 							}
 						}
 					}
-					if(checkValidity(sudokuSimpleArray) && isFilledLoop(sudokuSimpleArray)) {
+					if(checkValidity(sudokuSimpleArray, false) && isFilledLoop(sudokuSimpleArray)) {
 						//System.out.println("test");
 						return sudokuClone;
 					}
-					else if (!checkValidity(sudokuSimpleArray)) {
+					else if (!checkValidity(sudokuSimpleArray, false)) {
 						sudokuLoop.get(i).get(j).clear();
 						sudokuLoop.get(i).get(j).addAll(returner);
 						change = true;
@@ -964,6 +968,7 @@ public class SudokuModel {
 			}
 			System.out.println();
 		}
+	}
 
 	public static ArrayList<Cell> getFailedCells(){
 		return failedCoords;
