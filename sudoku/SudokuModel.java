@@ -589,9 +589,16 @@ public class SudokuModel {
 					} else {
 						valid = false;
 						if(print){
-							System.out.println("Row:  j: " + i + ", i: " + j);
+							System.out.println("Row:  x: " + i + ", j: " + j);
 						}
 						failedCoords.add(view.getCellFromCoord(i,j));
+						for(int o = 0; o < j; o++){
+							if(sudoku[i][o] == cur){
+								if(!(failedCoords.contains(view.getCellFromCoord(i,o)))){
+									failedCoords.add(view.getCellFromCoord(i,o));
+								}
+							}
+						}
 					}
 				}
 			}
@@ -615,18 +622,25 @@ public class SudokuModel {
 		}
 
 		// Checking columns for duplicates
-		for (int i = 0; i < sudoku.length; i++) {
-			for (int j = 0; j < sudoku.length; j++) {
-				int cur = (sudoku[j][i]);
+		for (int j = 0; j < sudoku.length; j++) {
+			for (int i = 0; i < sudoku.length; i++) {
+				int cur = (sudoku[i][j]);
 				if (cur != 0) {
-					if (sortedGrid[i][cur - 1] == 0) {
-						sortedGrid[i][cur - 1] = 1;
+					if (sortedGrid[j][cur - 1] == 0) {
+						sortedGrid[j][cur - 1] = 1;
 					} else {
 						valid = false;
 						if(print){
-							System.out.println("Column:  j: " + j + ", i: " + i);
+							System.out.println("Row:  x: " + i + ", y: " + j);
 						}
-						failedCoords.add(view.getCellFromCoord(j,i));
+						failedCoords.add(view.getCellFromCoord(i,j));
+						for(int o = 0; o < i; o++){
+							if(sudoku[o][j] == cur){
+								if(!(failedCoords.contains(view.getCellFromCoord(o,j)))){
+									failedCoords.add(view.getCellFromCoord(o,j));
+								}
+							}
+						}
 					}
 				}
 			}
@@ -667,20 +681,32 @@ public class SudokuModel {
 												// felter.
 					int cur = sudoku[(i + n * (l / k))][(j + n * l) % (k * n)];
 					if (cur != 0) {
-						if (sortedGrid[l][cur - 1] == 0) {
-							sortedGrid[l][cur - 1] = 1;
-						} else {
+						sortedGrid[l][cur - 1] = sortedGrid[l][cur - 1] + 1;
+					}
+				}
+			}
+		}
+		for (int l = 0; l < k * k; l++) {
+
+			for (int i = 0; i < n; i++) {
+
+				for (int j = 0; j < n; j++) {// l/k benytter sig af hvordan java runder op. det er n hvor mange felter
+												// den skal rygge, og den skal rygge det hver gang l har bev�get sig k
+												// felter.
+					int cur = sudoku[(i + n * (l / k))][(j + n * l) % (k * n)];
+					if (cur != 0) {
+						if (sortedGrid[l][cur - 1] > 1) {
 							valid = false;
 							if(print){
 								System.out.println("Square:  j: " +(i + n * (l / k))+ ", i: " + (j + n * l) % (k * n));
 							}
 							failedCoords.add(view.getCellFromCoord((i + n * (l / k)),(j + n * l) % (k * n)));
+
 						}
 					}
 				}
 			}
 		}
-
 		/*
 		 * for(int i = 0; i < sortedGrid.length; i++){
 		 * for(int k = 0; k < sortedGrid.length; k++){
