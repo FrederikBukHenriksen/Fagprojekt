@@ -120,6 +120,7 @@ public class SudokuController {
 			model.popStack(); // Removes the last element of the stack
 			model.setSudoku(model.peekStack()); // Updates the board
 			view.updateBoard(model.peekStack()); // Updates the visuals
+			view.updateFrameTitle(model.checkValidity(model.getSudoku(), true), model.isFilled());
 			updateColours();
 		}
 	}

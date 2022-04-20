@@ -32,7 +32,7 @@ public class SudokuModel {
 	// constructor for the model
 	public SudokuModel(SudokuView view) {
 		this.view = view;
-		File file = new File("sudoku/Puzzles_1/Puzzle_4_01.dat");
+		File file = new File("sudoku/Puzzles_1/Puzzle_3_01S.txt");
 
 		Scanner scanner;
 		// reading the input
