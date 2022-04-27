@@ -24,7 +24,7 @@ public class SudokuView extends JFrame {
 	ArrayList<JButton> numboardButtons = new ArrayList();
 	JButton undo = new JButton("Undo");
 	JButton remove = new JButton("Remove");
-	JButton note = new JButton("note");
+	JButton note = new JButton("Redo");
 	JButton newSudoku = new JButton("newSudoku");
 	
 
@@ -189,7 +189,7 @@ public class SudokuView extends JFrame {
 				}
 			}
 		} catch (Exception exc) {
-			System.out.println(exc.getMessage());
+			//System.out.println(exc.getMessage());
 		}
 
 	}
