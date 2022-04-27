@@ -80,18 +80,19 @@ public class SudokuController {
 					}
 
 					if (!cellNew.equals("")) {
+						model.clearRedoStack();
 						// Update board both in data and visually
 						int[] coordinate = view.getCellCoordinate(pressedSudokuboard);
 						int tempVal = model.getSudoku()[coordinate[0]][coordinate[1]];
 						model.setSudokuCell(coordinate[0], coordinate[1], Integer.valueOf(cellNew));
-						model.pushStack2(coordinate[0], coordinate[1], tempVal, Integer.valueOf(cellNew));
+						model.pushStack2(model.createStackObj(coordinate[0], coordinate[1], tempVal, Integer.valueOf(cellNew)));
 						view.updateBoard(model.getSudoku());
 						updateColours();
-						view.updateFrameTitle(model.checkValidity(model.getSudoku(), true), model.isFilled());
+						view.updateFrameTitle(model.checkValidity(model.getSudoku(), false), model.isFilled());
 					}
 				}
 			} catch (Exception exc) {
-				System.out.println(exc.getMessage());
+				//System.out.println(exc.getMessage());
 			}
 
 		}
@@ -109,39 +110,40 @@ public class SudokuController {
 	// Code for undo-button
 	class SudokuUndoListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			System.out.println("Undo"); // Prints "Undo" FOR DEBUG
-
-			try {
-				view.getButtonSelected().setSelected(false);
-				// TODO: indsæt Rasmus' generelle funktion for farver
-			} catch (Exception exc) {
-				System.out.println(exc.getMessage());
+			if(model.moves > 0){
+				//System.out.println("Undo"); // Prints "Undo" FOR DEBUG
+				try {
+					view.getButtonSelected().setSelected(false);
+					// TODO: indsæt Rasmus' generelle funktion for farver
+				} catch (Exception exc) {
+					//System.out.println(exc.getMessage());
+				}
+				model.pushRedoStack(model.popStack2()); // Removes the last element of the stack
+				//model.setSudoku(model.getSudoku()); // Updates the board
+				view.updateBoard(model.getSudoku()); // Updates the visuals
+				view.updateFrameTitle(model.checkValidity(model.getSudoku(), false), model.isFilled());
+				updateColours();
 			}
-
-			model.popStack2(); // Removes the last element of the stack
-			model.setSudoku(model.getSudoku()); // Updates the board
-			view.updateBoard(model.getSudoku()); // Updates the visuals
-			view.updateFrameTitle(model.checkValidity(model.getSudoku(), true), model.isFilled());
-			updateColours();
 		}
 	}
 
 	class SudokuRemoveListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			System.out.println("Remove");
+			//System.out.println("Remove"); //Prints "Remove" for DEBUG
 			try {
 				if (view.getButtonSelected().enabled){
 				int[] coordinate = view.getCellCoordinate(view.getButtonSelected());
 				if (!(model.sudoku[coordinate[0]][coordinate[1]] == 0)) {
+					model.clearRedoStack();
 					int tempVal = model.getSudoku()[coordinate[0]][coordinate[1]];
 					model.setSudokuCell(coordinate[0], coordinate[1], 0);
-					model.pushStack2(coordinate[0], coordinate[1], tempVal, 0);
+					model.pushStack2(model.createStackObj(coordinate[0], coordinate[1], tempVal, 0));
 					view.updateBoard(model.getSudoku());
-					view.updateFrameTitle(model.checkValidity(model.getSudoku(), true), model.isFilled());
+					view.updateFrameTitle(model.checkValidity(model.getSudoku(), false), model.isFilled());
 				}
 			}
 			} catch (Exception exc) {
-				System.out.println(exc.getMessage());
+				//System.out.println(exc.getMessage());
 			}
 			updateColours();
 		}
@@ -149,13 +151,13 @@ public class SudokuController {
 
 	class SudokuNoteListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			System.out.println("Note");
+			//System.out.println("Note"); //Prints "Note" for DEBUG
 		}
 	}
 
 	class SudokuNewBoardListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			System.out.println("New Sudoku");
+			//System.out.println("New Sudoku"); //Prints "New Sudoku" for DEBUG
 		}
 	}
 
@@ -169,6 +171,7 @@ public class SudokuController {
 			try {
 				Cell pressedSudokuboard = view.getButtonSelected();
 				if (pressedSudokuboard.enabled) {
+					model.clearRedoStack();
 					String cellNew = "";
 					String cellCurrent = pressedSudokuboard.getText();
 					if (!cellCurrent.equals("")) { // Hvis der står noget i cellen
@@ -191,20 +194,40 @@ public class SudokuController {
 
 					// update sudoku Stack
 
-					model.pushStack2(coordinate[0], coordinate[1], tempVal, Integer.valueOf(cellNew));
+					model.pushStack2(model.createStackObj(coordinate[0], coordinate[1], tempVal, Integer.valueOf(cellNew)));
 
 					// Update the board visuals
 					view.updateBoard(model.getSudoku());
 
 			// TODO:NEDENSTÅENE BRUGES KUN TIL DE-BUG.
-			view.updateFrameTitle(model.checkValidity(model.getSudoku(), true), model.isFilled());
+			view.updateFrameTitle(model.checkValidity(model.getSudoku(), false), model.isFilled());
 
 					pressedSudokuboard.requestFocus();
 				}
 			} catch (Exception exc) {
-				System.out.println(exc.getMessage());
+				//System.out.println(exc.getMessage());
 			}
 			updateColours();
+		}
+	}
+
+	// Code for redo-button
+	class SudokuRedoListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			if(model.redoes > 0){
+				//System.out.println("Redo"); // Prints "Redo" FOR DEBUG
+				try {
+					view.getButtonSelected().setSelected(false);
+					// TODO: indsæt Rasmus' generelle funktion for farver
+				} catch (Exception exc) {
+					//System.out.println(exc.getMessage());
+				}
+				model.pushStack2(model.popRedoStack()); // Removes the last element of the stack
+				//model.setSudoku(model.getSudoku()); // Updates the board
+				view.updateBoard(model.getSudoku()); // Updates the visuals
+				view.updateFrameTitle(model.checkValidity(model.getSudoku(), false), model.isFilled());
+				updateColours();
+			}
 		}
 	}
 
@@ -229,7 +252,7 @@ public class SudokuController {
 
 		view.addNumboardListener(new NumboardListener());
 
-		view.addSudokuControlsListener(new SudokuUndoListener(), new SudokuRemoveListener(), new SudokuNoteListener(),
+		view.addSudokuControlsListener(new SudokuUndoListener(), new SudokuRemoveListener(), new SudokuRedoListener(),
 		new SudokuNewBoardListener());
 
 		view.addSudokuboardKeyboardBinding(new KeyboardSudokuListener());

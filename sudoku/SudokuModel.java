@@ -18,9 +18,11 @@ public class SudokuModel {
 	int[][] sudoku = new int[0][0];
 	//int[][][] sudokuStack = new int[1000][sudoku.length][sudoku.length];
 	stackObj[] sudokuStack2 = new stackObj[1000];
+	stackObj[] redoStack = new stackObj[1000];
 	public static int k = 0;
 	public static int n = 0;
 	int moves = 0;
+	int redoes = 0;
 	boolean change = false;
 	static ArrayList<Cell> failedCoords = new ArrayList<Cell>();
 
@@ -33,7 +35,7 @@ public class SudokuModel {
 	// constructor for the model
 	public SudokuModel(SudokuView view) {
 		this.view = view;
-		File file = new File("sudoku/Puzzles_1/Puzzle_4_01.dat");
+		File file = new File("sudoku/Puzzles_1/Puzzle_3_10.dat");
 
 		Scanner scanner;
 		// reading the input
@@ -134,7 +136,8 @@ public class SudokuModel {
 				}
 			}
 		}
-    	System.out.println(prem);
+		//UNCOMMENT BELOW LINE FOR SOLUTION
+    	//System.out.println(prem);
         //System.out.print("done");
 	}
 
@@ -447,9 +450,15 @@ public class SudokuModel {
 	}*/
 
 	//Push for new stack
-	public void pushStack2(int x, int y, int oldVal, int newVal){
-		sudokuStack2[moves] = new stackObj(x, y, oldVal, newVal);
+	public void pushStack2(stackObj x){
+		sudokuStack2[moves] = x;
 		moves++;
+	}
+
+	//Push for redo-stack
+	public void pushRedoStack(stackObj x){
+		redoStack[redoes] = x;
+		redoes++;
 	}
 
 	/*public int[][] popStack() {
@@ -466,16 +475,29 @@ public class SudokuModel {
 	}*/
 
 	//new pop method
-	public void popStack2(){
+	public stackObj popStack2(){
 		stackObj temp = sudokuStack2[moves-1];
 		sudoku[temp.getX()][temp.getY()] = temp.prevVal;
-		if(moves > 1){
-			moves--;
-		}
+		moves--;
+		return temp;
+	}
+
+	//Pop for redo-stack
+	public stackObj popRedoStack(){
+		stackObj temp = redoStack[redoes-1];
+		sudoku[temp.getX()][temp.getY()] = temp.newVal;
+		redoes--;
+		return temp;
 	}
 
 	public int[][] peekStack() {
 		return getSudoku();
+	}
+
+	//Method for clearing the redo stack
+	public void clearRedoStack(){
+		redoStack = new stackObj[1000];
+		redoes = 0;
 	}
 
 	//Returns the size of the stack
@@ -483,6 +505,11 @@ public class SudokuModel {
 		return moves;
 	}
 	
+	//CreateStackObject method
+	public stackObj createStackObj(int x, int y, int oldVal, int newVal){
+		return new stackObj(x, y, oldVal, newVal);
+	}
+
 	//Method for updating the markUp board, given a set of possible entries and their coordinates
 	public ArrayList<ArrayList<ArrayList<Integer>>> updateMarkup(ArrayList<ArrayList<ArrayList<Integer>>> markupBoard, ArrayList<Integer> set, ArrayList<Integer> xCoords, ArrayList<Integer> yCoords, int mode){
 		//System.out.print("Ycords markup: "+ yCoords);
@@ -655,7 +682,8 @@ public class SudokuModel {
 	}
 	
 	public ArrayList<ArrayList<ArrayList<Integer>>> loop(ArrayList<ArrayList<ArrayList<Integer>>> sudokuLoop) {
-		System.out.println(sudokuLoop);
+		//Nedenstående er til DEBUG
+		//System.out.println(sudokuLoop);
 		int[][] sudokuSimpleArray = new int[n*k][n*k];
 		for(int l = 0; l< n*k; l++) {
 			for(int m = 0; m<n*k; m++) {
