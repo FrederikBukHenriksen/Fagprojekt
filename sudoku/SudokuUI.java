@@ -19,9 +19,9 @@ import sudoku.SudokuController.KeyboardSudokuListener;
  */
 public class SudokuUI {
 
-    public JButton undo = new JButton("Undo");
-    public JButton redo = new JButton("Redo");
-    public JButton remove = new JButton("Remove");
+    public MenuButton undo = new MenuButton("Undo");
+    public MenuButton redo = new MenuButton("Redo");
+    public MenuButton remove = new MenuButton("Remove");
 
     int n = SudokuModel.n;
     int k = SudokuModel.k;
@@ -51,6 +51,7 @@ public class SudokuUI {
             }
         }
         return panel;
+
 
     }
 
@@ -103,8 +104,8 @@ public class SudokuUI {
 
     class NumpadButton extends JButton {
 
-        Color def = Color.white;
-        Color defFont = new Color(80, 110, 242);
+        Color def = Color.gray;
+        Color defFont = Color.white;
 
         public NumpadButton(String text) {
             setText(text);
