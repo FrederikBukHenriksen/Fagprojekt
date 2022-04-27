@@ -16,7 +16,8 @@ import java.util.Collections;
 public class SudokuModel {
 	// Setting up variables
 	int[][] sudoku = new int[0][0];
-	int[][][] sudokuStack = new int[1000][sudoku.length][sudoku.length];
+	//int[][][] sudokuStack = new int[1000][sudoku.length][sudoku.length];
+	stackObj[] sudokuStack2 = new stackObj[1000];
 	public static int k = 0;
 	public static int n = 0;
 	int moves = 0;
@@ -32,7 +33,7 @@ public class SudokuModel {
 	// constructor for the model
 	public SudokuModel(SudokuView view) {
 		this.view = view;
-		File file = new File("sudoku/Puzzles_1/Puzzle_3_01S.txt");
+		File file = new File("sudoku/Puzzles_1/Puzzle_4_01.dat");
 
 		Scanner scanner;
 		// reading the input
@@ -59,7 +60,7 @@ public class SudokuModel {
 			else{// Creating the board
 				sudoku = new int[n * k][n * k];
 				// Creating variables for looping through input
-				sudokuStack = new int[1000][sudoku.length][sudoku.length];
+				//sudokuStack = new int[1000][sudoku.length][sudoku.length];
 				int c = 0;
 				int d = 0;
 				scanner.nextLine();
@@ -408,17 +409,50 @@ public class SudokuModel {
 		return peers.stream().mapToInt(i -> i).toArray();
 	}
 
+	class stackObj {
+		int xCoord = 0;
+		int yCoord = 0;
+		int prevVal = 0;
+		int newVal = 0;
+
+		public stackObj (int a, int b, int c, int d){
+			xCoord = a;
+			yCoord = b;
+			prevVal = c;
+			newVal = d;
+		}
+
+		public int getX(){
+			return xCoord;
+		}
+		public int getY(){
+			return yCoord;
+		}
+		public int getPrevVal(){
+			return prevVal;
+		}
+		public int getNewVal(){
+			return newVal;
+		}
+	}
+
   //Methods for pushing, popping and peeking stack
-	public void pushStack(int[][] newBoard){
+	/*public void pushStack(int[][] newBoard){
 		for(int i = 0; i < sudoku.length; i++){
 			for(int j = 0; j < sudoku.length; j++){
 				sudokuStack[moves][i][j] = sudoku[i][j];
 			}
 		}
 		moves++;
+	}*/
+
+	//Push for new stack
+	public void pushStack2(int x, int y, int oldVal, int newVal){
+		sudokuStack2[moves] = new stackObj(x, y, oldVal, newVal);
+		moves++;
 	}
 
-	public int[][] popStack() {
+	/*public int[][] popStack() {
 		int[][] temp = new int[sudoku.length][sudoku.length];
 		for (int i = 0; i < sudoku.length; i++) {
 			for (int j = 0; j < sudoku.length; j++) {
@@ -429,16 +463,19 @@ public class SudokuModel {
 			moves--;
 		}
 		return temp;
+	}*/
+
+	//new pop method
+	public void popStack2(){
+		stackObj temp = sudokuStack2[moves-1];
+		sudoku[temp.getX()][temp.getY()] = temp.prevVal;
+		if(moves > 1){
+			moves--;
+		}
 	}
 
 	public int[][] peekStack() {
-		int[][] temp = new int[sudoku.length][sudoku.length];
-		for (int i = 0; i < sudoku.length; i++) {
-			for (int j = 0; j < sudoku.length; j++) {
-				temp[i][j] = sudokuStack[moves - 1][i][j];
-			}
-		}
-		return temp;
+		return getSudoku();
 	}
 
 	//Returns the size of the stack

@@ -82,8 +82,9 @@ public class SudokuController {
 					if (!cellNew.equals("")) {
 						// Update board both in data and visually
 						int[] coordinate = view.getCellCoordinate(pressedSudokuboard);
+						int tempVal = model.getSudoku()[coordinate[0]][coordinate[1]];
 						model.setSudokuCell(coordinate[0], coordinate[1], Integer.valueOf(cellNew));
-						model.pushStack(model.getSudoku());
+						model.pushStack2(coordinate[0], coordinate[1], tempVal, Integer.valueOf(cellNew));
 						view.updateBoard(model.getSudoku());
 						updateColours();
 						view.updateFrameTitle(model.checkValidity(model.getSudoku(), true), model.isFilled());
@@ -117,9 +118,9 @@ public class SudokuController {
 				System.out.println(exc.getMessage());
 			}
 
-			model.popStack(); // Removes the last element of the stack
-			model.setSudoku(model.peekStack()); // Updates the board
-			view.updateBoard(model.peekStack()); // Updates the visuals
+			model.popStack2(); // Removes the last element of the stack
+			model.setSudoku(model.getSudoku()); // Updates the board
+			view.updateBoard(model.getSudoku()); // Updates the visuals
 			view.updateFrameTitle(model.checkValidity(model.getSudoku(), true), model.isFilled());
 			updateColours();
 		}
@@ -132,8 +133,9 @@ public class SudokuController {
 				if (view.getButtonSelected().enabled){
 				int[] coordinate = view.getCellCoordinate(view.getButtonSelected());
 				if (!(model.sudoku[coordinate[0]][coordinate[1]] == 0)) {
+					int tempVal = model.getSudoku()[coordinate[0]][coordinate[1]];
 					model.setSudokuCell(coordinate[0], coordinate[1], 0);
-					model.pushStack(model.getSudoku());
+					model.pushStack2(coordinate[0], coordinate[1], tempVal, 0);
 					view.updateBoard(model.getSudoku());
 					view.updateFrameTitle(model.checkValidity(model.getSudoku(), true), model.isFilled());
 				}
@@ -182,16 +184,17 @@ public class SudokuController {
 
 					// Update sudoku cell
 					int[] coordinate = view.getCellCoordinate(pressedSudokuboard);
+					int tempVal = model.getSudoku()[coordinate[0]][coordinate[1]];
 					if (coordinate[0] != -1) {
 						model.setSudokuCell(coordinate[0], coordinate[1], Integer.valueOf(cellNew));
 					}
 
 					// update sudoku Stack
 
-					model.pushStack(model.getSudoku());
+					model.pushStack2(coordinate[0], coordinate[1], tempVal, Integer.valueOf(cellNew));
 
 					// Update the board visuals
-					view.updateBoard(model.peekStack());
+					view.updateBoard(model.getSudoku());
 
 			// TODO:NEDENSTÅENE BRUGES KUN TIL DE-BUG.
 			view.updateFrameTitle(model.checkValidity(model.getSudoku(), true), model.isFilled());
@@ -207,7 +210,7 @@ public class SudokuController {
 
 	public void updateColours(){
 		view.clearMarkedCells();
-			view.markCells();
+		view.markCells();
 		model.checkValidity(model.getSudoku(), false);
 	}
 
@@ -215,8 +218,7 @@ public class SudokuController {
 	public SudokuController() {
 		view = new SudokuView();
 		model = new SudokuModel(view);
-		model.pushStack(model.getSudoku());
-		view.showFrame(model.peekStack());
+		view.showFrame(model.getSudoku());
 		model.solver();
 		//model.createPreemtiveSets();
 		view.addSudokuboardListener(new SudokuboardListener());
