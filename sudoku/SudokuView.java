@@ -19,7 +19,9 @@ public class SudokuView extends JFrame {
 	public int n;
 	public int k;
 	SudokuBoard sudokuBoard;
-	ArrayList<JButton> numboardButtons = new ArrayList();
+	SudokuUI sudokuUI;
+
+	// ArrayList<JButton> numboardButtons = new ArrayList();
 	JButton undo = new JButton("Undo");
 	JButton remove = new JButton("Remove");
 	JButton note = new JButton("note");
@@ -30,6 +32,7 @@ public class SudokuView extends JFrame {
 		setDefaultCloseOperation(this.EXIT_ON_CLOSE);
 		setResizable(false);
 		setVisible(true);
+		// getContentPane().setBackground(Color.black);
 
 		// setVisible(true);
 
@@ -39,6 +42,7 @@ public class SudokuView extends JFrame {
 		n = SudokuModel.n;
 		k = SudokuModel.k;
 		sudokuBoard = new SudokuBoard(sudoku);
+		sudokuUI = new SudokuUI();
 
 		setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
@@ -48,101 +52,50 @@ public class SudokuView extends JFrame {
 
 		add(sudokuBoard, c);
 
-		JMenuBar mb = new JMenuBar();
-
-		// create a menu
-		JMenu x = new JMenu("Menu");
-
-		// create menuitems
-		JMenuItem m1 = new JMenuItem("MenuItem1");
-		JMenuItem m2 = new JMenuItem("MenuItem2");
-		JMenuItem m3 = new JMenuItem("MenuItem3");
-
-		// add menu items to menu
-		x.add(m1);
-		x.add(m2);
-		x.add(m3);
-
-		// add menu to menu bar
-		mb.add(x);
-
 		// add menubar to frame
-		setJMenuBar(mb);
+		setJMenuBar(sudokuUI.createMenubar());
 
 		c.gridx = 0;
 		c.gridy = 1;
 
-		JPanel numboard = new JPanel();
-		numboard.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
-		numboard.setBorder(new LineBorder(Color.black, 1));
+		// JPanel numboard = new JPanel();
+		// numboard.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
+		// numboard.setBorder(new LineBorder(Color.black, 1));
 
-		for (int i = 1; i <= k * n; i++) {
-			JButton button = new JButton(String.valueOf(i));// adds number as label to button
-			button.setFont(new Font("Serif", Font.PLAIN, 16));
-			button.setPreferredSize(new Dimension(50, 50));
-			button.setBorder(new LineBorder(Color.black, 1));
+		// for (int i = 1; i <= k * n; i++) {
+		// JButton button = new JButton(String.valueOf(i));// adds number as label to
+		// button
+		// button.setFont(new Font("Serif", Font.PLAIN, 16));
+		// button.setPreferredSize(new Dimension(50, 50));
+		// button.setBorder(new LineBorder(Color.black, 1));
 
-			// button.setBorder(BorderFactory.createCompoundBorder(
-			// BorderFactory.createLineBorder(Color.CYAN, 5),
-			// BorderFactory.createEmptyBorder(5, 5, 10, 10)));
+		// // button.setBorder(BorderFactory.createCompoundBorder(
+		// // BorderFactory.createLineBorder(Color.CYAN, 5),
+		// // BorderFactory.createEmptyBorder(5, 5, 10, 10)));
 
-			numboardButtons.add(button);
+		// numboardButtons.add(button);
 
-			numboard.add(button);
+		// numboard.add(button);
 
-			if (i % n == 0 && i < k * n) {
-				JLabel lol = new JLabel();
-				lol.setPreferredSize(new Dimension(2, 0));
-				numboard.add(lol);
-				System.out.println("LOL");
-			}
-		}
+		// if (i % n == 0 && i < k * n) {
+		// JLabel lol = new JLabel();
+		// lol.setPreferredSize(new Dimension(2, 0));
+		// numboard.add(lol);
+		// System.out.println("LOL");
+		// }
+		// }
 		// JLabel lol = new JLabel();
 		// lol.setSize(0, 1);
 		// numboard.add(lol);
-		add(numboard, c);
+
+		add(sudokuUI.createNumpad(), c);
 
 		c.gridx = 0;
 		c.gridy = 2;
-		JPanel lolcat = new JPanel();
-		lolcat.setLayout(new FlowLayout());
-		lolcat.add(new JButton("Remove"));
-		lolcat.add(new JButton("Undo"));
-		lolcat.add(new JButton("Redo"));
 
-		add(lolcat, c);
+		add(sudokuUI.createControls(), c);
 		pack();
 
-		System.out.println(this.getSize());
-		System.out.println(numboard.getSize());
-
-	}
-
-	// Actionlistener
-
-	void addNumboardListener(ActionListener listenForNumboardButtons) {
-		numboardButtons.forEach(b -> b.addActionListener(listenForNumboardButtons));
-	}
-
-	void addSudokuControlsListener(ActionListener listenForUndo, ActionListener listenForRemove,
-			ActionListener listenForNote, ActionListener listenForNew) {
-		undo.addActionListener(listenForUndo);
-		remove.addActionListener(listenForRemove);
-		note.addActionListener(listenForNote);
-		newSudoku.addActionListener(listenForNew);
-	}
-
-	void addSudokuboardListener(ActionListener listenForSudokuboardButtons) {
-		for (Cell cell : sudokuBoard.getCells()) {
-			cell.addActionListener(listenForSudokuboardButtons);
-
-		}
-	}
-
-	public void addSudokuboardKeyboardBinding(KeyboardSudokuListener keysListenerLolcat) {
-		for (Cell cell : sudokuBoard.getCells()) {
-			cell.addKeyListener(keysListenerLolcat);
-		}
 	}
 
 	public void onlySelectThePressed(Cell buttonSelected) {

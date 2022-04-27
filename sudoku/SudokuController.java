@@ -114,7 +114,7 @@ public class SudokuController {
 				view.getButtonSelected().setSelected(false);
 				// TODO: indsæt Rasmus' generelle funktion for farver
 			} catch (Exception exc) {
-				System.out.println(exc.getMessage());
+				// System.out.println(exc.getMessage());
 			}
 
 			model.popStack(); // Removes the last element of the stack
@@ -217,23 +217,17 @@ public class SudokuController {
 		model = new SudokuModel(view);
 		model.pushStack(model.getSudoku());
 		view.showFrame(model.peekStack());
-		model.solver();
-		// model.createPreemtiveSets();
-		view.addSudokuboardListener(new SudokuboardListener());
+		// model.solver();
 
 		for (Cell cell : view.sudokuBoard.getCells()) {
 			cell.addActionListener(new SudokuboardListener());
+			cell.addKeyListener(new KeyboardSudokuListener());
 		}
+		view.sudokuUI.numpadButtons.forEach(b -> b.addActionListener(new NumboardListener()));
+		view.sudokuUI.undo.addActionListener(new SudokuUndoListener());
+		view.sudokuUI.redo.addActionListener(new SudokuNoteListener());
+		view.sudokuUI.remove.addActionListener(new SudokuRemoveListener());
 
-		view.addNumboardListener(new NumboardListener());
-
-		view.addSudokuControlsListener(new SudokuUndoListener(), new SudokuRemoveListener(), new SudokuNoteListener(),
-				new SudokuNewBoardListener());
-
-		view.addSudokuboardKeyboardBinding(new KeyboardSudokuListener());
-
-		// model.markUpCells();
-		// model.createSudoku();
 		updateColours();
 	}
 

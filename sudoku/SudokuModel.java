@@ -15,7 +15,7 @@ import java.util.Collections;
 
 public class SudokuModel {
 	// Setting up variables
-	int[][] sudoku = new int[0][0];
+	static int[][] sudoku = new int[0][0];
 	int[][][] sudokuStack = new int[1000][sudoku.length][sudoku.length];
 	public static int k = 0;
 	public static int n = 0;
