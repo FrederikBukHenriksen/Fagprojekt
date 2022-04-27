@@ -237,7 +237,8 @@ public class SudokuView extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
 				//Rick-roll user on exit?
-				/*String url = "https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley";
+				/*
+				String url = "https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley";
 
         String myOS = System.getProperty("os.name").toLowerCase();
 
