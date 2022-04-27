@@ -129,15 +129,15 @@ public class SudokuController {
 		public void actionPerformed(ActionEvent e) {
 			System.out.println("Remove");
 			try {
-				if (view.getButtonSelected().enabled){
-				int[] coordinate = view.getCellCoordinate(view.getButtonSelected());
-				if (!(model.sudoku[coordinate[0]][coordinate[1]] == 0)) {
-					model.setSudokuCell(coordinate[0], coordinate[1], 0);
-					model.pushStack(model.getSudoku());
-					view.updateBoard(model.getSudoku());
-					view.updateFrameTitle(model.checkValidity(model.getSudoku(), true), model.isFilled());
+				if (view.getButtonSelected().enabled) {
+					int[] coordinate = view.getCellCoordinate(view.getButtonSelected());
+					if (!(model.sudoku[coordinate[0]][coordinate[1]] == 0)) {
+						model.setSudokuCell(coordinate[0], coordinate[1], 0);
+						model.pushStack(model.getSudoku());
+						view.updateBoard(model.getSudoku());
+						view.updateFrameTitle(model.checkValidity(model.getSudoku(), true), model.isFilled());
+					}
 				}
-			}
 			} catch (Exception exc) {
 				System.out.println(exc.getMessage());
 			}
@@ -193,8 +193,8 @@ public class SudokuController {
 					// Update the board visuals
 					view.updateBoard(model.peekStack());
 
-			// TODO:NEDENSTÅENE BRUGES KUN TIL DE-BUG.
-			view.updateFrameTitle(model.checkValidity(model.getSudoku(), true), model.isFilled());
+					// TODO:NEDENSTÅENE BRUGES KUN TIL DE-BUG.
+					view.updateFrameTitle(model.checkValidity(model.getSudoku(), true), model.isFilled());
 
 					pressedSudokuboard.requestFocus();
 				}
@@ -205,9 +205,9 @@ public class SudokuController {
 		}
 	}
 
-	public void updateColours(){
+	public void updateColours() {
 		view.clearMarkedCells();
-			view.markCells();
+		view.markCells();
 		model.checkValidity(model.getSudoku(), false);
 	}
 
@@ -218,7 +218,7 @@ public class SudokuController {
 		model.pushStack(model.getSudoku());
 		view.showFrame(model.peekStack());
 		model.solver();
-		//model.createPreemtiveSets();
+		// model.createPreemtiveSets();
 		view.addSudokuboardListener(new SudokuboardListener());
 
 		for (Cell cell : view.sudokuBoard.getCells()) {
@@ -228,13 +228,13 @@ public class SudokuController {
 		view.addNumboardListener(new NumboardListener());
 
 		view.addSudokuControlsListener(new SudokuUndoListener(), new SudokuRemoveListener(), new SudokuNoteListener(),
-		new SudokuNewBoardListener());
+				new SudokuNewBoardListener());
 
 		view.addSudokuboardKeyboardBinding(new KeyboardSudokuListener());
 
 		// model.markUpCells();
 		// model.createSudoku();
 		updateColours();
-		}
-		
 	}
+
+}

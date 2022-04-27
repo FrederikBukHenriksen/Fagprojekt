@@ -1,9 +1,5 @@
 package sudoku;
 
-import java.awt.Font;
-import java.awt.GridLayout;
-import java.awt.FlowLayout;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -30,8 +26,13 @@ public class SudokuView extends JFrame {
 	JButton newSudoku = new JButton("newSudoku");
 
 	public SudokuView() {
-		setVisible(true);
+		// setVisible(true);
 		setDefaultCloseOperation(this.EXIT_ON_CLOSE);
+		setResizable(false);
+		setVisible(true);
+
+		// setVisible(true);
+
 	}
 
 	public void showFrame(int[][] sudoku) {
@@ -39,36 +40,82 @@ public class SudokuView extends JFrame {
 		k = SudokuModel.k;
 		sudokuBoard = new SudokuBoard(sudoku);
 
-		JPanel sideButtonGui = new JPanel(new GridLayout(2, 1, 0, 10));// creates buttons panels on the right side
-		sideButtonGui.setBounds(500, 0, 500, 500);
+		setLayout(new GridBagLayout());
+		GridBagConstraints c = new GridBagConstraints();
 
-		JPanel specialButton = new JPanel(new GridLayout(1, 4, 0, 0));
+		c.gridx = 0;
+		c.gridy = 0;
 
-		specialButton.add(undo);
-		specialButton.add(remove);
-		specialButton.add(note);
-		specialButton.add(newSudoku);
+		add(sudokuBoard, c);
 
-		sideButtonGui.add(specialButton);
+		JMenuBar mb = new JMenuBar();
 
-		JPanel buttonGui = new JPanel(new GridLayout(3, 3, 20, 20));// creates a 3/3 with numbers from 1-9
-		for (int j = 0; j < 9; j++) {
-			numboardButtons.add(new JButton(j + 1 + ""));// adds number as label to button
-			numboardButtons.get(j).setActionCommand(j + 1 + "");
-			numboardButtons.get(j).setFont(new Font("Serif", Font.PLAIN, 72));
-			buttonGui.add(numboardButtons.get(j));
+		// create a menu
+		JMenu x = new JMenu("Menu");
+
+		// create menuitems
+		JMenuItem m1 = new JMenuItem("MenuItem1");
+		JMenuItem m2 = new JMenuItem("MenuItem2");
+		JMenuItem m3 = new JMenuItem("MenuItem3");
+
+		// add menu items to menu
+		x.add(m1);
+		x.add(m2);
+		x.add(m3);
+
+		// add menu to menu bar
+		mb.add(x);
+
+		// add menubar to frame
+		setJMenuBar(mb);
+
+		c.gridx = 0;
+		c.gridy = 1;
+
+		JPanel numboard = new JPanel();
+		numboard.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
+		numboard.setBorder(new LineBorder(Color.black, 1));
+
+		for (int i = 1; i <= k * n; i++) {
+			JButton button = new JButton(String.valueOf(i));// adds number as label to button
+			button.setFont(new Font("Serif", Font.PLAIN, 16));
+			button.setPreferredSize(new Dimension(50, 50));
+			button.setBorder(new LineBorder(Color.black, 1));
+
+			// button.setBorder(BorderFactory.createCompoundBorder(
+			// BorderFactory.createLineBorder(Color.CYAN, 5),
+			// BorderFactory.createEmptyBorder(5, 5, 10, 10)));
+
+			numboardButtons.add(button);
+
+			numboard.add(button);
+
+			if (i % n == 0 && i < k * n) {
+				JLabel lol = new JLabel();
+				lol.setPreferredSize(new Dimension(2, 0));
+				numboard.add(lol);
+				System.out.println("LOL");
+			}
 		}
+		// JLabel lol = new JLabel();
+		// lol.setSize(0, 1);
+		// numboard.add(lol);
+		add(numboard, c);
 
-		sideButtonGui.add(buttonGui);
+		c.gridx = 0;
+		c.gridy = 2;
+		JPanel lolcat = new JPanel();
+		lolcat.setLayout(new FlowLayout());
+		lolcat.add(new JButton("Remove"));
+		lolcat.add(new JButton("Undo"));
+		lolcat.add(new JButton("Redo"));
 
-		add(sudokuBoard);
-		add(sideButtonGui);
-		// setting grid layout of 3 rows and 3 columns
-		setLayout(new FlowLayout());
-		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		int screenHeight = (int) Math.round(screenSize.getHeight());
-		int screenWidth = (int) Math.round(screenSize.getWidth());
-		setBounds((screenWidth / 2) - 640, (screenHeight / 2) - 360, 1280, 720);
+		add(lolcat, c);
+		pack();
+
+		System.out.println(this.getSize());
+		System.out.println(numboard.getSize());
+
 	}
 
 	// Actionlistener

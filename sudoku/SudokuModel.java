@@ -32,7 +32,7 @@ public class SudokuModel {
 	// constructor for the model
 	public SudokuModel(SudokuView view) {
 		this.view = view;
-		File file = new File("sudoku/Puzzles_1/Puzzle_3_01.dat");
+		File file = new File("sudoku/Puzzles_1/Puzzle_4_01.dat");
 
 		Scanner scanner;
 		// reading the input
@@ -54,7 +54,7 @@ public class SudokuModel {
 			}
 			setupScanner.close();
 			if(k > n){
-				System.out.println("Not a valid sudoku-size, k cannot exceed n");
+				// System.out.println("Not a valid sudoku-size, k cannot exceed n");
 			}
 			else{// Creating the board
 				sudoku = new int[n * k][n * k];
@@ -133,7 +133,7 @@ public class SudokuModel {
 				}
 			}
 		}
-    	System.out.println(prem);
+		// System.out.println(prem);
         //System.out.print("done");
 	}
 
@@ -814,7 +814,7 @@ public class SudokuModel {
 					} else {
 						valid = false;
 						if(print){
-							System.out.println("Row:  x: " + i + ", j: " + j);
+							// System.out.println("Row: x: " + i + ", j: " + j);
 						}
 						failedCoords.add(view.getCellFromCoord(i,j));
 						for(int o = 0; o < j; o++){
@@ -856,7 +856,7 @@ public class SudokuModel {
 					} else {
 						valid = false;
 						if(print){
-							System.out.println("Row:  x: " + i + ", y: " + j);
+							// System.out.println("Row: x: " + i + ", y: " + j);
 						}
 						failedCoords.add(view.getCellFromCoord(i,j));
 						for(int o = 0; o < i; o++){
@@ -923,7 +923,8 @@ public class SudokuModel {
 						if (sortedGrid[l][cur - 1] > 1) {
 							valid = false;
 							if(print){
-								System.out.println("Square:  j: " +(i + n * (l / k))+ ", i: " + (j + n * l) % (k * n));
+								// System.out.println("Square: j: " +(i + n * (l / k))+ ", i: " + (j + n * l) %
+								// (k * n));
 							}
 							failedCoords.add(view.getCellFromCoord((i + n * (l / k)),(j + n * l) % (k * n)));
 
@@ -942,7 +943,8 @@ public class SudokuModel {
 		 */
 		if(print){
 			for(int i = 0; i < failedCoords.size(); i++){
-				System.out.print(view.getCellCoordinate(failedCoords.get(i))[0] + "," + view.getCellCoordinate(failedCoords.get(i))[1] + " ");
+				// System.out.print(view.getCellCoordinate(failedCoords.get(i))[0] + "," +
+				// view.getCellCoordinate(failedCoords.get(i))[1] + " ");
 			}
 		}
 		for(int i = 0; i < failedCoords.size(); i++){
@@ -964,9 +966,9 @@ public class SudokuModel {
 	public void printSudoku(int[][] sudokuBoard) {
 		for (int i = 0; i < sudokuBoard.length; i++) {
 			for (int k = 0; k < sudokuBoard.length; k++) {
-				System.out.print(sudokuBoard[i][k] + " ");
+				// System.out.print(sudokuBoard[i][k] + " ");
 			}
-			System.out.println();
+			// System.out.println();
 		}
 	}
 

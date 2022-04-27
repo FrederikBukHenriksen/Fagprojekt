@@ -30,6 +30,8 @@ public class SudokuBoard extends JPanel {
         setBackground(Color.black);
         createCells();
         createBoard();
+        setSize(this.getPreferredSize());
+
     }
 
     public void createCells() {

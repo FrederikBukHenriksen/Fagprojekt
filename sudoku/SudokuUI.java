@@ -44,11 +44,16 @@ public class SudokuUI extends JPanel {
         add(specialButton);
 
         JPanel buttonGui = new JPanel(new GridLayout(3, 3, 20, 20));// creates a 3/3 with numbers from 1-9
+
+        JPanel numboard = new JPanel();
+        numboard.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
+
         for (int j = 0; j < 9; j++) {
             numboardButtons.add(new NumpadButton(j + 1 + ""));// adds number as label to button
             numboardButtons.get(j).setActionCommand(j + 1 + "");
-            numboardButtons.get(j).setFont(new Font("Serif", Font.PLAIN, 72));
-            buttonGui.add(numboardButtons.get(j));
+            numboardButtons.get(j).setFont(new Font("Serif", Font.PLAIN, 20));
+            numboard.add(numboardButtons.get(j));
+
         }
 
         add(buttonGui);
