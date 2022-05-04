@@ -17,10 +17,35 @@ public class SudokuController {
 	// Creating variables
 	SudokuModel model;
 	SudokuView view;
+	boolean ctrlPressed = false;
+	boolean zPressed = false;
+	boolean yPressed = false;
 
 	// KEY EVENT FOR ALLE JTOGGLEBUTTONS PÅ BOARDET.
 	class KeyboardSudokuListener extends KeyAdapter {
 		public void keyPressed(KeyEvent e) {
+			int keyCode = e.getKeyCode();
+			if( keyCode == KeyEvent.VK_Z){
+				zPressed = true;
+				yPressed = false;
+				if(ctrlPressed){
+					undoMove();
+				}
+			} else if( keyCode == KeyEvent.VK_Y){
+				yPressed = true;
+				zPressed = false;
+				if(ctrlPressed){
+					redoMove();
+				}
+			} else if( keyCode == KeyEvent.VK_CONTROL){
+				ctrlPressed = true;
+				if(zPressed){
+					undoMove();
+				}
+				else if(yPressed){
+					redoMove();
+				}
+			} else{
 			try {
 				Cell pressedSudokuboard = view.getButtonSelected();
 				if (pressedSudokuboard.enabled) { // Only the available buttons
@@ -36,7 +61,6 @@ public class SudokuController {
 					}
 
 					// Gets the digit entered
-					int keyCode = e.getKeyCode();
 					if (keyCode == KeyEvent.VK_1 || keyCode == KeyEvent.VK_NUMPAD1) {
 						keyPressed = "1";
 					} else if (keyCode == KeyEvent.VK_2 || keyCode == KeyEvent.VK_NUMPAD2) {
@@ -64,7 +88,8 @@ public class SudokuController {
 						} else if (cellNew.length() == 1) {
 							cellNew = "0";
 						}
-					} else {
+					} 
+				    else {
 						return;
 					}
 
@@ -93,9 +118,28 @@ public class SudokuController {
 					}
 				}
 			} catch (Exception exc) {
-				// System.out.println(exc.getMessage());
+				System.out.println(exc.getMessage());
 			}
+		}
+		}
+		public void keyReleased(KeyEvent e){
+			try{
+				// Gets the digit entered
+				int keyCode = e.getKeyCode();
+				if( keyCode == KeyEvent.VK_Z){
+					zPressed = false;
+				} else if( keyCode == KeyEvent.VK_CONTROL){
+					ctrlPressed = false;
+				} else if( keyCode == KeyEvent.VK_Y){
+					yPressed = false;
+				} else {
+					return;
+				}
 
+			}
+			catch (Exception exc){
+				//System.out.println(exc.getMessage());
+			}
 		}
 	}
 
@@ -111,20 +155,7 @@ public class SudokuController {
 	// Code for undo-button
 	class SudokuUndoListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			if (model.moves > 0) {
-				// System.out.println("Undo"); // Prints "Undo" FOR DEBUG
-				try {
-					view.getButtonSelected().setSelected(false);
-					// TODO: indsæt Rasmus' generelle funktion for farver
-				} catch (Exception exc) {
-					// System.out.println(exc.getMessage());
-				}
-				model.pushRedoStack(model.popStack2()); // Removes the last element of the stack
-				// model.setSudoku(model.getSudoku()); // Updates the board
-				view.updateBoard(model.getSudoku()); // Updates the visuals
-				view.updateFrameTitle(model.checkValidity(model.getSudoku(), false), model.isFilled());
-				updateColours();
-			}
+			undoMove();
 		}
 	}
 
@@ -216,20 +247,7 @@ public class SudokuController {
 	// Code for redo-button
 	class SudokuRedoListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			if (model.redoes > 0) {
-				// System.out.println("Redo"); // Prints "Redo" FOR DEBUG
-				try {
-					view.getButtonSelected().setSelected(false);
-					// TODO: indsæt Rasmus' generelle funktion for farver
-				} catch (Exception exc) {
-					// System.out.println(exc.getMessage());
-				}
-				model.pushStack2(model.popRedoStack()); // Removes the last element of the stack
-				// model.setSudoku(model.getSudoku()); // Updates the board
-				view.updateBoard(model.getSudoku()); // Updates the visuals
-				view.updateFrameTitle(model.checkValidity(model.getSudoku(), false), model.isFilled());
-				updateColours();
-			}
+			redoMove();
 		}
 	}
 
@@ -237,6 +255,41 @@ public class SudokuController {
 		view.clearMarkedCells();
 		view.markCells();
 		model.checkValidity(model.getSudoku(), false);
+	}
+
+	public void redoMove(){
+		if (model.redoes > 0) {
+			// System.out.println("Redo"); // Prints "Redo" FOR DEBUG
+			try {
+				view.getButtonSelected().setSelected(false);
+				// TODO: indsæt Rasmus' generelle funktion for farver
+			} catch (Exception exc) {
+				// System.out.println(exc.getMessage());
+			}
+			model.pushStack2(model.popRedoStack()); // Removes the last element of the stack
+			// model.setSudoku(model.getSudoku()); // Updates the board
+			view.updateBoard(model.getSudoku()); // Updates the visuals
+			view.updateFrameTitle(model.checkValidity(model.getSudoku(), false), model.isFilled());
+			updateColours();
+		}
+	}
+
+	public void undoMove(){
+		if (model.moves > 0) {
+			// System.out.println("Undo"); // Prints "Undo" FOR DEBUG
+			try {
+				view.getButtonSelected().setSelected(false);
+				// TODO: indsæt Rasmus' generelle funktion for farver
+			} catch (Exception exc) {
+				// System.out.println(exc.getMessage());
+			}
+			model.pushRedoStack(model.popStack2()); // Removes the last element of the stack
+			// model.setSudoku(model.getSudoku()); // Updates the board
+			view.updateBoard(model.getSudoku()); // Updates the visuals
+			view.updateFrameTitle(model.checkValidity(model.getSudoku(), false), model.isFilled());
+			updateColours();
+		}
+		System.out.println("UNDO"); //For debug
 	}
 
 	// Simple constructor
