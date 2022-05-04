@@ -8,6 +8,7 @@ import javax.swing.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.awt.*;
+import java.awt.event.*;
 import sudoku.SudokuBoard.Cell;
 import sudoku.SudokuController.KeyboardSudokuListener;
 
