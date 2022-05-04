@@ -41,7 +41,7 @@ public class SudokuModel {
 
 	public SudokuModel(SudokuView view) {
 		this.view = view;
-		File file = new File("sudoku/Puzzles_1/Puzzle_3_10.dat");
+		File file = new File("C:\\Users\\Candytom\\eclipse-workspace\\Sudoku\\src\\Puzzle_5_01.dat");
 
 		Scanner scanner;
 		// reading the input
@@ -753,11 +753,11 @@ public class SudokuModel {
   
 	public ArrayList<ArrayList<ArrayList<Integer>>> loop(ArrayList<ArrayList<ArrayList<Integer>>> sudokuLoop) {
 		//System.out.println(sudokuLoop);
-		int sizeOfArrayLoop = 2;
+		int sizeOfArrayLoop = 2; //initializing variables
 		int currentLoopX = -1;
 		int currentLoopY = -1;
 		ArrayList<Integer> returner = new ArrayList<>();	
-		ArrayList<ArrayList<ArrayList<Integer>>> sudokuClone = new ArrayList<>();
+		ArrayList<ArrayList<ArrayList<Integer>>> sudokuClone = new ArrayList<>(); //creating a sudoku clone
 		for (int j = 0; j < n * k; j++) {
 			ArrayList<ArrayList<Integer>> rows = new ArrayList<>();
 			for (int m = 0; m < n * k; m++) {
@@ -768,48 +768,48 @@ public class SudokuModel {
 		}
 		for (int i = 0; i < n * k; i++) {
 			for (int j = 0; j < n * k; j++) {
-				sudokuClone.get(i).get(j).addAll(sudokuLoop.get(i).get(j));
+				sudokuClone.get(i).get(j).addAll(sudokuLoop.get(i).get(j)); //adding data into sudoku clone
 			}
 		}
-		loop:
-		while(sizeOfArrayLoop<n*k) {
-			for (int i = 0; i<n*k; i++) {
+		loop://This loop find the first smallest cell (with the least amount of options)
+		while(sizeOfArrayLoop<n*k) { 
+			for (int i = 0; i<n*k; i++) { 
 				for (int j = 0; j<n*k; j++) {
 					if (sudokuClone.get(i).get(j).size() == sizeOfArrayLoop) {		
-						returner.addAll(sudokuClone.get(i).get(j)); 
+						returner.addAll(sudokuClone.get(i).get(j)); //adds all numbers to a returner variable 
 						sudokuClone.get(i).get(j).clear();
-						sudokuClone.get(i).get(j).add(returner.get(0));
-						returner.remove(returner.get(0));	
+						sudokuClone.get(i).get(j).add(returner.get(0)); //adds only the first number to the sudoku clone
+						returner.remove(returner.get(0));	 //removes the first element from the returner function 
 						change = true;
 						currentLoopX = i;
 						currentLoopY = j;
-						break loop;
+						break loop;  //breaks out of loop
 						}
 				}
 			}
 			sizeOfArrayLoop++;
 		}
-		if (currentLoopX == -1) {
+		if (currentLoopX == -1) { //if no solution was found
 			return sudokuLoop;
 		}
 		change=true;
 		while(change == true) {
-			sudokuClone = preemtiveSets(singleton(sudokuClone));
+			sudokuClone = preemtiveSets(singleton(sudokuClone));  //does preemtivesets and singleton
 			//System.out.println(sudokuClone);
 			for(int l = 0; l< n*k; l++) {
 				for(int m = 0; m<n*k; m++) {
 					if(sudokuClone.get(l).get(m).size() == 0) {
-						sudokuLoop.get(currentLoopX).get(currentLoopY).clear();
+						sudokuLoop.get(currentLoopX).get(currentLoopY).clear(); //returns unchanged loop with returner, if sudokuClone finds a cell with no possibilities
 						sudokuLoop.get(currentLoopX).get(currentLoopY).addAll(returner);
 						return sudokuLoop;
 					}
 				}
 			}
 		}
-		int[][] sudokuSimpleArray = new int[n*k][n*k];
+		int[][] sudokuSimpleArray = new int[n*k][n*k]; //create 2d array, to verify
 		for(int l = 0; l< n*k; l++) {
 			for(int m = 0; m<n*k; m++) {
-				if(sudokuClone.get(l).get(m).size() == 1) {
+				if(sudokuClone.get(l).get(m).size() == 1) {  //only checks our known numbers, not markups
 					sudokuSimpleArray[l][m] = sudokuClone.get(l).get(m).get(0);
 				}
 				else {
@@ -817,7 +817,7 @@ public class SudokuModel {
 				}
 			}
 		}
-		if(checkValidity(sudokuSimpleArray, false) && isFilledLoop(sudokuSimpleArray)) {
+		if(checkValidity(sudokuSimpleArray, false) && isFilledLoop(sudokuSimpleArray)) { //Checks if it is solved. If it is the first time it is solved, it will return like it was not solved. 
 			if (solved == true) {
 				unique = false;
 				return sudokuClone;
@@ -825,7 +825,7 @@ public class SudokuModel {
 			else {
 				for(int l = 0; l< n*k; l++) {
 					for(int m = 0; m<n*k; m++) {
-						solvedSudoku[l][m] = sudokuClone.get(l).get(m).get(0);
+						solvedSudoku[l][m] = sudokuClone.get(l).get(m).get(0); 
 					}
 				}
 				solved = true;
@@ -836,15 +836,15 @@ public class SudokuModel {
 				return sudokuLoop;
 			}
 		}
-		if(!checkValidity(sudokuSimpleArray, false)){
+		if(!checkValidity(sudokuSimpleArray, false)){ //checks if invalid, returns original with returner if invalid
 				sudokuLoop.get(currentLoopX).get(currentLoopY).clear();
 				sudokuLoop.get(currentLoopX).get(currentLoopY).addAll(returner);
 				return sudokuLoop;
 			}
 		
-		while(!checkValidity(sudokuSimpleArray, false) || !isFilledLoop(sudokuSimpleArray)) {
-			sudokuClone = loop(sudokuClone);
-			for(int l = 0; l< n*k; l++) {
+		while(!checkValidity(sudokuSimpleArray, false) || !isFilledLoop(sudokuSimpleArray)) {//this loop runs till the sudoku is solved
+			sudokuClone = loop(sudokuClone); //It calls recursive
+			for(int l = 0; l< n*k; l++) { //Creates simple sudoku array to verify, and then runs all the verification like before
 				for(int m = 0; m<n*k; m++) {
 					if(sudokuClone.get(l).get(m).size() == 1) {
 						sudokuSimpleArray[l][m] = sudokuClone.get(l).get(m).get(0);
