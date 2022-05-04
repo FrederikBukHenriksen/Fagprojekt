@@ -9,10 +9,10 @@ import java.util.stream.Collectors;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 
-import java.awt.*;
-
 import sudoku.SudokuBoard.Cell;
 import sudoku.SudokuController.KeyboardSudokuListener;
+
+import java.awt.*;
 
 public class SudokuView extends JFrame {
 
