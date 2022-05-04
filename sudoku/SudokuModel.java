@@ -24,11 +24,14 @@ public class SudokuModel {
   int[][] solvedSudoku = new int [0][0];
 	public static int k = 0;
 	public static int n = 0;
+	public static int[] xSums = new int[n*k];
+	public static int[] ySums = new int[n*k];
 	int moves = 0;
 	int redoes = 0;
   boolean solved = false;
 	boolean unique = false;
 	boolean change = false;
+	boolean isSandwich = false;
 	static ArrayList<Cell> failedCoords = new ArrayList<Cell>();
 
 	static SudokuView view;
@@ -41,7 +44,7 @@ public class SudokuModel {
 
 	public SudokuModel(SudokuView view) {
 		this.view = view;
-		File file = new File("sudoku/Puzzles_1/Puzzle_3_10.dat");
+		File file = new File("sudoku/Puzzles_1/Puzzle_S_000.dat");
 
 		Scanner scanner;
 		// reading the input
@@ -66,12 +69,15 @@ public class SudokuModel {
 				// System.out.println("Not a valid sudoku-size, k cannot exceed n");
 			} else {// Creating the board
 				sudoku = new int[n * k][n * k];
+				// Creating variables for sandwich Sums
+				xSums = new int[n*k];
+				ySums = new int[n*k];
 				// Creating variables for looping through input
 				// sudokuStack = new int[1000][sudoku.length][sudoku.length];
 				int c = 0;
 				int d = 0;
 				scanner.nextLine();
-				while (scanner.hasNextLine()) {
+				for(int j = 0; j < n*k; j++) {
 					// Reads the next line
 					String line = scanner.nextLine();
 					Scanner lineScanner = new Scanner(line);
@@ -100,8 +106,39 @@ public class SudokuModel {
 					d = 0;
 					lineScanner.close();
 				}
+				if(scanner.hasNextLine()){
+					isSandwich = true;
+					String line = scanner.nextLine();
+					Scanner lineScanner = new Scanner(line);
+					lineScanner.useDelimiter(":");
+					int index = 0;
+					while(lineScanner.hasNext()){
+						String str = lineScanner.next();
+						try {
+							// If input isn't ".", read the number and insert into array
+							xSums[index] = Integer.parseInt(str);
+							index++;
+						} catch (NumberFormatException ex) {
+							ex.printStackTrace();
+						}
+					}
+					lineScanner.close();
+					line = scanner.nextLine();
+					lineScanner = new Scanner(line);
+					lineScanner.useDelimiter(":");
+					index = 0;
+					while(lineScanner.hasNext()){
+						String str = lineScanner.next();
+						try {
+							// If input isn't ".", read the number and insert into array
+							ySums[index] = Integer.parseInt(str);
+							index++;
+						} catch (NumberFormatException ex) {
+							ex.printStackTrace();
+						}
+					}
+				}
 			}
-
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -109,6 +146,7 @@ public class SudokuModel {
 	}
 
 	public void solver() {
+		if(!isSandwich){
 		ArrayList<ArrayList<ArrayList<Integer>>> prem = preemtiveSets(singleton(markUpCells()));
 		// System.out.println(prem);
 		change = true;
@@ -172,6 +210,7 @@ public class SudokuModel {
         //System.out.println("It is unique = " + unique);
         //System.out.println(prem);
 		}
+	}
 
 	// Method for getting the board
 	public int[][] getSudoku() {
@@ -902,6 +941,9 @@ public class SudokuModel {
 
 		// Checking rows for duplicates
 		for (int i = 0; i < sudoku.length; i++) {
+			int rowSum = 0;
+			boolean inSandwich = false;
+			boolean sandwichFilled = false;
 			for (int j = 0; j < sudoku.length; j++) {
 				int cur = (sudoku[i][j]);
 				if (cur != 0) {
@@ -921,7 +963,25 @@ public class SudokuModel {
 							}
 						}
 					}
+					if((cur == 1 || cur == 9) && !inSandwich){
+						inSandwich = true;
+						sandwichFilled = true;
+						continue;
+					}
+					if((cur == 1 || cur == 9) && inSandwich){
+						inSandwich = false;
+						continue;
+					}
+					if(inSandwich){
+						rowSum += cur;
+					}
 				}
+				else if (cur == 0 && inSandwich){
+					sandwichFilled = false;
+				}
+			}
+			if(rowSum != ySums[i] && isSandwich && sandwichFilled && !inSandwich){
+				valid = false;
 			}
 		}
 
@@ -944,6 +1004,9 @@ public class SudokuModel {
 
 		// Checking columns for duplicates
 		for (int j = 0; j < sudoku.length; j++) {
+			int rowSum = 0;
+			boolean inSandwich = false;
+			boolean sandwichFilled = false;
 			for (int i = 0; i < sudoku.length; i++) {
 				int cur = (sudoku[i][j]);
 				if (cur != 0) {
@@ -963,7 +1026,25 @@ public class SudokuModel {
 							}
 						}
 					}
+					if((cur == 1 || cur == 9) && !inSandwich){
+						inSandwich = true;
+						sandwichFilled = true;
+						continue;
+					}
+					if((cur == 1 || cur == 9) && inSandwich){
+						inSandwich = false;
+						continue;
+					}
+					if(inSandwich){
+						rowSum += cur;
+					}
 				}
+				else if (cur == 0 && inSandwich){
+					sandwichFilled = false;
+				}
+			}
+			if(rowSum != xSums[j] && isSandwich && sandwichFilled && !inSandwich){
+				valid = false;
 			}
 		}
 
@@ -1030,6 +1111,7 @@ public class SudokuModel {
 		}
 		return valid;
 	}
+
 
 	public boolean isFilledLoop(int[][] sudoku) {
 		boolean result = true;

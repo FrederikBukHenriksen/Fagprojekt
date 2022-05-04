@@ -30,9 +30,7 @@ public class SudokuView extends JFrame {
 		setResizable(false);
 		setVisible(true);
 		// getContentPane().setBackground(Color.black);
-
 		// setVisible(true);
-
 	}
 
 	public void showFrame(int[][] sudoku) {
