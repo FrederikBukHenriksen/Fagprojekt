@@ -39,7 +39,7 @@ public class SudokuModel {
 
 	public SudokuModel(SudokuView view) {
 		this.view = view;
-		File file = new File("E:\\Eclibse\\Sudoku\\src\\Puzzle_3_expert.dat");
+		File file = new File("C:\\Users\\Candytom\\eclipse-workspace\\Sudoku\\src\\puzzle_5_01.dat");
 
 
 		Scanner scanner;
@@ -654,18 +654,12 @@ public class SudokuModel {
 		//System.out.println("end: "+sudokuSing);	
 		return sudokuSing;
 	}
-	
 	public ArrayList<ArrayList<ArrayList<Integer>>> loop(ArrayList<ArrayList<ArrayList<Integer>>> sudokuLoop) {
 		//System.out.println(sudokuLoop);
-		int[][] sudokuSimpleArray = new int[n*k][n*k];
-		int loopOneComplete = 1;
-		for(int l = 0; l< n*k; l++) {
-			for(int m = 0; m<n*k; m++) {
-				if(sudokuLoop.get(l).get(m).size() == 0) {
-					return sudokuLoop;
-				}
-			}
-		}
+		int sizeOfArrayLoop = 2;
+		int currentLoopX = -1;
+		int currentLoopY = -1;
+		ArrayList<Integer> returner = new ArrayList<>();	
 		ArrayList<ArrayList<ArrayList<Integer>>> sudokuClone = new ArrayList<>();
 		for (int j = 0; j < n * k; j++) {
 			ArrayList<ArrayList<Integer>> rows = new ArrayList<>();
@@ -680,6 +674,27 @@ public class SudokuModel {
 				sudokuClone.get(i).get(j).addAll(sudokuLoop.get(i).get(j));
 			}
 		}
+		loop:
+		while(sizeOfArrayLoop<n*k) {
+			for (int i = 0; i<n*k; i++) {
+				for (int j = 0; j<n*k; j++) {
+					if (sudokuClone.get(i).get(j).size() == sizeOfArrayLoop) {		
+						returner.addAll(sudokuClone.get(i).get(j)); 
+						sudokuClone.get(i).get(j).clear();
+						sudokuClone.get(i).get(j).add(returner.get(0));
+						returner.remove(returner.get(0));	
+						change = true;
+						currentLoopX = i;
+						currentLoopY = j;
+						break loop;
+						}
+				}
+			}
+			sizeOfArrayLoop++;
+		}
+		if (currentLoopX == -1) {
+			return sudokuLoop;
+		}
 		change=true;
 		while(change == true) {
 			sudokuClone = preemtiveSets(singleton(sudokuClone));
@@ -687,12 +702,14 @@ public class SudokuModel {
 			for(int l = 0; l< n*k; l++) {
 				for(int m = 0; m<n*k; m++) {
 					if(sudokuClone.get(l).get(m).size() == 0) {
+						sudokuLoop.get(currentLoopX).get(currentLoopY).clear();
+						sudokuLoop.get(currentLoopX).get(currentLoopY).addAll(returner);
 						return sudokuLoop;
 					}
 				}
 			}
 		}
-
+		int[][] sudokuSimpleArray = new int[n*k][n*k];
 		for(int l = 0; l< n*k; l++) {
 			for(int m = 0; m<n*k; m++) {
 				if(sudokuClone.get(l).get(m).size() == 1) {
@@ -704,97 +721,72 @@ public class SudokuModel {
 			}
 		}
 		if(checkValidity(sudokuSimpleArray, false) && isFilledLoop(sudokuSimpleArray)) {
+			if (solved == true) {
+				unique = false;
+				return sudokuClone;
+			}
+			else {
+				for(int l = 0; l< n*k; l++) {
+					for(int m = 0; m<n*k; m++) {
+						solvedSudoku[l][m] = sudokuClone.get(l).get(m).get(0);
+					}
+				}
+				solved = true;
+				unique = true;
+				sudokuLoop.get(currentLoopX).get(currentLoopY).clear();
+				sudokuLoop.get(currentLoopX).get(currentLoopY).addAll(returner);
+				change = true;
+				return sudokuLoop;
+			}
+		}
+		if(!checkValidity(sudokuSimpleArray, false)){
+				sudokuLoop.get(currentLoopX).get(currentLoopY).clear();
+				sudokuLoop.get(currentLoopX).get(currentLoopY).addAll(returner);
+				return sudokuLoop;
+			}
+		
+		while(!checkValidity(sudokuSimpleArray, false) || !isFilledLoop(sudokuSimpleArray)) {
+			sudokuClone = loop(sudokuClone);
 			for(int l = 0; l< n*k; l++) {
 				for(int m = 0; m<n*k; m++) {
-					solvedSudoku[l][m] = sudokuClone.get(l).get(m).get(0);
-				}
-			}
-			return sudokuClone;
-		}
-		else if(!checkValidity(sudokuSimpleArray, false)) {
-			return sudokuLoop;
-		}
-
-
-		change = true;
-		int sizeOfArrayLoop = 2;
-		
-		while(sizeOfArrayLoop < n*k) {
-		change = false;
-		for (int i = 0; i<n*k; i++) {
-			for (int j = 0; j<n*k; j++) {
-				if (sudokuClone.get(i).get(j).size() == sizeOfArrayLoop) {
-					ArrayList<Integer> returner = new ArrayList<>();			
-					returner.addAll(sudokuClone.get(i).get(j)); 
-					System.out.println("I: " + i + " j:" + j + " returner: " + returner);
-					sudokuClone.get(i).get(j).clear();
-					/*Random randomNumber = new Random();
-					int intRandom = randomNumber.nextInt(returner.size());
-					sudokuClone.get(i).get(j).add(returner.get(intRandom));
-					returner.remove(intRandom);	*/
-					sudokuClone.get(i).get(j).add(returner.get(0));
-					returner.clear();
-					returner.addAll(sudokuLoop.get(i).get(j));
-					returner.remove(sudokuClone.get(i).get(j).get(0));	
-					change = true;
-					
-					sudokuClone = loop(sudokuClone);
-					change=true;
-					while(change == true) {
-						sudokuClone = preemtiveSets(singleton(sudokuClone));
-						//System.out.println(sudokuClone);
-						for(int l = 0; l< n*k; l++) {
-							for(int m = 0; m<n*k; m++) {
-								if(sudokuClone.get(l).get(m).size() == 0) {
-									sudokuLoop.get(i).get(j).clear();
-									sudokuLoop.get(i).get(j).addAll(returner);
-									return sudokuLoop;
-								}
-								else if(sudokuClone.get(l).get(m).size() == 1) {
-									sudokuSimpleArray[l][m] = sudokuClone.get(l).get(m).get(0);
-								}
-								else {
-									sudokuSimpleArray[l][m] = 0;
-								}
-							}
-						}
+					if(sudokuClone.get(l).get(m).size() == 1) {
+						sudokuSimpleArray[l][m] = sudokuClone.get(l).get(m).get(0);
 					}
-					if(checkValidity(sudokuSimpleArray, false) && isFilledLoop(sudokuSimpleArray)) {
-					
-						if (solved == true) {
-							unique = false;
-							return sudokuClone;
-						}
-						else {
-							for(int l = 0; l< n*k; l++) {
-								for(int m = 0; m<n*k; m++) {
-									solvedSudoku[l][m] = sudokuClone.get(l).get(m).get(0);
-								}
-							}
-							solved = true;
-							unique = true;
-							sudokuLoop.get(i).get(j).clear();
-							sudokuLoop.get(i).get(j).addAll(returner);
-							change = true;
-							return sudokuLoop;
-						}
+					else {
+						sudokuSimpleArray[l][m] = 0;
 					}
-					else if (!checkValidity(sudokuSimpleArray, false)) {
-						sudokuLoop.get(i).get(j).clear();
-						sudokuLoop.get(i).get(j).addAll(returner);
-						change = true;
-						return sudokuLoop;
-					}
-				
-
 				}	
+			}
+			if(checkValidity(sudokuSimpleArray, false) && isFilledLoop(sudokuSimpleArray)){
+				if (solved == true) {
+					unique = false;
+					return sudokuClone;
+				}
+				else {
+					for(int l = 0; l< n*k; l++) {
+						for(int m = 0; m<n*k; m++) {
+							solvedSudoku[l][m] = sudokuClone.get(l).get(m).get(0);
+						}
+					}
+					solved = true;
+					unique = true;
+					sudokuLoop.get(currentLoopX).get(currentLoopY).clear();
+					sudokuLoop.get(currentLoopX).get(currentLoopY).addAll(returner);
+					change = true;
+					return sudokuLoop;
+				}
 			
 			}
-
-		}
-		sizeOfArrayLoop++;
-		}
-		change = true;
+			if (!checkValidity(sudokuSimpleArray, false)){
+				sudokuLoop.get(currentLoopX).get(currentLoopY).clear();
+				sudokuLoop.get(currentLoopX).get(currentLoopY).addAll(returner);
+				return sudokuLoop;
+			
+			}
+		}			
+		
+		sudokuLoop.get(currentLoopX).get(currentLoopY).clear();
+		sudokuLoop.get(currentLoopX).get(currentLoopY).addAll(returner);
 		return sudokuLoop;
 	}
 	
