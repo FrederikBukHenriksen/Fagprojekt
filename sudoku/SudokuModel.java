@@ -6,7 +6,10 @@ import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.Stack;
+import java.util.Random;
+
 import sudoku.SudokuBoard.Cell;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -15,13 +18,16 @@ import java.util.Collections;
 public class SudokuModel {
 	// Setting up variables
 	int[][] sudoku = new int[0][0];
-	// int[][][] sudokuStack = new int[1000][sudoku.length][sudoku.length];
+	//int[][][] sudokuStack = new int[1000][sudoku.length][sudoku.length];
 	stackObj[] sudokuStack2 = new stackObj[1000];
 	stackObj[] redoStack = new stackObj[1000];
+  int[][] solvedSudoku = new int [0][0];
 	public static int k = 0;
 	public static int n = 0;
 	int moves = 0;
 	int redoes = 0;
+  boolean solved = false;
+	boolean unique = false;
 	boolean change = false;
 	static ArrayList<Cell> failedCoords = new ArrayList<Cell>();
 
@@ -31,7 +37,8 @@ public class SudokuModel {
 		this.view = view;
 	}
 
-	// constructor for the model
+	// constructor for the modelx
+
 	public SudokuModel(SudokuView view) {
 		this.view = view;
 		File file = new File("sudoku/Puzzles_1/Puzzle_3_10.dat");
@@ -108,34 +115,63 @@ public class SudokuModel {
 		while (change == true) {
 			prem = preemtiveSets(singleton(prem));
 		}
-
-		int[][] sudokuSimpleArray = new int[n * k][n * k];
-		for (int l = 0; l < n * k; l++) {
-			for (int m = 0; m < n * k; m++) {
-				if (prem.get(l).get(m).size() == 1) {
+		solvedSudoku = new int[n*k][n*k];
+		int[][]sudokuSimpleArray = new int[n*k][n*k];
+		for(int l = 0; l< n*k; l++) {
+			for(int m = 0; m<n*k; m++) {
+				if(prem.get(l).get(m).size() == 1) {
 					sudokuSimpleArray[l][m] = prem.get(l).get(m).get(0);
 				} else {
 					sudokuSimpleArray[l][m] = 0;
 				}
 			}
 		}
-		while (!checkValidity(sudokuSimpleArray, false) || !isFilledLoop(sudokuSimpleArray)) {
-			// System.out.println("test");
+		int loopCount = 0;
+		if(checkValidity(sudokuSimpleArray, false) && isFilledLoop(sudokuSimpleArray)) {
+			for(int l = 0; l< n*k; l++) {
+				for(int m = 0; m<n*k; m++) {
+					solvedSudoku[l][m]=prem.get(l).get(m).get(0);
+				}
+			}
+			unique = true;
+		}
+		while(!checkValidity(sudokuSimpleArray, false) || !isFilledLoop(sudokuSimpleArray)) {
+			//System.out.println("test");
+			loopCount++;
+			//System.out.println(loopCount);
 			prem = loop(prem);
-			for (int l = 0; l < n * k; l++) {
-				for (int m = 0; m < n * k; m++) {
-					if (prem.get(l).get(m).size() == 1) {
+			
+			for(int l = 0; l< n*k; l++) {
+				for(int m = 0; m<n*k; m++) {
+					if(prem.get(l).get(m).size() == 1) {
 						sudokuSimpleArray[l][m] = prem.get(l).get(m).get(0);
 					} else {
 						sudokuSimpleArray[l][m] = 0;
 					}
 				}
 			}
+			if (loopCount>(n*k)*(n*k)) {
+				break;
+			}
+			if (solved == true && unique == false) {
+				break;
+			}
 		}
-		// UNCOMMENT BELOW LINE FOR SOLUTION
-		// System.out.println(prem);
-		// System.out.print("done");
-	}
+		
+       // System.out.println(prem);
+        //System.out.print("done");
+        for(int i = 0; i<n*k;i++) {
+        	  for(int j = 0; j<n*k;j++) {
+        		  System.out.print("[" +solvedSudoku[i][j]+"]");
+              	
+              }
+        	  System.out.println("");
+        	
+        }
+        //de-comment below lines for uniqueness and solution
+        //System.out.println("It is unique = " + unique);
+        //System.out.println(prem);
+		}
 
 	// Method for getting the board
 	public int[][] getSudoku() {
@@ -714,43 +750,13 @@ public class SudokuModel {
 		// System.out.println("end: "+sudokuSing);
 		return sudokuSing;
 	}
-
+  
 	public ArrayList<ArrayList<ArrayList<Integer>>> loop(ArrayList<ArrayList<ArrayList<Integer>>> sudokuLoop) {
-		// Nedenstående er til DEBUG
-		// System.out.println(sudokuLoop);
-		int[][] sudokuSimpleArray = new int[n * k][n * k];
-		for (int l = 0; l < n * k; l++) {
-			for (int m = 0; m < n * k; m++) {
-				if (sudokuLoop.get(l).get(m).size() == 0) {
-					return sudokuLoop;
-				} else if (sudokuLoop.get(l).get(m).size() == 1) {
-					sudokuSimpleArray[l][m] = sudokuLoop.get(l).get(m).get(0);
-				} else {
-					sudokuSimpleArray[l][m] = 0;
-				}
-			}
-		}
-
-		while (change == true) {
-			sudokuLoop = preemtiveSets(singleton(sudokuLoop));
-		}
-		for (int l = 0; l < n * k; l++) {
-			for (int m = 0; m < n * k; m++) {
-				if (sudokuLoop.get(l).get(m).size() == 1) {
-					sudokuSimpleArray[l][m] = sudokuLoop.get(l).get(m).get(0);
-				} else {
-					sudokuSimpleArray[l][m] = 0;
-				}
-			}
-		}
-
-		if (checkValidity(sudokuSimpleArray, false) && isFilledLoop(sudokuSimpleArray)) {
-			return sudokuLoop;
-		}
-		change = true;
-		int test = 0;
+		//System.out.println(sudokuLoop);
 		int sizeOfArrayLoop = 2;
-
+		int currentLoopX = -1;
+		int currentLoopY = -1;
+		ArrayList<Integer> returner = new ArrayList<>();	
 		ArrayList<ArrayList<ArrayList<Integer>>> sudokuClone = new ArrayList<>();
 		for (int j = 0; j < n * k; j++) {
 			ArrayList<ArrayList<Integer>> rows = new ArrayList<>();
@@ -765,120 +771,119 @@ public class SudokuModel {
 				sudokuClone.get(i).get(j).addAll(sudokuLoop.get(i).get(j));
 			}
 		}
-
-		while (change == true || sizeOfArrayLoop < n * k) {
-			change = false;
-			for (int i = 0; i < n * k; i++) {
-				for (int j = 0; j < n * k; j++) {
-					if (sudokuLoop.get(i).get(j).size() == sizeOfArrayLoop) {
-						ArrayList<Integer> returner = new ArrayList<>();
-						returner.addAll(sudokuLoop.get(i).get(j));
+		loop:
+		while(sizeOfArrayLoop<n*k) {
+			for (int i = 0; i<n*k; i++) {
+				for (int j = 0; j<n*k; j++) {
+					if (sudokuClone.get(i).get(j).size() == sizeOfArrayLoop) {		
+						returner.addAll(sudokuClone.get(i).get(j)); 
 						sudokuClone.get(i).get(j).clear();
-						sudokuClone.get(i).get(j).add(sudokuLoop.get(i).get(j).get(0));
-						returner.remove(0);
-						for (int l = 0; l < n * k; l++) {
-							for (int m = 0; m < n * k; m++) {
-								if (sudokuClone.get(l).get(m).size() == 0) {
-									return sudokuLoop;
-								} else if (sudokuClone.get(l).get(m).size() == 1) {
-									sudokuSimpleArray[l][m] = sudokuClone.get(l).get(m).get(0);
-								} else {
-									sudokuSimpleArray[l][m] = 0;
-								}
-							}
-						}
-
-						if (checkValidity(sudokuSimpleArray, false) && isFilledLoop(sudokuSimpleArray)) {
-							return sudokuClone;
-						} else if (!checkValidity(sudokuSimpleArray, false)) {
-							sudokuLoop.get(i).get(j).clear();
-							sudokuLoop.get(i).get(j).addAll(returner);
-							change = true;
-							return sudokuLoop;
-						}
-
-						/*
-						 * sudokuLoop.get(i).get(j).clear();
-						 * sudokuLoop.get(i).get(j).addAll(returner);
-						 * sudokuClone.get(i).get(j).clear();
-						 * sudokuClone.get(i).get(j).addAll(returner);
-						 * returner.clear();
-						 */
+						sudokuClone.get(i).get(j).add(returner.get(0));
+						returner.remove(returner.get(0));	
 						change = true;
-						sudokuClone = loop(sudokuClone);
-						for (int l = 0; l < n * k; l++) {
-							for (int m = 0; m < n * k; m++) {
-								if (sudokuClone.get(l).get(m).size() == 0) {
-									sudokuLoop.get(i).get(j).clear();
-									sudokuLoop.get(i).get(j).addAll(returner);
-									return sudokuLoop;
-								} else if (sudokuClone.get(l).get(m).size() == 1) {
-									sudokuSimpleArray[l][m] = sudokuClone.get(l).get(m).get(0);
-								} else {
-									sudokuSimpleArray[l][m] = 0;
-								}
-							}
+						currentLoopX = i;
+						currentLoopY = j;
+						break loop;
 						}
-						if (checkValidity(sudokuSimpleArray, false) && isFilledLoop(sudokuSimpleArray)) {
-							// System.out.println("test");
-							return sudokuClone;
-						} else if (!checkValidity(sudokuSimpleArray, false)) {
-							sudokuLoop.get(i).get(j).clear();
-							sudokuLoop.get(i).get(j).addAll(returner);
-							change = true;
-							return sudokuLoop;
-						}
-
-					}
-
 				}
-
 			}
 			sizeOfArrayLoop++;
-			if (sizeOfArrayLoop > 9) {
-				/*
-				 * sizeOfArrayLoop = 2;
-				 * test = test +1;
-				 * 
-				 * if (test>10) {
-				 * for(int l = 0; l< n*k; l++) {
-				 * for(int m = 0; m<n*k; m++) {
-				 * if(sudokuClone.get(l).get(m).size() == 1) {
-				 * sudokuSimpleArray[l][m] = sudokuClone.get(l).get(m).get(0);
-				 * }
-				 * else {
-				 * sudokuSimpleArray[l][m] = 0;
-				 * }
-				 * }
-				 * }
-				 * 
-				 * if(checkValidity(sudokuSimpleArray) && isFilledLoop(sudokuSimpleArray)) {
-				 * //System.out.println("test");
-				 * return sudokuClone;
-				 * }
-				 * sudokuClone = loop(sudokuClone);
-				 * for(int l = 0; l< n*k; l++) {
-				 * for(int m = 0; m<n*k; m++) {
-				 * if(sudokuClone.get(l).get(m).size() == 1) {
-				 * sudokuSimpleArray[l][m] = sudokuClone.get(l).get(m).get(0);
-				 * }
-				 * else {
-				 * sudokuSimpleArray[l][m] = 0;
-				 * }
-				 * }
-				 * }
-				 * if(checkValidity(sudokuSimpleArray) && isFilledLoop(sudokuSimpleArray)) {
-				 * //System.out.println("test");
-				 * return sudokuClone;
-				 * }
-				 * }
-				 */
-
-				return sudokuLoop;
-
-			}
-
 		}
+		if (currentLoopX == -1) {
+			return sudokuLoop;
+		}
+		change=true;
+		while(change == true) {
+			sudokuClone = preemtiveSets(singleton(sudokuClone));
+			//System.out.println(sudokuClone);
+			for(int l = 0; l< n*k; l++) {
+				for(int m = 0; m<n*k; m++) {
+					if(sudokuClone.get(l).get(m).size() == 0) {
+						sudokuLoop.get(currentLoopX).get(currentLoopY).clear();
+						sudokuLoop.get(currentLoopX).get(currentLoopY).addAll(returner);
+						return sudokuLoop;
+					}
+				}
+			}
+		}
+		int[][] sudokuSimpleArray = new int[n*k][n*k];
+		for(int l = 0; l< n*k; l++) {
+			for(int m = 0; m<n*k; m++) {
+				if(sudokuClone.get(l).get(m).size() == 1) {
+					sudokuSimpleArray[l][m] = sudokuClone.get(l).get(m).get(0);
+				}
+				else {
+					sudokuSimpleArray[l][m] = 0;
+				}
+			}
+		}
+		if(checkValidity(sudokuSimpleArray, false) && isFilledLoop(sudokuSimpleArray)) {
+			if (solved == true) {
+				unique = false;
+				return sudokuClone;
+			}
+			else {
+				for(int l = 0; l< n*k; l++) {
+					for(int m = 0; m<n*k; m++) {
+						solvedSudoku[l][m] = sudokuClone.get(l).get(m).get(0);
+					}
+				}
+				solved = true;
+				unique = true;
+				sudokuLoop.get(currentLoopX).get(currentLoopY).clear();
+				sudokuLoop.get(currentLoopX).get(currentLoopY).addAll(returner);
+				change = true;
+				return sudokuLoop;
+			}
+		}
+		if(!checkValidity(sudokuSimpleArray, false)){
+				sudokuLoop.get(currentLoopX).get(currentLoopY).clear();
+				sudokuLoop.get(currentLoopX).get(currentLoopY).addAll(returner);
+				return sudokuLoop;
+			}
+		
+		while(!checkValidity(sudokuSimpleArray, false) || !isFilledLoop(sudokuSimpleArray)) {
+			sudokuClone = loop(sudokuClone);
+			for(int l = 0; l< n*k; l++) {
+				for(int m = 0; m<n*k; m++) {
+					if(sudokuClone.get(l).get(m).size() == 1) {
+						sudokuSimpleArray[l][m] = sudokuClone.get(l).get(m).get(0);
+					}
+					else {
+						sudokuSimpleArray[l][m] = 0;
+					}
+				}	
+			}
+			if(checkValidity(sudokuSimpleArray, false) && isFilledLoop(sudokuSimpleArray)){
+				if (solved == true) {
+					unique = false;
+					return sudokuClone;
+				}
+				else {
+					for(int l = 0; l< n*k; l++) {
+						for(int m = 0; m<n*k; m++) {
+							solvedSudoku[l][m] = sudokuClone.get(l).get(m).get(0);
+						}
+					}
+					solved = true;
+					unique = true;
+					sudokuLoop.get(currentLoopX).get(currentLoopY).clear();
+					sudokuLoop.get(currentLoopX).get(currentLoopY).addAll(returner);
+					change = true;
+					return sudokuLoop;
+				}
+			
+			}
+			if (!checkValidity(sudokuSimpleArray, false)){
+				sudokuLoop.get(currentLoopX).get(currentLoopY).clear();
+				sudokuLoop.get(currentLoopX).get(currentLoopY).addAll(returner);
+				return sudokuLoop;
+			
+			}
+		}			
+		
+		sudokuLoop.get(currentLoopX).get(currentLoopY).clear();
+		sudokuLoop.get(currentLoopX).get(currentLoopY).addAll(returner);
 		return sudokuLoop;
 	}
 
@@ -969,25 +974,7 @@ public class SudokuModel {
 			}
 		}
 
-		// Checking each square
-		/*
-		 * for (int r = 0; r < Math.sqrt(sudoku.length); r++) {
-		 * for (int c = 0; c < Math.sqrt(sudoku.length); c++) {
-		 * for (int br = 0; br < Math.sqrt(sudoku.length); br++) {
-		 * for (int bc = 0; bc < Math.sqrt(sudoku.length); bc++) {
-		 * int cur = sudoku[(c * 3) + bc][(r * 3) + br];
-		 * if (cur != 0) {
-		 * if (sortedGrid[c + r * 3][cur - 1] == 0) {
-		 * sortedGrid[c + r * 3][cur - 1] = 1;
-		 * } else {
-		 * valid = false;
-		 * }
-		 * }
-		 * }
-		 * }
-		 * }
-		 * }
-		 */
+
 		for (int l = 0; l < k * k; l++) {
 
 			for (int i = 0; i < n; i++) {
