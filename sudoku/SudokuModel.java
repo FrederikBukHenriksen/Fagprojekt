@@ -294,8 +294,7 @@ public class SudokuModel {
 								}
 							}
 						}
-						// System.out.println("xcord: " + xcord);
-						// System.out.println("ycord: " + ycord);
+
 
 						if (xcord.size() >= sizeOfSet) { // checks if xcord is bigger than sets. We are not intrested in
 															// sending sets, if they are not bigger
@@ -316,8 +315,7 @@ public class SudokuModel {
 								}
 								if (Collections.frequency(ycord, l) == sizeOfSet) { // checks if there are more in a
 																					// gived ycord
-									// System.out.println("set: " + numbers + " xCoords: " +xcord +" yCoords: " +
-									// ycord);
+
 									for (int m = 0; m < xcord.size(); m++) {
 										if (ycord.get(m) == l) {
 											xcordSend.add(xcord.get(m));
@@ -331,16 +329,6 @@ public class SudokuModel {
 								}
 								int[] kArray = new int[k * k + 1]; // checks if there are more in a given box
 								for (int m = 0; m < xcord.size(); m++) {
-									/*
-									 * System.out.println("numbers: "+numbers);
-									 * System.out.println("xcord: " +xcord);
-									 * System.out.println("ycord: " +ycord);
-									 * System.out.println("xcord:"+xcord.get(m)+" ycord: " +ycord.get(m));
-									 * System.out.println("cellxcord: "+ (xcord.get(m)/k+1) + " cellycord: "+
-									 * (ycord.get(m)/k+1)*(3-1));
-									 * int a = (xcord.get(m)/k+1) +(ycord.get(m)/k+1)*(3-1)-1;
-									 * System.out.println("kArray: "+ a);
-									 */
 									kArray[(ycord.get(m) / k) + (xcord.get(m) / k) * (k) + 1] += 1;
 								}
 								for (int m = 0; m < kArray.length; m++) {
@@ -352,15 +340,7 @@ public class SudokuModel {
 												ycordSend.add(ycord.get(p));
 											}
 										}
-										/*
-										 * for (int b = 0; b<kArray.length;b++) {
-										 * System.out.println(kArray[b]);
-										 * }
-										 * //System.out.println("");
-										 * //System.out.print(numbers);
-										 * //System.out.println("set: " + numbers + " xCoords: " +xcordSend
-										 * +" yCoords: " + ycordSend);
-										 */
+
 										sudokuPre = updateMarkup(sudokuPre, numbers, xcordSend, ycordSend, 3);
 										xcordSend.removeAll(xcordSend);
 										ycordSend.removeAll(ycordSend);
@@ -370,7 +350,6 @@ public class SudokuModel {
 						}
 					}
 				}
-				// System.out.println(sudokuPre);
 			}
 
 			// System.out.println("m: " + sizeOfSet);
@@ -531,17 +510,6 @@ public class SudokuModel {
 		}
 	}
 
-	// Methods for pushing, popping and peeking stack
-	/*
-	 * public void pushStack(int[][] newBoard){
-	 * for(int i = 0; i < sudoku.length; i++){
-	 * for(int j = 0; j < sudoku.length; j++){
-	 * sudokuStack[moves][i][j] = sudoku[i][j];
-	 * }
-	 * }
-	 * moves++;
-	 * }
-	 */
 
 	// Push for new stack
 	public void pushStack2(stackObj x) {
@@ -555,20 +523,7 @@ public class SudokuModel {
 		redoes++;
 	}
 
-	/*
-	 * public int[][] popStack() {
-	 * int[][] temp = new int[sudoku.length][sudoku.length];
-	 * for (int i = 0; i < sudoku.length; i++) {
-	 * for (int j = 0; j < sudoku.length; j++) {
-	 * temp[i][j] = sudokuStack[moves][i][j];
-	 * }
-	 * }
-	 * if(moves > 1){
-	 * moves--;
-	 * }
-	 * return temp;
-	 * }
-	 */
+
 
 	// new pop method
 	public stackObj popStack2() {
@@ -610,40 +565,6 @@ public class SudokuModel {
 	// their coordinates
 	public ArrayList<ArrayList<ArrayList<Integer>>> updateMarkup(ArrayList<ArrayList<ArrayList<Integer>>> markupBoard,
 			ArrayList<Integer> set, ArrayList<Integer> xCoords, ArrayList<Integer> yCoords, int mode) {
-		// System.out.print("Ycords markup: "+ yCoords);
-		// System.out.print("Xcords markup: "+ xCoords);
-		// System.out.print("set: "+ set);
-		// System.out.println("mode: "+ mode);
-		/*
-		 * int m = set.size();
-		 * boolean sameRow = true;
-		 * boolean sameCol = true;
-		 * boolean sameSquare = true;
-		 * if (xCoords.get(0)== xCoords.get(1) && yCoords.get(0)== yCoords.get(1)) {
-		 * System.out.println("test");
-		 * }
-		 */
-		// The next 3 loops check if the entries are in the same row, column and/or
-		// square
-
-		/*
-		 * for(int i = 1; i < m; i++){
-		 * if(xCoords.get(0) != xCoords.get(i)){
-		 * sameCol = false;
-		 * }
-		 * }
-		 * for(int i = 1; i < m; i++){
-		 * if(yCoords.get(0) != yCoords.get(i)){
-		 * sameRow = false;
-		 * }
-		 * }
-		 * for(int i = 1; i < m; i++){
-		 * if(!((xCoords.get(0) % n == xCoords.get(i) % n) && (yCoords.get(0) % n ==
-		 * yCoords.get(i) % n))){
-		 * sameSquare = false;
-		 * }
-		 * }
-		 */
 
 		if (mode == 1) {
 			for (int i = 0; i < getSudoku().length; i++) {
@@ -785,8 +706,6 @@ public class SudokuModel {
 				}
 			}
 		}
-
-		// System.out.println("end: "+sudokuSing);
 		return sudokuSing;
 	}
   
@@ -845,17 +764,7 @@ public class SudokuModel {
 				}
 			}
 		}
-		int[][] sudokuSimpleArray = new int[n*k][n*k]; //create 2d array, to verify
-		for(int l = 0; l< n*k; l++) {
-			for(int m = 0; m<n*k; m++) {
-				if(sudokuClone.get(l).get(m).size() == 1) {  //only checks our known numbers, not markups
-					sudokuSimpleArray[l][m] = sudokuClone.get(l).get(m).get(0);
-				}
-				else {
-					sudokuSimpleArray[l][m] = 0;
-				}
-			}
-		}
+		int[][] sudokuSimpleArray = Converter3D2D(sudokuClone); //create 2d array, to verify
 		if(checkValidity(sudokuSimpleArray, false) && isFilledLoop(sudokuSimpleArray)) { //Checks if it is solved. If it is the first time it is solved, it will return like it was not solved. 
 			if (solved == true) {
 				unique = false;
@@ -883,16 +792,8 @@ public class SudokuModel {
 		
 		while(!checkValidity(sudokuSimpleArray, false) || !isFilledLoop(sudokuSimpleArray)) {//this loop runs till the sudoku is solved
 			sudokuClone = loop(sudokuClone); //It calls recursive
-			for(int l = 0; l< n*k; l++) { //Creates simple sudoku array to verify, and then runs all the verification like before
-				for(int m = 0; m<n*k; m++) {
-					if(sudokuClone.get(l).get(m).size() == 1) {
-						sudokuSimpleArray[l][m] = sudokuClone.get(l).get(m).get(0);
-					}
-					else {
-						sudokuSimpleArray[l][m] = 0;
-					}
-				}	
-			}
+			sudokuSimpleArray = Converter3D2D(sudokuClone); //Creates simple sudoku array to verify, and then runs all the verification like before
+		
 			if(checkValidity(sudokuSimpleArray, false) && isFilledLoop(sudokuSimpleArray)){
 				if (solved == true) {
 					unique = false;
@@ -1111,8 +1012,20 @@ public class SudokuModel {
 		}
 		return valid;
 	}
-
-
+	public int[][] Converter3D2D(ArrayList<ArrayList<ArrayList<Integer>>> sudoku3D){
+		int[][] sudoku2D = new int[n*k][n*k];
+		for(int l = 0; l< n*k; l++) {
+			for(int m = 0; m<n*k; m++) {
+				if(sudoku3D.get(l).get(m).size() == 1) {  //only checks our known numbers, not markups
+					sudoku2D[l][m] = sudoku3D.get(l).get(m).get(0);
+				}
+				else {
+					sudoku2D[l][m] = 0;
+				}
+			}
+		}
+		return sudoku2D;
+	}
 	public boolean isFilledLoop(int[][] sudoku) {
 		boolean result = true;
 		for (int i = 0; i < sudoku.length; i++) {
