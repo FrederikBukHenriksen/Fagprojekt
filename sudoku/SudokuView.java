@@ -16,6 +16,7 @@ public class SudokuView extends JFrame {
 
 	public int n;
 	public int k;
+	public ArrayList <Cell> markedCells = new ArrayList<Cell>();
 	SudokuBoard sudokuBoard;
 	SudokuUI sudokuUI;
 
@@ -47,6 +48,11 @@ public class SudokuView extends JFrame {
 		c.gridy = 0;
 
 		add(sudokuBoard, c);
+
+		//Add all cells to markedCells arrayList
+		for (Cell cell : sudokuBoard.getCells()) {
+			markedCells.add(cell);
+		}
 
 		// add menubar to frame
 		setJMenuBar(sudokuUI.createMenubar());
@@ -168,12 +174,15 @@ public class SudokuView extends JFrame {
 				for (int i = squareX * n; i < squareX * n + n; i++) {
 					for (int j = squareY * n; j < squareY * n + n; j++) {
 						sudokuBoard.cells.get(i).get(j).square();
+						markedCells.add(sudokuBoard.cells.get(i).get(j));
 					}
 				}
 				// ###PEERS###
 				for (int i = 0; i < (n * k); i++) {
 					sudokuBoard.cells.get(coordinates[0]).get(i).peer();
+					markedCells.add(sudokuBoard.cells.get(coordinates[0]).get(i));
 					sudokuBoard.cells.get(i).get(coordinates[1]).peer();
+					markedCells.add(sudokuBoard.cells.get(i).get(coordinates[1]));
 				}
 
 				// ###SIMILAR NUMBER###
@@ -181,6 +190,7 @@ public class SudokuView extends JFrame {
 					for (Cell button : array) {
 						if (!cellText.equals("") && button.getText().equals(cellText)) {
 							button.similar();
+							markedCells.add(button);
 						}
 					}
 				}
@@ -192,10 +202,10 @@ public class SudokuView extends JFrame {
 	}
 
 	public void clearMarkedCells() {
-		for (Cell cell : sudokuBoard.getCells()) {
+		for (Cell cell : markedCells) {
 			cell.defaultColor();
-
 		}
+		markedCells.clear();
 	}
 
 	public void updateFrameTitle(boolean checkValidity, boolean isFilled) {

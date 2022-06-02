@@ -224,7 +224,26 @@ public class SudokuController {
 	// Code for undo-button
 	class SudokuUndoListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			undoMove();
+			//undoMove();
+
+			//Below is code for the hint-button, to be moved when this button is added
+			try {
+				if (view.getButtonSelected().enabled) {
+					int[] coordinate = view.getCellCoordinate(view.getButtonSelected());
+					int tempVal = model.getSudoku()[coordinate[0]][coordinate[1]];
+					if(model.getUniqueness()){
+						model.setSudokuCell(coordinate[0], coordinate[1], model.getSolvedSudoku()[coordinate[0]][coordinate[1]]);
+					}
+					else{
+						model.solver();
+						model.setSudokuCell(coordinate[0], coordinate[1], model.getSolvedSudoku()[coordinate[0]][coordinate[1]]);
+					}
+					model.pushStack2(model.createStackObj(coordinate[0], coordinate[1], tempVal, model.getSolvedSudoku()[coordinate[0]][coordinate[1]]));
+					view.updateBoard(model.getSudoku());
+				}
+			} catch (Exception exc) {
+				// System.out.println(exc.getMessage());
+			}
 		}
 	}
 
