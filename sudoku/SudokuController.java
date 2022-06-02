@@ -45,7 +45,76 @@ public class SudokuController {
 				else if(yPressed){
 					redoMove();
 				}
-			} else{
+			} else if( keyCode == KeyEvent.VK_DOWN){
+				int[] tempCoords = {-1,0};
+				try {
+					tempCoords = view.getCellCoordinate(view.getButtonSelected());
+				}
+				catch(Exception h){
+				}
+				Cell pressed = null;
+				if(tempCoords[0] != (model.getN() * model.getK()) - 1 ){
+					pressed = view.getCellFromCoord(tempCoords[0] + 1,tempCoords[1]); // Grabs the button pressed
+				}
+				else{
+					pressed = view.getCellFromCoord(0,tempCoords[1]);
+				}
+				pressed.setSelected(true);
+				view.onlySelectThePressed(pressed);
+				updateColours();
+			} else if(keyCode == KeyEvent.VK_UP){
+				int[] tempCoords = {1,0};
+				try {
+					tempCoords = view.getCellCoordinate(view.getButtonSelected());
+				}
+				catch(Exception h){
+				}
+				Cell pressed = null;
+				if(tempCoords[0] != 0){
+					pressed = view.getCellFromCoord(tempCoords[0] - 1,tempCoords[1]); // Grabs the button pressed
+				}
+				else{
+					pressed = view.getCellFromCoord(model.getN() * model.getK() - 1,tempCoords[1]);
+				}
+				pressed.setSelected(true);
+				view.onlySelectThePressed(pressed);
+				updateColours();
+			} else if(keyCode == KeyEvent.VK_LEFT){
+				int[] tempCoords = {0,1};
+				try {
+					tempCoords = view.getCellCoordinate(view.getButtonSelected());
+				}
+				catch(Exception h){
+				}
+				Cell pressed = null;
+				if(tempCoords[1] != 0 ){
+					pressed = view.getCellFromCoord(tempCoords[0],tempCoords[1] - 1); // Grabs the button pressed
+				}
+				else{
+					pressed = view.getCellFromCoord(tempCoords[0],model.getN() * model.getK() - 1);
+				}
+				pressed.setSelected(true);
+				view.onlySelectThePressed(pressed);
+				updateColours();
+			} else if(keyCode == KeyEvent.VK_RIGHT){
+				int[] tempCoords = {0,-1};
+				try {
+					tempCoords = view.getCellCoordinate(view.getButtonSelected());
+				}
+				catch(Exception h){
+				}
+				Cell pressed = null;
+				if(tempCoords[1] != model.getN() * model.getK() - 1 ){
+					pressed = view.getCellFromCoord(tempCoords[0],tempCoords[1] + 1); // Grabs the button pressed
+				}
+				else{
+					pressed = view.getCellFromCoord(tempCoords[0], 0);
+				}
+				pressed.setSelected(true);
+				view.onlySelectThePressed(pressed);
+				updateColours();
+			} 
+			else{
 			try {
 				Cell pressedSudokuboard = view.getButtonSelected();
 				if (pressedSudokuboard.enabled) { // Only the available buttons
@@ -114,7 +183,7 @@ public class SudokuController {
 								model.createStackObj(coordinate[0], coordinate[1], tempVal, Integer.valueOf(cellNew)));
 						view.updateBoard(model.getSudoku());
 						updateColours();
-						view.updateFrameTitle(model.checkValidity(model.getSudoku(), false), model.isFilled());
+						//view.updateFrameTitle(model.checkValidity(model.getSudoku(), false), model.isFilled());
 					}
 				}
 			} catch (Exception exc) {
@@ -171,7 +240,7 @@ public class SudokuController {
 						model.setSudokuCell(coordinate[0], coordinate[1], 0);
 						model.pushStack2(model.createStackObj(coordinate[0], coordinate[1], tempVal, 0));
 						view.updateBoard(model.getSudoku());
-						view.updateFrameTitle(model.checkValidity(model.getSudoku(), false), model.isFilled());
+						//view.updateFrameTitle(model.checkValidity(model.getSudoku(), false), model.isFilled());
 					}
 				}
 			} catch (Exception exc) {
@@ -233,7 +302,7 @@ public class SudokuController {
 					view.updateBoard(model.getSudoku());
 
 					// TODO:NEDENSTÅENE BRUGES KUN TIL DE-BUG.
-					view.updateFrameTitle(model.checkValidity(model.getSudoku(), false), model.isFilled());
+					//view.updateFrameTitle(model.checkValidity(model.getSudoku(), false), model.isFilled());
 
 					pressedSudokuboard.requestFocus();
 				}
@@ -269,7 +338,7 @@ public class SudokuController {
 			model.pushStack2(model.popRedoStack()); // Removes the last element of the stack
 			// model.setSudoku(model.getSudoku()); // Updates the board
 			view.updateBoard(model.getSudoku()); // Updates the visuals
-			view.updateFrameTitle(model.checkValidity(model.getSudoku(), false), model.isFilled());
+			//view.updateFrameTitle(model.checkValidity(model.getSudoku(), false), model.isFilled());
 			updateColours();
 		}
 	}
@@ -286,7 +355,7 @@ public class SudokuController {
 			model.pushRedoStack(model.popStack2()); // Removes the last element of the stack
 			// model.setSudoku(model.getSudoku()); // Updates the board
 			view.updateBoard(model.getSudoku()); // Updates the visuals
-			view.updateFrameTitle(model.checkValidity(model.getSudoku(), false), model.isFilled());
+			//view.updateFrameTitle(model.checkValidity(model.getSudoku(), false), model.isFilled());
 			updateColours();
 		}
 		System.out.println("UNDO"); //For debug
