@@ -21,14 +21,14 @@ public class SudokuModel {
 	//int[][][] sudokuStack = new int[1000][sudoku.length][sudoku.length];
 	stackObj[] sudokuStack2 = new stackObj[1000];
 	stackObj[] redoStack = new stackObj[1000];
-  int[][] solvedSudoku = new int [0][0];
+  	int[][] solvedSudoku = new int [0][0];
 	public static int k = 0;
 	public static int n = 0;
 	public static int[] xSums = new int[n*k];
 	public static int[] ySums = new int[n*k];
 	int moves = 0;
 	int redoes = 0;
-  boolean solved = false;
+  	boolean solved = false;
 	boolean unique = false;
 	boolean change = false;
 	boolean isSandwich = false;
@@ -66,7 +66,7 @@ public class SudokuModel {
 			}
 			setupScanner.close();
 			if (k > n) {
-				// System.out.println("Not a valid sudoku-size, k cannot exceed n");
+				System.out.println("Not a valid sudoku-size, k cannot exceed n");
 			} else {// Creating the board
 				sudoku = new int[n * k][n * k];
 				// Creating variables for sandwich Sums
