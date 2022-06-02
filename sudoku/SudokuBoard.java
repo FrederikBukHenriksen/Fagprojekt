@@ -13,24 +13,31 @@ import java.awt.Color;
 
 public class SudokuBoard extends JPanel {
 
+    SudokuView sudokuView;
+
+    double screenOccupationFactor = 0.25;
+
     ArrayList<ArrayList<Cell>> cells = new ArrayList();
     int n = SudokuModel.n;
     int k = SudokuModel.k;
 
+    int cellSize;
+
     int[][] sudoku;
 
-    GridBagConstraints c = new GridBagConstraints();
 
-    public SudokuBoard(int[][] sudoku) {
-        this.sudoku = sudoku;
+    public SudokuBoard(SudokuView sudokuView) {
+        this.sudokuView = sudokuView;
+        this.sudoku = sudokuView.sudoku;
 
         GridBagLayout grid = new GridBagLayout();
-        setLayout(grid);
-        setBounds(0, 0, 500, 500);
+        // this.setMinimumSize(new Dimension(1000, 1000));
+
+        this.setLayout(grid);
+
         setBackground(Color.black);
         createCells();
         createBoard();
-        setSize(this.getPreferredSize());
 
     }
 
@@ -48,13 +55,22 @@ public class SudokuBoard extends JPanel {
     }
 
     public void createBoard() {
+        GridBagConstraints gbc = new GridBagConstraints();
+
+        for (int i = 0; i < k; i++) {
+            ArrayList<Square> rows = new ArrayList();
+
+        }
+
         for (int l = 0; l < k * k; l++) {
             Square square = new Square();
 
             for (int i = 0; i < n; i++) {
                 for (int j = 0; j < n; j++) {
-                    c.gridx = j;
-                    c.gridy = i;
+                    // gbc.fill = GridBagConstraints.BOTH;
+                    // gbc.gridx = j;
+                    // gbc.gridy = i;
+                    // gbc.weightx = 1;
 
                     int[] BoardCoords = { (i + n * (l / k)), (j + n * l) % (k * n) };
                     int boardValue = sudoku[BoardCoords[0]][BoardCoords[1]];
@@ -64,19 +80,24 @@ public class SudokuBoard extends JPanel {
                         cell.setText(String.valueOf(boardValue));
                         cell.setEnabled(false);
                     }
-                    square.add(cell, c);
+                    square.add(cell, gbc);
 
                 }
             }
-            c.gridx = l % k;
-            c.gridy = l / k;
-            this.add(square, c);
+            gbc.gridx = l % k;
+            gbc.gridy = l / k;
+            gbc.weightx = 1;
+            gbc.weightx = 1;
+            gbc.fill = GridBagConstraints.VERTICAL;
+
+            this.add(square, gbc);
         }
     }
 
     class Square extends JPanel {
         public Square() {
             GridBagLayout grid = new GridBagLayout();
+            setBackground(Color.red);
             setLayout(grid);
             setBorder(new LineBorder(Color.black, 1));
         }
@@ -93,19 +114,27 @@ public class SudokuBoard extends JPanel {
         Color def = Color.white;
         Color defFont = new Color(80, 110, 242);
 
+
         boolean enabled = true;
 
         public Cell() {
             setText("");
             setBackground(def);
             setForeground(defFont);
-            setFont(new Font("Serif", Font.PLAIN, 32));
+            setFont(new Font("Serif", Font.PLAIN, 28));
             setBorder(new LineBorder(Color.black, 1));
-            UIManager.put("ToggleButton.highlight", Color.red);
+            // UIManager.put("ToggleButton.highlight", Color.red);
             UIManager.put("ToggleButton.select", selected);
             SwingUtilities.updateComponentTreeUI(this);
-            setPreferredSize(new Dimension(50, 50));
-            setMinimumSize(new Dimension(50, 50));
+            cellSize = (int) Math.floor((sudokuView.screenSize.getHeight() * screenOccupationFactor) / (n * k));
+            // setPreferredSize(new Dimension(10000, 10000));
+            // setPreferredSize(new Dimension(cellSize, cellSize));
+
+            setMinimumSize(new Dimension(25, 25));
+            setMaximumSize(new Dimension(2 * cellSize, 2 * cellSize));
+            setPreferredSize(new Dimension(200, 200));
+
+            // setMinimumSize(new Dimension(50, 50));
 
         }
         @Override
