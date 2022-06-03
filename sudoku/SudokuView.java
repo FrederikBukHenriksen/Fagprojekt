@@ -1,18 +1,13 @@
 package sudoku;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 import javax.swing.*;
-import javax.swing.border.LineBorder;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.awt.*;
-import java.awt.Component; //import these 3 header files
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 import java.awt.event.*;
 import sudoku.SudokuBoard.Cell;
 import sudoku.SudokuController.KeyboardSudokuListener;
@@ -35,27 +30,8 @@ public class SudokuView extends JFrame {
 		setDefaultCloseOperation(this.EXIT_ON_CLOSE);
 		setResizable(false);
 		setVisible(true);
-		setExtendedState(this.getExtendedState());
-
-		addComponentListener(new ComponentAdapter() {
-			public void componentResized(ComponentEvent evt) {
-				int newSize = sudokuBoard.cellSize;
-				if (getSize().getWidth() <= getSize().getHeight()) {
-					// Width the limiting factor
-					newSize = (((int) getSize().getWidth()) - 12) / (n * k); // 12 border
-				} else if (getSize().getWidth() > getSize().getHeight()) {
-					// Height the limiting factor
-					newSize = (((int) getSize().getHeight()) - 12) / (n * k); // 12 border
-				}
-				for (Cell cell : sudokuBoard.getCellsLinear()) {
-					cell.setSize(newSize);
-				}
-				System.out.println(newSize);
-				System.out.println(sudokuBoard.getCellsLinear().get(0).getPreferredSize());
-
-				pack();
-			}
-		});
+		// getContentPane().setBackground(Color.black);
+		// setVisible(true);
 	}
 
 	public void showFrame(int[][] sudoku) {
