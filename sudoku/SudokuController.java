@@ -20,7 +20,101 @@ public class SudokuController {
 
 	// KEY EVENT FOR ALLE JTOGGLEBUTTONS PÅ BOARDET.
 	class KeyboardSudokuListener extends KeyAdapter {
+		boolean ctrlPressed = false;
+		boolean zPressed = false;
+		boolean yPressed = false;
 		public void keyPressed(KeyEvent e) {
+			int keyCode = e.getKeyCode();
+			if( keyCode == KeyEvent.VK_Z){
+				zPressed = true;
+				yPressed = false;
+				if(ctrlPressed){
+					undoMove();
+				}
+			} else if( keyCode == KeyEvent.VK_Y){
+				yPressed = true;
+				zPressed = false;
+				if(ctrlPressed){
+					redoMove();
+				}
+			} else if( keyCode == KeyEvent.VK_CONTROL){
+				ctrlPressed = true;
+				if(zPressed){
+					undoMove();
+				}
+				else if(yPressed){
+					redoMove();
+				}
+			} else if( keyCode == KeyEvent.VK_DOWN){
+				int[] tempCoords = {-1,0};
+				try {
+					tempCoords = view.getCellCoordinate(view.getButtonSelected());
+				}
+				catch(Exception h){
+				}
+				Cell pressed = null;
+				if(tempCoords[0] != (model.getN() * model.getK()) - 1 ){
+					pressed = view.getCellFromCoord(tempCoords[0] + 1,tempCoords[1]); // Grabs the button pressed
+				}
+				else{
+					pressed = view.getCellFromCoord(0,tempCoords[1]);
+				}
+				pressed.setSelected(true);
+				view.onlySelectThePressed(pressed);
+				updateColours();
+			} else if(keyCode == KeyEvent.VK_UP){
+				int[] tempCoords = {1,0};
+				try {
+					tempCoords = view.getCellCoordinate(view.getButtonSelected());
+				}
+				catch(Exception h){
+				}
+				Cell pressed = null;
+				if(tempCoords[0] != 0){
+					pressed = view.getCellFromCoord(tempCoords[0] - 1,tempCoords[1]); // Grabs the button pressed
+				}
+				else{
+					pressed = view.getCellFromCoord(model.getN() * model.getK() - 1,tempCoords[1]);
+				}
+				pressed.setSelected(true);
+				view.onlySelectThePressed(pressed);
+				updateColours();
+			} else if(keyCode == KeyEvent.VK_LEFT){
+				int[] tempCoords = {0,1};
+				try {
+					tempCoords = view.getCellCoordinate(view.getButtonSelected());
+				}
+				catch(Exception h){
+				}
+				Cell pressed = null;
+				if(tempCoords[1] != 0 ){
+					pressed = view.getCellFromCoord(tempCoords[0],tempCoords[1] - 1); // Grabs the button pressed
+				}
+				else{
+					pressed = view.getCellFromCoord(tempCoords[0],model.getN() * model.getK() - 1);
+				}
+				pressed.setSelected(true);
+				view.onlySelectThePressed(pressed);
+				updateColours();
+			} else if(keyCode == KeyEvent.VK_RIGHT){
+				int[] tempCoords = {0,-1};
+				try {
+					tempCoords = view.getCellCoordinate(view.getButtonSelected());
+				}
+				catch(Exception h){
+				}
+				Cell pressed = null;
+				if(tempCoords[1] != model.getN() * model.getK() - 1 ){
+					pressed = view.getCellFromCoord(tempCoords[0],tempCoords[1] + 1); // Grabs the button pressed
+				}
+				else{
+					pressed = view.getCellFromCoord(tempCoords[0], 0);
+				}
+				pressed.setSelected(true);
+				view.onlySelectThePressed(pressed);
+				updateColours();
+			} 
+			else{
 			try {
 				Cell pressedSudokuboard = view.getButtonSelected();
 				if (pressedSudokuboard.enabled) { // Only the available buttons
@@ -36,7 +130,6 @@ public class SudokuController {
 					}
 
 					// Gets the digit entered
-					int keyCode = e.getKeyCode();
 					if (keyCode == KeyEvent.VK_1 || keyCode == KeyEvent.VK_NUMPAD1) {
 						keyPressed = "1";
 					} else if (keyCode == KeyEvent.VK_2 || keyCode == KeyEvent.VK_NUMPAD2) {
@@ -64,7 +157,8 @@ public class SudokuController {
 						} else if (cellNew.length() == 1) {
 							cellNew = "0";
 						}
-					} else {
+					} 
+				    else {
 						return;
 					}
 
@@ -89,13 +183,32 @@ public class SudokuController {
 								model.createStackObj(coordinate[0], coordinate[1], tempVal, Integer.valueOf(cellNew)));
 						view.updateBoard(model.getSudoku());
 						updateColours();
-						view.updateFrameTitle(model.checkValidity(model.getSudoku(), false), model.isFilled());
+						//view.updateFrameTitle(model.checkValidity(model.getSudoku(), false), model.isFilled());
 					}
 				}
 			} catch (Exception exc) {
-				// System.out.println(exc.getMessage());
+				System.out.println(exc.getMessage());
 			}
+		}
+		}
+		public void keyReleased(KeyEvent e){
+			try{
+				// Gets the digit entered
+				int keyCode = e.getKeyCode();
+				if( keyCode == KeyEvent.VK_Z){
+					zPressed = false;
+				} else if( keyCode == KeyEvent.VK_CONTROL){
+					ctrlPressed = false;
+				} else if( keyCode == KeyEvent.VK_Y){
+					yPressed = false;
+				} else {
+					return;
+				}
 
+			}
+			catch (Exception exc){
+				//System.out.println(exc.getMessage());
+			}
 		}
 	}
 
@@ -111,20 +224,7 @@ public class SudokuController {
 	// Code for undo-button
 	class SudokuUndoListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			if (model.moves > 0) {
-				// System.out.println("Undo"); // Prints "Undo" FOR DEBUG
-				try {
-					view.getButtonSelected().setSelected(false);
-					// TODO: indsæt Rasmus' generelle funktion for farver
-				} catch (Exception exc) {
-					// System.out.println(exc.getMessage());
-				}
-				model.pushRedoStack(model.popStack2()); // Removes the last element of the stack
-				// model.setSudoku(model.getSudoku()); // Updates the board
-				view.updateBoard(model.getSudoku()); // Updates the visuals
-				view.updateFrameTitle(model.checkValidity(model.getSudoku(), false), model.isFilled());
-				updateColours();
-			}
+			undoMove();
 		}
 	}
 
@@ -140,7 +240,8 @@ public class SudokuController {
 						model.setSudokuCell(coordinate[0], coordinate[1], 0);
 						model.pushStack2(model.createStackObj(coordinate[0], coordinate[1], tempVal, 0));
 						view.updateBoard(model.getSudoku());
-						view.updateFrameTitle(model.checkValidity(model.getSudoku(), false), model.isFilled());
+						//view.updateFrameTitle(model.checkValidity(model.getSudoku(), false), model.isFilled());
+						updateColours();
 					}
 				}
 			} catch (Exception exc) {
@@ -156,12 +257,6 @@ public class SudokuController {
 		}
 	}
 
-	class SudokuNoteListener implements ActionListener {
-		public void actionPerformed(ActionEvent e) {
-			// System.out.println("Note"); //Prints "Note" for DEBUG
-		}
-	}
-
 	class SudokuNewBoardListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			// System.out.println("New Sudoku"); //Prints "New Sudoku" for DEBUG
@@ -172,9 +267,7 @@ public class SudokuController {
 		public void actionPerformed(ActionEvent e) {
 			// Grabs the button pressed
 			JButton pressedNumboard = (JButton) e.getSource();
-
 			// Find the placement of the pressed board button
-
 			try {
 				Cell pressedSudokuboard = view.getButtonSelected();
 				if (pressedSudokuboard.enabled) {
@@ -195,47 +288,31 @@ public class SudokuController {
 					// Update sudoku cell
 					int[] coordinate = view.getCellCoordinate(pressedSudokuboard);
 					int tempVal = model.getSudoku()[coordinate[0]][coordinate[1]];
-					if (coordinate[0] != -1) {
-						model.setSudokuCell(coordinate[0], coordinate[1], Integer.valueOf(cellNew));
-					}
+					model.setSudokuCell(coordinate[0], coordinate[1], Integer.valueOf(cellNew));
 
 					// update sudoku Stack
-
-					model.pushStack2(
-							model.createStackObj(coordinate[0], coordinate[1], tempVal, Integer.valueOf(cellNew)));
+					model.pushStack2(model.createStackObj(coordinate[0], coordinate[1], tempVal, Integer.valueOf(cellNew)));
 
 					// Update the board visuals
 					view.updateBoard(model.getSudoku());
 
 					// TODO:NEDENSTÅENE BRUGES KUN TIL DE-BUG.
-					view.updateFrameTitle(model.checkValidity(model.getSudoku(), false), model.isFilled());
+					//view.updateFrameTitle(model.checkValidity(model.getSudoku(), false), model.isFilled());
 
 					pressedSudokuboard.requestFocus();
+					updateColours();
 				}
 			} catch (Exception exc) {
 				// System.out.println(exc.getMessage());
 			}
-			updateColours();
+			
 		}
 	}
 
 	// Code for redo-button
 	class SudokuRedoListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			if (model.redoes > 0) {
-				// System.out.println("Redo"); // Prints "Redo" FOR DEBUG
-				try {
-					view.getButtonSelected().setSelected(false);
-					// TODO: indsæt Rasmus' generelle funktion for farver
-				} catch (Exception exc) {
-					// System.out.println(exc.getMessage());
-				}
-				model.pushStack2(model.popRedoStack()); // Removes the last element of the stack
-				// model.setSudoku(model.getSudoku()); // Updates the board
-				view.updateBoard(model.getSudoku()); // Updates the visuals
-				view.updateFrameTitle(model.checkValidity(model.getSudoku(), false), model.isFilled());
-				updateColours();
-			}
+			redoMove();
 		}
 	}
 
@@ -243,6 +320,41 @@ public class SudokuController {
 		view.clearMarkedCells();
 		view.markCells();
 		model.checkValidity(model.getSudoku(), false);
+	}
+
+	public void redoMove(){
+		if (model.redoes > 0) {
+			// System.out.println("Redo"); // Prints "Redo" FOR DEBUG
+			try {
+				view.getButtonSelected().setSelected(false);
+				// TODO: indsæt Rasmus' generelle funktion for farver
+			} catch (Exception exc) {
+				// System.out.println(exc.getMessage());
+			}
+			model.pushStack2(model.popRedoStack()); // Removes the last element of the stack
+			// model.setSudoku(model.getSudoku()); // Updates the board
+			view.updateBoard(model.getSudoku()); // Updates the visuals
+			//view.updateFrameTitle(model.checkValidity(model.getSudoku(), false), model.isFilled());
+			updateColours();
+		}
+	}
+
+	public void undoMove(){
+		if (model.moves > 0) {
+			// System.out.println("Undo"); // Prints "Undo" FOR DEBUG
+			try {
+				view.getButtonSelected().setSelected(false);
+				// TODO: indsæt Rasmus' generelle funktion for farver
+			} catch (Exception exc) {
+				// System.out.println(exc.getMessage());
+			}
+			model.pushRedoStack(model.popStack2()); // Removes the last element of the stack
+			// model.setSudoku(model.getSudoku()); // Updates the board
+			view.updateBoard(model.getSudoku()); // Updates the visuals
+			//view.updateFrameTitle(model.checkValidity(model.getSudoku(), false), model.isFilled());
+			updateColours();
+		}
+		System.out.println("UNDO"); //For debug
 	}
 
 	// Simple constructor

@@ -106,6 +106,7 @@ public class SudokuUI {
 
         public MenuButton(String text) {
             setText(text);
+            setFocusable(false);
             setBackground(def);
             setForeground(defFont);
             setFont(new Font("Serif", Font.PLAIN, 16));
@@ -124,6 +125,7 @@ public class SudokuUI {
         public NumpadButton(String text) {
             setFocusable(false);
             setText(text);
+            setFocusable(false);
             setBackground(def);
             setForeground(defFont);
             setFont(new Font("Serif", Font.PLAIN, 16));

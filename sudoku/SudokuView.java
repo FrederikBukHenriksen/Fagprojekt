@@ -1,19 +1,17 @@
 package sudoku;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 import javax.swing.*;
-import javax.swing.border.LineBorder;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.awt.*;
 import java.awt.Component; //import these 3 header files
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-
+import java.awt.event.*;
 import sudoku.SudokuBoard.Cell;
 import sudoku.SudokuController.KeyboardSudokuListener;
 
@@ -58,7 +56,6 @@ public class SudokuView extends JFrame {
 				pack();
 			}
 		});
-
 	}
 
 	public void showFrame(int[][] sudoku) {
