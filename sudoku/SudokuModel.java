@@ -18,7 +18,6 @@ import java.util.Collections;
 public class SudokuModel {
 	// Setting up variables
 	int[][] sudoku = new int[0][0];
-	//int[][][] sudokuStack = new int[1000][sudoku.length][sudoku.length];
 	stackObj[] sudokuStack2 = new stackObj[1000];
 	stackObj[] redoStack = new stackObj[1000];
   	int[][] solvedSudoku = new int [0][0];
@@ -36,12 +35,7 @@ public class SudokuModel {
 
 	static SudokuView view;
 
-	public void giveAccessToView(SudokuView view) {
-		this.view = view;
-	}
-
-	// constructor for the modelx
-
+	// constructor for the model
 	public SudokuModel(SudokuView view) {
 		this.view = view;
 		File file = new File("sudoku/Puzzles_1/Puzzle_S_000.dat");
@@ -73,7 +67,6 @@ public class SudokuModel {
 				xSums = new int[n*k];
 				ySums = new int[n*k];
 				// Creating variables for looping through input
-				// sudokuStack = new int[1000][sudoku.length][sudoku.length];
 				int c = 0;
 				int d = 0;
 				scanner.nextLine();
@@ -148,7 +141,6 @@ public class SudokuModel {
 	public void solver() {
 		if(!isSandwich){
 		ArrayList<ArrayList<ArrayList<Integer>>> prem = preemtiveSets(singleton(markUpCells()));
-		// System.out.println(prem);
 		change = true;
 		while (change == true) {
 			prem = preemtiveSets(singleton(prem));
@@ -174,11 +166,8 @@ public class SudokuModel {
 			unique = true;
 		}
 		while(!checkValidity(sudokuSimpleArray, false) || !isFilledLoop(sudokuSimpleArray)) {
-			//System.out.println("test");
 			loopCount++;
-			//System.out.println(loopCount);
 			prem = loop(prem);
-			
 			for(int l = 0; l< n*k; l++) {
 				for(int m = 0; m<n*k; m++) {
 					if(prem.get(l).get(m).size() == 1) {
@@ -196,9 +185,7 @@ public class SudokuModel {
 			}
 		}
 		
-       // System.out.println(prem);
-        //System.out.print("done");
-        for(int i = 0; i<n*k;i++) {
+       for(int i = 0; i<n*k;i++) {
         	  for(int j = 0; j<n*k;j++) {
         		  System.out.print("[" +solvedSudoku[i][j]+"]");
               	
@@ -219,10 +206,9 @@ public class SudokuModel {
 
 	public ArrayList<ArrayList<ArrayList<Integer>>> createPreemtiveSets() {
 		ArrayList<ArrayList<ArrayList<Integer>>> prem = preemtiveSets(singleton(markUpCells()));
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < 10; i++) {//arbitræt
 			prem = preemtiveSets(singleton(prem));
 		}
-		// System.out.print(prem);
 		return prem;
 	}
 
@@ -260,11 +246,8 @@ public class SudokuModel {
 	}
 
 	public ArrayList<ArrayList<ArrayList<Integer>>> preemtiveSets(ArrayList<ArrayList<ArrayList<Integer>>> sudokuPre) {
-		// System.out.println(sudokuPre);
 		change = false;
 		int sizeOfSet = 2;
-		int flag = 0;
-		int numberOfRuns = 0;
 		while (change == false) {
 			ArrayList<Integer> xcord = new ArrayList<Integer>(); // arraylist to find all elements that matches
 			ArrayList<Integer> ycord = new ArrayList<Integer>();
@@ -355,7 +338,7 @@ public class SudokuModel {
 			// System.out.println("m: " + sizeOfSet);
 			sizeOfSet++;
 			// System.out.println(sizeOfSet);
-			if (sizeOfSet > 8) {
+			if (sizeOfSet > n*k-1) {
 				break;
 			}
 		}

@@ -17,12 +17,12 @@ public class SudokuController {
 	// Creating variables
 	SudokuModel model;
 	SudokuView view;
-	boolean ctrlPressed = false;
-	boolean zPressed = false;
-	boolean yPressed = false;
 
 	// KEY EVENT FOR ALLE JTOGGLEBUTTONS PÅ BOARDET.
 	class KeyboardSudokuListener extends KeyAdapter {
+		boolean ctrlPressed = false;
+		boolean zPressed = false;
+		boolean yPressed = false;
 		public void keyPressed(KeyEvent e) {
 			int keyCode = e.getKeyCode();
 			if( keyCode == KeyEvent.VK_Z){
@@ -241,18 +241,13 @@ public class SudokuController {
 						model.pushStack2(model.createStackObj(coordinate[0], coordinate[1], tempVal, 0));
 						view.updateBoard(model.getSudoku());
 						//view.updateFrameTitle(model.checkValidity(model.getSudoku(), false), model.isFilled());
+						updateColours();
 					}
 				}
 			} catch (Exception exc) {
 				// System.out.println(exc.getMessage());
 			}
-			updateColours();
-		}
-	}
-
-	class SudokuNoteListener implements ActionListener {
-		public void actionPerformed(ActionEvent e) {
-			// System.out.println("Note"); //Prints "Note" for DEBUG
+			
 		}
 	}
 
@@ -266,9 +261,7 @@ public class SudokuController {
 		public void actionPerformed(ActionEvent e) {
 			// Grabs the button pressed
 			JButton pressedNumboard = (JButton) e.getSource();
-
 			// Find the placement of the pressed board button
-
 			try {
 				Cell pressedSudokuboard = view.getButtonSelected();
 				if (pressedSudokuboard.enabled) {
@@ -289,14 +282,10 @@ public class SudokuController {
 					// Update sudoku cell
 					int[] coordinate = view.getCellCoordinate(pressedSudokuboard);
 					int tempVal = model.getSudoku()[coordinate[0]][coordinate[1]];
-					if (coordinate[0] != -1) {
-						model.setSudokuCell(coordinate[0], coordinate[1], Integer.valueOf(cellNew));
-					}
+					model.setSudokuCell(coordinate[0], coordinate[1], Integer.valueOf(cellNew));
 
 					// update sudoku Stack
-
-					model.pushStack2(
-							model.createStackObj(coordinate[0], coordinate[1], tempVal, Integer.valueOf(cellNew)));
+					model.pushStack2(model.createStackObj(coordinate[0], coordinate[1], tempVal, Integer.valueOf(cellNew)));
 
 					// Update the board visuals
 					view.updateBoard(model.getSudoku());
@@ -305,11 +294,12 @@ public class SudokuController {
 					//view.updateFrameTitle(model.checkValidity(model.getSudoku(), false), model.isFilled());
 
 					pressedSudokuboard.requestFocus();
+					updateColours();
 				}
 			} catch (Exception exc) {
 				// System.out.println(exc.getMessage());
 			}
-			updateColours();
+			
 		}
 	}
 
