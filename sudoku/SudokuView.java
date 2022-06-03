@@ -50,7 +50,7 @@ public class SudokuView extends JFrame {
 					newSize = (((int) getSize().getHeight()) - 12) / (n * k); // 12 border
 				}
 				for (Cell cell : sudokuBoard.getCellsLinear()) {
-					cell.setSize(newSize);
+					cell.changeSize(newSize);
 				}
 				System.out.println(newSize);
 				System.out.println(sudokuBoard.getCellsLinear().get(0).getPreferredSize());
