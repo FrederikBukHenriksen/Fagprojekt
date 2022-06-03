@@ -23,6 +23,7 @@ public class SudokuUI {
     public MenuButton undo = new MenuButton("Undo");
     public MenuButton redo = new MenuButton("Redo");
     public MenuButton remove = new MenuButton("Remove");
+    public MenuButton hint = new MenuButton("Hint");
 
     int n;
     int k;
@@ -70,6 +71,8 @@ public class SudokuUI {
         panel.add(undo);
         panel.add(redo);
         panel.add(remove);
+        panel.add(hint);
+
         panel.setMaximumSize(new Dimension(1500, 200));
         return panel;
 
@@ -128,8 +131,7 @@ public class SudokuUI {
             // setPreferredSize(new Dimension(sudokuView.sudokuBoard.cellSize,
             // sudokuView.sudokuBoard.cellSize));
             // setPreferredSize(new Dimension(100, 100));
-            setMinimumSize(new Dimension(sudokuView.sudokuBoard.cellSize, sudokuView.sudokuBoard.cellSize));
-            setPreferredSize(new Dimension(sudokuView.sudokuBoard.cellSize, sudokuView.sudokuBoard.cellSize));
+            setPreferredSize(sudokuView.sudokuBoard.getCellsLinear().get(0).getPreferredSize());
 
         }
     }

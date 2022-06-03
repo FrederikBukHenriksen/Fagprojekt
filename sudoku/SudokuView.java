@@ -10,6 +10,9 @@ import javax.swing.border.LineBorder;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.awt.*;
+import java.awt.Component; //import these 3 header files
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 
 import sudoku.SudokuBoard.Cell;
 import sudoku.SudokuController.KeyboardSudokuListener;
@@ -25,7 +28,6 @@ public class SudokuView extends JFrame {
 
 	Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
-	// ArrayList<JButton> numboardButtons = new ArrayList();
 	JButton undo = new JButton("Undo");
 	JButton remove = new JButton("Remove");
 	JButton note = new JButton("Redo");
@@ -37,7 +39,25 @@ public class SudokuView extends JFrame {
 		setVisible(true);
 		setExtendedState(this.getExtendedState());
 
-		// System.out.println(screenSize.getHeight() + " " + screenSize.getWidth());
+		addComponentListener(new ComponentAdapter() {
+			public void componentResized(ComponentEvent evt) {
+				int newSize = sudokuBoard.cellSize;
+				if (getSize().getWidth() <= getSize().getHeight()) {
+					// Width the limiting factor
+					newSize = (((int) getSize().getWidth()) - 12) / (n * k); // 12 border
+				} else if (getSize().getWidth() > getSize().getHeight()) {
+					// Height the limiting factor
+					newSize = (((int) getSize().getHeight()) - 12) / (n * k); // 12 border
+				}
+				for (Cell cell : sudokuBoard.getCellsLinear()) {
+					cell.setSize(newSize);
+				}
+				System.out.println(newSize);
+				System.out.println(sudokuBoard.getCellsLinear().get(0).getPreferredSize());
+
+				pack();
+			}
+		});
 
 	}
 
@@ -57,16 +77,15 @@ public class SudokuView extends JFrame {
 		c.weightx = 1;
 		c.anchor = GridBagConstraints.PAGE_START;
 
-		c.fill = GridBagConstraints.BOTH;
+		c.fill = GridBagConstraints.VERTICAL;
 
 		add(sudokuBoard, c);
 
 		// add menubar to frame
-		// setJMenuBar(sudokuUI.createMenubar());
+		setJMenuBar(sudokuUI.createMenubar());
 
 		c.gridx = 0;
 		c.gridy = 1;
-		c.weightx = 0;
 		c.weightx = 0;
 
 		add(sudokuUI.createNumpad(), c);
@@ -74,8 +93,7 @@ public class SudokuView extends JFrame {
 		c.gridx = 0;
 		c.gridy = 2;
 		c.weightx = 0;
-		c.weightx = 0;
-		c.fill = c.fill = GridBagConstraints.BOTH;
+		c.fill = GridBagConstraints.HORIZONTAL;
 
 		controls = sudokuUI.createControls();
 		add(controls, c);
@@ -89,20 +107,34 @@ public class SudokuView extends JFrame {
 			return;
 		}
 
-		sudokuBoard.getCells().forEach(b -> b.setSelected(false));
+		sudokuBoard.getCellsLinear().forEach(b -> b.setSelected(false));
 		buttonSelected.setSelected(true);
 
 		// BRUGES TIL DEBUG AF SKÆRM OPLØSNING
 		// System.out.println(controls.getWidth());
 		// System.out.println(sudokuBoard.getWidth() + " " + sudokuBoard.getHeight());
-		System.out.println(sudokuBoard.getMaximumSize());
-		System.out.println(sudokuBoard.getMaximumSize());
+		// System.out.println(sudokuBoard.getMaximumSize());
+		// System.out.println(sudokuBoard.getMaximumSize());
+		// System.out.println(sudokuBoard.getCellsLinear().get(0).getPreferredSize());
+		// System.out.println(getSize());
+		// System.out.println(sudokuBoard.getX() + " " + sudokuBoard.getY());
+		// System.out.println(this.getSize());
+		// System.out.println(sudokuBoard.getSize());
+		// System.out.println(sudokuBoard.getCellsLinear().get(0).getPreferredSize());
+
+		// for (Cell cell : sudokuBoard.getCellsLinear()) {
+		// cell.setSize(100);
+		// }
+		// System.out.println(sudokuBoard.getCellsLinear().get(0).getPreferredSize());
+
+		pack();
+		System.out.println(sudokuBoard.getCellsLinear().get(0).getPreferredSize());
 
 	}
 
 	public Cell getButtonSelected() throws Exception {
 		Cell selected = null;
-		for (Cell cell : sudokuBoard.getCells()) {
+		for (Cell cell : sudokuBoard.getCellsLinear()) {
 			if (cell.isSelected()) {
 				selected = cell;
 			}
@@ -183,7 +215,7 @@ public class SudokuView extends JFrame {
 	}
 
 	public void clearMarkedCells() {
-		for (Cell cell : sudokuBoard.getCells()) {
+		for (Cell cell : sudokuBoard.getCellsLinear()) {
 			cell.defaultColor();
 
 		}
