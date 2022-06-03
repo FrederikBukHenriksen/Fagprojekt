@@ -247,7 +247,13 @@ public class SudokuController {
 			} catch (Exception exc) {
 				// System.out.println(exc.getMessage());
 			}
-			
+			updateColours();
+		}
+	}
+
+	class SudokuHintListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			System.out.println("lol");
 		}
 	}
 
@@ -356,10 +362,10 @@ public class SudokuController {
 		view = new SudokuView();
 		model = new SudokuModel(view);
 		view.showFrame(model.getSudoku());
-		model.solver();
+		// model.solver();
 		// model.createPreemtiveSets();
 
-		for (Cell cell : view.sudokuBoard.getCells()) {
+		for (Cell cell : view.sudokuBoard.getCellsLinear()) {
 			cell.addActionListener(new SudokuboardListener());
 			cell.addKeyListener(new KeyboardSudokuListener());
 		}
@@ -367,6 +373,7 @@ public class SudokuController {
 		view.sudokuUI.undo.addActionListener(new SudokuUndoListener());
 		view.sudokuUI.redo.addActionListener(new SudokuRedoListener());
 		view.sudokuUI.remove.addActionListener(new SudokuRemoveListener());
+		view.sudokuUI.hint.addActionListener(new SudokuHintListener());
 
 		updateColours();
 	}

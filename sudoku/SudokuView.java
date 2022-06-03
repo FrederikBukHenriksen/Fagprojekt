@@ -8,6 +8,9 @@ import javax.swing.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.awt.*;
+import java.awt.Component; //import these 3 header files
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.*;
 import sudoku.SudokuBoard.Cell;
 import sudoku.SudokuController.KeyboardSudokuListener;
@@ -16,35 +19,62 @@ public class SudokuView extends JFrame {
 
 	public int n;
 	public int k;
+	int[][] sudoku;
 	SudokuBoard sudokuBoard;
 	SudokuUI sudokuUI;
+	JPanel controls;
 
-	// ArrayList<JButton> numboardButtons = new ArrayList();
+	Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+
 	JButton undo = new JButton("Undo");
 	JButton remove = new JButton("Remove");
 	JButton note = new JButton("Redo");
 	JButton newSudoku = new JButton("newSudoku");
 
 	public SudokuView() {
-		// setVisible(true);
 		setDefaultCloseOperation(this.EXIT_ON_CLOSE);
-		setResizable(false);
+		setResizable(true);
 		setVisible(true);
-		// getContentPane().setBackground(Color.black);
-		// setVisible(true);
+		setExtendedState(this.getExtendedState());
+
+		addComponentListener(new ComponentAdapter() {
+			public void componentResized(ComponentEvent evt) {
+				int newSize = sudokuBoard.cellSize;
+				if (getSize().getWidth() <= getSize().getHeight()) {
+					// Width the limiting factor
+					newSize = (((int) getSize().getWidth()) - 12) / (n * k); // 12 border
+				} else if (getSize().getWidth() > getSize().getHeight()) {
+					// Height the limiting factor
+					newSize = (((int) getSize().getHeight()) - 12) / (n * k); // 12 border
+				}
+				for (Cell cell : sudokuBoard.getCellsLinear()) {
+					cell.setSize(newSize);
+				}
+				System.out.println(newSize);
+				System.out.println(sudokuBoard.getCellsLinear().get(0).getPreferredSize());
+
+				pack();
+			}
+		});
 	}
 
 	public void showFrame(int[][] sudoku) {
 		n = SudokuModel.n;
 		k = SudokuModel.k;
-		sudokuBoard = new SudokuBoard(sudoku);
-		sudokuUI = new SudokuUI();
+		this.sudoku = sudoku;
+		sudokuBoard = new SudokuBoard(this);
+		sudokuUI = new SudokuUI(this);
 
 		setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
 
 		c.gridx = 0;
 		c.gridy = 0;
+		c.weightx = 1;
+		c.weightx = 1;
+		c.anchor = GridBagConstraints.PAGE_START;
+
+		c.fill = GridBagConstraints.VERTICAL;
 
 		add(sudokuBoard, c);
 
@@ -53,45 +83,18 @@ public class SudokuView extends JFrame {
 
 		c.gridx = 0;
 		c.gridy = 1;
-
-		// JPanel numboard = new JPanel();
-		// numboard.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
-		// numboard.setBorder(new LineBorder(Color.black, 1));
-
-		// for (int i = 1; i <= k * n; i++) {
-		// JButton button = new JButton(String.valueOf(i));// adds number as label to
-		// button
-		// button.setFont(new Font("Serif", Font.PLAIN, 16));
-		// button.setPreferredSize(new Dimension(50, 50));
-		// button.setBorder(new LineBorder(Color.black, 1));
-
-		// // button.setBorder(BorderFactory.createCompoundBorder(
-		// // BorderFactory.createLineBorder(Color.CYAN, 5),
-		// // BorderFactory.createEmptyBorder(5, 5, 10, 10)));
-
-		// numboardButtons.add(button);
-
-		// numboard.add(button);
-
-		// if (i % n == 0 && i < k * n) {
-		// JLabel lol = new JLabel();
-		// lol.setPreferredSize(new Dimension(2, 0));
-		// numboard.add(lol);
-		// System.out.println("LOL");
-		// }
-		// }
-		// JLabel lol = new JLabel();
-		// lol.setSize(0, 1);
-		// numboard.add(lol);
+		c.weightx = 0;
 
 		add(sudokuUI.createNumpad(), c);
 
 		c.gridx = 0;
 		c.gridy = 2;
+		c.weightx = 0;
+		c.fill = GridBagConstraints.HORIZONTAL;
 
-		add(sudokuUI.createControls(), c);
+		controls = sudokuUI.createControls();
+		add(controls, c);
 		pack();
-
 	}
 
 	public void onlySelectThePressed(Cell buttonSelected) {
@@ -101,17 +104,34 @@ public class SudokuView extends JFrame {
 			return;
 		}
 
-		sudokuBoard.getCells().forEach(b -> b.setSelected(false));
+		sudokuBoard.getCellsLinear().forEach(b -> b.setSelected(false));
 		buttonSelected.setSelected(true);
+
+		// BRUGES TIL DEBUG AF SKÆRM OPLØSNING
+		// System.out.println(controls.getWidth());
+		// System.out.println(sudokuBoard.getWidth() + " " + sudokuBoard.getHeight());
+		// System.out.println(sudokuBoard.getMaximumSize());
+		// System.out.println(sudokuBoard.getMaximumSize());
+		// System.out.println(sudokuBoard.getCellsLinear().get(0).getPreferredSize());
+		// System.out.println(getSize());
+		// System.out.println(sudokuBoard.getX() + " " + sudokuBoard.getY());
+		// System.out.println(this.getSize());
+		// System.out.println(sudokuBoard.getSize());
+		// System.out.println(sudokuBoard.getCellsLinear().get(0).getPreferredSize());
+
+		// for (Cell cell : sudokuBoard.getCellsLinear()) {
+		// cell.setSize(100);
+		// }
+		// System.out.println(sudokuBoard.getCellsLinear().get(0).getPreferredSize());
+
+		pack();
+		System.out.println(sudokuBoard.getCellsLinear().get(0).getPreferredSize());
 
 	}
 
 	public Cell getButtonSelected() throws Exception {
-		// ArrayList<Cell> result = (ArrayList<Cell>) sudokuBoard.getCells().stream()
-		// .filter(b -> b.isSelected())
-		// .collect(Collectors.toList());
 		Cell selected = null;
-		for (Cell cell : sudokuBoard.getCells()) {
+		for (Cell cell : sudokuBoard.getCellsLinear()) {
 			if (cell.isSelected()) {
 				selected = cell;
 			}
@@ -192,7 +212,7 @@ public class SudokuView extends JFrame {
 	}
 
 	public void clearMarkedCells() {
-		for (Cell cell : sudokuBoard.getCells()) {
+		for (Cell cell : sudokuBoard.getCellsLinear()) {
 			cell.defaultColor();
 
 		}
