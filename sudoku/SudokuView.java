@@ -7,13 +7,13 @@ import java.util.stream.Collectors;
 import javax.swing.*;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.awt.*;import ava.awt.Component; //import these 3 header files
+import java.awt.*;
+import java.awt.Component; //import these 3 header files
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-
 import java.awt.event.*;
 import sudoku.SudokuBoard.Cell;
-import sudoku.SudokuCont
+
 public class SudokuView extends JFrame {
 
 	public int n;
@@ -24,11 +24,6 @@ public class SudokuView extends JFrame {
 	JPanel controls;
 
 	Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-
-	JButton undo = new JButton("Undo");
-	JButton remove = new JButton("Remove");
-	JButton note = new JButton("Redo");
-	JButton newSudoku = new JButton("newSudoku");
 
 	public SudokuView() {
 		setDefaultCloseOperation(this.EXIT_ON_CLOSE);
