@@ -10,6 +10,8 @@ import javax.swing.*;
 import javax.swing.border.LineBorder;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import sudoku.SudokuBoard.Cell;
 import sudoku.SudokuController.KeyboardSudokuListener;
@@ -18,7 +20,6 @@ import sudoku.SudokuController.KeyboardSudokuListener;
  * SudokuUI
  */
 public class SudokuUI {
-
 
     public MenuButton undo = new MenuButton("Undo");
     public MenuButton redo = new MenuButton("Redo");
@@ -61,7 +62,6 @@ public class SudokuUI {
         }
         return panel;
 
-
     }
 
     public JPanel createControls() {
@@ -78,27 +78,49 @@ public class SudokuUI {
 
     }
 
-    public JMenuBar createMenubar() {
+    // public JMenuBar createMenubar() {
+    // // menu.addSeparator();
 
-        JMenuBar mb = new JMenuBar();
+    // JMenuBar mb = new JMenuBar();
 
-        // create a menu
-        JMenu x = new JMenu("Menu");
+    // // create a menu
+    // JMenu menu = new JMenu("Menu");
+    // JMenuItem m1 = new JMenuItem("Load new sudoku");
+    // menu.add(m1);
 
-        // create menuitems
-        JMenuItem m1 = new JMenuItem("MenuItem1");
-        JMenuItem m2 = new JMenuItem("MenuItem2");
-        JMenuItem m3 = new JMenuItem("MenuItem3");
+    // ButtonGroup group = new ButtonGroup();
+    // JMenu gamemode = new JMenu("Select gamemode");
+    // JRadioButtonMenuItem classic = new JRadioButtonMenuItem("Classic sudoku");
+    // classic.setSelected(true);
+    // classic.addActionListener(this);
 
-        // add menu items to menu
-        x.add(m1);
-        x.add(m2);
-        x.add(m3);
+    // group.add(classic);
+    // gamemode.add(classic);
+    // JRadioButtonMenuItem sandwich = new JRadioButtonMenuItem("Sandwich sudoku");
+    // group.add(sandwich);
+    // gamemode.add(sandwich);
+    // menu.add(gamemode);
 
-        // add menu to menu bar
-        mb.add(x);
-        return mb;
-    }
+    // JMenu view = new JMenu("View");
+    // JMenuItem zoomIn = new JMenuItem("Zoom in");
+    // JMenuItem zoomOut = new JMenuItem("Zoom out");
+
+    // view.add(zoomIn);
+    // view.add(zoomOut);
+
+    // JMenu tools = new JMenu("tools");
+
+    // // create menuitems
+
+    // // add menu items to menu
+
+    // // add menu to menu bar
+    // mb.add(menu);
+    // mb.add(view);
+    // mb.add(tools);
+
+    // return mb;
+    // }
 
     class MenuButton extends JButton {
         Color def = Color.gray;

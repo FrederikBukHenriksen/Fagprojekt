@@ -41,20 +41,6 @@ public class SudokuBoard extends JPanel {
 
     }
 
-    // @Override
-    // public void reshape(int x, int y, int width, int height) {
-    // int currentWidth = getWidth();
-    // int currentHeight = getHeight();
-
-    // // if (currentWidth > currentHeight) {
-    // // width = currentHeight;
-    // // } else if (currentWidth < currentHeight) {
-    // // height = currentWidth;
-    // // }
-    // System.out.println(width + " " + height);
-    // super.reshape(x, y, width, height);
-    // }
-
     public void createCells() {
         ArrayList<ArrayList<Cell>> board = new ArrayList<>();
         for (int i = 0; i < n * k; i++) {
@@ -140,7 +126,7 @@ public class SudokuBoard extends JPanel {
             // UIManager.put("ToggleButton.highlight", Color.red);
             UIManager.put("ToggleButton.select", selected);
             SwingUtilities.updateComponentTreeUI(this);
-            cellSize = (int) Math.floor((sudokuView.screenSize.getHeight() * screenOccupationFactor) / (n * k));
+            // cellSize = (int) Math.floor((sudokuView.screenSize.getHeight() *
 
             setMinimumSize(new Dimension(25, 25));
             setPreferredSize(new Dimension(40, 40));
@@ -164,7 +150,7 @@ public class SudokuBoard extends JPanel {
         }
 
         public void changeSize(int size) {
-            setSize(new Dimension(size, size));
+            this.setSize(new Dimension(size, size));
             this.setPreferredSize(new Dimension(size, size));
         }
 
