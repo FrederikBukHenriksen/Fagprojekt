@@ -31,25 +31,25 @@ public class SudokuView extends JFrame {
 		setVisible(true);
 		setExtendedState(this.getExtendedState());
 
-		addComponentListener(new ComponentAdapter() {
-			public void componentResized(ComponentEvent evt) {
-				int newSize = sudokuBoard.cellSize;
-				if (getSize().getWidth() <= getSize().getHeight()) {
-					// Width the limiting factor
-					newSize = (((int) getSize().getWidth()) - 12) / (n * k); // 12 border
-				} else if (getSize().getWidth() > getSize().getHeight()) {
-					// Height the limiting factor
-					newSize = (((int) getSize().getHeight()) - 12) / (n * k); // 12 border
-				}
-				for (Cell cell : sudokuBoard.getCellsLinear()) {
-					cell.changeSize(newSize);
-				}
-				System.out.println(newSize);
-				System.out.println(sudokuBoard.getCellsLinear().get(0).getPreferredSize());
+		// addComponentListener(new ComponentAdapter() {
+		// public void componentResized(ComponentEvent evt) {
+		// int newSize = sudokuBoard.cellSize;
+		// if (getSize().getWidth() <= getSize().getHeight()) {
+		// // Width the limiting factor
+		// newSize = (((int) getSize().getWidth()) - 12) / (n * k); // 12 border
+		// } else if (getSize().getWidth() > getSize().getHeight()) {
+		// // Height the limiting factor
+		// newSize = (((int) getSize().getHeight()) - 12) / (n * k); // 12 border
+		// }
+		// for (Cell cell : sudokuBoard.getCellsLinear()) {
+		// cell.changeSize(newSize);
+		// }
+		// System.out.println(newSize);
+		// System.out.println(sudokuBoard.getCellsLinear().get(0).getPreferredSize());
 
-				pack();
-			}
-		});
+		// pack();
+		// }
+		// });
 
 	}
 
