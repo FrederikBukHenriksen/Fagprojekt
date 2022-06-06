@@ -126,7 +126,7 @@ public class SudokuView extends JFrame {
 		// System.out.println(sudokuBoard.getCellsLinear().get(0).getPreferredSize());
 
 		pack();
-		System.out.println(sudokuBoard.getCellsLinear().get(0).getPreferredSize());
+		//System.out.println(sudokuBoard.getCellsLinear().get(0).getPreferredSize());
 
 	}
 
@@ -223,11 +223,11 @@ public class SudokuView extends JFrame {
 		markedCells.clear();
 	}
 
-	public void updateFrameTitle(boolean checkValidity, boolean isFilled) {
+	//Method for debugging checkValidity
+	/*public void updateFrameTitle(boolean checkValidity, boolean isFilled) {
 		if (checkValidity) {
 			if (isFilled) {
 				setTitle("Filled and valid");
-				createPopUp();
 			} else {
 				setTitle("Valid");
 			}
@@ -238,65 +238,9 @@ public class SudokuView extends JFrame {
 				setTitle("Invalid");
 			}
 		}
-	}
+	}*/
 
 	public Cell getCellFromCoord(int x, int y) {
 		return sudokuBoard.cells.get(x).get(y);
-	}
-
-	public void createPopUp() {
-		JDialog jd = new JDialog();
-		jd.setLayout(new FlowLayout());
-		int x = getX();
-		int y = getY();
-		int height = getHeight();
-		int width = getWidth();
-		jd.setBounds((width / 2) - 200 + x, (height / 2) - 75 + y, 400, 150);
-		JLabel jLabel = new JLabel("Congratulations, you solved the puzzle!");
-		jLabel.setFont(new Font(jLabel.getFont().getName(), Font.PLAIN, 20));
-		JButton closeButton = new JButton("Close");
-		closeButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// Rick-roll user on exit?
-				/*
-				 * String url =
-				 * "https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley";
-				 * 
-				 * String myOS = System.getProperty("os.name").toLowerCase();
-				 * 
-				 * try {
-				 * if(Desktop.isDesktopSupported()) { // Probably Windows
-				 * Desktop desktop = Desktop.getDesktop();
-				 * desktop.browse(new URI(url));
-				 * } else { // Definitely Non-windows
-				 * Runtime runtime = Runtime.getRuntime();
-				 * if(myOS.contains("mac")) { // Apples
-				 * runtime.exec("open " + url);
-				 * }
-				 * else if(myOS.contains("nix") || myOS.contains("nux")) { // Linux flavours
-				 * runtime.exec("xdg-open " + url);
-				 * }
-				 * }
-				 * }
-				 * catch(IOException | URISyntaxException eek) {
-				 * }
-				 */
-				System.exit(0);
-			}
-		});
-		JButton newButton = new JButton("New puzzle");
-		newButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO: Generate new puzzle here
-				jd.dispose();
-			}
-		});
-
-		jd.add(jLabel);
-		jd.add(closeButton);
-		jd.add(newButton);
-		jd.setVisible(true);
 	}
 }

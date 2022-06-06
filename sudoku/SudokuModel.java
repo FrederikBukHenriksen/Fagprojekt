@@ -56,8 +56,9 @@ public class SudokuModel {
 	}
 	public void boardCreater() {
 		Path file = null;
-		while(file == null) {
-			file = findSudokuPath("C:/");
+		file = findSudokuPath("C:\\");
+		if (file == null){
+			System.exit(0);
 		}
 		Scanner scanner;
 		// reading the input
@@ -112,8 +113,6 @@ public class SudokuModel {
 								boardCreater();
 								return;
 								//ex.printStackTrace();
-								
-								
 							}
 							// Go to next entry
 							d++;
@@ -223,14 +222,14 @@ public class SudokuModel {
 			}
 		}
 		
-       for(int i = 0; i<n*k;i++) {
+       /*for(int i = 0; i<n*k;i++) {
         	  for(int j = 0; j<n*k;j++) {
         		  System.out.print("[" +solvedSudoku[i][j]+"]");
               	
               }
         	  System.out.println("");
         	
-        }
+        }*/
         //de-comment below lines for uniqueness and solution
         //System.out.println("It is unique = " + unique);
         //System.out.println(prem);
