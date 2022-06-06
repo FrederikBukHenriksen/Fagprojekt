@@ -6,12 +6,17 @@ import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.Stack;
+
+import javax.swing.JFileChooser;
+
 import java.util.Random;
 
 import sudoku.SudokuBoard.Cell;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -36,10 +41,24 @@ public class SudokuModel {
 	static SudokuView view;
 
 	// constructor for the model
-	public SudokuModel(SudokuView view) {
-		this.view = view;
-		File file = new File("sudoku/Puzzles_1/Puzzle_S_000.dat");
-
+	public Path findSudokuPath(String s) {//https://stackoverflow.com/questions/51973636/how-to-return-the-file-path-from-the-windows-file-explorer-using-java
+		//File file = new File("C:\\Users\\Candytom\\Documents\\GitHub\\sudoku\\Puzzles_1\\Puzzle_3_evil.dat");
+			Path file = null;
+			JFileChooser jd = s == null ? new JFileChooser() : new JFileChooser(s);
+			jd.setDialogTitle("Choose Sudoku you wish to solve");
+			int returnVal= jd.showOpenDialog(null);
+			/* If user didn't select a file and click ok, return null Path object*/
+			if (returnVal == JFileChooser.APPROVE_OPTION) {
+				return file = jd.getSelectedFile().toPath();
+			}
+			return null;
+		
+	}
+	public void BoardCreater() {
+		Path file = null;
+		while(file == null) {
+			file = findSudokuPath("C:/");
+		}
 		Scanner scanner;
 		// reading the input
 		try {
@@ -55,7 +74,9 @@ public class SudokuModel {
 					str = setupScanner.next();
 					n = Integer.parseInt(str);
 				} catch (NumberFormatException ex) {
-					ex.printStackTrace();
+					//ex.printStackTrace();
+					BoardCreater();
+					return;
 				}
 			}
 			setupScanner.close();
@@ -87,8 +108,12 @@ public class SudokuModel {
 							try {
 								// If input isn't ".", read the number and insert into array
 								sudoku[c][d] = Integer.parseInt(str);
-							} catch (NumberFormatException ex) {
-								ex.printStackTrace();
+							} catch (NumberFormatException ex) {	
+								BoardCreater();
+								return;
+								//ex.printStackTrace();
+								
+								
 							}
 							// Go to next entry
 							d++;
@@ -112,7 +137,8 @@ public class SudokuModel {
 							xSums[index] = Integer.parseInt(str);
 							index++;
 						} catch (NumberFormatException ex) {
-							ex.printStackTrace();
+							BoardCreater();
+							return;
 						}
 					}
 					lineScanner.close();
@@ -127,15 +153,27 @@ public class SudokuModel {
 							ySums[index] = Integer.parseInt(str);
 							index++;
 						} catch (NumberFormatException ex) {
-							ex.printStackTrace();
+							
+							BoardCreater();
+							return;
 						}
 					}
 				}
 			}
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			BoardCreater();
+			return;
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			BoardCreater();
+			return;
 		}
+	}
+	public SudokuModel(SudokuView view){
+		this.view = view;
+		BoardCreater();
+		
 	}
 
 	public void solver() {
