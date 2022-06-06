@@ -223,27 +223,7 @@ public class SudokuController {
 	// Code for undo-button
 	class SudokuUndoListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			//undoMove();
-
-			//Below is code for the hint-button, to be moved when this button is added
-			try {
-				if (view.getButtonSelected().enabled) {
-					int[] coordinate = view.getCellCoordinate(view.getButtonSelected());
-					int tempVal = model.getSudoku()[coordinate[0]][coordinate[1]];
-					if(model.getUniqueness()){
-						model.setSudokuCell(coordinate[0], coordinate[1], model.getSolvedSudoku()[coordinate[0]][coordinate[1]]);
-					}
-					else{
-						model.solver();
-						model.setSudokuCell(coordinate[0], coordinate[1], model.getSolvedSudoku()[coordinate[0]][coordinate[1]]);
-					}
-					model.pushStack2(model.createStackObj(coordinate[0], coordinate[1], tempVal, model.getSolvedSudoku()[coordinate[0]][coordinate[1]]));
-					view.updateBoard(model.getSudoku());
-					updateColours();
-				}
-			} catch (Exception exc) {
-				// System.out.println(exc.getMessage());
-			}
+			undoMove();			
 		}
 	}
 
@@ -266,7 +246,30 @@ public class SudokuController {
 			} catch (Exception exc) {
 				// System.out.println(exc.getMessage());
 			}
-			
+			updateColours();
+		}
+	}
+
+	class SudokuHintListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			try {
+				if (view.getButtonSelected().enabled) {
+					int[] coordinate = view.getCellCoordinate(view.getButtonSelected());
+					int tempVal = model.getSudoku()[coordinate[0]][coordinate[1]];
+					if(model.getUniqueness()){
+						model.setSudokuCell(coordinate[0], coordinate[1], model.getSolvedSudoku()[coordinate[0]][coordinate[1]]);
+					}
+					else{
+						model.solver();
+						model.setSudokuCell(coordinate[0], coordinate[1], model.getSolvedSudoku()[coordinate[0]][coordinate[1]]);
+					}
+					model.pushStack2(model.createStackObj(coordinate[0], coordinate[1], tempVal, model.getSolvedSudoku()[coordinate[0]][coordinate[1]]));
+					view.updateBoard(model.getSudoku());
+					updateColours();
+				}
+			} catch (Exception exc) {
+				// System.out.println(exc.getMessage());
+			}
 		}
 	}
 
@@ -377,10 +380,10 @@ public class SudokuController {
 		view = new SudokuView();
 		model = new SudokuModel(view);
 		view.showFrame(model.getSudoku());
-		model.solver();
+		// model.solver();
 		// model.createPreemtiveSets();
 
-		for (Cell cell : view.sudokuBoard.getCells()) {
+		for (Cell cell : view.sudokuBoard.getCellsLinear()) {
 			cell.addActionListener(new SudokuboardListener());
 			cell.addKeyListener(new KeyboardSudokuListener());
 		}
@@ -388,6 +391,7 @@ public class SudokuController {
 		view.sudokuUI.undo.addActionListener(new SudokuUndoListener());
 		view.sudokuUI.redo.addActionListener(new SudokuRedoListener());
 		view.sudokuUI.remove.addActionListener(new SudokuRemoveListener());
+		view.sudokuUI.hint.addActionListener(new SudokuHintListener());
 
 		updateColours();
 	}
