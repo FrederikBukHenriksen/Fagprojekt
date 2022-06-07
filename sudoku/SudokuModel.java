@@ -58,7 +58,7 @@ public class SudokuModel {
 	/*
 	public void boardCreater() throws Exception {
 		Path file = null;
-		file = findSudokuPath("C:\\Users\\Candytom\\Documents\\GitHub\\sudoku\\Puzzles_1\\");
+		file = findSudokuPath("C:\\");
 		//System.out.println(file);
 		if (file == null){
 			System.exit(0);
@@ -189,7 +189,7 @@ public class SudokuModel {
 	*/
 	public void boardCreater() throws FileNotFoundException, IOException, NumberFormatException, NoSuchElementException  {
 		Path file = null;
-		file = findSudokuPath("C:\\Users\\Candytom\\Documents\\GitHub\\sudoku\\Puzzles_1\\");
+		file = findSudokuPath("C:\\");
 		//System.out.println(file);
 		if (file == null){
 			System.exit(0);
@@ -274,9 +274,7 @@ public class SudokuModel {
 		
 	}
 	public SudokuModel(SudokuView view){
-		this.view = view;
-		
-		
+		this.view = view;		
 	}
 
 	public void solver() {
@@ -328,14 +326,14 @@ public class SudokuModel {
 			}
 		}
 		
-       for(int i = 0; i<n*k;i++) {
+       /*for(int i = 0; i<n*k;i++) {
         	  for(int j = 0; j<n*k;j++) {
         		  System.out.print("[" +solvedSudoku[i][j]+"]");
               	
               }
         	  System.out.println("");
         	
-        }
+        }*/
         //de-comment below lines for uniqueness and solution
         //System.out.println("It is unique = " + unique);
         //System.out.println(prem);
