@@ -364,7 +364,7 @@ public class SudokuController {
 	public void updateColours() {
 		view.clearMarkedCells();
 		view.markCells();
-		if(model.checkValidity(model.getSudoku(), false) && model.isFilled()){
+		if(model.checkValidity(model.getSudoku(), false, true) && model.isFilled()){
 			createPopUp("Congratulations, you solved the puzzle!");
 		}
 	}

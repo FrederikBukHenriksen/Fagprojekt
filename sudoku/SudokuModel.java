@@ -202,7 +202,7 @@ public class SudokuModel {
 			}
 		}
 		int loopCount = 0;
-		if(checkValidity(sudokuSimpleArray, false) && isFilledLoop(sudokuSimpleArray)) {
+		if(checkValidity(sudokuSimpleArray, false, false) && isFilledLoop(sudokuSimpleArray)) {
 			for(int l = 0; l< n*k; l++) {
 				for(int m = 0; m<n*k; m++) {
 					solvedSudoku[l][m]=prem.get(l).get(m).get(0);
@@ -210,7 +210,7 @@ public class SudokuModel {
 			}
 			unique = true;
 		}
-		while(!checkValidity(sudokuSimpleArray, false) || !isFilledLoop(sudokuSimpleArray)) {
+		while(!checkValidity(sudokuSimpleArray, false, false) || !isFilledLoop(sudokuSimpleArray)) {
 			loopCount++;
 			prem = loop(prem);
 			for(int l = 0; l< n*k; l++) {
@@ -409,7 +409,7 @@ public class SudokuModel {
 			}
 
 			if (newSudoku[x][y] == 0) {
-				if (checkValidity(newSudoku, false)) {
+				if (checkValidity(newSudoku, false, false)) {
 
 					newSudoku[x][y] = cellNumber;
 					numberCounter++;
@@ -433,7 +433,7 @@ public class SudokuModel {
 					boolean numFound = false;
 					for (int num = 0; num < chooseNumberList.size(); num++) {
 						newSudokuTemp[x][y] = chooseNumberList.get(num);
-						if (checkValidity(newSudokuTemp, false) && !numFound) {
+						if (checkValidity(newSudokuTemp, false, false) && !numFound) {
 							int save[][] = newSudoku.clone();
 							save[x][y] = chooseNumberList.get(num);
 							listOfBoards.add(save);
@@ -702,7 +702,7 @@ public class SudokuModel {
 
 						// Indsæt gyldige tal fra 1-9
 						copyOfSudoku[i][j] = q;
-						if (checkValidity(copyOfSudoku, false)) {
+						if (checkValidity(copyOfSudoku, false, false)) {
 							markUpBoard.get(i).get(j).add(q);
 						}
 					}
@@ -806,7 +806,7 @@ public class SudokuModel {
 			}
 		}
 		int[][] sudokuSimpleArray = Converter3D2D(sudokuClone); //create 2d array, to verify
-		if(checkValidity(sudokuSimpleArray, false) && isFilledLoop(sudokuSimpleArray)) { //Checks if it is solved. If it is the first time it is solved, it will return like it was not solved. 
+		if(checkValidity(sudokuSimpleArray, false, false) && isFilledLoop(sudokuSimpleArray)) { //Checks if it is solved. If it is the first time it is solved, it will return like it was not solved. 
 			if (solved == true) {
 				unique = false;
 				return sudokuClone;
@@ -825,17 +825,17 @@ public class SudokuModel {
 				return sudokuLoop;
 			}
 		}
-		if(!checkValidity(sudokuSimpleArray, false)){ //checks if invalid, returns original with returner if invalid
+		if(!checkValidity(sudokuSimpleArray, false, false)){ //checks if invalid, returns original with returner if invalid
 				sudokuLoop.get(currentLoopX).get(currentLoopY).clear();
 				sudokuLoop.get(currentLoopX).get(currentLoopY).addAll(returner);
 				return sudokuLoop;
 			}
 		
-		while(!checkValidity(sudokuSimpleArray, false) || !isFilledLoop(sudokuSimpleArray)) {//this loop runs till the sudoku is solved
+		while(!checkValidity(sudokuSimpleArray, false, false) || !isFilledLoop(sudokuSimpleArray)) {//this loop runs till the sudoku is solved
 			sudokuClone = loop(sudokuClone); //It calls recursive
 			sudokuSimpleArray = Converter3D2D(sudokuClone); //Creates simple sudoku array to verify, and then runs all the verification like before
 		
-			if(checkValidity(sudokuSimpleArray, false) && isFilledLoop(sudokuSimpleArray)){
+			if(checkValidity(sudokuSimpleArray, false, false) && isFilledLoop(sudokuSimpleArray)){
 				if (solved == true) {
 					unique = false;
 					return sudokuClone;
@@ -855,7 +855,7 @@ public class SudokuModel {
 				}
 			
 			}
-			if (!checkValidity(sudokuSimpleArray, false)){
+			if (!checkValidity(sudokuSimpleArray, false, false)){
 				sudokuLoop.get(currentLoopX).get(currentLoopY).clear();
 				sudokuLoop.get(currentLoopX).get(currentLoopY).addAll(returner);
 				return sudokuLoop;
@@ -868,7 +868,7 @@ public class SudokuModel {
 		return sudokuLoop;
 	}
 
-	public boolean checkValidity(int[][] sudoku, boolean print) {
+	public boolean checkValidity(int[][] sudoku, boolean print, boolean changeColours) {
 		failedCoords.clear();
 		boolean valid = new Boolean(true);
 		// Grid for storing already found values
@@ -1048,8 +1048,10 @@ public class SudokuModel {
 				// view.getCellCoordinate(failedCoords.get(i))[1] + " ");
 			}
 		}
-		for (int i = 0; i < failedCoords.size(); i++) {
-			failedCoords.get(i).conflict();
+		if(changeColours){
+			for (int i = 0; i < failedCoords.size(); i++) {
+				failedCoords.get(i).conflict();
+			}
 		}
 		return valid;
 	}
