@@ -7,12 +7,12 @@ import java.util.NoSuchElementException;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.Stack;
+import sudoku.View.Cell.*;
 
 import javax.swing.JFileChooser;
 
 import java.util.Random;
 
-import sudoku.SudokuBoard.Cell;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -54,7 +54,7 @@ public class SudokuModel {
 			return null;
 		
 	}
-	
+
 	public void boardCreater() throws FileNotFoundException, IOException, NumberFormatException, NoSuchElementException  {
 		Path file = null;
 		file = findSudokuPath("C:\\");
@@ -144,7 +144,6 @@ public class SudokuModel {
 	}
 	public SudokuModel(SudokuView view){
 		this.view = view;
-		
 	}
 
 
@@ -377,7 +376,6 @@ public class SudokuModel {
 
 	// Method for updating the markUp board, given a set of possible entries and
 	// their coordinates
-	
 	public boolean checkValidity(int[][] sudoku, boolean print, boolean changeColours) {
 		failedCoords.clear();
 		boolean valid = new Boolean(true);

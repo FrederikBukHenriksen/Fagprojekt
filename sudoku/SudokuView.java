@@ -1,6 +1,9 @@
 package sudoku;
 
+import sudoku.View.Cell.*;
+
 import java.awt.event.*;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
@@ -12,7 +15,8 @@ import java.awt.Component; //import these 3 header files
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.*;
-import sudoku.SudokuBoard.Cell;
+
+import sudoku.View.MenuBar.MenuBar;
 
 public class SudokuView extends JFrame {
 
@@ -20,9 +24,10 @@ public class SudokuView extends JFrame {
 	public int k;
 	public ArrayList <Cell> markedCells = new ArrayList<Cell>();
 	int[][] sudoku;
-	SudokuBoard sudokuBoard;
-	SudokuUI sudokuUI;
-	JPanel controls;
+	public SudokuBoard sudokuBoard;
+	public SudokuUI sudokuUI;
+	public MenuBar menuBar;
+	public JPanel controls;
 
 	Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
@@ -60,6 +65,7 @@ public class SudokuView extends JFrame {
 		this.sudoku = sudoku;
 		sudokuBoard = new SudokuBoard(this);
 		sudokuUI = new SudokuUI(this);
+		menuBar = new MenuBar();
 
 		setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
@@ -80,8 +86,9 @@ public class SudokuView extends JFrame {
 		}
 
 		// add menubar to frame
-		setJMenuBar(sudokuUI.createMenubar());
+		// setJMenuBar(sudokuUI.createMenubar());
 
+		setJMenuBar(menuBar);
 		c.gridx = 0;
 		c.gridy = 1;
 		c.weightx = 0;
