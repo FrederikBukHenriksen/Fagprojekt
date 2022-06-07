@@ -256,11 +256,11 @@ public class SudokuController {
 				int tempVal = model.getSudoku()[coordinate[0]][coordinate[1]];
 				if (model.crooks.getUniqueness()) {
 					model.setSudokuCell(coordinate[0], coordinate[1],
-							model.getSolvedSudoku()[coordinate[0]][coordinate[1]]);
+							model.crooks.getSolvedSudoku()[coordinate[0]][coordinate[1]]);
 				} else {
-					int[][] tempSudoku = model.getSolvedSudoku();
-					model.solver();
-					if (model.getSolvedSudoku()[0][0] == 0) {
+					int[][] tempSudoku = model.crooks.getSolvedSudoku();
+					model.crooks.solver();
+					if (model.crooks.getSolvedSudoku()[0][0] == 0) {
 						for (int i = 0; i < model.getN() * model.getK(); i++) {
 							for (int j = 0; j < model.getN() * model.getK(); j++) {
 								if (model.getSudoku()[i][j] != tempSudoku[i][j]) {
@@ -273,10 +273,10 @@ public class SudokuController {
 					}
 
 					model.setSudokuCell(coordinate[0], coordinate[1],
-							model.getSolvedSudoku()[coordinate[0]][coordinate[1]]);
+							model.crooks.getSolvedSudoku()[coordinate[0]][coordinate[1]]);
 				}
 				model.pushStack2(model.createStackObj(coordinate[0], coordinate[1], tempVal,
-						model.getSolvedSudoku()[coordinate[0]][coordinate[1]]));
+						model.crooks.getSolvedSudoku()[coordinate[0]][coordinate[1]]));
 				view.updateBoard(model.getSudoku());
 				updateColours();
 			}
