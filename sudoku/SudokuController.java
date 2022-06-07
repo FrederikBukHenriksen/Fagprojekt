@@ -3,12 +3,17 @@ package sudoku;
 import sudoku.Controller.Actionlisteners.*;
 import sudoku.View.Cell.*;
 
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.NoSuchElementException;
 
 import javax.swing.AbstractButton;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -22,11 +27,22 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.FlowLayout;
+
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
 public class SudokuController {
 
 	// Creating variables
 	public SudokuModel model;
 	public SudokuView view;
+	boolean okPressed = false;
 
 	// KEY EVENT FOR ALLE JTOGGLEBUTTONS PÅ BOARDET.
 	// class KeyboardSudokuListener extends KeyAdapter {
@@ -258,8 +274,8 @@ public class SudokuController {
 	public void updateColours() {
 		view.clearMarkedCells();
 		view.markCells();
-		if (model.checkValidity(model.getSudoku(), false) && model.isFilled()) {
-			createPopUp();
+		if (model.checkValidity(model.getSudoku(), false, true) && model.isFilled()) {
+			createPopUp("Congratulations, you solved the puzzle!");
 		}
 	}
 
@@ -272,6 +288,7 @@ public class SudokuController {
 			} catch (Exception exc) {
 				// System.out.println(exc.getMessage());
 			}
+			view.getCellFromCoord(model.getRedoStackCoords()[0], model.getRedoStackCoords()[1]).setSelected(true);
 			model.pushStack2(model.popRedoStack()); // Removes the last element of the stack
 			// model.setSudoku(model.getSudoku()); // Updates the board
 			view.updateBoard(model.getSudoku()); // Updates the visuals
@@ -290,6 +307,7 @@ public class SudokuController {
 			} catch (Exception exc) {
 				// System.out.println(exc.getMessage());
 			}
+			view.getCellFromCoord(model.getStackCoords()[0], model.getStackCoords()[1]).setSelected(true);
 			model.pushRedoStack(model.popStack2()); // Removes the last element of the stack
 			// model.setSudoku(model.getSudoku()); // Updates the board
 			view.updateBoard(model.getSudoku()); // Updates the visuals
@@ -301,15 +319,15 @@ public class SudokuController {
 		// System.out.println("UNDO"); //For debug
 	}
 
-	public void createPopUp() {
+	public void createPopUp(String text) {
 		JDialog jd = new JDialog();
 		jd.setLayout(new FlowLayout());
 		int x = view.getX();
 		int y = view.getY();
 		int height = view.getHeight();
 		int width = view.getWidth();
-		jd.setBounds((width / 2) - 200 + x, (height / 2) - 75 + y, 400, 150);
-		JLabel jLabel = new JLabel("Congratulations, you solved the puzzle!");
+		// jd.setBounds((width / 2) - 200 + x, (height / 2) - 75 + y, 400, 150);
+		JLabel jLabel = new JLabel(text);
 		jLabel.setFont(new Font(jLabel.getFont().getName(), Font.PLAIN, 20));
 		JButton closeButton = new JButton("Close");
 		closeButton.addActionListener(new ActionListener() {
@@ -354,16 +372,55 @@ public class SudokuController {
 			}
 		});
 
-		jd.add(jLabel);
-		jd.add(closeButton);
-		jd.add(newButton);
+		JButton continueButton = new JButton("Back to Puzzle");
+		continueButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				jd.dispose();
+			}
+		});
+
+		Container contentPane = new Container();
+
+		Panel outerPanel = new Panel();
+		outerPanel.setBackground(Color.RED);
+		outerPanel.setLayout(new BoxLayout(contentPane, BoxLayout.PAGE_AXIS));
+
+		Panel innerPanel = new Panel();
+		innerPanel.setLayout(new FlowLayout());
+		innerPanel.setBackground(Color.GREEN);
+		outerPanel.add(jLabel);
+		innerPanel.add(closeButton);
+		innerPanel.add(newButton);
+		innerPanel.add(continueButton);
+		outerPanel.add(innerPanel);
+		contentPane.add(outerPanel, BorderLayout.CENTER);
+
+		jd.add(outerPanel);
 		jd.setVisible(true);
+		jd.pack();
+
 	}
 
 	// Simple constructor
 	public SudokuController() {
 		view = new SudokuView();
 		model = new SudokuModel(view);
+		while (true) {
+			try {
+				model.boardCreater();
+				break;
+			} catch (IOException e) {
+				createSimplePopUp("wrong filetype");
+				System.out.println("Wrong filetype");
+			} catch (NumberFormatException ez) {
+				createSimplePopUp("wrong filetype");
+				System.out.println("Wrong filetype");
+			} catch (NoSuchElementException ex) {
+				createSimplePopUp("Illegal file content. Check for newlines");
+				System.out.println("Sudoku formatet wrong. Hint: Check for newlines");
+			}
+		}
 		view.showFrame(model.getSudoku());
 		for (Cell cell : view.sudokuBoard.getCellsLinear()) {
 			cell.addActionListener(new SudokuboardListener(this));
@@ -382,7 +439,46 @@ public class SudokuController {
 		// }
 		// });
 		model.solver();
+		if (model.getSolvedSudoku()[0][0] == 0) {
+			createPopUp("This sudoku has no solutions \n");
+		}
 		updateColours();
+	}
+
+	public void createSimplePopUp(String text) {
+		okPressed = false;
+		JDialog jd = new JDialog();
+		jd.setLayout(new FlowLayout());
+		int x = view.getX();
+		int y = view.getY();
+		int height = view.getHeight();
+		int width = view.getWidth();
+		jd.setBounds((width / 2) - 200 + x, (height / 2) - 75 + y, 400, 150);
+		final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		int xScreen = (screenSize.width / 2) - (jd.getWidth() / 2);
+		int yScreen = (screenSize.height / 2) - (jd.getHeight() / 2);
+		jd.setLocation(xScreen, yScreen);
+		JLabel jLabel = new JLabel(text);
+		jLabel.setFont(new Font(jLabel.getFont().getName(), Font.PLAIN, 20));
+		JButton okButton = new JButton("Ok");
+		okButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				view.dispose();
+				jd.dispose();
+				setOkPressed();
+				SudokuController controller = new SudokuController();
+			}
+		});
+		jd.add(jLabel);
+		jd.add(okButton);
+		jd.setVisible(true);
+		while (!okPressed) {
+		}
+	}
+
+	public void setOkPressed() {
+		okPressed = true;
 	}
 
 }
