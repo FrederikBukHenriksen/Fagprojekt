@@ -44,233 +44,6 @@ public class SudokuController {
 	public SudokuView view;
 	boolean okPressed = false;
 
-	// KEY EVENT FOR ALLE JTOGGLEBUTTONS PÅ BOARDET.
-	// class KeyboardSudokuListener extends KeyAdapter {
-	// boolean ctrlPressed = false;
-	// boolean zPressed = false;
-	// boolean yPressed = false;
-
-	// public void keyPressed(KeyEvent e) {
-	// int keyCode = e.getKeyCode();
-	// if (keyCode == KeyEvent.VK_Z) {
-	// zPressed = true;
-	// yPressed = false;
-	// if (ctrlPressed) {
-	// undoMove();
-	// }
-	// } else if (keyCode == KeyEvent.VK_Y) {
-	// yPressed = true;
-	// zPressed = false;
-	// if (ctrlPressed) {
-	// redoMove();
-	// }
-	// } else if (keyCode == KeyEvent.VK_CONTROL) {
-	// ctrlPressed = true;
-	// if (zPressed) {
-	// undoMove();
-	// } else if (yPressed) {
-	// redoMove();
-	// }
-	// } else if (keyCode == KeyEvent.VK_DOWN) {
-	// int[] tempCoords = { -1, 0 };
-	// try {
-	// tempCoords = view.getCellCoordinate(view.getButtonSelected());
-	// } catch (Exception h) {
-	// }
-	// Cell pressed = null;
-	// if (tempCoords[0] != (model.getN() * model.getK()) - 1) {
-	// pressed = view.getCellFromCoord(tempCoords[0] + 1, tempCoords[1]); // Grabs
-	// } else {
-	// pressed = view.getCellFromCoord(0, tempCoords[1]);
-	// }
-	// pressed.setSelected(true);
-	// view.onlySelectThePressed(pressed);
-	// updateColours();
-	// } else if (keyCode == KeyEvent.VK_UP) {
-	// int[] tempCoords = { 1, 0 };
-	// try {
-	// tempCoords = view.getCellCoordinate(view.getButtonSelected());
-	// } catch (Exception h) {
-	// }
-	// Cell pressed = null;
-	// if (tempCoords[0] != 0) {
-	// pressed = view.getCellFromCoord(tempCoords[0] - 1, tempCoords[1]); // Grabs
-	// } else {
-	// pressed = view.getCellFromCoord(model.getN() * model.getK() - 1,
-	// tempCoords[1]);
-	// }
-	// pressed.setSelected(true);
-	// view.onlySelectThePressed(pressed);
-	// updateColours();
-	// } else if (keyCode == KeyEvent.VK_LEFT) {
-	// int[] tempCoords = { 0, 1 };
-	// try {
-	// tempCoords = view.getCellCoordinate(view.getButtonSelected());
-	// } catch (Exception h) {
-	// }
-	// Cell pressed = null;
-	// if (tempCoords[1] != 0) {
-	// pressed = view.getCellFromCoord(tempCoords[0], tempCoords[1] - 1); // Grabs
-	// } else {
-	// pressed = view.getCellFromCoord(tempCoords[0], model.getN() * model.getK() -
-	// 1);
-	// }
-	// pressed.setSelected(true);
-	// view.onlySelectThePressed(pressed);
-	// updateColours();
-	// } else if (keyCode == KeyEvent.VK_RIGHT) {
-	// int[] tempCoords = { 0, -1 };
-	// try {
-	// tempCoords = view.getCellCoordinate(view.getButtonSelected());
-	// } catch (Exception h) {
-	// }
-	// Cell pressed = null;
-	// if (tempCoords[1] != model.getN() * model.getK() - 1) {
-	// pressed = view.getCellFromCoord(tempCoords[0], tempCoords[1] + 1); // Grabs
-	// } else {
-	// pressed = view.getCellFromCoord(tempCoords[0], 0);
-	// }
-	// pressed.setSelected(true);
-	// view.onlySelectThePressed(pressed);
-	// updateColours();
-	// } else {
-	// try {
-	// Cell pressedSudokuboard = view.getButtonSelected();
-	// if (pressedSudokuboard.enabled) { // Only the available buttons
-
-	// // Variables for the new cell-content and the button pressed
-	// String cellNew = "";
-	// String keyPressed = "";
-	// String cellCurrent = pressedSudokuboard.getText();
-	// // If the cell isn't empty, we attempt to concatinate the new entry on the
-	// // one
-	// if (!cellCurrent.equals("")) {
-	// cellNew = cellCurrent;
-	// }
-
-	// // Gets the digit entered
-	// if (keyCode == KeyEvent.VK_1 || keyCode == KeyEvent.VK_NUMPAD1) {
-	// keyPressed = "1";
-	// } else if (keyCode == KeyEvent.VK_2 || keyCode == KeyEvent.VK_NUMPAD2) {
-	// keyPressed = "2";
-	// } else if (keyCode == KeyEvent.VK_3 || keyCode == KeyEvent.VK_NUMPAD3) {
-	// keyPressed = "3";
-	// } else if (keyCode == KeyEvent.VK_4 || keyCode == KeyEvent.VK_NUMPAD4) {
-	// keyPressed = "4";
-	// } else if (keyCode == KeyEvent.VK_5 || keyCode == KeyEvent.VK_NUMPAD5) {
-	// keyPressed = "5";
-	// } else if (keyCode == KeyEvent.VK_6 || keyCode == KeyEvent.VK_NUMPAD6) {
-	// keyPressed = "6";
-	// } else if (keyCode == KeyEvent.VK_7 || keyCode == KeyEvent.VK_NUMPAD7) {
-	// keyPressed = "7";
-	// } else if (keyCode == KeyEvent.VK_8 || keyCode == KeyEvent.VK_NUMPAD8) {
-	// keyPressed = "8";
-	// } else if (keyCode == KeyEvent.VK_9 || keyCode == KeyEvent.VK_NUMPAD9) {
-	// keyPressed = "9";
-	// } else if (keyCode == KeyEvent.VK_0 || keyCode == KeyEvent.VK_NUMPAD0) {
-	// keyPressed = "0";
-	// // Backspace deletes 1 digit of the number in the cell
-	// } else if (keyCode == KeyEvent.VK_BACK_SPACE || keyCode ==
-	// KeyEvent.VK_DELETE) {
-	// if (cellNew.length() > 1) {
-	// cellNew = cellNew.substring(0, cellNew.length() - 1);
-	// } else if (cellNew.length() == 1) {
-	// cellNew = "0";
-	// }
-	// } else {
-	// return;
-	// }
-
-	// // Check if the concatinated number is larger than allowed, if so, just enter
-	// // the new number
-	// int maxNumber = model.getN() * model.getK(); // TODO: Er dette det maksimale
-	// if (!(cellNew + keyPressed).equals("")) {
-	// if (Integer.valueOf(cellNew + keyPressed) > maxNumber) {
-	// cellNew = keyPressed;
-	// } else {
-	// cellNew = cellNew + keyPressed;
-	// }
-	// }
-
-	// if (!cellNew.equals("")) {
-	// model.clearRedoStack();
-	// // Update board both in data and visually
-	// int[] coordinate = view.getCellCoordinate(pressedSudokuboard);
-	// int tempVal = model.getSudoku()[coordinate[0]][coordinate[1]];
-	// model.setSudokuCell(coordinate[0], coordinate[1], Integer.valueOf(cellNew));
-	// model.pushStack2(
-	// model.createStackObj(coordinate[0], coordinate[1], tempVal,
-	// Integer.valueOf(cellNew)));
-	// view.updateBoard(model.getSudoku());
-	// updateColours();
-	// // view.updateFrameTitle(model.checkValidity(model.getSudoku(), false),
-	// // model.isFilled());
-	// }
-	// }
-
-	// if (!cellNew.equals("")) {
-	// model.clearRedoStack();
-	// // Update board both in data and visually
-	// int[] coordinate = view.getCellCoordinate(pressedSudokuboard);
-	// int tempVal = model.getSudoku()[coordinate[0]][coordinate[1]];
-	// model.setSudokuCell(coordinate[0], coordinate[1], Integer.valueOf(cellNew));
-	// model.pushStack2(
-	// model.createStackObj(coordinate[0], coordinate[1], tempVal,
-	// Integer.valueOf(cellNew)));
-	// view.updateBoard(model.getSudoku());
-	// updateColours();
-	// }
-	// }
-	// } catch (Exception exc) {
-	// //System.out.println(exc.getMessage());
-	// }
-	// }
-
-	// public void keyReleased(KeyEvent e) {
-	// try {
-	// // Gets the digit entered
-	// int keyCode = e.getKeyCode();
-	// if (keyCode == KeyEvent.VK_Z) {
-	// zPressed = false;
-	// } else if (keyCode == KeyEvent.VK_CONTROL) {
-	// ctrlPressed = false;
-	// } else if (keyCode == KeyEvent.VK_Y) {
-	// yPressed = false;
-	// } else {
-	// return;
-	// }
-
-	// } catch (Exception exc) {
-	// // System.out.println(exc.getMessage());
-	// }
-	// }
-	// }
-
-	public void getHint() {
-		try {
-			if (this.view.getButtonSelected().enabled) {
-				int[] coordinate = this.view
-						.getCellCoordinate(this.view.getButtonSelected());
-				int tempVal = this.model.getSudoku()[coordinate[0]][coordinate[1]];
-				if (this.model.getUniqueness()) {
-					this.model.setSudokuCell(coordinate[0], coordinate[1],
-							this.model.getSolvedSudoku()[coordinate[0]][coordinate[1]]);
-				} else {
-					this.model.solver();
-					this.model.setSudokuCell(coordinate[0], coordinate[1],
-							this.model.getSolvedSudoku()[coordinate[0]][coordinate[1]]);
-				}
-				this.model
-						.pushStack2(this.model.createStackObj(coordinate[0], coordinate[1], tempVal,
-								this.model.getSolvedSudoku()[coordinate[0]][coordinate[1]]));
-				this.view.updateBoard(this.model.getSudoku());
-				this.updateColours();
-			}
-		} catch (Exception exc) {
-			// System.out.println(exc.getMessage());
-		}
-	}
-
 	public void updateColours() {
 		view.clearMarkedCells();
 		view.markCells();
@@ -474,6 +247,42 @@ public class SudokuController {
 		jd.add(okButton);
 		jd.setVisible(true);
 		while (!okPressed) {
+		}
+	}
+
+	public void getHint() {
+		try {
+			if (view.getButtonSelected().enabled) {
+				int[] coordinate = view.getCellCoordinate(view.getButtonSelected());
+				int tempVal = model.getSudoku()[coordinate[0]][coordinate[1]];
+				if (model.getUniqueness()) {
+					model.setSudokuCell(coordinate[0], coordinate[1],
+							model.getSolvedSudoku()[coordinate[0]][coordinate[1]]);
+				} else {
+					int[][] tempSudoku = model.getSolvedSudoku();
+					model.solver();
+					if (model.getSolvedSudoku()[0][0] == 0) {
+						for (int i = 0; i < model.getN() * model.getK(); i++) {
+							for (int j = 0; j < model.getN() * model.getK(); j++) {
+								if (model.getSudoku()[i][j] != tempSudoku[i][j]) {
+									view.getCellFromCoord(i, j).conflict();
+								}
+							}
+						}
+						createPopUp(
+								"This sudoku can't be solved with current entries!\n Please remove incorrect entries before trying again");
+					}
+
+					model.setSudokuCell(coordinate[0], coordinate[1],
+							model.getSolvedSudoku()[coordinate[0]][coordinate[1]]);
+				}
+				model.pushStack2(model.createStackObj(coordinate[0], coordinate[1], tempVal,
+						model.getSolvedSudoku()[coordinate[0]][coordinate[1]]));
+				view.updateBoard(model.getSudoku());
+				updateColours();
+			}
+		} catch (Exception exc) {
+			// System.out.println(exc.getMessage());
 		}
 	}
 
