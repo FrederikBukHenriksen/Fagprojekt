@@ -78,27 +78,35 @@ public class SudokuUI {
 
     }
 
-    public JMenuBar createMenubar() {
+    // public JMenuBar createMenubar() {
 
-        JMenuBar mb = new JMenuBar();
+    // JMenuBar mb = new JMenuBar();
 
-        // create a menu
-        JMenu x = new JMenu("Menu");
+    // // create a menu
+    // JMenu x = new JMenu("Menu");
+    // JMenu tools = new JMenu("Tools");
 
-        // create menuitems
-        JMenuItem m1 = new JMenuItem("MenuItem1");
-        JMenuItem m2 = new JMenuItem("MenuItem2");
-        JMenuItem m3 = new JMenuItem("MenuItem3");
+    // JMenuItem zoomIn = new JMenuItem("Zoom in");
+    // JMenuItem zoomOut = new JMenuItem("Zoom out");
 
-        // add menu items to menu
-        x.add(m1);
-        x.add(m2);
-        x.add(m3);
+    // tools.add(zoomIn);
+    // tools.add(zoomOut);
 
-        // add menu to menu bar
-        mb.add(x);
-        return mb;
-    }
+    // // create menuitems
+    // JMenuItem m1 = new JMenuItem("MenuItem1");
+    // JMenuItem m2 = new JMenuItem("MenuItem2");
+    // JMenuItem m3 = new JMenuItem("MenuItem3");
+
+    // // add menu items to menu
+    // x.add(m1);
+    // x.add(m2);
+    // x.add(m3);
+
+    // // add menu to menu bar
+    // mb.add(tools);
+    // mb.add(x);
+    // return mb;
+    // }
 
     class MenuButton extends JButton {
         Color def = Color.gray;

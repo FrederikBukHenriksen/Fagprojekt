@@ -12,7 +12,9 @@ import java.awt.Component; //import these 3 header files
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.*;
+
 import sudoku.SudokuBoard.Cell;
+import sudoku.View.MenuBar.MenuBar;
 
 public class SudokuView extends JFrame {
 
@@ -22,6 +24,7 @@ public class SudokuView extends JFrame {
 	int[][] sudoku;
 	SudokuBoard sudokuBoard;
 	SudokuUI sudokuUI;
+	MenuBar menuBar = new MenuBar();
 	JPanel controls;
 
 	Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -80,8 +83,9 @@ public class SudokuView extends JFrame {
 		}
 
 		// add menubar to frame
-		setJMenuBar(sudokuUI.createMenubar());
+		// setJMenuBar(sudokuUI.createMenubar());
 
+		setJMenuBar(new MenuBar());
 		c.gridx = 0;
 		c.gridy = 1;
 		c.weightx = 0;
