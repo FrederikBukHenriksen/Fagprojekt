@@ -36,6 +36,7 @@ public class SudokuController {
 	// Creating variables
 	SudokuModel model;
 	SudokuView view;
+	boolean okPressed = false;
 
 	// KEY EVENT FOR ALLE JTOGGLEBUTTONS PÅ BOARDET.
 	class KeyboardSudokuListener extends KeyAdapter {
@@ -507,7 +508,7 @@ public class SudokuController {
 				createSimplePopUp("wrong filetype");
 				System.out.println("Wrong filetype");
 			} catch(NoSuchElementException ex) {
-				createSimplePopUp("Sudoku formatet wrong. Hint: Check for newlines");
+				createSimplePopUp("Illegal file content. Check for newlines");
 				System.out.println("Sudoku formatet wrong. Hint: Check for newlines");
 			} 
 		}
@@ -529,6 +530,7 @@ public class SudokuController {
 	}
 
 	public void createSimplePopUp(String text) {
+		okPressed = false;
 		JDialog jd = new JDialog();
 		jd.setLayout(new FlowLayout());
 		int x = view.getX();
@@ -536,6 +538,10 @@ public class SudokuController {
 		int height = view.getHeight();
 		int width = view.getWidth();
 		jd.setBounds((width / 2) - 200 + x, (height / 2) - 75 + y, 400, 150);
+		final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		int xScreen = (screenSize.width / 2) - (jd.getWidth() / 2);
+		int yScreen = (screenSize.height / 2) - (jd.getHeight() / 2);
+		jd.setLocation(xScreen, yScreen);
 		JLabel jLabel = new JLabel(text);
 		jLabel.setFont(new Font(jLabel.getFont().getName(), Font.PLAIN, 20));
 		JButton okButton = new JButton("Ok");
@@ -544,12 +550,19 @@ public class SudokuController {
 			public void actionPerformed(ActionEvent e) {
 				view.dispose();
 				jd.dispose();
+				setOkPressed();
 				SudokuController controller = new SudokuController();
 			}
 		});
 		jd.add(jLabel);
 		jd.add(okButton);
 		jd.setVisible(true);
+		while(!okPressed){
+		}
+	}
+
+	public void setOkPressed(){
+		okPressed = true;
 	}
 
 }
