@@ -7,19 +7,12 @@ import javax.swing.JMenuItem;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class MenuBar {
+public class MenuBar extends JMenuBar {
 
     public JMenuItem zoomIn = new JMenuItem("Zoom in");
     public JMenuItem zoomOut = new JMenuItem("Zoom out");
 
     public MenuBar() {
-
-    }
-
-    public JMenuBar createMenu() {
-
-        JMenuBar mb = new JMenuBar();
-
         // create a menu
         JMenu x = new JMenu("Menu");
         JMenu tools = new JMenu("Tools");
@@ -37,9 +30,7 @@ public class MenuBar {
         x.add(m1);
 
         // add menu to menu bar
-        mb.add(tools);
-        mb.add(x);
-
-        return mb;
+        this.add(tools);
+        this.add(x);
     }
 }

@@ -11,8 +11,7 @@ import javax.swing.border.LineBorder;
 
 import java.awt.*;
 
-import sudoku.SudokuBoard.Cell;
-import sudoku.SudokuController.KeyboardSudokuListener;
+import sudoku.View.Cell.*;
 
 /**
  * SudokuUI

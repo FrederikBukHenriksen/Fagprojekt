@@ -6,12 +6,12 @@ import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.Stack;
+import sudoku.View.Cell.*;
 
 import javax.swing.JFileChooser;
 
 import java.util.Random;
 
-import sudoku.SudokuBoard.Cell;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -22,7 +22,7 @@ import java.util.Collections;
 
 public class SudokuModel {
 	// Setting up variables
-	int[][] sudoku = new int[0][0];
+	public int[][] sudoku = new int[0][0];
 	stackObj[] sudokuStack2 = new stackObj[1000];
 	stackObj[] redoStack = new stackObj[1000];
   	int[][] solvedSudoku = new int [0][0];
