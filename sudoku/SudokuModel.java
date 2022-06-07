@@ -54,10 +54,11 @@ public class SudokuModel {
 			return null;
 		
 	}
-	public void BoardCreater() {
+	public void boardCreater() {
 		Path file = null;
-		while(file == null) {
-			file = findSudokuPath("C:/");
+		file = findSudokuPath("C:\\");
+		if (file == null){
+			System.exit(0);
 		}
 		Scanner scanner;
 		// reading the input
@@ -75,7 +76,7 @@ public class SudokuModel {
 					n = Integer.parseInt(str);
 				} catch (NumberFormatException ex) {
 					//ex.printStackTrace();
-					BoardCreater();
+					boardCreater();
 					return;
 				}
 			}
@@ -109,11 +110,9 @@ public class SudokuModel {
 								// If input isn't ".", read the number and insert into array
 								sudoku[c][d] = Integer.parseInt(str);
 							} catch (NumberFormatException ex) {	
-								BoardCreater();
+								boardCreater();
 								return;
 								//ex.printStackTrace();
-								
-								
 							}
 							// Go to next entry
 							d++;
@@ -137,7 +136,7 @@ public class SudokuModel {
 							xSums[index] = Integer.parseInt(str);
 							index++;
 						} catch (NumberFormatException ex) {
-							BoardCreater();
+							boardCreater();
 							return;
 						}
 					}
@@ -154,7 +153,7 @@ public class SudokuModel {
 							index++;
 						} catch (NumberFormatException ex) {
 							
-							BoardCreater();
+							boardCreater();
 							return;
 						}
 					}
@@ -162,22 +161,22 @@ public class SudokuModel {
 			}
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
-			BoardCreater();
+			boardCreater();
 			return;
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			BoardCreater();
+			boardCreater();
 			return;
 		}
 	}
 	public SudokuModel(SudokuView view){
 		this.view = view;
-		BoardCreater();
+		boardCreater();
 		
 	}
 
 	public void solver() {
-		if(!isSandwich){
+		if(! (isSandwich || getN()>4 || getN() != getK())){
 		ArrayList<ArrayList<ArrayList<Integer>>> prem = preemtiveSets(singleton(markUpCells()));
 		change = true;
 		while (change == true) {
@@ -223,18 +222,18 @@ public class SudokuModel {
 			}
 		}
 		
-       for(int i = 0; i<n*k;i++) {
+       /*for(int i = 0; i<n*k;i++) {
         	  for(int j = 0; j<n*k;j++) {
         		  System.out.print("[" +solvedSudoku[i][j]+"]");
               	
               }
         	  System.out.println("");
         	
-        }
+        }*/
         //de-comment below lines for uniqueness and solution
         //System.out.println("It is unique = " + unique);
         //System.out.println(prem);
-		}
+		} 
 	}
 
 	// Method for getting the board
@@ -372,16 +371,11 @@ public class SudokuModel {
 					}
 				}
 			}
-
-			// System.out.println("m: " + sizeOfSet);
 			sizeOfSet++;
-			// System.out.println(sizeOfSet);
 			if (sizeOfSet > n*k-1) {
 				break;
 			}
 		}
-
-		// System.out.print(change);
 		return sudokuPre;
 	}
 
@@ -1062,10 +1056,18 @@ public class SudokuModel {
 	public void printSudoku(int[][] sudokuBoard) {
 		for (int i = 0; i < sudokuBoard.length; i++) {
 			for (int k = 0; k < sudokuBoard.length; k++) {
-				// System.out.print(sudokuBoard[i][k] + " ");
+				System.out.print(sudokuBoard[i][k] + " ");
 			}
-			// System.out.println();
+			System.out.println();
 		}
+	}
+
+	public boolean getUniqueness(){
+		return unique;
+	}
+
+	public int[][] getSolvedSudoku(){
+		return solvedSudoku;
 	}
 
 	public static ArrayList<Cell> getFailedCells() {

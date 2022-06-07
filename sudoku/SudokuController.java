@@ -2,13 +2,19 @@ package sudoku;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
 import javax.swing.JToggleButton;
 
 import sudoku.SudokuBoard.Cell;
-
+import java.awt.*;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -183,11 +189,10 @@ public class SudokuController {
 								model.createStackObj(coordinate[0], coordinate[1], tempVal, Integer.valueOf(cellNew)));
 						view.updateBoard(model.getSudoku());
 						updateColours();
-						//view.updateFrameTitle(model.checkValidity(model.getSudoku(), false), model.isFilled());
 					}
 				}
 			} catch (Exception exc) {
-				System.out.println(exc.getMessage());
+				//System.out.println(exc.getMessage());
 			}
 		}
 		}
@@ -224,7 +229,7 @@ public class SudokuController {
 	// Code for undo-button
 	class SudokuUndoListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			undoMove();
+			undoMove();			
 		}
 	}
 
@@ -253,7 +258,24 @@ public class SudokuController {
 
 	class SudokuHintListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			System.out.println("lol");
+			try {
+				if (view.getButtonSelected().enabled) {
+					int[] coordinate = view.getCellCoordinate(view.getButtonSelected());
+					int tempVal = model.getSudoku()[coordinate[0]][coordinate[1]];
+					if(model.getUniqueness()){
+						model.setSudokuCell(coordinate[0], coordinate[1], model.getSolvedSudoku()[coordinate[0]][coordinate[1]]);
+					}
+					else{
+						model.solver();
+						model.setSudokuCell(coordinate[0], coordinate[1], model.getSolvedSudoku()[coordinate[0]][coordinate[1]]);
+					}
+					model.pushStack2(model.createStackObj(coordinate[0], coordinate[1], tempVal, model.getSolvedSudoku()[coordinate[0]][coordinate[1]]));
+					view.updateBoard(model.getSudoku());
+					updateColours();
+				}
+			} catch (Exception exc) {
+				// System.out.println(exc.getMessage());
+			}
 		}
 	}
 
@@ -319,7 +341,9 @@ public class SudokuController {
 	public void updateColours() {
 		view.clearMarkedCells();
 		view.markCells();
-		model.checkValidity(model.getSudoku(), false);
+		if(model.checkValidity(model.getSudoku(), false) && model.isFilled()){
+			createPopUp();
+		}
 	}
 
 	public void redoMove(){
@@ -354,7 +378,65 @@ public class SudokuController {
 			//view.updateFrameTitle(model.checkValidity(model.getSudoku(), false), model.isFilled());
 			updateColours();
 		}
-		System.out.println("UNDO"); //For debug
+		//System.out.println("UNDO"); //For debug
+	}
+
+	public void createPopUp() {
+		JDialog jd = new JDialog();
+		jd.setLayout(new FlowLayout());
+		int x = view.getX();
+		int y = view.getY();
+		int height = view.getHeight();
+		int width = view.getWidth();
+		jd.setBounds((width / 2) - 200 + x, (height / 2) - 75 + y, 400, 150);
+		JLabel jLabel = new JLabel("Congratulations, you solved the puzzle!");
+		jLabel.setFont(new Font(jLabel.getFont().getName(), Font.PLAIN, 20));
+		JButton closeButton = new JButton("Close");
+		closeButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// Rick-roll user on exit?
+				/*
+				 String url ="https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley";
+				 
+				 String myOS = System.getProperty("os.name").toLowerCase();
+				 
+				 try {
+				 if(Desktop.isDesktopSupported()) { // Probably Windows
+				 Desktop desktop = Desktop.getDesktop();
+				 desktop.browse(new URI(url));
+				 } else { // Definitely Non-windows
+				 Runtime runtime = Runtime.getRuntime();
+				 if(myOS.contains("mac")) { // Apples
+				 runtime.exec("open " + url);
+				 }
+				 else if(myOS.contains("nix") || myOS.contains("nux")) { // Linux flavours
+				 runtime.exec("xdg-open " + url);
+				 }
+				 }
+				 }
+				 catch(IOException | URISyntaxException eek) {
+				 }
+				 */
+
+				System.exit(0);
+			}
+		});
+		JButton newButton = new JButton("New puzzle");
+		newButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO: Generate new puzzle here
+				view.dispose();
+				jd.dispose();
+				SudokuController controller = new SudokuController();
+			}
+		});
+
+		jd.add(jLabel);
+		jd.add(closeButton);
+		jd.add(newButton);
+		jd.setVisible(true);
 	}
 
 	// Simple constructor
@@ -362,9 +444,6 @@ public class SudokuController {
 		view = new SudokuView();
 		model = new SudokuModel(view);
 		view.showFrame(model.getSudoku());
-		// model.solver();
-		// model.createPreemtiveSets();
-
 		for (Cell cell : view.sudokuBoard.getCellsLinear()) {
 			cell.addActionListener(new SudokuboardListener());
 			cell.addKeyListener(new KeyboardSudokuListener());
@@ -374,7 +453,7 @@ public class SudokuController {
 		view.sudokuUI.redo.addActionListener(new SudokuRedoListener());
 		view.sudokuUI.remove.addActionListener(new SudokuRemoveListener());
 		view.sudokuUI.hint.addActionListener(new SudokuHintListener());
-
+		model.solver();	
 		updateColours();
 	}
 
