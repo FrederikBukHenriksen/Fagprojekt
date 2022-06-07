@@ -3,6 +3,7 @@ package sudoku;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.Stack;
@@ -54,9 +55,11 @@ public class SudokuModel {
 			return null;
 		
 	}
-	public void boardCreater() {
+	/*
+	public void boardCreater() throws Exception {
 		Path file = null;
-		file = findSudokuPath("C:\\");
+		file = findSudokuPath("C:\\Users\\Candytom\\Documents\\GitHub\\sudoku\\Puzzles_1\\");
+		//System.out.println(file);
 		if (file == null){
 			System.exit(0);
 		}
@@ -77,6 +80,8 @@ public class SudokuModel {
 				} catch (NumberFormatException ex) {
 					//ex.printStackTrace();
 					boardCreater();
+					setupScanner.close();
+					scanner.close();
 					return;
 				}
 			}
@@ -111,6 +116,8 @@ public class SudokuModel {
 								sudoku[c][d] = Integer.parseInt(str);
 							} catch (NumberFormatException ex) {	
 								boardCreater();
+								scanner.close();
+								lineScanner.close();
 								return;
 								//ex.printStackTrace();
 							}
@@ -137,11 +144,19 @@ public class SudokuModel {
 							index++;
 						} catch (NumberFormatException ex) {
 							boardCreater();
+							lineScanner.close();
+							scanner.close();
 							return;
 						}
 					}
 					lineScanner.close();
-					line = scanner.nextLine();
+					try {
+						line = scanner.nextLine();
+					} catch(NoSuchElementException ex) {
+						boardCreater();
+						scanner.close();
+						return;
+					}
 					lineScanner = new Scanner(line);
 					lineScanner.useDelimiter(":");
 					index = 0;
@@ -154,6 +169,8 @@ public class SudokuModel {
 						} catch (NumberFormatException ex) {
 							
 							boardCreater();
+							scanner.close();
+							lineScanner.close();
 							return;
 						}
 					}
@@ -169,14 +186,103 @@ public class SudokuModel {
 			return;
 		}
 	}
+	*/
+	public void boardCreater() throws FileNotFoundException, IOException, NumberFormatException, NoSuchElementException  {
+		Path file = null;
+		file = findSudokuPath("C:\\Users\\Candytom\\Documents\\GitHub\\sudoku\\Puzzles_1\\");
+		//System.out.println(file);
+		if (file == null){
+			System.exit(0);
+		}
+		Scanner scanner;
+		// reading the input
+			scanner = new Scanner(file);
+			String setup = scanner.next();
+			Scanner setupScanner = new Scanner(setup);
+			setupScanner.useDelimiter(";");
+			// reading k & n
+			while (setupScanner.hasNext()) {
+				String str = setupScanner.next();
+				k = Integer.parseInt(str);
+				str = setupScanner.next();
+				n = Integer.parseInt(str);
+
+			}
+			setupScanner.close();
+			if (k > n) {
+				System.out.println("Not a valid sudoku-size, k cannot exceed n");
+			} else {// Creating the board
+				sudoku = new int[n * k][n * k];
+				// Creating variables for sandwich Sums
+				xSums = new int[n*k];
+				ySums = new int[n*k];
+				// Creating variables for looping through input
+				int c = 0;
+				int d = 0;
+				scanner.nextLine();
+				for(int j = 0; j < n*k; j++) {
+					// Reads the next line
+					String line = scanner.nextLine();
+					Scanner lineScanner = new Scanner(line);
+					lineScanner.useDelimiter(";");
+					while (lineScanner.hasNext()) {
+						// Reads the next input on the line, separated by ";"
+						String str = lineScanner.next();
+						if (str.equals(".")) {
+							// If input is ".", convert to a "0"
+							sudoku[c][d] = 0;
+							// Go to next entry
+							d++;
+						} else {
+								// If input isn't ".", read the number and insert into array
+								sudoku[c][d] = Integer.parseInt(str);
+							// Go to next entry
+							d++;
+						}
+					}
+					// Go to next line, and start from first entry
+					c++;
+					d = 0;
+					lineScanner.close();
+				}
+				if(scanner.hasNextLine()){
+					isSandwich = true;
+					String line = scanner.nextLine();
+					Scanner lineScanner = new Scanner(line);
+					lineScanner.useDelimiter(":");
+					int index = 0;
+					while(lineScanner.hasNext()){
+						String str = lineScanner.next();
+							// If input isn't ".", read the number and insert into array
+						xSums[index] = Integer.parseInt(str);
+						index++;
+
+					}
+					lineScanner.close();
+					line = scanner.nextLine();
+					lineScanner = new Scanner(line);
+					lineScanner.useDelimiter(":");
+					index = 0;
+					while(lineScanner.hasNext()){
+						String str = lineScanner.next();
+						// If input isn't ".", read the number and insert into array
+						ySums[index] = Integer.parseInt(str);
+							index++;
+					}
+				}
+			}
+		
+	}
 	public SudokuModel(SudokuView view){
 		this.view = view;
-		boardCreater();
+		
 		
 	}
 
 	public void solver() {
-		if(! (isSandwich || getN()>4 || getN() != getK())){
+		solved = false;
+		//if(! (isSandwich || getN()>4 || getN() != getK())){
+		if (!isSandwich) {
 		ArrayList<ArrayList<ArrayList<Integer>>> prem = preemtiveSets(singleton(markUpCells()));
 		change = true;
 		while (change == true) {
@@ -222,14 +328,14 @@ public class SudokuModel {
 			}
 		}
 		
-       /*for(int i = 0; i<n*k;i++) {
+       for(int i = 0; i<n*k;i++) {
         	  for(int j = 0; j<n*k;j++) {
         		  System.out.print("[" +solvedSudoku[i][j]+"]");
               	
               }
         	  System.out.println("");
         	
-        }*/
+        }
         //de-comment below lines for uniqueness and solution
         //System.out.println("It is unique = " + unique);
         //System.out.println(prem);
@@ -243,7 +349,7 @@ public class SudokuModel {
 
 	public ArrayList<ArrayList<ArrayList<Integer>>> createPreemtiveSets() {
 		ArrayList<ArrayList<ArrayList<Integer>>> prem = preemtiveSets(singleton(markUpCells()));
-		for (int i = 0; i < 10; i++) {//arbitræt
+		while(change) {
 			prem = preemtiveSets(singleton(prem));
 		}
 		return prem;

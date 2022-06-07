@@ -2,10 +2,12 @@ package sudoku;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.NoSuchElementException;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -443,6 +445,18 @@ public class SudokuController {
 	public SudokuController() {
 		view = new SudokuView();
 		model = new SudokuModel(view);
+		while(true) {
+			try {
+				model.boardCreater();
+				break;
+			} catch(IOException e) {
+				System.out.println("wrong filetype");
+			} catch(NumberFormatException ez) {
+				System.out.println("wrong filetype");
+			} catch(NoSuchElementException ex) {
+				System.out.println("Sudoku formatet wrong. Hint: Check for newlines");
+			} 
+		}
 		view.showFrame(model.getSudoku());
 		for (Cell cell : view.sudokuBoard.getCellsLinear()) {
 			cell.addActionListener(new SudokuboardListener());
