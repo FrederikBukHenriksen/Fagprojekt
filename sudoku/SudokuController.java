@@ -43,17 +43,20 @@ public class SudokuController {
 		boolean ctrlPressed = false;
 		boolean zPressed = false;
 		boolean yPressed = false;
+		boolean hPressed = false;
 		public void keyPressed(KeyEvent e) {
 			int keyCode = e.getKeyCode();
 			if( keyCode == KeyEvent.VK_Z){
 				zPressed = true;
 				yPressed = false;
+				hPressed = false;
 				if(ctrlPressed){
 					undoMove();
 				}
 			} else if( keyCode == KeyEvent.VK_Y){
 				yPressed = true;
 				zPressed = false;
+				hPressed = false;
 				if(ctrlPressed){
 					redoMove();
 				}
@@ -64,6 +67,9 @@ public class SudokuController {
 				}
 				else if(yPressed){
 					redoMove();
+				}
+				else if(hPressed){
+					getHint();
 				}
 			} else if( keyCode == KeyEvent.VK_DOWN){
 				int[] tempCoords = {-1,0};
@@ -133,6 +139,13 @@ public class SudokuController {
 				pressed.setSelected(true);
 				view.onlySelectThePressed(pressed);
 				updateColours();
+			} else if(keyCode == KeyEvent.VK_H){
+				yPressed = false;
+				zPressed = false;
+				hPressed = true;
+				if(ctrlPressed){
+					getHint();
+				}
 			} 
 			else{
 			try {
@@ -220,7 +233,9 @@ public class SudokuController {
 					ctrlPressed = false;
 				} else if( keyCode == KeyEvent.VK_Y){
 					yPressed = false;
-				} else {
+				} else if( keyCode == KeyEvent.VK_H){
+					hPressed = false;
+				}else {
 					return;
 				}
 
@@ -272,36 +287,7 @@ public class SudokuController {
 
 	class SudokuHintListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			try {
-				if (view.getButtonSelected().enabled) {
-					int[] coordinate = view.getCellCoordinate(view.getButtonSelected());
-					int tempVal = model.getSudoku()[coordinate[0]][coordinate[1]];
-					if(model.getUniqueness()){
-						model.setSudokuCell(coordinate[0], coordinate[1], model.getSolvedSudoku()[coordinate[0]][coordinate[1]]);
-					}
-					else{
-						int[][] tempSudoku = model.getSolvedSudoku();
-						model.solver();
-						if(model.getSolvedSudoku()[0][0] == 0){
-							for(int i = 0; i < model.getN()*model.getK(); i++){
-								for(int j = 0; j < model.getN()*model.getK(); j++){
-									if(model.getSudoku()[i][j] != tempSudoku[i][j]){
-										view.getCellFromCoord(i,j).conflict();
-									}
-								}
-							}
-							createPopUp("This sudoku can't be solved with current entries!\n Please remove incorrect entries before trying again");
-						}
-						
-						model.setSudokuCell(coordinate[0], coordinate[1], model.getSolvedSudoku()[coordinate[0]][coordinate[1]]);
-					}
-					model.pushStack2(model.createStackObj(coordinate[0], coordinate[1], tempVal, model.getSolvedSudoku()[coordinate[0]][coordinate[1]]));
-					view.updateBoard(model.getSudoku());
-					updateColours();
-				}
-			} catch (Exception exc) {
-				// System.out.println(exc.getMessage());
-			}
+			getHint();
 		}
 	}
 
@@ -560,6 +546,39 @@ public class SudokuController {
 		while(!okPressed){
 		}
 	}
+
+public void getHint(){
+	try {
+		if (view.getButtonSelected().enabled) {
+			int[] coordinate = view.getCellCoordinate(view.getButtonSelected());
+			int tempVal = model.getSudoku()[coordinate[0]][coordinate[1]];
+			if(model.getUniqueness()){
+				model.setSudokuCell(coordinate[0], coordinate[1], model.getSolvedSudoku()[coordinate[0]][coordinate[1]]);
+			}
+			else{
+				int[][] tempSudoku = model.getSolvedSudoku();
+				model.solver();
+				if(model.getSolvedSudoku()[0][0] == 0){
+					for(int i = 0; i < model.getN()*model.getK(); i++){
+						for(int j = 0; j < model.getN()*model.getK(); j++){
+							if(model.getSudoku()[i][j] != tempSudoku[i][j]){
+								view.getCellFromCoord(i,j).conflict();
+							}
+						}
+					}
+					createPopUp("This sudoku can't be solved with current entries!\n Please remove incorrect entries before trying again");
+				}
+				
+				model.setSudokuCell(coordinate[0], coordinate[1], model.getSolvedSudoku()[coordinate[0]][coordinate[1]]);
+			}
+			model.pushStack2(model.createStackObj(coordinate[0], coordinate[1], tempVal, model.getSolvedSudoku()[coordinate[0]][coordinate[1]]));
+			view.updateBoard(model.getSudoku());
+			updateColours();
+		}
+	} catch (Exception exc) {
+		// System.out.println(exc.getMessage());
+	}
+}
 
 	public void setOkPressed(){
 		okPressed = true;
