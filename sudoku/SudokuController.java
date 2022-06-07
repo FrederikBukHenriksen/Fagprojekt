@@ -378,6 +378,7 @@ public class SudokuController {
 			} catch (Exception exc) {
 				// System.out.println(exc.getMessage());
 			}
+			view.getCellFromCoord(model.getRedoStackCoords()[0],model.getRedoStackCoords()[1]).setSelected(true);
 			model.pushStack2(model.popRedoStack()); // Removes the last element of the stack
 			// model.setSudoku(model.getSudoku()); // Updates the board
 			view.updateBoard(model.getSudoku()); // Updates the visuals
@@ -395,6 +396,7 @@ public class SudokuController {
 			} catch (Exception exc) {
 				// System.out.println(exc.getMessage());
 			}
+			view.getCellFromCoord(model.getStackCoords()[0],model.getStackCoords()[1]).setSelected(true);
 			model.pushRedoStack(model.popStack2()); // Removes the last element of the stack
 			// model.setSudoku(model.getSudoku()); // Updates the board
 			view.updateBoard(model.getSudoku()); // Updates the visuals
@@ -507,6 +509,30 @@ public class SudokuController {
 			createPopUp("This sudoku has no solutions \n");
 		}
 		updateColours();
+	}
+
+	public void createSimplePopUp(String text) {
+		JDialog jd = new JDialog();
+		jd.setLayout(new FlowLayout());
+		int x = view.getX();
+		int y = view.getY();
+		int height = view.getHeight();
+		int width = view.getWidth();
+		// jd.setBounds((width / 2) - 200 + x, (height / 2) - 75 + y, 400, 150);
+		JLabel jLabel = new JLabel(text);
+		jLabel.setFont(new Font(jLabel.getFont().getName(), Font.PLAIN, 20));
+		JButton okButton = new JButton("Ok");
+		okButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				view.dispose();
+				jd.dispose();
+				SudokuController controller = new SudokuController();
+			}
+		});
+		jd.add(jLabel);
+		jd.add(okButton);
+		jd.setVisible(true);
 	}
 
 }

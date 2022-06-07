@@ -3,6 +3,7 @@ package sudoku;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.Stack;
@@ -141,7 +142,14 @@ public class SudokuModel {
 						}
 					}
 					lineScanner.close();
-					line = scanner.nextLine();
+					try {
+						line = scanner.nextLine();
+					}
+					catch (NoSuchElementException e){
+						boardCreater();
+						scanner.close();
+						return;
+					}
 					lineScanner = new Scanner(line);
 					lineScanner.useDelimiter(":");
 					index = 0;
@@ -574,6 +582,24 @@ public class SudokuModel {
 	// CreateStackObject method
 	public stackObj createStackObj(int x, int y, int oldVal, int newVal) {
 		return new stackObj(x, y, oldVal, newVal);
+	}
+
+	// Method for returning coords of the last change on the sudokuStack
+	public int[] getStackCoords(){
+		int[] result = new int[2];
+		stackObj temp = sudokuStack2[moves - 1];
+		result[0] = temp.getX();
+		result[1] = temp.getY();
+		return result;
+	}
+
+	// Method for returning coords of the last change on the redoStack
+	public int[] getRedoStackCoords(){
+		int[] result = new int[2];
+		stackObj temp = redoStack[redoes - 1];
+		result[0] = temp.getX();
+		result[1] = temp.getY();
+		return result;
 	}
 
 	// Method for updating the markUp board, given a set of possible entries and
