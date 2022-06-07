@@ -501,10 +501,13 @@ public class SudokuController {
 				model.boardCreater();
 				break;
 			} catch(IOException e) {
-				System.out.println("wrong filetype");
+				createSimplePopUp("wrong filetype");
+				System.out.println("Wrong filetype");
 			} catch(NumberFormatException ez) {
-				System.out.println("wrong filetype");
+				createSimplePopUp("wrong filetype");
+				System.out.println("Wrong filetype");
 			} catch(NoSuchElementException ex) {
+				createSimplePopUp("Sudoku formatet wrong. Hint: Check for newlines");
 				System.out.println("Sudoku formatet wrong. Hint: Check for newlines");
 			} 
 		}
@@ -532,7 +535,7 @@ public class SudokuController {
 		int y = view.getY();
 		int height = view.getHeight();
 		int width = view.getWidth();
-		// jd.setBounds((width / 2) - 200 + x, (height / 2) - 75 + y, 400, 150);
+		jd.setBounds((width / 2) - 200 + x, (height / 2) - 75 + y, 400, 150);
 		JLabel jLabel = new JLabel(text);
 		jLabel.setFont(new Font(jLabel.getFont().getName(), Font.PLAIN, 20));
 		JButton okButton = new JButton("Ok");
