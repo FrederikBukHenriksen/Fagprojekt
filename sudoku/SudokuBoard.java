@@ -163,9 +163,11 @@ public class SudokuBoard extends JPanel {
             }
         }
 
-        public void changeSize(int size) {
-            setSize(new Dimension(size, size));
-            this.setPreferredSize(new Dimension(size, size));
+        public void adjustSize(int sizeAdjustment) {
+            int currentSize = (int) getSize().getWidth();
+            int newSize = currentSize + sizeAdjustment;
+            setSize(new Dimension(newSize, newSize));
+            this.setPreferredSize(new Dimension(newSize, newSize));
         }
 
         public void defaultColor() {
