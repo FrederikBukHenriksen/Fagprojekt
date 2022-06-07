@@ -175,6 +175,7 @@ public class SudokuModel {
 	}
 
 	public void solver() {
+		solved = false;
 		if(!isSandwich){
 		ArrayList<ArrayList<ArrayList<Integer>>> prem = preemtiveSets(singleton(markUpCells()));
 		change = true;
