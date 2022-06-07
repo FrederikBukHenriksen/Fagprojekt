@@ -172,7 +172,6 @@ public class SudokuModel {
 	public SudokuModel(SudokuView view){
 		this.view = view;
 		boardCreater();
-		
 	}
 
 	public void solver() {

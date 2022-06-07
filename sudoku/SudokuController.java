@@ -7,6 +7,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -17,6 +18,16 @@ import java.awt.*;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.FlowLayout;
+
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 public class SudokuController {
 
@@ -266,7 +277,19 @@ public class SudokuController {
 						model.setSudokuCell(coordinate[0], coordinate[1], model.getSolvedSudoku()[coordinate[0]][coordinate[1]]);
 					}
 					else{
+						int[][] tempSudoku = model.getSolvedSudoku();
 						model.solver();
+						if(model.getSolvedSudoku()[0][0] == 0){
+							for(int i = 0; i < model.getN()*model.getK(); i++){
+								for(int j = 0; j < model.getN()*model.getK(); j++){
+									if(model.getSudoku()[i][j] != tempSudoku[i][j]){
+										view.getCellFromCoord(i,j).conflict();
+									}
+								}
+							}
+							createPopUp("This sudoku can't be solved with current entries!\n Please remove incorrect entries before trying again");
+						}
+						
 						model.setSudokuCell(coordinate[0], coordinate[1], model.getSolvedSudoku()[coordinate[0]][coordinate[1]]);
 					}
 					model.pushStack2(model.createStackObj(coordinate[0], coordinate[1], tempVal, model.getSolvedSudoku()[coordinate[0]][coordinate[1]]));
@@ -342,7 +365,7 @@ public class SudokuController {
 		view.clearMarkedCells();
 		view.markCells();
 		if(model.checkValidity(model.getSudoku(), false) && model.isFilled()){
-			createPopUp();
+			createPopUp("Congratulations, you solved the puzzle!");
 		}
 	}
 
@@ -381,15 +404,15 @@ public class SudokuController {
 		//System.out.println("UNDO"); //For debug
 	}
 
-	public void createPopUp() {
+	public void createPopUp(String text) {
 		JDialog jd = new JDialog();
 		jd.setLayout(new FlowLayout());
 		int x = view.getX();
 		int y = view.getY();
 		int height = view.getHeight();
 		int width = view.getWidth();
-		jd.setBounds((width / 2) - 200 + x, (height / 2) - 75 + y, 400, 150);
-		JLabel jLabel = new JLabel("Congratulations, you solved the puzzle!");
+		// jd.setBounds((width / 2) - 200 + x, (height / 2) - 75 + y, 400, 150);
+		JLabel jLabel = new JLabel(text);
 		jLabel.setFont(new Font(jLabel.getFont().getName(), Font.PLAIN, 20));
 		JButton closeButton = new JButton("Close");
 		closeButton.addActionListener(new ActionListener() {
@@ -433,10 +456,36 @@ public class SudokuController {
 			}
 		});
 
-		jd.add(jLabel);
-		jd.add(closeButton);
-		jd.add(newButton);
+		JButton continueButton = new JButton("Back to Puzzle");
+		continueButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				jd.dispose();
+			}
+		});
+
+
+		Container contentPane = new Container();
+
+		Panel outerPanel = new Panel();
+		outerPanel.setBackground(Color.RED);
+        outerPanel.setLayout(new BoxLayout(contentPane, BoxLayout.PAGE_AXIS));
+
+		Panel innerPanel = new Panel();
+		innerPanel.setLayout(new FlowLayout());
+		innerPanel.setBackground(Color.GREEN);
+		outerPanel.add(jLabel);
+		innerPanel.add(closeButton);
+		innerPanel.add(newButton);
+		innerPanel.add(continueButton);
+		outerPanel.add(innerPanel);
+		contentPane.add(outerPanel, BorderLayout.CENTER);
+
+
+		jd.add(outerPanel);
 		jd.setVisible(true);
+		jd.pack();
+
 	}
 
 	// Simple constructor
@@ -454,6 +503,9 @@ public class SudokuController {
 		view.sudokuUI.remove.addActionListener(new SudokuRemoveListener());
 		view.sudokuUI.hint.addActionListener(new SudokuHintListener());
 		model.solver();
+		if(model.getSolvedSudoku()[0][0] == 0){
+			createPopUp("This sudoku has no solutions \n");
+		}
 		updateColours();
 	}
 
