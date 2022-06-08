@@ -1,4 +1,4 @@
-package sudoku.View.Cell;
+package sudoku.View.SudokuBoard;
 
 import java.util.ArrayList;
 
@@ -36,7 +36,6 @@ public class Cell extends JToggleButton {
 
         setMinimumSize(new Dimension(25, 25));
         setPreferredSize(new Dimension(40, 40));
-
     }
 
     @Override
