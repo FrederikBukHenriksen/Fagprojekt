@@ -163,21 +163,20 @@ public class SudokuController {
 	public SudokuController() {
 		view = new SudokuView();
 		model = new SudokuModel(view);
-		while (true) {
 			try {
 				model.boardCreater();
-				break;
+				//break;
 			} catch (IOException e) {
+				//System.out.println("Wrong filetype");
 				createSimplePopUp("wrong filetype");
-				System.out.println("Wrong filetype");
 			} catch (NumberFormatException ez) {
-				createSimplePopUp("wrong filetype");
-				System.out.println("Wrong filetype");
+				//System.out.println("Wrong filetype");
+				createSimplePopUp("wrong filetype");				
 			} catch (NoSuchElementException ex) {
-				createSimplePopUp("Illegal file content. Check for newlines");
-				System.out.println("Sudoku formatet wrong. Hint: Check for newlines");
+				//System.out.println("Sudoku formatet wrong. Hint: Check for newlines");
+				createSimplePopUp("Illegal file content. Check for newlines");			
 			}
-		}
+		
 		view.showFrame(model.getSudoku());
 		for (Cell cell : view.sudokuBoard.getCellsLinear()) {
 			cell.addActionListener(new SudokuboardListener(this));
@@ -190,10 +189,13 @@ public class SudokuController {
 		view.sudokuControls.hint.addActionListener(new SudokuHintListener(this));
 		view.menuBar.zoomIn.addActionListener(new MenuBarZoomActionListener(this));
 		view.menuBar.zoomOut.addActionListener(new MenuBarZoomActionListener(this));
+		view.menuBar.solve.addActionListener(new MenuBarMenuActionListener(this));
 
 		model.crooks.solver();
-		if (model.crooks.getSolvedSudoku()[0][0] == 0) {
-			createPopUp("This sudoku has no solutions \n");
+		if(!model.crooks.isSandwich){
+			if(model.crooks.getSolvedSudoku()[0][0] == 0){
+				createPopUp("This sudoku has no solutions \n");
+			}
 		}
 		updateColours();
 	}

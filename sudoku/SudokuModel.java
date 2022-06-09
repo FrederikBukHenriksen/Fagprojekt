@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class SudokuModel {
-	CrooksAlgorithm crooks; 
+	public CrooksAlgorithm crooks; 
 	// Setting up variables
 	public int[][] sudoku = new int[0][0];
 	int[][] solvedSudoku = new int [0][0];
@@ -114,6 +114,7 @@ public class SudokuModel {
 					d = 0;
 					lineScanner.close();
 				}
+				crooks = new CrooksAlgorithm(getN(),getK(),getSudoku(),this);
 				if(scanner.hasNextLine()){
 					crooks.setSandwich(true);
 					String line = scanner.nextLine();
@@ -140,8 +141,6 @@ public class SudokuModel {
 					}
 				}
 			}
-			crooks = new CrooksAlgorithm(getN(),getK(),getSudoku(),this);
-		
 	}
 	public SudokuModel(SudokuView view){
 		this.view = view;
