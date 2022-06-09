@@ -30,7 +30,7 @@ public class SudokuRemoveListener implements ActionListener {
                     this.sudokuController.model.setSudokuCell(coordinate[0], coordinate[1], 0);
                     this.sudokuController.model.pushStack2(
                             this.sudokuController.model.createStackObj(coordinate[0], coordinate[1], tempVal, 0));
-                    this.sudokuController.view.updateBoard(this.sudokuController.model.getSudoku());
+                    this.sudokuController.view.updateCellValues(this.sudokuController.model.getSudoku());
                     // view.updateFrameTitle(model.checkValidity(model.getSudoku(), false),
                     // model.isFilled());
                     this.sudokuController.updateColours();

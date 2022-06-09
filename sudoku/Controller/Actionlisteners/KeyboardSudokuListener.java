@@ -54,11 +54,12 @@ public class KeyboardSudokuListener extends KeyAdapter {
             }
             Cell pressed = null;
             if (tempCoords[0] != (this.sudokuController.model.getN() * this.sudokuController.model.getK()) - 1) {
-                pressed = this.sudokuController.view.getCellFromCoord(tempCoords[0] + 1, tempCoords[1]); // Grabs the
+                pressed = this.sudokuController.view.sudokuBoard.getCellFromCoord(tempCoords[0] + 1, tempCoords[1]); // Grabs
+                                                                                                                     // the
                                                                                                          // button
                                                                                                          // pressed
             } else {
-                pressed = this.sudokuController.view.getCellFromCoord(0, tempCoords[1]);
+                pressed = this.sudokuController.view.sudokuBoard.getCellFromCoord(0, tempCoords[1]);
             }
             pressed.setSelected(true);
             this.sudokuController.view.sudokuBoard.onlySelectThePressed(pressed);
@@ -72,11 +73,12 @@ public class KeyboardSudokuListener extends KeyAdapter {
             }
             Cell pressed = null;
             if (tempCoords[0] != 0) {
-                pressed = this.sudokuController.view.getCellFromCoord(tempCoords[0] - 1, tempCoords[1]); // Grabs the
+                pressed = this.sudokuController.view.sudokuBoard.getCellFromCoord(tempCoords[0] - 1, tempCoords[1]); // Grabs
+                                                                                                                     // the
                                                                                                          // button
                                                                                                          // pressed
             } else {
-                pressed = this.sudokuController.view.getCellFromCoord(
+                pressed = this.sudokuController.view.sudokuBoard.getCellFromCoord(
                         this.sudokuController.model.getN() * this.sudokuController.model.getK() - 1, tempCoords[1]);
             }
             pressed.setSelected(true);
@@ -91,11 +93,12 @@ public class KeyboardSudokuListener extends KeyAdapter {
             }
             Cell pressed = null;
             if (tempCoords[1] != 0) {
-                pressed = this.sudokuController.view.getCellFromCoord(tempCoords[0], tempCoords[1] - 1); // Grabs the
+                pressed = this.sudokuController.view.sudokuBoard.getCellFromCoord(tempCoords[0], tempCoords[1] - 1); // Grabs
+                                                                                                                     // the
                                                                                                          // button
                                                                                                          // pressed
             } else {
-                pressed = this.sudokuController.view.getCellFromCoord(tempCoords[0],
+                pressed = this.sudokuController.view.sudokuBoard.getCellFromCoord(tempCoords[0],
                         this.sudokuController.model.getN() * this.sudokuController.model.getK() - 1);
             }
             pressed.setSelected(true);
@@ -110,11 +113,12 @@ public class KeyboardSudokuListener extends KeyAdapter {
             }
             Cell pressed = null;
             if (tempCoords[1] != this.sudokuController.model.getN() * this.sudokuController.model.getK() - 1) {
-                pressed = this.sudokuController.view.getCellFromCoord(tempCoords[0], tempCoords[1] + 1); // Grabs the
+                pressed = this.sudokuController.view.sudokuBoard.getCellFromCoord(tempCoords[0], tempCoords[1] + 1); // Grabs
+                                                                                                                     // the
                                                                                                          // button
                                                                                                          // pressed
             } else {
-                pressed = this.sudokuController.view.getCellFromCoord(tempCoords[0], 0);
+                pressed = this.sudokuController.view.sudokuBoard.getCellFromCoord(tempCoords[0], 0);
             }
             pressed.setSelected(true);
             this.sudokuController.view.sudokuBoard.onlySelectThePressed(pressed);
@@ -200,7 +204,7 @@ public class KeyboardSudokuListener extends KeyAdapter {
                         this.sudokuController.model.pushStack2(
                                 this.sudokuController.model.createStackObj(coordinate[0], coordinate[1], tempVal,
                                         Integer.valueOf(cellNew)));
-                        this.sudokuController.view.updateBoard(this.sudokuController.model.getSudoku());
+                        this.sudokuController.view.updateCellValues(this.sudokuController.model.getSudoku());
                         this.sudokuController.updateColours();
                     }
                 }

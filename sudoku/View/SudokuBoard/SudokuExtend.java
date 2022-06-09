@@ -4,6 +4,9 @@ import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
+import sudoku.Exceptions.CellDoesNotExist;
+import sudoku.Exceptions.NoCellSelected;
+
 public class SudokuExtend extends JPanel {
     protected int[][] sudoku;
     protected int n; // N antal celler i hver square
@@ -42,7 +45,7 @@ public class SudokuExtend extends JPanel {
         buttonSelected.setSelected(true);
     }
 
-    public Cell getButtonSelected() throws Exception {
+    public Cell getButtonSelected() throws NoCellSelected {
         Cell selected = null;
         for (Cell cell : getCellsLinear()) {
             if (cell.isSelected()) {
@@ -50,12 +53,12 @@ public class SudokuExtend extends JPanel {
             }
         }
         if (selected == null) {
-            throw new Exception("No cell selected");
+            throw new NoCellSelected();
         }
         return selected;
     }
 
-    public int[] getCellCoordinate(Cell selected) {
+    public int[] getCellCoordinate(Cell selected) throws CellDoesNotExist {
         int[] coordinate = new int[] { -1, -1 };
         for (int x = 0; x < n * k; x++) {
             for (int y = 0; y < n * k; y++) {
@@ -66,7 +69,18 @@ public class SudokuExtend extends JPanel {
                 }
             }
         }
+        if (coordinate[0] == -1 || coordinate[1] == -1) {
+            throw new CellDoesNotExist();
+        }
         return coordinate;
+    }
+
+    public Cell getCellFromCoord(int x, int y) {
+        // try {
+        return getCells().get(x).get(y);
+        // } catch (ArrayIndexOutOfBoundsException e) {
+        // throw new CellDoesNotExist();
+        // }
     }
 
 }

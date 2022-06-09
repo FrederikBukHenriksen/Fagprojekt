@@ -1,19 +1,8 @@
 package sudoku;
 
-import java.awt.event.*;
-
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.stream.Collectors;
 import javax.swing.*;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.awt.*;
-import java.awt.Component; //import these 3 header files
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import java.awt.event.*;
-
 import sudoku.View.MenuBar.MenuBar;
 import sudoku.View.SudokuBoard.*;
 import sudoku.View.SudokuBoard.Classic.ClassicSudokuBoard;
@@ -80,13 +69,7 @@ public class SudokuView extends JFrame {
 		pack();
 	}
 
-
-
-
-
-
-
-	public void updateBoard(int[][] sudoku) {
+	public void updateCellValues(int[][] sudoku) {
 		for (int x = 0; x < n * k; x++) {
 			for (int y = 0; y < n * k; y++) {
 				if (sudoku[x][y] != 0) {
@@ -151,7 +134,5 @@ public class SudokuView extends JFrame {
 		markedCells.clear();
 	}
 
-	public Cell getCellFromCoord(int x, int y) {
-		return sudokuBoard.getCells().get(x).get(y);
-	}
+
 }

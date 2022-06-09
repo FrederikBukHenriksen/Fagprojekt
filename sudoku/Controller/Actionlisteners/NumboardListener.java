@@ -57,7 +57,7 @@ public class NumboardListener implements ActionListener {
                                 Integer.valueOf(cellNew)));
 
                 // Update the board visuals
-                this.sudokuController.view.updateBoard(this.sudokuController.model.getSudoku());
+                this.sudokuController.view.updateCellValues(this.sudokuController.model.getSudoku());
 
                 // TODO:NEDENSTÅENE BRUGES KUN TIL DE-BUG.
                 // view.updateFrameTitle(model.checkValidity(model.getSudoku(), false),
