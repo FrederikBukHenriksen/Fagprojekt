@@ -32,7 +32,7 @@ public class SudokuController {
 	public void updateColours() {
 		view.clearMarkedCells();
 		view.markCells();
-		if(model.checkValidity(model.getSudoku(), false, true) && model.isFilled()){
+		if (model.checkValidity(model.getSudoku(), false, true) && model.isFilled()) {
 			createPopUp("Congratulations, you solved the puzzle!");
 		}
 	}
@@ -41,15 +41,16 @@ public class SudokuController {
 		if (model.redoes > 0) {
 			// System.out.println("Redo"); // Prints "Redo" FOR DEBUG
 			try {
-				view.getButtonSelected().setSelected(false);
+				view.sudokuBoard.getButtonSelected().setSelected(false);
 				// TODO: indsæt Rasmus' generelle funktion for farver
 			} catch (Exception exc) {
 				// System.out.println(exc.getMessage());
 			}
-			view.getCellFromCoord(model.getRedoStackCoords()[0],model.getRedoStackCoords()[1]).setSelected(true);
+			view.sudokuBoard
+					.getCellFromCoord(model.getRedoStackCoords()[0], model.getRedoStackCoords()[1]).setSelected(true);
 			model.pushStack2(model.popRedoStack()); // Removes the last element of the stack
 			// model.setSudoku(model.getSudoku()); // Updates the board
-			view.updateBoard(model.getSudoku()); // Updates the visuals
+			view.updateCellValues(model.getSudoku()); // Updates the visuals
 			// view.updateFrameTitle(model.checkValidity(model.getSudoku(), false),
 			// model.isFilled());
 			updateColours();
@@ -60,15 +61,15 @@ public class SudokuController {
 		if (model.moves > 0) {
 			// System.out.println("Undo"); // Prints "Undo" FOR DEBUG
 			try {
-				view.getButtonSelected().setSelected(false);
+				view.sudokuBoard.getButtonSelected().setSelected(false);
 				// TODO: indsæt Rasmus' generelle funktion for farver
 			} catch (Exception exc) {
 				// System.out.println(exc.getMessage());
 			}
-			view.getCellFromCoord(model.getStackCoords()[0],model.getStackCoords()[1]).setSelected(true);
+			view.sudokuBoard.getCellFromCoord(model.getStackCoords()[0], model.getStackCoords()[1]).setSelected(true);
 			model.pushRedoStack(model.popStack2()); // Removes the last element of the stack
 			// model.setSudoku(model.getSudoku()); // Updates the board
-			view.updateBoard(model.getSudoku()); // Updates the visuals
+			view.updateCellValues(model.getSudoku()); // Updates the visuals
 			// view.updateFrameTitle(model.checkValidity(model.getSudoku(), false),
 			// model.isFilled());
 			updateColours();
@@ -190,11 +191,6 @@ public class SudokuController {
 		view.menuBar.zoomOut.addActionListener(new MenuBarZoomActionListener(this));
 		view.menuBar.solve.addActionListener(new MenuBarMenuActionListener(this));
 
-		// view.menuBar.zoomIn.addActionListener(new ActionListener() {
-		// public void actionPerformed(ActionEvent ev) {
-		// System.out.println("HEJ MED DIG DIT SVIN.");
-		// }
-		// });
 		model.crooks.solver();
 		if(!model.crooks.isSandwich){
 			if(model.crooks.getSolvedSudoku()[0][0] == 0){
@@ -238,8 +234,8 @@ public class SudokuController {
 
 	public void getHint() {
 		try {
-			if (view.getButtonSelected().enabled) {
-				int[] coordinate = view.getCellCoordinate(view.getButtonSelected());
+			if (view.sudokuBoard.getButtonSelected().enabled) {
+				int[] coordinate = view.sudokuBoard.getCellCoordinate(view.sudokuBoard.getButtonSelected());
 				int tempVal = model.getSudoku()[coordinate[0]][coordinate[1]];
 				if (model.crooks.getUniqueness()) {
 					model.setSudokuCell(coordinate[0], coordinate[1],
@@ -251,7 +247,7 @@ public class SudokuController {
 						for (int i = 0; i < model.getN() * model.getK(); i++) {
 							for (int j = 0; j < model.getN() * model.getK(); j++) {
 								if (model.getSudoku()[i][j] != tempSudoku[i][j]) {
-									view.getCellFromCoord(i, j).conflict();
+									view.sudokuBoard.getCellFromCoord(i, j).conflict();
 								}
 							}
 						}
@@ -264,7 +260,7 @@ public class SudokuController {
 				}
 				model.pushStack2(model.createStackObj(coordinate[0], coordinate[1], tempVal,
 						model.crooks.getSolvedSudoku()[coordinate[0]][coordinate[1]]));
-				view.updateBoard(model.getSudoku());
+				view.updateCellValues(model.getSudoku());
 				updateColours();
 			}
 		} catch (Exception exc) {

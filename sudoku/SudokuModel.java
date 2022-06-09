@@ -25,7 +25,7 @@ import java.util.Collections;
 public class SudokuModel {
 	public CrooksAlgorithm crooks; 
 	// Setting up variables
-	int[][] sudoku = new int[0][0];
+	public int[][] sudoku = new int[0][0];
 	int[][] solvedSudoku = new int [0][0];
 	stackObj[] sudokuStack2 = new stackObj[1000];
 	stackObj[] redoStack = new stackObj[1000]; 	
@@ -404,11 +404,11 @@ public class SudokuModel {
 						if (print) {
 							// System.out.println("Row: x: " + i + ", j: " + j);
 						}
-						failedCoords.add(view.getCellFromCoord(i, j));
+						failedCoords.add(view.sudokuBoard.getCellFromCoord(i, j));
 						for (int o = 0; o < j; o++) {
 							if (sudoku[i][o] == cur) {
-								if (!(failedCoords.contains(view.getCellFromCoord(i, o)))) {
-									failedCoords.add(view.getCellFromCoord(i, o));
+								if (!(failedCoords.contains(view.sudokuBoard.getCellFromCoord(i, o)))) {
+									failedCoords.add(view.sudokuBoard.getCellFromCoord(i, o));
 								}
 							}
 						}
@@ -467,11 +467,11 @@ public class SudokuModel {
 						if (print) {
 							// System.out.println("Row: x: " + i + ", y: " + j);
 						}
-						failedCoords.add(view.getCellFromCoord(i, j));
+						failedCoords.add(view.sudokuBoard.getCellFromCoord(i, j));
 						for (int o = 0; o < i; o++) {
 							if (sudoku[o][j] == cur) {
-								if (!(failedCoords.contains(view.getCellFromCoord(o, j)))) {
-									failedCoords.add(view.getCellFromCoord(o, j));
+								if (!(failedCoords.contains(view.sudokuBoard.getCellFromCoord(o, j)))) {
+									failedCoords.add(view.sudokuBoard.getCellFromCoord(o, j));
 								}
 							}
 						}
@@ -535,7 +535,8 @@ public class SudokuModel {
 								// System.out.println("Square: j: " +(i + n * (l / k))+ ", i: " + (j + n * l) %
 								// (k * n));
 							}
-							failedCoords.add(view.getCellFromCoord((i + n * (l / k)), (j + n * l) % (k * n)));
+							failedCoords.add(view.sudokuBoard
+									.getCellFromCoord((i + n * (l / k)), (j + n * l) % (k * n)));
 
 						}
 					}
