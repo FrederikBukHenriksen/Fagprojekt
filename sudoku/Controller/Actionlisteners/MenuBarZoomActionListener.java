@@ -20,10 +20,10 @@ public class MenuBarZoomActionListener implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         int sizeChange = 0;
         switch (((AbstractButton) e.getSource()).getActionCommand().toLowerCase()) {
-            case "zoom in":
+            case "Zoom in":
                 sizeChange = change;
                 break;
-            case "zoom out":
+            case "Zoom out":
                 sizeChange = -change;
                 break;
             default:

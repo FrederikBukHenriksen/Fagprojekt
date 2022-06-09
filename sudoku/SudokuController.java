@@ -205,6 +205,7 @@ public class SudokuController {
 		view.sudokuUI.hint.addActionListener(new SudokuHintListener(this));
 		view.menuBar.zoomIn.addActionListener(new MenuBarZoomActionListener(this));
 		view.menuBar.zoomOut.addActionListener(new MenuBarZoomActionListener(this));
+		view.menuBar.solve.addActionListener(new MenuBarMenuActionListener(this));
 
 		// view.menuBar.zoomIn.addActionListener(new ActionListener() {
 		// public void actionPerformed(ActionEvent ev) {
