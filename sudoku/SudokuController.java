@@ -7,6 +7,7 @@ import java.io.IOException;
 
 import java.util.NoSuchElementException;
 
+import javax.swing.AbstractButton;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -31,7 +32,7 @@ public class SudokuController {
 	public void updateColours() {
 		view.clearMarkedCells();
 		view.markCells();
-		if (model.checkValidity(model.getSudoku(), false, true) && model.isFilled()) {
+		if(model.checkValidity(model.getSudoku(), false, true) && model.isFilled()){
 			createPopUp("Congratulations, you solved the puzzle!");
 		}
 	}
@@ -45,7 +46,7 @@ public class SudokuController {
 			} catch (Exception exc) {
 				// System.out.println(exc.getMessage());
 			}
-			view.getCellFromCoord(model.getRedoStackCoords()[0], model.getRedoStackCoords()[1]).setSelected(true);
+			view.getCellFromCoord(model.getRedoStackCoords()[0],model.getRedoStackCoords()[1]).setSelected(true);
 			model.pushStack2(model.popRedoStack()); // Removes the last element of the stack
 			// model.setSudoku(model.getSudoku()); // Updates the board
 			view.updateBoard(model.getSudoku()); // Updates the visuals
@@ -64,7 +65,7 @@ public class SudokuController {
 			} catch (Exception exc) {
 				// System.out.println(exc.getMessage());
 			}
-			view.getCellFromCoord(model.getStackCoords()[0], model.getStackCoords()[1]).setSelected(true);
+			view.getCellFromCoord(model.getStackCoords()[0],model.getStackCoords()[1]).setSelected(true);
 			model.pushRedoStack(model.popStack2()); // Removes the last element of the stack
 			// model.setSudoku(model.getSudoku()); // Updates the board
 			view.updateBoard(model.getSudoku()); // Updates the visuals
@@ -136,7 +137,6 @@ public class SudokuController {
 				jd.dispose();
 			}
 		});
-
 		Container contentPane = new Container();
 
 		Panel outerPanel = new Panel();
@@ -152,7 +152,6 @@ public class SudokuController {
 		innerPanel.add(continueButton);
 		outerPanel.add(innerPanel);
 		contentPane.add(outerPanel, BorderLayout.CENTER);
-
 		jd.add(outerPanel);
 		jd.setVisible(true);
 		jd.pack();
@@ -167,13 +166,13 @@ public class SudokuController {
 			try {
 				model.boardCreater();
 				break;
-			} catch (IOException e) {
+			} catch(IOException e) {
 				createSimplePopUp("wrong filetype");
 				System.out.println("Wrong filetype");
-			} catch (NumberFormatException ez) {
+			} catch(NumberFormatException ez) {
 				createSimplePopUp("wrong filetype");
 				System.out.println("Wrong filetype");
-			} catch (NoSuchElementException ex) {
+			} catch(NoSuchElementException ex) {
 				createSimplePopUp("Illegal file content. Check for newlines");
 				System.out.println("Sudoku formatet wrong. Hint: Check for newlines");
 			}
@@ -196,8 +195,8 @@ public class SudokuController {
 		// System.out.println("HEJ MED DIG DIT SVIN.");
 		// }
 		// });
-		model.solver();
-		if (model.getSolvedSudoku()[0][0] == 0) {
+		model.crooks.solver();
+		if(model.crooks.getSolvedSudoku()[0][0] == 0){
 			createPopUp("This sudoku has no solutions \n");
 		}
 		updateColours();
@@ -240,13 +239,13 @@ public class SudokuController {
 			if (view.getButtonSelected().enabled) {
 				int[] coordinate = view.getCellCoordinate(view.getButtonSelected());
 				int tempVal = model.getSudoku()[coordinate[0]][coordinate[1]];
-				if (model.getUniqueness()) {
+				if (model.crooks.getUniqueness()) {
 					model.setSudokuCell(coordinate[0], coordinate[1],
-							model.getSolvedSudoku()[coordinate[0]][coordinate[1]]);
+							model.crooks.getSolvedSudoku()[coordinate[0]][coordinate[1]]);
 				} else {
-					int[][] tempSudoku = model.getSolvedSudoku();
-					model.solver();
-					if (model.getSolvedSudoku()[0][0] == 0) {
+					int[][] tempSudoku = model.crooks.getSolvedSudoku();
+					model.crooks.solver();
+					if (model.crooks.getSolvedSudoku()[0][0] == 0) {
 						for (int i = 0; i < model.getN() * model.getK(); i++) {
 							for (int j = 0; j < model.getN() * model.getK(); j++) {
 								if (model.getSudoku()[i][j] != tempSudoku[i][j]) {
@@ -259,10 +258,10 @@ public class SudokuController {
 					}
 
 					model.setSudokuCell(coordinate[0], coordinate[1],
-							model.getSolvedSudoku()[coordinate[0]][coordinate[1]]);
+							model.crooks.getSolvedSudoku()[coordinate[0]][coordinate[1]]);
 				}
 				model.pushStack2(model.createStackObj(coordinate[0], coordinate[1], tempVal,
-						model.getSolvedSudoku()[coordinate[0]][coordinate[1]]));
+						model.crooks.getSolvedSudoku()[coordinate[0]][coordinate[1]]));
 				view.updateBoard(model.getSudoku());
 				updateColours();
 			}
