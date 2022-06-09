@@ -24,7 +24,7 @@ public class SudokuRemoveListener implements ActionListener {
             if (this.sudokuController.view.getButtonSelected().enabled) {
                 int[] coordinate = this.sudokuController.view
                         .getCellCoordinate(this.sudokuController.view.getButtonSelected());
-                if (!(this.sudokuController.model.sudoku[coordinate[0]][coordinate[1]] == 0)) {
+                if (!(this.sudokuController.model.getSudoku()[coordinate[0]][coordinate[1]] == 0)) {
                     this.sudokuController.model.clearRedoStack();
                     int tempVal = this.sudokuController.model.getSudoku()[coordinate[0]][coordinate[1]];
                     this.sudokuController.model.setSudokuCell(coordinate[0], coordinate[1], 0);

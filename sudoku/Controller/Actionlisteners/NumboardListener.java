@@ -6,7 +6,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 
 import sudoku.SudokuController;
-import sudoku.View.Cell.Cell;
+import sudoku.View.SudokuBoard.Cell;
 
 public class NumboardListener implements ActionListener {
     /**

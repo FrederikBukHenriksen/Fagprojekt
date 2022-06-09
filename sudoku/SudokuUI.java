@@ -9,15 +9,15 @@ import java.util.stream.Collectors;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 
-import java.awt.*;
+import sudoku.View.SudokuBoard.*;
 
-import sudoku.View.Cell.*;
+import java.awt.*;
 
 /**
  * SudokuUI
  */
 public class SudokuUI {
-
+    public ArrayList<JButton> numpadButtons = new ArrayList();
 
     public MenuButton undo = new MenuButton("Undo");
     public MenuButton redo = new MenuButton("Redo");
@@ -29,7 +29,6 @@ public class SudokuUI {
 
     SudokuView sudokuView;
 
-    public ArrayList<JButton> numpadButtons = new ArrayList();
 
     public SudokuUI(SudokuView sudokuView) {
         this.sudokuView = sudokuView;
@@ -107,42 +106,7 @@ public class SudokuUI {
     // return mb;
     // }
 
-    class MenuButton extends JButton {
-        Color def = Color.gray;
-        Color defFont = Color.white;
 
-        public MenuButton(String text) {
-            setText(text);
-            setFocusable(false);
-            setBackground(def);
-            setForeground(defFont);
-            setFont(new Font("Serif", Font.PLAIN, 16));
-            setBorder(new LineBorder(Color.black, 1));
-            setMaximumSize(new Dimension(300, 200));
-            // setPreferredSize(new Dimension(50, 50));
-            // setMinimumSize(new Dimension(50, 50));
-        }
-    }
 
-    class NumpadButton extends JButton {
-
-        Color def = Color.gray;
-        Color defFont = Color.white;
-
-        public NumpadButton(String text) {
-            setFocusable(false);
-            setText(text);
-            setFocusable(false);
-            setBackground(def);
-            setForeground(defFont);
-            setFont(new Font("Serif", Font.PLAIN, 16));
-            setBorder(new LineBorder(Color.black, 1));
-            // setPreferredSize(new Dimension(sudokuView.sudokuBoard.cellSize,
-            // sudokuView.sudokuBoard.cellSize));
-            // setPreferredSize(new Dimension(100, 100));
-            setPreferredSize(sudokuView.sudokuBoard.getCellsLinear().get(0).getPreferredSize());
-
-        }
-    }
 
 }

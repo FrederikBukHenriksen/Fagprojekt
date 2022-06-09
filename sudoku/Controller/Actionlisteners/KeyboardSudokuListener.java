@@ -4,7 +4,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 import sudoku.SudokuController;
-import sudoku.View.Cell.Cell;
+import sudoku.View.SudokuBoard.Cell;
 
 // KEY EVENT FOR ALLE JTOGGLEBUTTONS PÅ BOARDET.
 public class KeyboardSudokuListener extends KeyAdapter {
