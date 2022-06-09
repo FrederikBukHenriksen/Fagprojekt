@@ -1,12 +1,12 @@
 package sudoku.Controller.Actionlisteners;
 
-import sudoku.View.Cell.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.AbstractButton;
 
 import sudoku.SudokuController;
+import sudoku.View.SudokuBoard.*;
 
 public class MenuBarZoomActionListener implements ActionListener {
 
@@ -32,6 +32,7 @@ public class MenuBarZoomActionListener implements ActionListener {
         for (Cell cell : sudokuController.view.sudokuBoard.getCellsLinear()) {
             cell.adjustSize(sizeChange);
         }
+
         sudokuController.view.pack();
     }
 }

@@ -1,26 +1,17 @@
 package sudoku;
 
 import sudoku.Controller.Actionlisteners.*;
-import sudoku.View.Cell.*;
+import sudoku.View.SudokuBoard.*;
 
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.NoSuchElementException;
 
+import java.util.NoSuchElementException;
 
 import javax.swing.AbstractButton;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
-import javax.swing.JToggleButton;
-import javax.swing.JRadioButtonMenuItem;
-import javax.swing.JMenuItem;
 
 import java.awt.Dimension;
 import java.awt.*;
@@ -28,15 +19,8 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import java.awt.Component;
 import java.awt.Container;
 import java.awt.FlowLayout;
-
-import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
 
 public class SudokuController {
 
@@ -198,12 +182,13 @@ public class SudokuController {
 			cell.addActionListener(new SudokuboardListener(this));
 			cell.addKeyListener(new KeyboardSudokuListener(this));
 		}
-		view.sudokuUI.numpadButtons.forEach(b -> b.addActionListener(new NumboardListener(this)));
-		view.sudokuUI.undo.addActionListener(new SudokuUndoListener(this));
-		view.sudokuUI.redo.addActionListener(new SudokuRedoListener(this));
-		view.sudokuUI.remove.addActionListener(new SudokuRemoveListener(this));
-		view.sudokuUI.hint.addActionListener(new SudokuHintListener(this));
+		view.sudokuNumpad.numpadButtons.forEach(b -> b.addActionListener(new NumboardListener(this)));
+		view.sudokuControls.undo.addActionListener(new SudokuUndoListener(this));
+		view.sudokuControls.redo.addActionListener(new SudokuRedoListener(this));
+		view.sudokuControls.remove.addActionListener(new SudokuRemoveListener(this));
+		view.sudokuControls.hint.addActionListener(new SudokuHintListener(this));
 		view.menuBar.zoomIn.addActionListener(new MenuBarZoomActionListener(this));
+		view.menuBar.zoomOut.addActionListener(new MenuBarZoomActionListener(this));
 
 		// view.menuBar.zoomIn.addActionListener(new ActionListener() {
 		// public void actionPerformed(ActionEvent ev) {

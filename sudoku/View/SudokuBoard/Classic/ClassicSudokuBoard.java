@@ -1,61 +1,40 @@
-package sudoku;
+package sudoku.View.SudokuBoard.Classic;
 
-import sudoku.View.Cell.*;
 import java.util.ArrayList;
-
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 
+import sudoku.SudokuInterface;
+import sudoku.SudokuPanel;
+import sudoku.SudokuView;
+import sudoku.View.SudokuBoard.Cell;
 
 import java.awt.*;
 import java.awt.Color;
 
-public class SudokuBoard extends JPanel {
+public class ClassicSudokuBoard extends SudokuPanel implements SudokuInterface {
 
     SudokuView sudokuView;
 
     double screenOccupationFactor = 0.25;
 
-    ArrayList<ArrayList<Cell>> cells = new ArrayList();
-    int n = SudokuModel.n;
-    int k = SudokuModel.k;
-
-    int cellSize = 60;
-
-    int[][] sudoku;
-
-
-    public SudokuBoard(SudokuView sudokuView) {
-        this.sudokuView = sudokuView;
-        this.sudoku = sudokuView.sudoku;
+    public ClassicSudokuBoard(int[][] sudoku, int n, int k) {
+        super(sudoku, n, k);
 
         GridBagLayout grid = new GridBagLayout();
-        // this.setPreferredSize(new Dimension(1000, 1000));
-
         this.setLayout(grid);
 
-        setBackground(Color.green);
+        createSquares();
+
         createCells();
         createBoard();
 
     }
 
-    // @Override
-    // public void reshape(int x, int y, int width, int height) {
-    // int currentWidth = getWidth();
-    // int currentHeight = getHeight();
+    private void createSquares() {
 
-    // // if (currentWidth > currentHeight) {
-    // // width = currentHeight;
-    // // } else if (currentWidth < currentHeight) {
-    // // height = currentWidth;
-    // // }
-    // System.out.println(width + " " + height);
-    // super.reshape(x, y, width, height);
-    // }
+    }
 
     public void createCells() {
         ArrayList<ArrayList<Cell>> board = new ArrayList<>();
@@ -110,16 +89,6 @@ public class SudokuBoard extends JPanel {
         }
     }
 
-    class Square extends JPanel {
-        public Square() {
-            GridBagLayout grid = new GridBagLayout();
-            setBackground(Color.red);
-            setLayout(grid);
-            setBorder(new LineBorder(Color.black, 1));
-        }
-
-    }
-
     // class Cell extends JToggleButton {
 
     // Color selected = new Color(161, 205, 240);
@@ -147,7 +116,6 @@ public class SudokuBoard extends JPanel {
 
     // setMinimumSize(new Dimension(25, 25));
     // setPreferredSize(new Dimension(40, 40));
-
 
     // }
 
@@ -217,6 +185,11 @@ public class SudokuBoard extends JPanel {
             }
         }
         return temp;
+    }
+
+    @Override
+    public ArrayList<ArrayList<Cell>> getCells() {
+        return cells;
     }
 
 }

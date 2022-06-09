@@ -4,7 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import sudoku.SudokuController;
-import sudoku.View.Cell.Cell;
+import sudoku.View.SudokuBoard.Cell;
 
 // ACTIONLISTENER FOR SUDOKUBOARDET.
 public class SudokuboardListener implements ActionListener {

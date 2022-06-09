@@ -7,9 +7,10 @@ import java.util.NoSuchElementException;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.Stack;
-import sudoku.View.Cell.*;
 
 import javax.swing.JFileChooser;
+
+import sudoku.View.SudokuBoard.*;
 
 import java.util.Random;
 
