@@ -40,7 +40,7 @@ public class SudokuController {
 		if (model.redoes > 0) {
 			// System.out.println("Redo"); // Prints "Redo" FOR DEBUG
 			try {
-				view.getButtonSelected().setSelected(false);
+				view.sudokuBoard.getButtonSelected().setSelected(false);
 				// TODO: indsæt Rasmus' generelle funktion for farver
 			} catch (Exception exc) {
 				// System.out.println(exc.getMessage());
@@ -59,7 +59,7 @@ public class SudokuController {
 		if (model.moves > 0) {
 			// System.out.println("Undo"); // Prints "Undo" FOR DEBUG
 			try {
-				view.getButtonSelected().setSelected(false);
+				view.sudokuBoard.getButtonSelected().setSelected(false);
 				// TODO: indsæt Rasmus' generelle funktion for farver
 			} catch (Exception exc) {
 				// System.out.println(exc.getMessage());
@@ -237,8 +237,8 @@ public class SudokuController {
 
 	public void getHint() {
 		try {
-			if (view.getButtonSelected().enabled) {
-				int[] coordinate = view.getCellCoordinate(view.getButtonSelected());
+			if (view.sudokuBoard.getButtonSelected().enabled) {
+				int[] coordinate = view.sudokuBoard.getCellCoordinate(view.sudokuBoard.getButtonSelected());
 				int tempVal = model.getSudoku()[coordinate[0]][coordinate[1]];
 				if (model.getUniqueness()) {
 					model.setSudokuCell(coordinate[0], coordinate[1],

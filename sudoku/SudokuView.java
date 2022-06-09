@@ -26,9 +26,7 @@ public class SudokuView extends JFrame {
 	public ArrayList <Cell> markedCells = new ArrayList<Cell>();
 	int[][] sudoku;
 	public ClassicSudokuBoard sudokuBoard;
-	public SudokuUI sudokuUI;
 	public MenuBar menuBar;
-	public JPanel controls;
 	public SudokuControls sudokuControls;
 	public SudokuNumpad sudokuNumpad;
 
@@ -46,7 +44,6 @@ public class SudokuView extends JFrame {
 		k = SudokuModel.k;
 		this.sudoku = sudoku;
 		sudokuBoard = new ClassicSudokuBoard(sudoku, n, k);
-		sudokuUI = new SudokuUI(this);
 		menuBar = new MenuBar();
 		sudokuControls = new SudokuControls();
 		sudokuNumpad = new SudokuNumpad(n, k);
@@ -83,44 +80,11 @@ public class SudokuView extends JFrame {
 		pack();
 	}
 
-	public void onlySelectThePressed(Cell buttonSelected) {
 
-		// Pressing an already selected button causes it to become unselected.
-		if (buttonSelected.isSelected() == false) {
-			return;
-		}
 
-		sudokuBoard.getCellsLinear().forEach(b -> b.setSelected(false));
-		buttonSelected.setSelected(true);
 
-	}
 
-	public Cell getButtonSelected() throws Exception {
-		Cell selected = null;
-		for (Cell cell : sudokuBoard.getCellsLinear()) {
-			if (cell.isSelected()) {
-				selected = cell;
-			}
-		}
-		if (selected == null) {
-			throw new Exception("No cell selected");
-		}
-		return selected;
-	}
 
-	public int[] getCellCoordinate(Cell selected) {
-		int[] coordinate = new int[] { -1, -1 };
-		for (int x = 0; x < n * k; x++) {
-			for (int y = 0; y < n * k; y++) {
-				Cell button = sudokuBoard.getCells().get(x).get(y);
-				if (button.equals(selected)) {
-					coordinate[0] = x;
-					coordinate[1] = y;
-				}
-			}
-		}
-		return coordinate;
-	}
 
 	public void updateBoard(int[][] sudoku) {
 		for (int x = 0; x < n * k; x++) {
@@ -140,8 +104,8 @@ public class SudokuView extends JFrame {
 		// ###PRESSED BUTTON###
 		Cell pressedButton;
 		try {
-			pressedButton = getButtonSelected();
-			int[] coordinates = getCellCoordinate(pressedButton);
+			pressedButton = sudokuBoard.getButtonSelected();
+			int[] coordinates = sudokuBoard.getCellCoordinate(pressedButton);
 			if (coordinates[0] != -1) {
 				String cellText = pressedButton.getText();
 

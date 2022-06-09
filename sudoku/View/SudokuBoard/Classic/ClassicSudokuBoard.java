@@ -5,15 +5,15 @@ import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 
-import sudoku.SudokuInterface;
-import sudoku.SudokuPanel;
 import sudoku.SudokuView;
 import sudoku.View.SudokuBoard.Cell;
+import sudoku.View.SudokuBoard.SudokuInterface;
+import sudoku.View.SudokuBoard.SudokuExtend;
 
 import java.awt.*;
 import java.awt.Color;
 
-public class ClassicSudokuBoard extends SudokuPanel implements SudokuInterface {
+public class ClassicSudokuBoard extends SudokuExtend implements SudokuInterface {
 
     SudokuView sudokuView;
 
@@ -177,19 +177,7 @@ public class ClassicSudokuBoard extends SudokuPanel implements SudokuInterface {
     // }
     // }
 
-    public ArrayList<Cell> getCellsLinear() {
-        ArrayList<Cell> temp = new ArrayList<>();
-        for (ArrayList<Cell> arraylist : cells) {
-            for (Cell cell : arraylist) {
-                temp.add(cell);
-            }
-        }
-        return temp;
-    }
 
-    @Override
-    public ArrayList<ArrayList<Cell>> getCells() {
-        return cells;
-    }
+
 
 }
