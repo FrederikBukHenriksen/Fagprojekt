@@ -195,6 +195,7 @@ public class SudokuController {
 		view.menuBar.zoomIn.addActionListener(new MenuBarZoomActionListener(this));
 		view.menuBar.zoomOut.addActionListener(new MenuBarZoomActionListener(this));
 		view.menuBar.solve.addActionListener(new MenuBarMenuActionListener(this));
+		view.menuBar.test.addActionListener(new MenuBarTestActionListener(this));
 
 		model.crooks.solver();
 		if (!model.crooks.isSandwich) {
@@ -227,7 +228,7 @@ public class SudokuController {
 				view.dispose();
 				jd.dispose();
 				setOkPressed();
-				
+
 			}
 		});
 		jd.add(jLabel);
@@ -240,13 +241,12 @@ public class SudokuController {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-			if(okPressed) {
+			if (okPressed) {
 				break;
 			}
 		}
-       SudokuController controller = new SudokuController();
-   }
-
+		SudokuController controller = new SudokuController();
+	}
 
 	public void getHint() {
 		try {
