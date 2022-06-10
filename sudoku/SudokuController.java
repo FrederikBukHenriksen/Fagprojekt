@@ -147,16 +147,12 @@ public class SudokuController {
 
 		Panel innerPanel = new Panel();
 		innerPanel.setLayout(new FlowLayout());
-		// innerPanel.setBackground(Color.GREEN);
-		gbc.gridx = 0;
-		gbc.gridy = 0;
-		outerPanel.add(jLabel, gbc);
+		innerPanel.setBackground(Color.GREEN);
+		outerPanel.add(jLabel);
 		innerPanel.add(closeButton);
 		innerPanel.add(newButton);
 		innerPanel.add(continueButton);
-		gbc.gridx = 0;
-		gbc.gridy = 1;
-		outerPanel.add(innerPanel, gbc);
+		outerPanel.add(innerPanel);
 		contentPane.add(outerPanel, BorderLayout.CENTER);
 		jd.add(outerPanel);
 		jd.setVisible(true);
