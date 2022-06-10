@@ -2,6 +2,8 @@ package sudoku.Controller.Actionlisteners;
 import sudoku.SudokuController;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.concurrent.TimeUnit;
+
 import javax.swing.AbstractButton;
 
 public class MenuBarMenuActionListener implements ActionListener{
@@ -40,6 +42,8 @@ public class MenuBarMenuActionListener implements ActionListener{
                     }
                 }
         }
+    	
     }
+
 }
 

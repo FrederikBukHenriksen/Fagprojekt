@@ -34,6 +34,7 @@ public class SudokuController {
 		view.markCells();
 		if (model.checkValidity(model.getSudoku(), false, true) && model.isFilled()) {
 			createPopUp("Congratulations, you solved the puzzle!");
+
 		}
 	}
 
@@ -79,6 +80,7 @@ public class SudokuController {
 	}
 
 	public void createPopUp(String text) {
+		okPressed = false;
 		JDialog jd = new JDialog();
 		jd.setLayout(new FlowLayout());
 		int x = view.getX();
@@ -127,7 +129,7 @@ public class SudokuController {
 				// TODO: Generate new puzzle here
 				view.dispose();
 				jd.dispose();
-				SudokuController controller = new SudokuController();
+				setOkPressed();
 			}
 		});
 
@@ -205,6 +207,22 @@ public class SudokuController {
 			}
 		}
 		updateColours();
+
+	while(true) {
+		okPressed = false;
+		while (true) {
+			try {
+				TimeUnit.SECONDS.sleep(1);
+			} catch (InterruptedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			if (okPressed) {
+				break;
+				}
+			}
+		new SudokuController();
+		}
 	}
 
 	public void createSimplePopUp(String text) {
@@ -229,7 +247,7 @@ public class SudokuController {
 				view.dispose();
 				jd.dispose();
 				setOkPressed();
-
+				return;
 			}
 		});
 		jd.add(jLabel);
@@ -287,6 +305,10 @@ public class SudokuController {
 
 	public void setOkPressed() {
 		okPressed = true;
+		
+	}
+	public boolean getOkPressed() {
+		return okPressed;
 	}
 
 	public void zoom(int sizeChange) {
