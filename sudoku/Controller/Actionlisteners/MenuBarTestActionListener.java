@@ -49,7 +49,9 @@ public class MenuBarTestActionListener implements ActionListener {
         // sudokuController.model.getK(), sudokuController.model.xSums,
         // sudokuController.model.ySums));
 
-        System.out.println(sandwichValidity.checkValidity());
+        // System.out.println(sandwichValidity.checkValidity());
+
+        System.out.println(sudokuController.model.validity.checkValidity());
 
     }
 }

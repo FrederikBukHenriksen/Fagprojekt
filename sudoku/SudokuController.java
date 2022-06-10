@@ -7,8 +7,6 @@ import java.io.IOException;
 
 import java.util.NoSuchElementException;
 import java.util.concurrent.TimeUnit;
-import javax.swing.AbstractButton;
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -32,7 +30,7 @@ public class SudokuController {
 	public void updateColours() {
 		view.clearMarkedCells();
 		view.markCells();
-		if (model.checkValidity(model.getSudoku(), false, true) && model.isFilled()) {
+		if (model.validity.checkValidity() && model.isFilled()) {
 			createPopUp("Congratulations, you solved the puzzle!");
 		}
 	}
