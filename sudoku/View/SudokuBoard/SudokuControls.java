@@ -9,8 +9,8 @@ import java.util.stream.Collectors;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 
-import sudoku.MenuButton;
 import sudoku.View.SudokuBoard.*;
+
 import java.awt.*;
 
 public class SudokuControls extends JPanel {

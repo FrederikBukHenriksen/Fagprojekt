@@ -23,9 +23,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class SudokuModel {
-	CrooksAlgorithm crooks; 
+	public CrooksAlgorithm crooks; 
 	// Setting up variables
-	int[][] sudoku = new int[0][0];
+	public int[][] sudoku = new int[0][0];
 	int[][] solvedSudoku = new int [0][0];
 	stackObj[] sudokuStack2 = new stackObj[1000];
 	stackObj[] redoStack = new stackObj[1000]; 	
@@ -45,16 +45,13 @@ public class SudokuModel {
 	public Path findSudokuPath(String s) {//https://stackoverflow.com/questions/51973636/how-to-return-the-file-path-from-the-windows-file-explorer-using-java
 		//File file = new File("C:\\Users\\Candytom\\Documents\\GitHub\\sudoku\\Puzzles_1\\Puzzle_3_evil.dat");
 			Path file = null;
-			JFileChooser explorer = s == null ? new JFileChooser() : new JFileChooser(s);
-			explorer.setDialogTitle("Choose Sudoku you wish to solve");
-			int returnVal= explorer.showOpenDialog(null);
+			JFileChooser jd = s == null ? new JFileChooser() : new JFileChooser(s);
+			jd.setDialogTitle("Choose Sudoku you wish to solve");
+			int returnVal= jd.showOpenDialog(null);
 			/* If user didn't select a file and click ok, return null Path object*/
 			if (returnVal == JFileChooser.APPROVE_OPTION) {
-				//explorer.setEnabled(false);
-				explorer.updateUI();
-				return file = explorer.getSelectedFile().toPath();
+				return file = jd.getSelectedFile().toPath();
 			}
-			//explorer.setEnabled(false);
 			return null;
 		
 	}
@@ -117,6 +114,7 @@ public class SudokuModel {
 					d = 0;
 					lineScanner.close();
 				}
+				crooks = new CrooksAlgorithm(getN(),getK(),getSudoku(),this);
 				if(scanner.hasNextLine()){
 					crooks.setSandwich(true);
 					String line = scanner.nextLine();
@@ -143,8 +141,6 @@ public class SudokuModel {
 					}
 				}
 			}
-			crooks = new CrooksAlgorithm(getN(),getK(),getSudoku(),this);
-		
 	}
 	public SudokuModel(SudokuView view){
 		this.view = view;
@@ -408,11 +404,11 @@ public class SudokuModel {
 						if (print) {
 							// System.out.println("Row: x: " + i + ", j: " + j);
 						}
-						failedCoords.add(view.getCellFromCoord(i, j));
+						failedCoords.add(view.sudokuBoard.getCellFromCoord(i, j));
 						for (int o = 0; o < j; o++) {
 							if (sudoku[i][o] == cur) {
-								if (!(failedCoords.contains(view.getCellFromCoord(i, o)))) {
-									failedCoords.add(view.getCellFromCoord(i, o));
+								if (!(failedCoords.contains(view.sudokuBoard.getCellFromCoord(i, o)))) {
+									failedCoords.add(view.sudokuBoard.getCellFromCoord(i, o));
 								}
 							}
 						}
@@ -471,11 +467,11 @@ public class SudokuModel {
 						if (print) {
 							// System.out.println("Row: x: " + i + ", y: " + j);
 						}
-						failedCoords.add(view.getCellFromCoord(i, j));
+						failedCoords.add(view.sudokuBoard.getCellFromCoord(i, j));
 						for (int o = 0; o < i; o++) {
 							if (sudoku[o][j] == cur) {
-								if (!(failedCoords.contains(view.getCellFromCoord(o, j)))) {
-									failedCoords.add(view.getCellFromCoord(o, j));
+								if (!(failedCoords.contains(view.sudokuBoard.getCellFromCoord(o, j)))) {
+									failedCoords.add(view.sudokuBoard.getCellFromCoord(o, j));
 								}
 							}
 						}
@@ -539,7 +535,8 @@ public class SudokuModel {
 								// System.out.println("Square: j: " +(i + n * (l / k))+ ", i: " + (j + n * l) %
 								// (k * n));
 							}
-							failedCoords.add(view.getCellFromCoord((i + n * (l / k)), (j + n * l) % (k * n)));
+							failedCoords.add(view.sudokuBoard
+									.getCellFromCoord((i + n * (l / k)), (j + n * l) % (k * n)));
 
 						}
 					}

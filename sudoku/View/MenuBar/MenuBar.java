@@ -8,7 +8,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class MenuBar extends JMenuBar {
-
+    // create menuitems
+    public JMenuItem solve = new JMenuItem("Solve Sudoku");
     public JMenuItem zoomIn = new JMenuItem("Zoom in");
     public JMenuItem zoomOut = new JMenuItem("Zoom out");
 
@@ -17,17 +18,15 @@ public class MenuBar extends JMenuBar {
         JMenu x = new JMenu("Menu");
         JMenu tools = new JMenu("Tools");
 
-        zoomIn.setActionCommand("zoom in");
-        zoomOut.setActionCommand("zoom out");
+        zoomIn.setActionCommand("Zoom in");
+        zoomOut.setActionCommand("Zoom out");
+        solve.setActionCommand("Solve Sudoku");
 
         tools.add(zoomIn);
         tools.add(zoomOut);
 
-        // create menuitems
-        JMenuItem m1 = new JMenuItem("MenuItem1");
-
         // add menu items to menu
-        x.add(m1);
+        x.add(solve);
 
         // add menu to menu bar
         this.add(tools);

@@ -29,10 +29,6 @@ public class MenuBarZoomActionListener implements ActionListener {
             default:
                 break;
         }
-        for (Cell cell : sudokuController.view.sudokuBoard.getCellsLinear()) {
-            cell.adjustSize(sizeChange);
-        }
-
-        sudokuController.view.pack();
+        sudokuController.zoom(sizeChange);
     }
 }

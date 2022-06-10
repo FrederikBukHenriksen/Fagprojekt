@@ -5,15 +5,15 @@ import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 
-import sudoku.SudokuInterface;
-import sudoku.SudokuPanel;
 import sudoku.SudokuView;
 import sudoku.View.SudokuBoard.Cell;
+import sudoku.View.SudokuBoard.SudokuInterface;
+import sudoku.View.SudokuBoard.SudokuExtend;
 
 import java.awt.*;
 import java.awt.Color;
 
-public class ClassicSudokuBoard extends SudokuPanel implements SudokuInterface {
+public class ClassicSudokuBoard extends SudokuExtend implements SudokuInterface {
 
     SudokuView sudokuView;
 
@@ -88,108 +88,4 @@ public class ClassicSudokuBoard extends SudokuPanel implements SudokuInterface {
             this.add(square, gbc);
         }
     }
-
-    // class Cell extends JToggleButton {
-
-    // Color selected = new Color(161, 205, 240);
-    // Color conflict = new Color(240, 192, 193);
-    // Color square = new Color(199, 219, 235);
-    // Color similar = new Color(144, 182, 212);
-    // Color peer = new Color(199, 219, 235);
-    // Color conflictFont = new Color(230, 67, 70);
-    // Color def = Color.white;
-    // Color defFont = new Color(80, 110, 242);
-
-    // boolean enabled = true;
-
-    // public Cell() {
-    // setText("");
-    // setBackground(def);
-    // setForeground(defFont);
-    // setFont(new Font("Serif", Font.PLAIN, 28));
-    // setBorder(new LineBorder(Color.black, 1));
-    // // UIManager.put("ToggleButton.highlight", Color.red);
-    // UIManager.put("ToggleButton.select", selected);
-    // SwingUtilities.updateComponentTreeUI(this);
-    // cellSize = (int) Math.floor((sudokuView.screenSize.getHeight() *
-    // screenOccupationFactor) / (n * k));
-
-    // setMinimumSize(new Dimension(25, 25));
-    // setPreferredSize(new Dimension(40, 40));
-
-    // }
-
-    // @Override
-    // public void setEnabled(boolean b) {
-    // defFont = Color.black;
-    // enabled = false;
-    // setBackground(def);
-    // setForeground(defFont);
-    // }
-
-    // @Override
-    // public void setText(String text) {
-    // if (enabled) {
-    // super.setText(text);
-    // }
-    // }
-
-    // public void adjustSize(int sizeAdjustment) {
-    // int currentSize = (int) getSize().getWidth();
-    // int newSize = currentSize + sizeAdjustment;
-    // setSize(new Dimension(newSize, newSize));
-    // this.setPreferredSize(new Dimension(newSize, newSize));
-    // }
-
-    // public void defaultColor() {
-    // setBackground(def);
-    // setForeground(defFont);
-    // }
-
-    // public void conflict() {
-    // if (enabled) {
-    // setForeground(conflictFont);
-    // }
-    // setBackground(conflict);
-    // }
-
-    // public void unSelected() { // TODO: Tjek om vi bruger
-    // setForeground(defFont);
-    // setBackground(def);
-    // }
-
-    // public void similar() {
-    // if (!(this.getBackground().equals(this.conflict))) {
-    // setBackground(similar);
-    // }
-    // }
-
-    // public void peer() {
-    // if (!(this.getBackground().equals(this.conflict))) {
-    // setBackground(peer);
-    // }
-    // }
-
-    // public void square() {
-    // if (!(this.getBackground().equals(this.conflict))) {
-    // setBackground(square);
-    // }
-    // }
-    // }
-
-    public ArrayList<Cell> getCellsLinear() {
-        ArrayList<Cell> temp = new ArrayList<>();
-        for (ArrayList<Cell> arraylist : cells) {
-            for (Cell cell : arraylist) {
-                temp.add(cell);
-            }
-        }
-        return temp;
-    }
-
-    @Override
-    public ArrayList<ArrayList<Cell>> getCells() {
-        return cells;
-    }
-
 }

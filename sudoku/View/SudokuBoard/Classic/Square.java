@@ -6,10 +6,10 @@ import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 
-import sudoku.SudokuInterface;
-import sudoku.SudokuPanel;
 import sudoku.SudokuView;
 import sudoku.View.SudokuBoard.Cell;
+import sudoku.View.SudokuBoard.SudokuInterface;
+import sudoku.View.SudokuBoard.SudokuExtend;
 
 import java.awt.*;
 import java.awt.Color;
