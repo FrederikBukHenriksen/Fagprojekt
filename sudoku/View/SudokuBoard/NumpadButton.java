@@ -17,7 +17,7 @@ public class NumpadButton extends JButton {
         setFocusable(false);
         setBackground(def);
         setForeground(defFont);
-        setFont(new Font("Serif", Font.PLAIN, 16));
+        setFont(new Font("Serif", Font.PLAIN, 28));
         setBorder(new LineBorder(Color.black, 1));
 
         setMinimumSize(new Dimension(25, 25));
@@ -26,9 +26,12 @@ public class NumpadButton extends JButton {
 
     public void adjustSize(int sizeAdjustment) {
         int currentSize = (int) getSize().getWidth();
+        int currentFontSize = (int) getFont().getSize();
         int newSize = currentSize + sizeAdjustment;
-        this.setSize(new Dimension(newSize, newSize));
+        int newFontSize = currentFontSize + sizeAdjustment;
+        setSize(new Dimension(newSize, newSize));
         this.setPreferredSize(new Dimension(newSize, newSize));
+        setFont(new Font("Serif", Font.PLAIN, newFontSize));
     }
 
 }
