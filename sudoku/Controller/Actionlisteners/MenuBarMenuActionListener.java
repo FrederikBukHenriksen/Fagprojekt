@@ -7,6 +7,7 @@ import javax.swing.AbstractButton;
 public class MenuBarMenuActionListener implements ActionListener{
 
     SudokuController sudokuController;
+    public boolean newPressed = false;
 
     public MenuBarMenuActionListener(SudokuController sudokuController){
         this.sudokuController = sudokuController;
@@ -40,6 +41,7 @@ public class MenuBarMenuActionListener implements ActionListener{
                     }
                 }
             case "open new sudoku":
+            
         }
     }
 }

@@ -126,9 +126,10 @@ public class SudokuController {
 				// TODO: Generate new puzzle here
 				view.dispose();
 				jd.dispose();
-				SudokuController controller = new SudokuController();
+				setOkPressed();
 			}
 		});
+
 
 		JButton continueButton = new JButton("Back to Puzzle");
 		continueButton.addActionListener(new ActionListener() {
@@ -156,6 +157,12 @@ public class SudokuController {
 		jd.setVisible(true);
 		jd.pack();
 
+		while(true){
+			if(okPressed){
+				break;
+			}
+		}
+		SudokuController controller = new SudokuController();
 	}
 
 	// Simple constructor
