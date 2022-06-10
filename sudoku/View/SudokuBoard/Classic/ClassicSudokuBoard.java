@@ -21,7 +21,7 @@ public class ClassicSudokuBoard extends SudokuExtend implements SudokuInterface 
 
     public ClassicSudokuBoard(int[][] sudoku, int n, int k) {
         super(sudoku, n, k);
-
+        
         GridBagLayout grid = new GridBagLayout();
         this.setLayout(grid);
 

@@ -163,25 +163,27 @@ public class SudokuController {
 		jd.pack();
 
 	}
-
-	// Simple constructor
-	public SudokuController() {
+	public void sudokuBoard() {
 		view = new SudokuView();
 		model = new SudokuModel(view);
 		try {
 			model.boardCreater();
-			// break;
+			//break;
 		} catch (IOException e) {
-			// System.out.println("Wrong filetype");
+			//System.out.println("Wrong filetype");
 			createSimplePopUp("wrong filetype");
 		} catch (NumberFormatException ez) {
-			// System.out.println("Wrong filetype");
-			createSimplePopUp("wrong filetype");
+			//System.out.println("Wrong filetype");
+			createSimplePopUp("wrong filetype");				
 		} catch (NoSuchElementException ex) {
-			// System.out.println("Sudoku formatet wrong. Hint: Check for newlines");
-			createSimplePopUp("Illegal file content. Check for newlines");
+			//System.out.println("Sudoku formatet wrong. Hint: Check for newlines");
+			createSimplePopUp("Illegal file content. Check for newlines");			
 		}
+	}	
 
+	// Simple constructor
+	public SudokuController() {
+		sudokuBoard();
 		view.showFrame(model.getSudoku());
 		for (Cell cell : view.sudokuBoard.getCellsLinear()) {
 			cell.addActionListener(new SudokuboardListener(this));
@@ -244,8 +246,8 @@ public class SudokuController {
 				break;
 			}
 		}
-		SudokuController controller = new SudokuController();
-	}
+		sudokuBoard();
+   }
 
 	public void getHint() {
 		try {
