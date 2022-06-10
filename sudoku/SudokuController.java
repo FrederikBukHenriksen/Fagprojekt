@@ -1,42 +1,30 @@
 package sudoku;
 
 import sudoku.Controller.Actionlisteners.*;
-import sudoku.View.Cell.*;
+import sudoku.View.SudokuBoard.*;
 
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.io.FileNotFoundException;
+import java.io.File;
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.ArrayList;
+import java.lang.management.ManagementFactory;
+import java.lang.reflect.InvocationTargetException;
 import java.util.NoSuchElementException;
-
+import java.util.concurrent.TimeUnit;
 
 import javax.swing.AbstractButton;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
-import javax.swing.JToggleButton;
-import javax.swing.JRadioButtonMenuItem;
-import javax.swing.JMenuItem;
 
 import java.awt.Dimension;
 import java.awt.*;
+import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-import java.awt.Component;
+import java.awt.event.HierarchyEvent;
 import java.awt.Container;
 import java.awt.FlowLayout;
-
-import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
 
 public class SudokuController {
 
@@ -175,35 +163,44 @@ public class SudokuController {
 	}
 
 	// Simple constructor
-	public SudokuController() {
-		view = new SudokuView();
-		model = new SudokuModel(view);
+	public void boardCreater() {
 		while (true) {
 			try {
+				
 				model.boardCreater();
 				break;
 			} catch(IOException e) {
-				createSimplePopUp("wrong filetype");
 				System.out.println("Wrong filetype");
+				createSimplePopUp("wrong filetype");
+
 			} catch(NumberFormatException ez) {
+				System.out.println("Wrong filetype");
 				createSimplePopUp("wrong filetype");
 				System.out.println("Wrong filetype");
 			} catch(NoSuchElementException ex) {
+				System.out.println("Wrong filetype");
 				createSimplePopUp("Illegal file content. Check for newlines");
 				System.out.println("Sudoku formatet wrong. Hint: Check for newlines");
 			}
-		}
+		}	
+	}
+	public SudokuController() {
+		view = new SudokuView();
+		model = new SudokuModel(view);
+		boardCreater();
+
 		view.showFrame(model.getSudoku());
 		for (Cell cell : view.sudokuBoard.getCellsLinear()) {
 			cell.addActionListener(new SudokuboardListener(this));
 			cell.addKeyListener(new KeyboardSudokuListener(this));
 		}
-		view.sudokuUI.numpadButtons.forEach(b -> b.addActionListener(new NumboardListener(this)));
-		view.sudokuUI.undo.addActionListener(new SudokuUndoListener(this));
-		view.sudokuUI.redo.addActionListener(new SudokuRedoListener(this));
-		view.sudokuUI.remove.addActionListener(new SudokuRemoveListener(this));
-		view.sudokuUI.hint.addActionListener(new SudokuHintListener(this));
+		view.sudokuNumpad.numpadButtons.forEach(b -> b.addActionListener(new NumboardListener(this)));
+		view.sudokuControls.undo.addActionListener(new SudokuUndoListener(this));
+		view.sudokuControls.redo.addActionListener(new SudokuRedoListener(this));
+		view.sudokuControls.remove.addActionListener(new SudokuRemoveListener(this));
+		view.sudokuControls.hint.addActionListener(new SudokuHintListener(this));
 		view.menuBar.zoomIn.addActionListener(new MenuBarZoomActionListener(this));
+		view.menuBar.zoomOut.addActionListener(new MenuBarZoomActionListener(this));
 
 		// view.menuBar.zoomIn.addActionListener(new ActionListener() {
 		// public void actionPerformed(ActionEvent ev) {
@@ -236,17 +233,32 @@ public class SudokuController {
 		okButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				view.dispose();
-				jd.dispose();
+				jd.dispose();			
 				setOkPressed();
-				SudokuController controller = new SudokuController();
 			}
 		});
+		
 		jd.add(jLabel);
 		jd.add(okButton);
+		view.dispose();
 		jd.setVisible(true);
-		while (!okPressed) {
-		}
+		
+		//System.out.println(EventQueue.getMostRecentEventTime());
+		//System.out.println(EventQueue.getCurrentEvent());
+	
+
+        while (true) {
+            try {
+                TimeUnit.SECONDS.sleep(1);
+            } catch (InterruptedException e1) {
+                // TODO Auto-generated catch block
+                e1.printStackTrace();
+            }
+            if(okPressed) {
+                break;
+            }
+        }
+		boardCreater();
 	}
 
 	public void getHint() {
@@ -256,11 +268,11 @@ public class SudokuController {
 				int tempVal = model.getSudoku()[coordinate[0]][coordinate[1]];
 				if (model.crooks.getUniqueness()) {
 					model.setSudokuCell(coordinate[0], coordinate[1],
-							model.getSolvedSudoku()[coordinate[0]][coordinate[1]]);
+							model.crooks.getSolvedSudoku()[coordinate[0]][coordinate[1]]);
 				} else {
-					int[][] tempSudoku = model.getSolvedSudoku();
-					model.solver();
-					if (model.getSolvedSudoku()[0][0] == 0) {
+					int[][] tempSudoku = model.crooks.getSolvedSudoku();
+					model.crooks.solver();
+					if (model.crooks.getSolvedSudoku()[0][0] == 0) {
 						for (int i = 0; i < model.getN() * model.getK(); i++) {
 							for (int j = 0; j < model.getN() * model.getK(); j++) {
 								if (model.getSudoku()[i][j] != tempSudoku[i][j]) {
@@ -273,10 +285,10 @@ public class SudokuController {
 					}
 
 					model.setSudokuCell(coordinate[0], coordinate[1],
-							model.getSolvedSudoku()[coordinate[0]][coordinate[1]]);
+							model.crooks.getSolvedSudoku()[coordinate[0]][coordinate[1]]);
 				}
 				model.pushStack2(model.createStackObj(coordinate[0], coordinate[1], tempVal,
-						model.getSolvedSudoku()[coordinate[0]][coordinate[1]]));
+						model.crooks.getSolvedSudoku()[coordinate[0]][coordinate[1]]));
 				view.updateBoard(model.getSudoku());
 				updateColours();
 			}

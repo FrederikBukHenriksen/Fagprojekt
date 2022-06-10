@@ -7,9 +7,10 @@ import java.util.NoSuchElementException;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.Stack;
-import sudoku.View.Cell.*;
 
 import javax.swing.JFileChooser;
+
+import sudoku.View.SudokuBoard.*;
 
 import java.util.Random;
 
@@ -44,13 +45,16 @@ public class SudokuModel {
 	public Path findSudokuPath(String s) {//https://stackoverflow.com/questions/51973636/how-to-return-the-file-path-from-the-windows-file-explorer-using-java
 		//File file = new File("C:\\Users\\Candytom\\Documents\\GitHub\\sudoku\\Puzzles_1\\Puzzle_3_evil.dat");
 			Path file = null;
-			JFileChooser jd = s == null ? new JFileChooser() : new JFileChooser(s);
-			jd.setDialogTitle("Choose Sudoku you wish to solve");
-			int returnVal= jd.showOpenDialog(null);
+			JFileChooser explorer = s == null ? new JFileChooser() : new JFileChooser(s);
+			explorer.setDialogTitle("Choose Sudoku you wish to solve");
+			int returnVal= explorer.showOpenDialog(null);
 			/* If user didn't select a file and click ok, return null Path object*/
 			if (returnVal == JFileChooser.APPROVE_OPTION) {
-				return file = jd.getSelectedFile().toPath();
+				//explorer.setEnabled(false);
+				explorer.updateUI();
+				return file = explorer.getSelectedFile().toPath();
 			}
+			//explorer.setEnabled(false);
 			return null;
 		
 	}
