@@ -141,8 +141,8 @@ public class SudokuController {
 		Container contentPane = new Container();
 
 		Panel outerPanel = new Panel();
-		outerPanel.setBackground(Color.RED);
-		// outerPanel.setLayout(new GridBagLayout());
+		// outerPanel.setBackground(Color.RED);
+		outerPanel.setLayout(new GridBagLayout());
 		GridBagConstraints gbc = new GridBagConstraints();
 
 		Panel innerPanel = new Panel();
@@ -277,10 +277,10 @@ public class SudokuController {
 		okPressed = true;
 	}
 
-	public void zoom(int sizeChange){
+	public void zoom(int sizeChange) {
 		for (Cell cell : view.sudokuBoard.getCellsLinear()) {
-            cell.adjustSize(sizeChange);
-        }
+			cell.adjustSize(sizeChange);
+		}
 		view.pack();
 	}
 }

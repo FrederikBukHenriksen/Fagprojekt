@@ -178,10 +178,9 @@ public class Validity {
                 }
 
             }
-
         }
         System.out.println("STOP DEBUG");
-        return allConflicts;
+        return null;
     }
 
     private boolean checkColsDuplicate(int[][] sudoku, int[][] sortedGrid) {
