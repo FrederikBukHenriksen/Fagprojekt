@@ -272,4 +272,10 @@ public class SudokuController {
 		okPressed = true;
 	}
 
+	public void zoom(int sizeChange){
+		for (Cell cell : view.sudokuBoard.getCellsLinear()) {
+            cell.adjustSize(sizeChange);
+        }
+		view.pack();
+	}
 }
