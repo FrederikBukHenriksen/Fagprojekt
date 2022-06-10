@@ -21,11 +21,11 @@ public class MenuBarZoomActionListener implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
         int sizeChange = 0;
-        switch (((AbstractButton) e.getSource()).getActionCommand().toLowerCase()) {
-            case "zoom in":
+        switch (((AbstractButton) e.getSource()).getActionCommand()) {
+            case "Zoom in":
                 sizeChange = change;
                 break;
-            case "zoom out":
+            case "Zoom out":
                 sizeChange = -change;
 
                 Validity lolcat = new Validity(sudokuController);
@@ -37,6 +37,10 @@ public class MenuBarZoomActionListener implements ActionListener {
             default:
                 break;
         }
-        sudokuController.zoom(sizeChange);
+        for (Cell cell : sudokuController.view.sudokuBoard.getCellsLinear()) {
+            cell.adjustSize(sizeChange);
+        }
+
+        sudokuController.view.pack();
     }
 }
