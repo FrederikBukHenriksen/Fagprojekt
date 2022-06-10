@@ -41,9 +41,11 @@ public class MenuBarMenuActionListener implements ActionListener{
                         sudokuController.updateColours();
                     }
                 }
+                break;
             case "open new sudoku":
                 sudokuController.view.dispose();
                 sudokuController.setOkPressed();
+                break;
         }
     	
     }

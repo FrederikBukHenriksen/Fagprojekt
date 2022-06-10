@@ -34,7 +34,6 @@ public class SudokuController {
 		view.markCells();
 		if (model.checkValidity(model.getSudoku(), false, true) && model.isFilled()) {
 			createPopUp("Congratulations, you solved the puzzle!");
-
 		}
 	}
 
