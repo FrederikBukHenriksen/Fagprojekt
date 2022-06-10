@@ -6,8 +6,8 @@ import java.awt.event.ActionListener;
 import javax.swing.AbstractButton;
 
 import sudoku.SudokuController;
-import sudoku.ClassicValidity;
-import sudoku.SandwichValidity;
+import sudoku.Model.Validity.ValidityClassic;
+import sudoku.Model.Validity.ValiditySandwich;
 import sudoku.View.SudokuBoard.*;
 
 public class MenuBarTestActionListener implements ActionListener {
@@ -19,11 +19,11 @@ public class MenuBarTestActionListener implements ActionListener {
     }
 
     public void actionPerformed(ActionEvent e) {
-        ClassicValidity validity = new ClassicValidity(sudokuController.model.getSudoku(),
+        ValidityClassic validity = new ValidityClassic(sudokuController.model.getSudoku(),
                 sudokuController.model.getN(),
                 sudokuController.model.getK());
 
-        SandwichValidity sandwichValidity = new SandwichValidity(sudokuController.model.getSudoku(),
+        ValiditySandwich sandwichValidity = new ValiditySandwich(sudokuController.model.getSudoku(),
                 sudokuController.model.getN(),
                 sudokuController.model.getK(), sudokuController.model.xSums, sudokuController.model.ySums);
         // validity.uniqueConflicts(
