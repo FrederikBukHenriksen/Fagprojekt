@@ -1,4 +1,4 @@
-package sudoku;
+package sudoku.View.SudokuBoard;
 
 import java.awt.Font;
 import java.awt.GridLayout;
