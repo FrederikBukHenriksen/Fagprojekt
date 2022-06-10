@@ -6,7 +6,7 @@ import sudoku.View.SudokuBoard.*;
 import java.io.IOException;
 
 import java.util.NoSuchElementException;
-
+import java.util.concurrent.TimeUnit;
 import javax.swing.AbstractButton;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -227,15 +227,26 @@ public class SudokuController {
 				view.dispose();
 				jd.dispose();
 				setOkPressed();
-				SudokuController controller = new SudokuController();
+				
 			}
 		});
 		jd.add(jLabel);
 		jd.add(okButton);
 		jd.setVisible(true);
-		while (!okPressed) {
+		while (true) {
+			try {
+				TimeUnit.SECONDS.sleep(1);
+			} catch (InterruptedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			if(okPressed) {
+				break;
+			}
 		}
-	}
+       SudokuController controller = new SudokuController();
+   }
+
 
 	public void getHint() {
 		try {
