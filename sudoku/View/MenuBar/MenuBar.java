@@ -12,10 +12,11 @@ public class MenuBar extends JMenuBar {
     public JMenuItem solve = new JMenuItem("Solve Sudoku");
     public JMenuItem zoomIn = new JMenuItem("Zoom in");
     public JMenuItem zoomOut = new JMenuItem("Zoom out");
+    public JMenuItem test = new JMenuItem("TEST");
 
     public MenuBar() {
         // create a menu
-        JMenu x = new JMenu("Menu");
+        JMenu menu = new JMenu("Menu");
         JMenu tools = new JMenu("Tools");
 
         zoomIn.setActionCommand("Zoom in");
@@ -26,10 +27,11 @@ public class MenuBar extends JMenuBar {
         tools.add(zoomOut);
 
         // add menu items to menu
-        x.add(solve);
+        menu.add(solve);
+        menu.add(test);
 
         // add menu to menu bar
         this.add(tools);
-        this.add(x);
+        this.add(menu);
     }
 }
