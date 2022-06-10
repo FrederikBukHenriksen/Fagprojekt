@@ -141,17 +141,22 @@ public class SudokuController {
 		Container contentPane = new Container();
 
 		Panel outerPanel = new Panel();
-		outerPanel.setBackground(Color.RED);
-		outerPanel.setLayout(new BoxLayout(contentPane, BoxLayout.PAGE_AXIS));
+		// outerPanel.setBackground(Color.RED);
+		outerPanel.setLayout(new GridBagLayout());
+		GridBagConstraints gbc = new GridBagConstraints();
 
 		Panel innerPanel = new Panel();
 		innerPanel.setLayout(new FlowLayout());
-		innerPanel.setBackground(Color.GREEN);
-		outerPanel.add(jLabel);
+		// innerPanel.setBackground(Color.GREEN);
+		gbc.gridx = 0;
+		gbc.gridy = 0;
+		outerPanel.add(jLabel, gbc);
 		innerPanel.add(closeButton);
 		innerPanel.add(newButton);
 		innerPanel.add(continueButton);
-		outerPanel.add(innerPanel);
+		gbc.gridx = 0;
+		gbc.gridy = 1;
+		outerPanel.add(innerPanel, gbc);
 		contentPane.add(outerPanel, BorderLayout.CENTER);
 		jd.add(outerPanel);
 		jd.setVisible(true);
@@ -178,9 +183,7 @@ public class SudokuController {
 
 	// Simple constructor
 	public SudokuController() {
-
 		sudokuBoard();
-		
 		view.showFrame(model.getSudoku());
 		for (Cell cell : view.sudokuBoard.getCellsLinear()) {
 			cell.addActionListener(new SudokuboardListener(this));
@@ -195,9 +198,9 @@ public class SudokuController {
 		view.menuBar.zoomOut.addActionListener(new MenuBarZoomActionListener(this));
 		view.menuBar.solve.addActionListener(new MenuBarMenuActionListener(this));
 
-		model.crooks.solver();		
-		if(!model.crooks.isSandwich){
-			if(model.crooks.getSolvedSudoku()[0][0] == 0){
+		model.crooks.solver();
+		if (!model.crooks.isSandwich) {
+			if (model.crooks.getSolvedSudoku()[0][0] == 0) {
 				createPopUp("This sudoku has no solutions \n");
 			}
 		}
@@ -226,7 +229,7 @@ public class SudokuController {
 				view.dispose();
 				jd.dispose();
 				setOkPressed();
-				
+
 			}
 		});
 		jd.add(jLabel);
@@ -239,13 +242,12 @@ public class SudokuController {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-			if(okPressed) {
+			if (okPressed) {
 				break;
 			}
 		}
 		sudokuBoard();
    }
-
 
 	public void getHint() {
 		try {
@@ -287,10 +289,10 @@ public class SudokuController {
 		okPressed = true;
 	}
 
-	public void zoom(int sizeChange){
+	public void zoom(int sizeChange) {
 		for (Cell cell : view.sudokuBoard.getCellsLinear()) {
-            cell.adjustSize(sizeChange);
-        }
+			cell.adjustSize(sizeChange);
+		}
 		view.pack();
 	}
 }
