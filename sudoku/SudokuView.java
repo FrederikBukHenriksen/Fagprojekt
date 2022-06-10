@@ -26,7 +26,6 @@ public class SudokuView extends JFrame {
 	public ArrayList <Cell> markedCells = new ArrayList<Cell>();
 	int[][] sudoku;
 	public ClassicSudokuBoard sudokuBoard;
-	public SudokuUI sudokuUI;
 	public MenuBar menuBar;
 	public JPanel controls;
 	public SudokuControls sudokuControls;
@@ -46,7 +45,6 @@ public class SudokuView extends JFrame {
 		k = SudokuModel.k;
 		this.sudoku = sudoku;
 		sudokuBoard = new ClassicSudokuBoard(sudoku, n, k);
-		sudokuUI = new SudokuUI(this);
 		menuBar = new MenuBar();
 		sudokuControls = new SudokuControls();
 		sudokuNumpad = new SudokuNumpad(n, k);
