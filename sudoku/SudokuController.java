@@ -164,8 +164,7 @@ public class SudokuController {
 
 	}
 
-	// Simple constructor
-	public SudokuController() {
+	public void sudokuBoard() {
 		view = new SudokuView();
 		model = new SudokuModel(view);
 		try {
@@ -181,7 +180,11 @@ public class SudokuController {
 			// System.out.println("Sudoku formatet wrong. Hint: Check for newlines");
 			createSimplePopUp("Illegal file content. Check for newlines");
 		}
+	}
 
+	// Simple constructor
+	public SudokuController() {
+		sudokuBoard();
 		view.showFrame(model.getSudoku());
 		for (Cell cell : view.sudokuBoard.getCellsLinear()) {
 			cell.addActionListener(new SudokuboardListener(this));
@@ -245,7 +248,7 @@ public class SudokuController {
 				break;
 			}
 		}
-		SudokuController controller = new SudokuController();
+		sudokuBoard();
 	}
 
 	public void getHint() {
