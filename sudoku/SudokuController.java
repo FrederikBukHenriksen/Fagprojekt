@@ -7,7 +7,6 @@ import java.io.IOException;
 
 import java.util.NoSuchElementException;
 import java.util.concurrent.TimeUnit;
-
 import javax.swing.AbstractButton;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
