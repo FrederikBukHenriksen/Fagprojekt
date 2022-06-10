@@ -19,6 +19,8 @@ public class KeyboardSudokuListener extends KeyAdapter {
     boolean zPressed = false;
     boolean yPressed = false;
     boolean hPressed = false;
+    boolean plusPressed = false;
+    boolean minusPressed = false;
 
     public void keyPressed(KeyEvent e) {
         int keyCode = e.getKeyCode();
@@ -26,6 +28,8 @@ public class KeyboardSudokuListener extends KeyAdapter {
             zPressed = true;
             yPressed = false;
             hPressed = false;
+            plusPressed = false;
+            minusPressed = false;
             if (ctrlPressed) {
                 this.sudokuController.undoMove();
             }
@@ -33,6 +37,8 @@ public class KeyboardSudokuListener extends KeyAdapter {
             yPressed = true;
             zPressed = false;
             hPressed = false;
+            plusPressed = false;
+            minusPressed = false;
             if (ctrlPressed) {
                 this.sudokuController.redoMove();
             }
@@ -44,7 +50,12 @@ public class KeyboardSudokuListener extends KeyAdapter {
                 this.sudokuController.redoMove();
             } else if (hPressed) {
                 this.sudokuController.getHint();
+            } else if (plusPressed) {
+                this.sudokuController.zoom(5);
+            } else if(minusPressed) {
+                this.sudokuController.zoom(-5);
             }
+
         } else if (keyCode == KeyEvent.VK_DOWN) {
             int[] tempCoords = { -1, 0 };
             try {
@@ -64,6 +75,7 @@ public class KeyboardSudokuListener extends KeyAdapter {
             pressed.setSelected(true);
             this.sudokuController.view.sudokuBoard.onlySelectThePressed(pressed);
             this.sudokuController.updateColours();
+
         } else if (keyCode == KeyEvent.VK_UP) {
             int[] tempCoords = { 1, 0 };
             try {
@@ -84,6 +96,7 @@ public class KeyboardSudokuListener extends KeyAdapter {
             pressed.setSelected(true);
             this.sudokuController.view.sudokuBoard.onlySelectThePressed(pressed);
             this.sudokuController.updateColours();
+
         } else if (keyCode == KeyEvent.VK_LEFT) {
             int[] tempCoords = { 0, 1 };
             try {
@@ -104,6 +117,7 @@ public class KeyboardSudokuListener extends KeyAdapter {
             pressed.setSelected(true);
             this.sudokuController.view.sudokuBoard.onlySelectThePressed(pressed);
             this.sudokuController.updateColours();
+
         } else if (keyCode == KeyEvent.VK_RIGHT) {
             int[] tempCoords = { 0, -1 };
             try {
@@ -123,14 +137,36 @@ public class KeyboardSudokuListener extends KeyAdapter {
             pressed.setSelected(true);
             this.sudokuController.view.sudokuBoard.onlySelectThePressed(pressed);
             this.sudokuController.updateColours();
+
         } else if (keyCode == KeyEvent.VK_H) {
             yPressed = false;
             zPressed = false;
             hPressed = true;
+            plusPressed = false;
+            minusPressed = false;
             if (ctrlPressed) {
                 this.sudokuController.getHint();
             }
-        } else {
+        } else if (keyCode == KeyEvent.VK_PLUS) {
+            yPressed = false;
+            zPressed = false;
+            hPressed = false;
+            plusPressed = true;
+            minusPressed = false;
+            if (ctrlPressed) {
+                this.sudokuController.zoom(5);
+            }
+        } else if (keyCode == KeyEvent.VK_MINUS) {
+            yPressed = false;
+            zPressed = false;
+            hPressed = false;
+            plusPressed = false;
+            minusPressed = true;
+            if (ctrlPressed) {
+                this.sudokuController.zoom(-5);
+            }
+        } 
+        else {
             try {
                 Cell pressedSudokuboard = this.sudokuController.view.sudokuBoard.getButtonSelected();
                 if (pressedSudokuboard.enabled) { // Only the available buttons
@@ -226,6 +262,10 @@ public class KeyboardSudokuListener extends KeyAdapter {
                 yPressed = false;
             } else if (keyCode == KeyEvent.VK_H) {
                 hPressed = false;
+            } else if (keyCode == KeyEvent.VK_PLUS){
+                plusPressed = false;
+            } else if (keyCode == KeyEvent.VK_MINUS){
+                minusPressed = false;
             } else {
                 return;
             }
