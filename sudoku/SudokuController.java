@@ -201,6 +201,7 @@ public class SudokuController {
 		view.menuBar.zoomOut.addActionListener(new MenuBarZoomActionListener(this));
 		view.menuBar.solve.addActionListener(new MenuBarMenuActionListener(this));
 		view.menuBar.test.addActionListener(new MenuBarTestActionListener(this));
+		view.menuBar.newPuzzle.addActionListener(new MenuBarMenuActionListener(this));
 
 		model.crooks.solver();
 		if (!model.crooks.isSandwich) {
