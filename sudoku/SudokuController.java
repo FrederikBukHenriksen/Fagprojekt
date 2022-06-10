@@ -317,6 +317,9 @@ public class SudokuController {
 		for (Cell cell : view.sudokuBoard.getCellsLinear()) {
 			cell.adjustSize(sizeChange);
 		}
+		for (NumpadButton numpadButton : view.sudokuNumpad.numpadButtons){
+			numpadButton.adjustSize(sizeChange);
+		}
 		view.pack();
 	}
 }
