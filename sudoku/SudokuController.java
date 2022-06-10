@@ -142,16 +142,21 @@ public class SudokuController {
 
 		Panel outerPanel = new Panel();
 		outerPanel.setBackground(Color.RED);
-		outerPanel.setLayout(new BoxLayout(contentPane, BoxLayout.PAGE_AXIS));
+		// outerPanel.setLayout(new GridBagLayout());
+		GridBagConstraints gbc = new GridBagConstraints();
 
 		Panel innerPanel = new Panel();
 		innerPanel.setLayout(new FlowLayout());
-		innerPanel.setBackground(Color.GREEN);
-		outerPanel.add(jLabel);
+		// innerPanel.setBackground(Color.GREEN);
+		gbc.gridx = 0;
+		gbc.gridy = 0;
+		outerPanel.add(jLabel, gbc);
 		innerPanel.add(closeButton);
 		innerPanel.add(newButton);
 		innerPanel.add(continueButton);
-		outerPanel.add(innerPanel);
+		gbc.gridx = 0;
+		gbc.gridy = 1;
+		outerPanel.add(innerPanel, gbc);
 		contentPane.add(outerPanel, BorderLayout.CENTER);
 		jd.add(outerPanel);
 		jd.setVisible(true);
@@ -163,20 +168,20 @@ public class SudokuController {
 	public SudokuController() {
 		view = new SudokuView();
 		model = new SudokuModel(view);
-			try {
-				model.boardCreater();
-				//break;
-			} catch (IOException e) {
-				//System.out.println("Wrong filetype");
-				createSimplePopUp("wrong filetype");
-			} catch (NumberFormatException ez) {
-				//System.out.println("Wrong filetype");
-				createSimplePopUp("wrong filetype");				
-			} catch (NoSuchElementException ex) {
-				//System.out.println("Sudoku formatet wrong. Hint: Check for newlines");
-				createSimplePopUp("Illegal file content. Check for newlines");			
-			}
-		
+		try {
+			model.boardCreater();
+			// break;
+		} catch (IOException e) {
+			// System.out.println("Wrong filetype");
+			createSimplePopUp("wrong filetype");
+		} catch (NumberFormatException ez) {
+			// System.out.println("Wrong filetype");
+			createSimplePopUp("wrong filetype");
+		} catch (NoSuchElementException ex) {
+			// System.out.println("Sudoku formatet wrong. Hint: Check for newlines");
+			createSimplePopUp("Illegal file content. Check for newlines");
+		}
+
 		view.showFrame(model.getSudoku());
 		for (Cell cell : view.sudokuBoard.getCellsLinear()) {
 			cell.addActionListener(new SudokuboardListener(this));
@@ -192,8 +197,8 @@ public class SudokuController {
 		view.menuBar.solve.addActionListener(new MenuBarMenuActionListener(this));
 
 		model.crooks.solver();
-		if(!model.crooks.isSandwich){
-			if(model.crooks.getSolvedSudoku()[0][0] == 0){
+		if (!model.crooks.isSandwich) {
+			if (model.crooks.getSolvedSudoku()[0][0] == 0) {
 				createPopUp("This sudoku has no solutions \n");
 			}
 		}

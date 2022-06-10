@@ -1,5 +1,7 @@
 package sudoku.Controller.Actionlisteners;
 
+import sudoku.Validity;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -19,12 +21,18 @@ public class MenuBarZoomActionListener implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
         int sizeChange = 0;
-        switch (((AbstractButton) e.getSource()).getActionCommand().toLowerCase()) {
+        switch (((AbstractButton) e.getSource()).getActionCommand()) {
             case "Zoom in":
                 sizeChange = change;
                 break;
             case "Zoom out":
                 sizeChange = -change;
+
+                Validity lolcat = new Validity(sudokuController);
+                System.out.println(lolcat.checkValidity(sudokuController.model.getSudoku()));
+                lolcat.findLinearConflicts(sudokuController.model.sudoku, sudokuController.model.n,
+                        sudokuController.model.k);
+                System.out.println(lolcat.failedCoordsPoint);
                 break;
             default:
                 break;

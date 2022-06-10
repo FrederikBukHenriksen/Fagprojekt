@@ -65,7 +65,6 @@ public class ClassicSudokuBoard extends SudokuExtend implements SudokuInterface 
                     gbc.fill = GridBagConstraints.BOTH;
                     gbc.gridx = j;
                     gbc.gridy = i;
-                    gbc.weightx = 1;
 
                     int[] BoardCoords = { (i + n * (l / k)), (j + n * l) % (k * n) };
                     int boardValue = sudoku[BoardCoords[0]][BoardCoords[1]];
