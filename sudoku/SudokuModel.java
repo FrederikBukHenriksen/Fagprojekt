@@ -10,6 +10,7 @@ import java.util.Stack;
 
 import javax.swing.JFileChooser;
 
+import sudoku.Model.Solver.CrooksAlgorithm;
 import sudoku.Model.Validity.ValidityClassic;
 import sudoku.Model.Validity.ValidityExtend;
 import sudoku.View.SudokuBoard.*;
