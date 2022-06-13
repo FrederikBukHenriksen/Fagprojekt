@@ -2,6 +2,7 @@ package sudoku;
 
 import sudoku.Controller.Actionlisteners.*;
 import sudoku.View.SudokuBoard.*;
+import sudoku.View.SudokuBoard.Sandwich.SandwichSudoku;
 
 import java.io.IOException;
 
@@ -183,7 +184,8 @@ public class SudokuController {
 	// Simple constructor
 	public SudokuController() {
 		sudokuBoard();
-		view.showFrame(model.getSudoku());
+		view.showFrame(model.getSudoku(), new SandwichSudoku(model.getSudoku(), model.getN(), model.getK(),
+				model.xSums, model.ySums));
 		for (Cell cell : view.sudokuBoard.getCellsLinear()) {
 			cell.addActionListener(new SudokuboardListener(this));
 			cell.addKeyListener(new KeyboardSudokuListener(this));

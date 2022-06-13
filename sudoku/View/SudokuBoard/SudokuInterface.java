@@ -8,7 +8,7 @@ import sudoku.View.SudokuBoard.*;
 
 public interface SudokuInterface {
 
-    public ArrayList<ArrayList<Cell>> getCells();
+    public Cell[][] getCells();
 
     public Cell getButtonSelected() throws Exception;
 

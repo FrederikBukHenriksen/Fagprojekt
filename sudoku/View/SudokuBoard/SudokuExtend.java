@@ -7,14 +7,15 @@ import javax.swing.JPanel;
 import sudoku.Exceptions.CellDoesNotExist;
 import sudoku.Exceptions.NoCellSelected;
 
-public class SudokuExtend extends JPanel {
+public class SudokuExtend extends JPanel implements SudokuInterface {
     protected int[][] sudoku;
     protected int n; // N antal celler i hver square
     protected int k; // K antal squares
 
     int cellSize = 60;
 
-    protected ArrayList<ArrayList<Cell>> cells = new ArrayList();
+    // protected ArrayList<ArrayList<Cell>> cells = new ArrayList();
+    public Cell[][] cells;
 
     public SudokuExtend(int[][] sudoku, int n, int k) {
         this.sudoku = sudoku;
@@ -22,13 +23,13 @@ public class SudokuExtend extends JPanel {
         this.k = k;
     }
 
-    public ArrayList<ArrayList<Cell>> getCells() {
+    public Cell[][] getCells() {
         return cells;
     }
 
     public ArrayList<Cell> getCellsLinear() {
         ArrayList<Cell> list = new ArrayList<>();
-        for (ArrayList<Cell> arraylist : cells) {
+        for (Cell[] arraylist : cells) {
             for (Cell cell : arraylist) {
                 list.add(cell);
             }
@@ -62,7 +63,7 @@ public class SudokuExtend extends JPanel {
         int[] coordinate = new int[] { -1, -1 };
         for (int x = 0; x < n * k; x++) {
             for (int y = 0; y < n * k; y++) {
-                Cell button = getCells().get(x).get(y);
+                Cell button = getCells()[x][y];
                 if (button.equals(selected)) {
                     coordinate[0] = x;
                     coordinate[1] = y;
@@ -77,7 +78,7 @@ public class SudokuExtend extends JPanel {
 
     public Cell getCellFromCoord(int x, int y) {
         // try {
-        return getCells().get(x).get(y);
+        return getCells()[x][y];
         // } catch (ArrayIndexOutOfBoundsException e) {
         // throw new CellDoesNotExist();
         // }

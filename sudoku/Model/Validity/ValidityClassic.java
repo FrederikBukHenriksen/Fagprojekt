@@ -29,6 +29,16 @@ public class ValidityClassic extends ValidityExtend {
         return valid;
     }
 
+    public boolean checkValidity(int[][] sudoku) {
+        this.sudoku = sudoku;
+        boolean valid = false;
+        ArrayList<Point> allConflicts = uniquePoints(collectConflictPointMatches());
+        if (allConflicts.isEmpty()) {
+            valid = true;
+        }
+        return valid;
+    }
+
     public ArrayList<Point> getUniqueConflictPoints() {
         return uniquePoints(collectConflictPointMatches());
     }

@@ -7,6 +7,7 @@ import sudoku.View.MenuBar.MenuBar;
 import sudoku.View.SudokuBoard.*;
 import sudoku.View.SudokuBoard.Classic.ClassicSudokuBoard;
 import sudoku.View.SudokuBoard.Classic.SudokuNumpad;
+import sudoku.View.SudokuBoard.Sandwich.SandwichSudoku;
 
 public class SudokuView extends JFrame {
 
@@ -14,10 +15,11 @@ public class SudokuView extends JFrame {
 	public int k;
 	public ArrayList <Cell> markedCells = new ArrayList<Cell>();
 	int[][] sudoku;
-	public ClassicSudokuBoard sudokuBoard;
+	public SudokuExtend sudokuBoard;
 	public MenuBar menuBar;
 	public SudokuControls sudokuControls;
 	public SudokuNumpad sudokuNumpad;
+
 
 	Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
@@ -28,11 +30,13 @@ public class SudokuView extends JFrame {
 		setExtendedState(this.getExtendedState());
 	}
 
-	public void showFrame(int[][] sudoku) {
+	public void showFrame(int[][] sudoku, SudokuExtend sudokuBoard) {
 		n = SudokuModel.n;
 		k = SudokuModel.k;
 		this.sudoku = sudoku;
-		sudokuBoard = new ClassicSudokuBoard(sudoku, n, k);
+		// sudokuBoard = new ClassicSudokuBoard(sudoku, n, k);
+		this.sudokuBoard = sudokuBoard;
+
 		menuBar = new MenuBar();
 		sudokuControls = new SudokuControls();
 		sudokuNumpad = new SudokuNumpad(n, k);
@@ -49,10 +53,11 @@ public class SudokuView extends JFrame {
 		add(sudokuBoard, c);
 
 		//Add all cells to markedCells arrayList
-		for (Cell cell : sudokuBoard.getCellsLinear()) {
-			markedCells.add(cell);
+		for (Cell[] array : sudokuBoard.getCells()) {
+			for (Cell cell : array) {
+				markedCells.add(cell);
+			}
 		}
-
 		// add menubar to frame
 		// setJMenuBar(sudokuUI.createMenubar());
 
@@ -69,14 +74,15 @@ public class SudokuView extends JFrame {
 		pack();
 	}
 
+
 	public void updateCellValues(int[][] sudoku) {
 		for (int x = 0; x < n * k; x++) {
 			for (int y = 0; y < n * k; y++) {
 				if (sudoku[x][y] != 0) {
-					Cell button = sudokuBoard.getCells().get(x).get(y);
+					Cell button = sudokuBoard.getCellFromCoord(x, y);
 					button.setText(String.valueOf(sudoku[x][y]));
 				} else {
-					Cell button = sudokuBoard.getCells().get(x).get(y);
+					Cell button = sudokuBoard.getCellFromCoord(x, y);
 					button.setText("");
 				}
 			}
@@ -101,20 +107,23 @@ public class SudokuView extends JFrame {
 				// Run through the square
 				for (int i = squareX * n; i < squareX * n + n; i++) {
 					for (int j = squareY * n; j < squareY * n + n; j++) {
-						sudokuBoard.getCells().get(i).get(j).square();
-						markedCells.add(sudokuBoard.getCells().get(i).get(j));
+						sudokuBoard.getCellFromCoord(i, j).square();
+						markedCells.add(sudokuBoard.getCellFromCoord(i, j));
 					}
 				}
 				// ###PEERS###
 				for (int i = 0; i < (n * k); i++) {
-					sudokuBoard.getCells().get(coordinates[0]).get(i).peer();
-					markedCells.add(sudokuBoard.getCells().get(coordinates[0]).get(i));
-					sudokuBoard.getCells().get(i).get(coordinates[1]).peer();
-					markedCells.add(sudokuBoard.getCells().get(i).get(coordinates[1]));
+					sudokuBoard.getCellFromCoord(coordinates[0], i).peer();
+					markedCells.add(sudokuBoard.getCellFromCoord(coordinates[0], i));
+
+					sudokuBoard.getCellFromCoord(i, coordinates[1]).peer();
+
+					markedCells.add(sudokuBoard.getCellFromCoord(i, coordinates[1]));
+
 				}
 
 				// ###SIMILAR NUMBER###
-				for (ArrayList<Cell> array : sudokuBoard.getCells()) {
+				for (Cell[] array : sudokuBoard.getCells()) {
 					for (Cell button : array) {
 						if (!cellText.equals("") && button.getText().equals(cellText)) {
 							button.similar();

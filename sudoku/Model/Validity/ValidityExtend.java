@@ -9,15 +9,16 @@ public abstract class ValidityExtend implements ValidityInterface {
 
     ValidityExtend validity;
 
-    public ValidityExtend() {
-    }
-
     public void setSudoku(int[][] sudoku) {
         this.setSudoku(sudoku);
     }
 
-    public String getValidity() {
+    public String getValidityType() {
         return this.getClass().getSimpleName();
     }
+
+    public abstract boolean checkValidity();
+
+    public abstract boolean checkValidity(int[][] sudoku);
 
 }

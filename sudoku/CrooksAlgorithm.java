@@ -2,7 +2,6 @@ package sudoku;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import sudoku.SudokuModel.*;
 public class CrooksAlgorithm {
   	boolean solved = false;
 	boolean unique = false;
