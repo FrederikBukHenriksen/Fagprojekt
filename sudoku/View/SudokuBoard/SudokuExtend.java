@@ -37,7 +37,7 @@ public class SudokuExtend extends JPanel implements SudokuInterface {
         return list;
     }
 
-    public void onlySelectThePressed(Cell buttonSelected) {
+    public void selectOnlyThisButton(Cell buttonSelected) {
         // Pressing an already selected button causes it to become unselected.
         if (!buttonSelected.isSelected()) {
             return;

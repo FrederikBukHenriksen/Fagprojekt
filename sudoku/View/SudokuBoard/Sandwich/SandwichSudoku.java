@@ -25,11 +25,8 @@ public class SandwichSudoku extends ClassicSudokuBoard {
     public SandwichSudoku(int[][] sudoku, int n, int k, int[] xSum, int[] ySum) {
 
         super(sudoku, n, k);
-        // createBoard(squares, xSum, ySum);
-        // this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
         this.setLayout(new GridBagLayout());
 
-        // gbc.anchor = GridBagConstraints.NONE;
         sandwichGcb.gridx = 0;
         sandwichGcb.gridy = 0;
         sandwichGcb.fill = GridBagConstraints.HORIZONTAL;
@@ -44,13 +41,13 @@ public class SandwichSudoku extends ClassicSudokuBoard {
         sandwichGcb.gridx = 0;
         sandwichGcb.gridy = 1;
 
-        // gbc.anchor = GridBagConstraints.PAGE_START;
         this.add(createBoard(squares), sandwichGcb);
 
     }
 
     @Override
     protected JPanel createBoard(Square[][] squares) {
+        // Use createBoard to make a panel
         JPanel panel = new JPanel();
         GridBagLayout grid = new GridBagLayout();
         panel.setLayout(grid);

@@ -30,12 +30,15 @@ public class SudokuView extends JFrame {
 		setExtendedState(this.getExtendedState());
 	}
 
-	public void showFrame(int[][] sudoku, SudokuExtend sudokuBoard) {
+	public void setSudoku(SudokuExtend sudokuBoard) {
+		this.sudokuBoard = sudokuBoard;
+
+	}
+
+	public void showFrame(int[][] sudoku) {
 		n = SudokuModel.n;
 		k = SudokuModel.k;
 		this.sudoku = sudoku;
-		// sudokuBoard = new ClassicSudokuBoard(sudoku, n, k);
-		this.sudokuBoard = sudokuBoard;
 
 		menuBar = new MenuBar();
 		sudokuControls = new SudokuControls();
@@ -48,7 +51,6 @@ public class SudokuView extends JFrame {
 
 		c.gridx = 0;
 		c.gridy = 0;
-		// c.fill = GridBagConstraints.BOTH;
 
 		add(sudokuBoard, c);
 
@@ -58,8 +60,6 @@ public class SudokuView extends JFrame {
 				markedCells.add(cell);
 			}
 		}
-		// add menubar to frame
-		// setJMenuBar(sudokuUI.createMenubar());
 
 		c.gridx = 0;
 		c.gridy = 1;
@@ -69,7 +69,7 @@ public class SudokuView extends JFrame {
 
 		c.gridx = 0;
 		c.gridy = 2;
-		c.fill = GridBagConstraints.HORIZONTAL;
+		c.fill = GridBagConstraints.WEST;
 
 		add(sudokuControls, c);
 		pack();

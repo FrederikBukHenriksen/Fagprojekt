@@ -3,6 +3,7 @@ package sudoku;
 import sudoku.Controller.Actionlisteners.*;
 import sudoku.Model.Validity.ValidityClassic;
 import sudoku.View.SudokuBoard.*;
+import sudoku.View.SudokuBoard.Classic.ClassicSudokuBoard;
 import sudoku.View.SudokuBoard.Sandwich.SandwichSudoku;
 
 import java.io.IOException;
@@ -29,11 +30,37 @@ public class SudokuController {
 	public SudokuView view;
 	boolean okPressed = false;
 
+	private SudokuExtend sudokuBoard;
+
 	public void updateColours() {
 		view.clearMarkedCells();
 		view.markCells();
+		markConflictCells();
 		if (model.validity.checkValidity() && model.isFilled()) {
 			createPopUp("Congratulations, you solved the puzzle!");
+		}
+	}
+
+	public void markConflictCells() {
+		for (Point point : model.validity.getUniqueConflictPoints()) {
+			Cell cell = view.sudokuBoard.getCellFromCoord(point.x, point.y);
+			cell.conflict();
+			view.markedCells.add(cell);
+		}
+	}
+
+	public void markSimilarCells() {
+		try {
+			Cell cellPressed = sudokuBoard.getButtonSelected();
+			if (cellPressed.getText().equals("")) {
+				for (Cell cell : view.sudokuBoard.getCellsLinear()) {
+					if (Integer.valueOf(cell.getText()) == Integer.valueOf(cellPressed.getText())) {
+						cell.similar();
+					}
+				}
+			}
+		} catch (Exception e) {
+
 		}
 	}
 
@@ -164,7 +191,7 @@ public class SudokuController {
 
 	}
 
-	public void sudokuBoard() {
+	public void LoadSudokuBoardFile() {
 		view = new SudokuView();
 		model = new SudokuModel(view);
 		try {
@@ -184,11 +211,11 @@ public class SudokuController {
 
 	// Simple constructor
 	public SudokuController() {
-		sudokuBoard();
+		LoadSudokuBoardFile();
 		model.setValidity(new ValidityClassic(model.getSudoku(), model.getN(), model.getK()));
-
-		view.showFrame(model.getSudoku(), new SandwichSudoku(model.getSudoku(), model.getN(), model.getK(),
-				model.xSums, model.ySums));
+		sudokuBoard = new ClassicSudokuBoard(model.getSudoku(), model.getN(), model.getK());
+		view.setSudoku(sudokuBoard);
+		view.showFrame(model.getSudoku());
 		for (Cell cell : view.sudokuBoard.getCellsLinear()) {
 			cell.addActionListener(new SudokuboardListener(this));
 			cell.addKeyListener(new KeyboardSudokuListener(this));
@@ -251,7 +278,7 @@ public class SudokuController {
 				break;
 			}
 		}
-		sudokuBoard();
+		LoadSudokuBoardFile();
 	}
 
 	public void getHint() {
