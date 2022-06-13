@@ -3,19 +3,19 @@ package sudoku.Controller.Actionlisteners;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import sudoku.SudokuController;
+import sudoku.Controller.Controller;
 
 // Code for undo-button
 public class SudokuUndoListener implements ActionListener {
     /**
      *
      */
-    private final SudokuController sudokuController;
+    private final Controller sudokuController;
 
     /**
      * @param sudokuController
      */
-    public SudokuUndoListener(SudokuController sudokuController) {
+    public SudokuUndoListener(Controller sudokuController) {
         this.sudokuController = sudokuController;
     }
 

@@ -3,19 +3,19 @@ package sudoku.Controller.Actionlisteners;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import sudoku.SudokuController;
+import sudoku.Controller.Controller;
 
 // Code for redo-button
 public class SudokuRedoListener implements ActionListener {
     /**
      *
      */
-    private final SudokuController sudokuController;
+    private final Controller sudokuController;
 
     /**
      * @param sudokuController
      */
-    public SudokuRedoListener(SudokuController sudokuController) {
+    public SudokuRedoListener(Controller sudokuController) {
         this.sudokuController = sudokuController;
     }
 

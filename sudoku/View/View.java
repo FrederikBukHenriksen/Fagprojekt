@@ -1,29 +1,30 @@
-package sudoku;
+package sudoku.View;
 
 import java.util.ArrayList;
 import javax.swing.*;
 import java.awt.*;
+
+import sudoku.Model.Model;
 import sudoku.View.MenuBar.MenuBar;
 import sudoku.View.SudokuBoard.*;
 import sudoku.View.SudokuBoard.Classic.ClassicSudokuBoard;
 import sudoku.View.SudokuBoard.Classic.SudokuNumpad;
 import sudoku.View.SudokuBoard.Sandwich.SandwichSudoku;
 
-public class SudokuView extends JFrame {
+public class View extends JFrame {
 
 	public int n;
 	public int k;
-	public ArrayList <Cell> markedCells = new ArrayList<Cell>();
+	public ArrayList<Cell> markedCells = new ArrayList<Cell>();
 	int[][] sudoku;
 	public SudokuExtend sudokuBoard;
 	public MenuBar menuBar;
 	public SudokuControls sudokuControls;
 	public SudokuNumpad sudokuNumpad;
 
-
 	Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
-	public SudokuView() {
+	public View() {
 		setDefaultCloseOperation(this.EXIT_ON_CLOSE);
 		setResizable(true);
 		setVisible(true);
@@ -36,8 +37,8 @@ public class SudokuView extends JFrame {
 	}
 
 	public void showFrame(int[][] sudoku) {
-		n = SudokuModel.n;
-		k = SudokuModel.k;
+		n = Model.n;
+		k = Model.k;
 		this.sudoku = sudoku;
 
 		menuBar = new MenuBar();
@@ -54,7 +55,7 @@ public class SudokuView extends JFrame {
 
 		add(sudokuBoard, c);
 
-		//Add all cells to markedCells arrayList
+		// Add all cells to markedCells arrayList
 		for (Cell[] array : sudokuBoard.getCells()) {
 			for (Cell cell : array) {
 				markedCells.add(cell);
@@ -75,7 +76,6 @@ public class SudokuView extends JFrame {
 		pack();
 	}
 
-
 	public void updateCellValues(int[][] sudoku) {
 		for (int x = 0; x < n * k; x++) {
 			for (int y = 0; y < n * k; y++) {
@@ -89,7 +89,6 @@ public class SudokuView extends JFrame {
 			}
 		}
 	}
-
 
 	public void markCells() {
 		// ###PRESSED BUTTON###
@@ -138,12 +137,12 @@ public class SudokuView extends JFrame {
 		}
 
 	}
+
 	public void clearMarkedCells() {
 		for (Cell cell : markedCells) {
 			cell.defaultColor();
 		}
 		markedCells.clear();
 	}
-
 
 }

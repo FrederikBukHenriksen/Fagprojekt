@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 
-import sudoku.SudokuView;
+import sudoku.View.View;
 
 import java.awt.*;
 import java.awt.Color;
@@ -17,11 +17,8 @@ public class Square extends JPanel {
 
     int n;
 
-    public Cell[][] cellsInSquare;
-
     public Square(int n) {
         this.n = n;
-        cellsInSquare = new Cell[n][n];
         GridBagLayout grid = new GridBagLayout();
         setBackground(Color.red);
         setLayout(grid);
@@ -43,7 +40,6 @@ public class Square extends JPanel {
         if (axis0 >= n || axis1 >= n) {
             throw new ArrayIndexOutOfBoundsException();
         }
-        cellsInSquare[axis0][axis1] = cell;
         gbc.gridx = axis0;
         gbc.gridy = axis1;
 

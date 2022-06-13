@@ -3,15 +3,15 @@ package sudoku.Controller.Actionlisteners;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-import sudoku.SudokuController;
+import sudoku.Controller.Controller;
 import sudoku.View.SudokuBoard.Cell;
 
 // KEY EVENT FOR ALLE JTOGGLEBUTTONS PÅ BOARDET.
 public class KeyboardSudokuListener extends KeyAdapter {
 
-    private final SudokuController sudokuController;
+    private final Controller sudokuController;
 
-    public KeyboardSudokuListener(SudokuController sudokuController) {
+    public KeyboardSudokuListener(Controller sudokuController) {
         this.sudokuController = sudokuController;
     }
 

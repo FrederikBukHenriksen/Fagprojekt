@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
-import sudoku.Exceptions.CellDoesNotExist;
-import sudoku.Exceptions.NoCellSelected;
+import sudoku.Controller.Exceptions.CellDoesNotExist;
+import sudoku.Controller.Exceptions.NoCellSelected;
 
 public class SudokuExtend extends JPanel implements SudokuInterface {
     protected int[][] sudoku;

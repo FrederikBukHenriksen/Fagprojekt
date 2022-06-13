@@ -5,15 +5,15 @@ import java.awt.event.ActionListener;
 
 import javax.swing.AbstractButton;
 
-import sudoku.SudokuController;
+import sudoku.Controller.Controller;
 import sudoku.View.SudokuBoard.*;
 
 public class MenuBarZoomActionListener implements ActionListener {
 
-    SudokuController sudokuController;
+    Controller sudokuController;
     int change = 5;
 
-    public MenuBarZoomActionListener(SudokuController sudokuController) {
+    public MenuBarZoomActionListener(Controller sudokuController) {
         this.sudokuController = sudokuController;
     }
 

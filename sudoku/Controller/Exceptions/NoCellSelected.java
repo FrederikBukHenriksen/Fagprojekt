@@ -1,4 +1,4 @@
-package sudoku.Exceptions;
+package sudoku.Controller.Exceptions;
 
 public class NoCellSelected extends Exception {
 

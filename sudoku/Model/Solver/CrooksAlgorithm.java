@@ -3,7 +3,7 @@ package sudoku.Model.Solver;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import sudoku.SudokuModel;
+import sudoku.Model.Model;
 
 public class CrooksAlgorithm {
 	boolean solved = false;
@@ -12,11 +12,11 @@ public class CrooksAlgorithm {
 	boolean change = false;
 	int[][] sudoku;
 	int[][] solvedSudoku = new int[0][0];
-	SudokuModel model;
+	Model model;
 	int n;
 	int k;
 
-	public CrooksAlgorithm(int n, int k, int[][] sudoku, SudokuModel model) {
+	public CrooksAlgorithm(int n, int k, int[][] sudoku, Model model) {
 		this.n = n;
 		this.k = k;
 		this.sudoku = sudoku;

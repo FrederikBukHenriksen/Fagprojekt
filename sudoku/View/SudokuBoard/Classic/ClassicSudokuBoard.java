@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 
-import sudoku.SudokuView;
+import sudoku.View.View;
 import sudoku.View.SudokuBoard.Cell;
 import sudoku.View.SudokuBoard.Square;
 import sudoku.View.SudokuBoard.SudokuInterface;
@@ -33,13 +33,13 @@ public class ClassicSudokuBoard extends SudokuExtend {
         this.squares = createSquares(n, k);
         this.squares = loadCellsIntoSquares(this.cells, this.squares, k);
 
-        // Only use this design if it is a Classic game
+        // Only assemble this design if it is a Classic game
         if (this.getClass().getSimpleName().equals("ClassicSudokuBoard")) {
-            createBoard(squares);
+            assembleBoard(squares);
         }
     }
 
-    protected JPanel createBoard(Square[][] squares) {
+    private void assembleBoard(Square[][] squares) {
         for (int i = 0; i < squares.length; i++) {
             for (int j = 0; j < squares[0].length; j++) {
                 gbc.gridx = i;
@@ -47,7 +47,6 @@ public class ClassicSudokuBoard extends SudokuExtend {
                 this.add(squares[i][j], gbc);
             }
         }
-        return this;
     }
 
     protected Cell[][] createCellsNew(int n, int k) {

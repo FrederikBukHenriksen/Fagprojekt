@@ -5,19 +5,19 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 
-import sudoku.SudokuController;
+import sudoku.Controller.Controller;
 import sudoku.View.SudokuBoard.Cell;
 
 public class NumboardListener implements ActionListener {
     /**
      *
      */
-    private final SudokuController sudokuController;
+    private final Controller sudokuController;
 
     /**
      * @param sudokuController
      */
-    public NumboardListener(SudokuController sudokuController) {
+    public NumboardListener(Controller sudokuController) {
         this.sudokuController = sudokuController;
     }
 

@@ -1,7 +1,10 @@
-package sudoku;
+package sudoku.Controller;
 
 import sudoku.Controller.Actionlisteners.*;
+import sudoku.Model.Model;
 import sudoku.Model.Validity.ValidityClassic;
+import sudoku.View.ExceptionPopUp;
+import sudoku.View.View;
 import sudoku.View.SudokuBoard.*;
 import sudoku.View.SudokuBoard.Classic.ClassicSudokuBoard;
 import sudoku.View.SudokuBoard.Sandwich.SandwichSudoku;
@@ -14,6 +17,8 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 
+import org.xml.sax.ErrorHandler;
+
 import java.awt.Dimension;
 import java.awt.*;
 import java.awt.Font;
@@ -23,11 +28,11 @@ import java.awt.event.ActionListener;
 import java.awt.Container;
 import java.awt.FlowLayout;
 
-public class SudokuController {
+public class Controller {
 
 	// Creating variables
-	public SudokuModel model;
-	public SudokuView view;
+	public Model model;
+	public View view;
 	boolean okPressed = false;
 
 	private SudokuExtend sudokuBoard;
@@ -154,7 +159,7 @@ public class SudokuController {
 				// TODO: Generate new puzzle here
 				view.dispose();
 				jd.dispose();
-				SudokuController controller = new SudokuController();
+				Controller controller = new Controller();
 			}
 		});
 
@@ -192,8 +197,8 @@ public class SudokuController {
 	}
 
 	public void LoadSudokuBoardFile() {
-		view = new SudokuView();
-		model = new SudokuModel(view);
+		view = new View();
+		model = new Model(view);
 		try {
 			model.boardCreater();
 			// break;
@@ -210,7 +215,7 @@ public class SudokuController {
 	}
 
 	// Simple constructor
-	public SudokuController() {
+	public Controller() {
 		LoadSudokuBoardFile();
 		model.setValidity(new ValidityClassic(model.getSudoku(), model.getN(), model.getK()));
 		sudokuBoard = new ClassicSudokuBoard(model.getSudoku(), model.getN(), model.getK());
@@ -312,8 +317,8 @@ public class SudokuController {
 				view.updateCellValues(model.getSudoku());
 				updateColours();
 			}
-		} catch (Exception exc) {
-			// System.out.println(exc.getMessage());
+		} catch (Exception e) {
+			new ExceptionPopUp(e);
 		}
 	}
 

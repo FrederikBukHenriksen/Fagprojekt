@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 
-import sudoku.SudokuView;
+import sudoku.View.View;
 import sudoku.View.SudokuBoard.Cell;
 import sudoku.View.SudokuBoard.Square;
 import sudoku.View.SudokuBoard.SudokuInterface;
@@ -38,15 +38,19 @@ public class SandwichSudoku extends ClassicSudokuBoard {
 
         this.add(new SandwichSumPanel(xSum, 0), sandwichGcb);
 
-        sandwichGcb.gridx = 0;
-        sandwichGcb.gridy = 1;
+        // Only assemble this design if it is a Sandeich game
+        if (this.getClass().getSimpleName().equals("SandwichSudoku")) {
 
-        this.add(createBoard(squares), sandwichGcb);
+            sandwichGcb.gridx = 0;
+            sandwichGcb.gridy = 1;
+
+            this.add(assembleBoard(squares), sandwichGcb);
+        }
 
     }
 
-    @Override
-    protected JPanel createBoard(Square[][] squares) {
+    // Create the board as a JPanel-object
+    protected JPanel assembleBoard(Square[][] squares) {
         // Use createBoard to make a panel
         JPanel panel = new JPanel();
         GridBagLayout grid = new GridBagLayout();

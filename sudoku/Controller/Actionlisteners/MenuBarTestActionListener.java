@@ -5,16 +5,17 @@ import java.awt.event.ActionListener;
 
 import javax.swing.AbstractButton;
 
-import sudoku.SudokuController;
+import sudoku.Controller.Controller;
 import sudoku.Model.Validity.ValidityClassic;
 import sudoku.Model.Validity.ValiditySandwich;
+import sudoku.View.ExceptionPopUp;
 import sudoku.View.SudokuBoard.*;
 
 public class MenuBarTestActionListener implements ActionListener {
 
-    SudokuController sudokuController;
+    Controller sudokuController;
 
-    public MenuBarTestActionListener(SudokuController sudokuController) {
+    public MenuBarTestActionListener(Controller sudokuController) {
         this.sudokuController = sudokuController;
     }
 
@@ -56,6 +57,8 @@ public class MenuBarTestActionListener implements ActionListener {
 
         System.out.println(sudokuController.model.validity.checkValidity());
         System.out.println(sudokuController.model.validity.getUniqueConflictPoints());
+
+        ExceptionPopUp exceptionHandler = new ExceptionPopUp(new Exception("LOLCAT"));
 
     }
 }

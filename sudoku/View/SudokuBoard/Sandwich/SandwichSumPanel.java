@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 
-import sudoku.SudokuController;
-import sudoku.SudokuView;
+import sudoku.Controller.Controller;
+import sudoku.View.View;
 import sudoku.View.SudokuBoard.Cell;
 import sudoku.View.SudokuBoard.SudokuControls;
 import sudoku.View.SudokuBoard.SudokuInterface;
