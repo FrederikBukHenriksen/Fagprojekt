@@ -19,13 +19,16 @@ public class MenuBarTestActionListener implements ActionListener {
     }
 
     public void actionPerformed(ActionEvent e) {
-        ValidityClassic validity = new ValidityClassic(sudokuController.model.getSudoku(),
-                sudokuController.model.getN(),
-                sudokuController.model.getK());
+        // ValidityClassic validity = new
+        // ValidityClassic(sudokuController.model.getSudoku(),
+        // sudokuController.model.getN(),
+        // sudokuController.model.getK());
 
-        ValiditySandwich sandwichValidity = new ValiditySandwich(sudokuController.model.getSudoku(),
-                sudokuController.model.getN(),
-                sudokuController.model.getK(), sudokuController.model.xSums, sudokuController.model.ySums);
+        // ValiditySandwich sandwichValidity = new
+        // ValiditySandwich(sudokuController.model.getSudoku(),
+        // sudokuController.model.getN(),
+        // sudokuController.model.getK(), sudokuController.model.xSums,
+        // sudokuController.model.ySums);
         // validity.uniqueConflicts(
         // validity.findConflicts(sudokuController.model.getSudoku(),
         // sudokuController.model.getN(),
@@ -52,6 +55,7 @@ public class MenuBarTestActionListener implements ActionListener {
         // System.out.println(sandwichValidity.checkValidity());
 
         System.out.println(sudokuController.model.validity.checkValidity());
+        System.out.println(sudokuController.model.validity.getUniqueConflictPoints());
 
     }
 }

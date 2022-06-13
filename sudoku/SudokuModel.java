@@ -146,11 +146,15 @@ public class SudokuModel {
 				}
 			}
 	}
-	public SudokuModel(SudokuView view){
+
+	public SudokuModel(SudokuView view) {
 		this.view = view;
-		validity = new ValidityClassic(sudoku, n, k);
 	}
 
+	public void setValidity(ValidityExtend validity) {
+		this.validity = validity;
+
+	}
 
 	// Methods for returning N and K
 	public int getN() {

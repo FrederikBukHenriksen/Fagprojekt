@@ -63,6 +63,7 @@ public class SudokuView extends JFrame {
 
 		c.gridx = 0;
 		c.gridy = 1;
+		c.anchor = GridBagConstraints.WEST;
 
 		add(sudokuNumpad, c);
 

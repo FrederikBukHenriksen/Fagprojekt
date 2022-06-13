@@ -104,7 +104,8 @@ public class ValidityClassic extends ValidityExtend {
 
             for (int j = 0; j < sudoku.length; j++) {
                 if ((sudoku[i][j]) > 0) {
-                    numberRangeRow[sudoku[i][j] - 1].add(new Point(j, i));
+
+                    numberRangeRow[sudoku[i][j] - 1].add(new Point(i, j));
                 }
             }
 

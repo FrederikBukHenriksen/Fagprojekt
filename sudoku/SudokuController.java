@@ -1,6 +1,7 @@
 package sudoku;
 
 import sudoku.Controller.Actionlisteners.*;
+import sudoku.Model.Validity.ValidityClassic;
 import sudoku.View.SudokuBoard.*;
 import sudoku.View.SudokuBoard.Sandwich.SandwichSudoku;
 
@@ -184,6 +185,8 @@ public class SudokuController {
 	// Simple constructor
 	public SudokuController() {
 		sudokuBoard();
+		model.setValidity(new ValidityClassic(model.getSudoku(), model.getN(), model.getK()));
+
 		view.showFrame(model.getSudoku(), new SandwichSudoku(model.getSudoku(), model.getN(), model.getK(),
 				model.xSums, model.ySums));
 		for (Cell cell : view.sudokuBoard.getCellsLinear()) {
