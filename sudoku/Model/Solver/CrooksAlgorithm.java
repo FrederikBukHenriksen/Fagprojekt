@@ -3,6 +3,7 @@ package sudoku.Model.Solver;
 import java.util.ArrayList;
 import java.util.Collections;
 
+
 import sudoku.Model.Model;
 
 public class CrooksAlgorithm {

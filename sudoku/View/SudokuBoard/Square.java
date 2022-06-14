@@ -26,16 +26,6 @@ public class Square extends JPanel {
 
     }
 
-    // Denne constructor anvendes til debug
-    public Square() {
-
-        GridBagLayout grid = new GridBagLayout();
-        setBackground(Color.red);
-        setLayout(grid);
-        setBorder(new LineBorder(Color.black, 1));
-
-    }
-
     public void insertCellintoSquare(Cell cell, int axis0, int axis1) {
         if (axis0 >= n || axis1 >= n) {
             throw new ArrayIndexOutOfBoundsException();

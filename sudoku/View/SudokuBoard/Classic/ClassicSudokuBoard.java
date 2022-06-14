@@ -24,7 +24,6 @@ public class ClassicSudokuBoard extends SudokuExtend {
 
     public ClassicSudokuBoard(int[][] sudoku, int n, int k) {
         super(sudoku, n, k);
-        // System.out.println(this.getClass().getSimpleName());
 
         this.setLayout(new GridBagLayout());
 

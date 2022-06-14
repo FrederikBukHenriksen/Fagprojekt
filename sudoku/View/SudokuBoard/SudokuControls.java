@@ -26,8 +26,6 @@ public class SudokuControls extends JPanel {
         this.add(redo);
         this.add(remove);
         this.add(hint);
-
-        // this.setMaximumSize(new Dimension(1500, 200));
     }
 
 }
