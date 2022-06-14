@@ -8,11 +8,11 @@ import sudoku.View.SudokuBoard.*;
 
 public interface SudokuInterface {
 
-    public ArrayList<ArrayList<Cell>> getCells();
+    public Cell[][] getCells();
 
     public Cell getButtonSelected() throws Exception;
 
-    public void onlySelectThePressed(Cell buttonSelected) throws Exception;
+    public void selectOnlyThisButton(Cell buttonSelected) throws Exception;
 
     public int[] getCellCoordinate(Cell selected) throws Exception;
 

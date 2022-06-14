@@ -1,4 +1,4 @@
-package sudoku;
+package sudoku.Model.Validity;
 
 import java.util.ArrayList;
 import java.awt.Point;

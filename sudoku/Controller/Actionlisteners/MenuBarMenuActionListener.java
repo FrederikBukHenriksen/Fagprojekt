@@ -1,16 +1,17 @@
 package sudoku.Controller.Actionlisteners;
-import sudoku.SudokuController;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.concurrent.TimeUnit;
 
 import javax.swing.AbstractButton;
 
+import sudoku.Controller.Controller;
+
 public class MenuBarMenuActionListener implements ActionListener{
 
-    SudokuController sudokuController;
+    Controller sudokuController;
 
-    public MenuBarMenuActionListener(SudokuController sudokuController){
+    public MenuBarMenuActionListener(Controller sudokuController) {
         this.sudokuController = sudokuController;
     }
 

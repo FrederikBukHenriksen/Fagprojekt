@@ -30,6 +30,7 @@ public class Cell extends JToggleButton {
         setForeground(defFont);
         setFont(new Font("Serif", Font.PLAIN, 28));
         setBorder(new LineBorder(Color.black, 1));
+        setEnabled(true);
         // UIManager.put("ToggleButton.highlight", Color.red);
         UIManager.put("ToggleButton.select", selected);
         SwingUtilities.updateComponentTreeUI(this);
@@ -39,11 +40,18 @@ public class Cell extends JToggleButton {
     }
 
     @Override
-    public void setEnabled(boolean b) {
-        defFont = Color.black;
-        enabled = false;
-        setBackground(def);
-        setForeground(defFont);
+    public void setEnabled(boolean enable) {
+        if (enable == true) {
+            enabled = true;
+            defFont = new Color(80, 110, 242);
+            setBackground(def);
+            setForeground(defFont);
+        } else if (enable == false) {
+            enabled = false;
+            defFont = Color.black;
+            setBackground(def);
+            setForeground(defFont);
+        }
     }
 
     @Override

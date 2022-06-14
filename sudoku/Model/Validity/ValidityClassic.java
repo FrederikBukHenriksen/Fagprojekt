@@ -1,21 +1,36 @@
-package sudoku;
+package sudoku.Model.Validity;
 
 import java.util.ArrayList;
 import java.awt.Point;
 
-public class ClassicValidity implements ValidityInterface {
+public class ValidityClassic extends ValidityExtend {
 
-    protected int[][] sudoku;
+    // Class variables
+
     protected int n;
     protected int k;
 
-    public ClassicValidity(int[][] sudoku, int n, int k) {
+    // Constructor
+
+    public ValidityClassic(int[][] sudoku, int n, int k) {
         this.sudoku = sudoku;
         this.n = n;
         this.k = k;
     }
 
+    // Interface methods
+
     public boolean checkValidity() {
+        boolean valid = false;
+        ArrayList<Point> allConflicts = uniquePoints(collectConflictPointMatches());
+        if (allConflicts.isEmpty()) {
+            valid = true;
+        }
+        return valid;
+    }
+
+    public boolean checkValidity(int[][] sudoku) {
+        this.sudoku = sudoku;
         boolean valid = false;
         ArrayList<Point> allConflicts = uniquePoints(collectConflictPointMatches());
         if (allConflicts.isEmpty()) {
@@ -27,6 +42,28 @@ public class ClassicValidity implements ValidityInterface {
     public ArrayList<Point> getUniqueConflictPoints() {
         return uniquePoints(collectConflictPointMatches());
     }
+
+    // Set methods
+
+    public void setN(int n) {
+        this.n = n;
+    }
+
+    public void setK(int k) {
+        this.k = k;
+    }
+
+    // Get methods
+
+    public int getN() {
+        return n;
+    }
+
+    public int getK() {
+        return k;
+    }
+
+    // Class methods
 
     protected ArrayList<Point> uniquePoints(ArrayList<ArrayList<Point>> input) {
         ArrayList<Point> uniqueConflicts = new ArrayList<>();
@@ -67,7 +104,8 @@ public class ClassicValidity implements ValidityInterface {
 
             for (int j = 0; j < sudoku.length; j++) {
                 if ((sudoku[i][j]) > 0) {
-                    numberRangeRow[sudoku[i][j] - 1].add(new Point(j, i));
+
+                    numberRangeRow[sudoku[i][j] - 1].add(new Point(i, j));
                 }
             }
 

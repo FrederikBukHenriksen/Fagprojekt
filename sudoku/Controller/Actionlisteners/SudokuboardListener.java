@@ -3,21 +3,21 @@ package sudoku.Controller.Actionlisteners;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import sudoku.SudokuController;
+import sudoku.Controller.Controller;
 import sudoku.View.SudokuBoard.Cell;
 
 // ACTIONLISTENER FOR SUDOKUBOARDET.
 public class SudokuboardListener implements ActionListener {
 
-    private final SudokuController sudokuController;
+    private final Controller sudokuController;
 
-    public SudokuboardListener(SudokuController sudokuController) {
+    public SudokuboardListener(Controller sudokuController) {
         this.sudokuController = sudokuController;
     }
 
     public void actionPerformed(ActionEvent e) {
         Cell pressed = (Cell) e.getSource(); // Grabs the button pressed
-        this.sudokuController.view.sudokuBoard.onlySelectThePressed(pressed);
+        this.sudokuController.view.sudokuBoard.selectOnlyThisButton(pressed);
         this.sudokuController.updateColours();
     }
 }

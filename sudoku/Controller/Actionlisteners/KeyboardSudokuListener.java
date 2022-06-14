@@ -3,15 +3,15 @@ package sudoku.Controller.Actionlisteners;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-import sudoku.SudokuController;
+import sudoku.Controller.Controller;
 import sudoku.View.SudokuBoard.Cell;
 
 // KEY EVENT FOR ALLE JTOGGLEBUTTONS PÅ BOARDET.
 public class KeyboardSudokuListener extends KeyAdapter {
 
-    private final SudokuController sudokuController;
+    private final Controller sudokuController;
 
-    public KeyboardSudokuListener(SudokuController sudokuController) {
+    public KeyboardSudokuListener(Controller sudokuController) {
         this.sudokuController = sudokuController;
     }
 
@@ -73,7 +73,7 @@ public class KeyboardSudokuListener extends KeyAdapter {
                 pressed = this.sudokuController.view.sudokuBoard.getCellFromCoord(0, tempCoords[1]);
             }
             pressed.setSelected(true);
-            this.sudokuController.view.sudokuBoard.onlySelectThePressed(pressed);
+            this.sudokuController.view.sudokuBoard.selectOnlyThisButton(pressed);
             this.sudokuController.updateColours();
 
         } else if (keyCode == KeyEvent.VK_UP) {
@@ -94,7 +94,7 @@ public class KeyboardSudokuListener extends KeyAdapter {
                         this.sudokuController.model.getN() * this.sudokuController.model.getK() - 1, tempCoords[1]);
             }
             pressed.setSelected(true);
-            this.sudokuController.view.sudokuBoard.onlySelectThePressed(pressed);
+            this.sudokuController.view.sudokuBoard.selectOnlyThisButton(pressed);
             this.sudokuController.updateColours();
 
         } else if (keyCode == KeyEvent.VK_LEFT) {
@@ -115,7 +115,7 @@ public class KeyboardSudokuListener extends KeyAdapter {
                         this.sudokuController.model.getN() * this.sudokuController.model.getK() - 1);
             }
             pressed.setSelected(true);
-            this.sudokuController.view.sudokuBoard.onlySelectThePressed(pressed);
+            this.sudokuController.view.sudokuBoard.selectOnlyThisButton(pressed);
             this.sudokuController.updateColours();
 
         } else if (keyCode == KeyEvent.VK_RIGHT) {
@@ -135,7 +135,7 @@ public class KeyboardSudokuListener extends KeyAdapter {
                 pressed = this.sudokuController.view.sudokuBoard.getCellFromCoord(tempCoords[0], 0);
             }
             pressed.setSelected(true);
-            this.sudokuController.view.sudokuBoard.onlySelectThePressed(pressed);
+            this.sudokuController.view.sudokuBoard.selectOnlyThisButton(pressed);
             this.sudokuController.updateColours();
 
         } else if (keyCode == KeyEvent.VK_H) {

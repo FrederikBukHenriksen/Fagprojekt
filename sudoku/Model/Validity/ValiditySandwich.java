@@ -1,19 +1,45 @@
-package sudoku;
+package sudoku.Model.Validity;
 
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
-public class SandwichValidity extends ClassicValidity implements ValidityInterface {
+public class ValiditySandwich extends ValidityClassic implements ValidityInterface {
+
+    // Class variables
 
     protected int[] xSums;
     protected int[] ySums;
 
-    public SandwichValidity(int[][] sudoku, int n, int k, int[] xSums, int[] ySums) {
+    // Constructor
+
+    public ValiditySandwich(int[][] sudoku, int n, int k, int[] xSums, int[] ySums) {
         super(sudoku, n, k);
         this.xSums = xSums;
         this.ySums = ySums;
     }
+
+    // Set methods
+
+    public void setSandwichX(int[] xSums) {
+        this.xSums = xSums;
+    }
+
+    public void setSandwichY(int[] ySums) {
+        this.ySums = ySums;
+    }
+
+    // Get methods
+
+    public int[] getSandwichX() {
+        return xSums;
+    }
+
+    public int[] getSandwichY() {
+        return ySums;
+    }
+
+    // Class methods
 
     @Override
     protected ArrayList<ArrayList<Point>> collectConflictPointMatches() {

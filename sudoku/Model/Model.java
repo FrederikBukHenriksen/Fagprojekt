@@ -1,4 +1,4 @@
-package sudoku;
+package sudoku.Model;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -10,10 +10,13 @@ import java.util.Stack;
 
 import javax.swing.JFileChooser;
 
+import sudoku.Model.Solver.CrooksAlgorithm;
+import sudoku.Model.Validity.ValidityClassic;
+import sudoku.Model.Validity.ValidityExtend;
+import sudoku.View.View;
 import sudoku.View.SudokuBoard.*;
 
 import java.util.Random;
-
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -22,130 +25,138 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class SudokuModel {
-	public CrooksAlgorithm crooks; 
+public class Model {
+	public CrooksAlgorithm crooks;
 	// Setting up variables
 	public int[][] sudoku = new int[0][0];
-	int[][] solvedSudoku = new int [0][0];
+	int[][] solvedSudoku = new int[0][0];
 	stackObj[] sudokuStack2 = new stackObj[1000];
-	stackObj[] redoStack = new stackObj[1000]; 	
+	stackObj[] redoStack = new stackObj[1000];
 	public static int k = 0;
 	public static int n = 0;
-	public static int[] xSums = new int[n*k];
-	public static int[] ySums = new int[n*k];
-	int moves = 0;
-	int redoes = 0;
-
+	public static int[] xSums = new int[n * k];
+	public static int[] ySums = new int[n * k];
+	public int moves = 0;
+	public int redoes = 0;
 
 	static ArrayList<Cell> failedCoords = new ArrayList<Cell>();
 
-	static SudokuView view;
+	static View view;
+
+	public ValidityExtend validity;
 
 	// constructor for the model
-	public Path findSudokuPath(String s) {//https://stackoverflow.com/questions/51973636/how-to-return-the-file-path-from-the-windows-file-explorer-using-java
-		//File file = new File("C:\\Users\\Candytom\\Documents\\GitHub\\sudoku\\Puzzles_1\\Puzzle_3_evil.dat");
-			Path file = null;
-			JFileChooser jd = s == null ? new JFileChooser() : new JFileChooser(s);
-			jd.setDialogTitle("Choose Sudoku you wish to solve");
-			int returnVal= jd.showOpenDialog(null);
-			/* If user didn't select a file and click ok, return null Path object*/
-			if (returnVal == JFileChooser.APPROVE_OPTION) {
-				return file = jd.getSelectedFile().toPath();
-			}
-			return null;
-		
+	public Path findSudokuPath(String s) {// https://stackoverflow.com/questions/51973636/how-to-return-the-file-path-from-the-windows-file-explorer-using-java
+		// File file = new
+		// File("C:\\Users\\Candytom\\Documents\\GitHub\\sudoku\\Puzzles_1\\Puzzle_3_evil.dat");
+		Path file = null;
+		JFileChooser jd = s == null ? new JFileChooser() : new JFileChooser(s);
+		jd.setDialogTitle("Choose Sudoku you wish to solve");
+		int returnVal = jd.showOpenDialog(null);
+		/* If user didn't select a file and click ok, return null Path object */
+		if (returnVal == JFileChooser.APPROVE_OPTION) {
+			return file = jd.getSelectedFile().toPath();
+		}
+		return null;
+
 	}
 
-	public void boardCreater() throws FileNotFoundException, IOException, NumberFormatException, NoSuchElementException  {
+	public void boardCreater()
+			throws FileNotFoundException, IOException, NumberFormatException, NoSuchElementException {
 		Path file = null;
 		file = findSudokuPath("C:\\");
-		//System.out.println(file);
-		if (file == null){
+		// System.out.println(file);
+		if (file == null) {
 			System.exit(0);
 		}
 		Scanner scanner;
 		// reading the input
-			scanner = new Scanner(file);
-			String setup = scanner.next();
-			Scanner setupScanner = new Scanner(setup);
-			setupScanner.useDelimiter(";");
-			// reading k & n
-			while (setupScanner.hasNext()) {
-				String str = setupScanner.next();
-				k = Integer.parseInt(str);
-				str = setupScanner.next();
-				n = Integer.parseInt(str);
+		scanner = new Scanner(file);
+		String setup = scanner.next();
+		Scanner setupScanner = new Scanner(setup);
+		setupScanner.useDelimiter(";");
+		// reading k & n
+		while (setupScanner.hasNext()) {
+			String str = setupScanner.next();
+			k = Integer.parseInt(str);
+			str = setupScanner.next();
+			n = Integer.parseInt(str);
 
-			}
-			setupScanner.close();
-			if (k > n) {
-				System.out.println("Not a valid sudoku-size, k cannot exceed n");
-			} else {// Creating the board
-				sudoku = new int[n * k][n * k];
-				// Creating variables for sandwich Sums
-				xSums = new int[n*k];
-				ySums = new int[n*k];
-				// Creating variables for looping through input
-				int c = 0;
-				int d = 0;
-				scanner.nextLine();
-				for(int j = 0; j < n*k; j++) {
-					// Reads the next line
-					String line = scanner.nextLine();
-					Scanner lineScanner = new Scanner(line);
-					lineScanner.useDelimiter(";");
-					while (lineScanner.hasNext()) {
-						// Reads the next input on the line, separated by ";"
-						String str = lineScanner.next();
-						if (str.equals(".")) {
-							// If input is ".", convert to a "0"
-							sudoku[c][d] = 0;
-							// Go to next entry
-							d++;
-						} else {
-								// If input isn't ".", read the number and insert into array
-								sudoku[c][d] = Integer.parseInt(str);
-							// Go to next entry
-							d++;
-						}
-					}
-					// Go to next line, and start from first entry
-					c++;
-					d = 0;
-					lineScanner.close();
-				}
-				crooks = new CrooksAlgorithm(getN(),getK(),getSudoku(),this);
-				if(scanner.hasNextLine()){
-					crooks.setSandwich(true);
-					String line = scanner.nextLine();
-					Scanner lineScanner = new Scanner(line);
-					lineScanner.useDelimiter(":");
-					int index = 0;
-					while(lineScanner.hasNext()){
-						String str = lineScanner.next();
-							// If input isn't ".", read the number and insert into array
-						xSums[index] = Integer.parseInt(str);
-						index++;
-
-					}
-					lineScanner.close();
-					line = scanner.nextLine();
-					lineScanner = new Scanner(line);
-					lineScanner.useDelimiter(":");
-					index = 0;
-					while(lineScanner.hasNext()){
-						String str = lineScanner.next();
+		}
+		setupScanner.close();
+		if (k > n) {
+			System.out.println("Not a valid sudoku-size, k cannot exceed n");
+		} else {// Creating the board
+			sudoku = new int[n * k][n * k];
+			// Creating variables for sandwich Sums
+			xSums = new int[n * k];
+			ySums = new int[n * k];
+			// Creating variables for looping through input
+			int c = 0;
+			int d = 0;
+			scanner.nextLine();
+			for (int j = 0; j < n * k; j++) {
+				// Reads the next line
+				String line = scanner.nextLine();
+				Scanner lineScanner = new Scanner(line);
+				lineScanner.useDelimiter(";");
+				while (lineScanner.hasNext()) {
+					// Reads the next input on the line, separated by ";"
+					String str = lineScanner.next();
+					if (str.equals(".")) {
+						// If input is ".", convert to a "0"
+						sudoku[c][d] = 0;
+						// Go to next entry
+						d++;
+					} else {
 						// If input isn't ".", read the number and insert into array
-						ySums[index] = Integer.parseInt(str);
-							index++;
+						sudoku[c][d] = Integer.parseInt(str);
+						// Go to next entry
+						d++;
 					}
 				}
+				// Go to next line, and start from first entry
+				c++;
+				d = 0;
+				lineScanner.close();
 			}
+			crooks = new CrooksAlgorithm(getN(), getK(), getSudoku(), this);
+			if (scanner.hasNextLine()) {
+				crooks.setSandwich(true);
+				String line = scanner.nextLine();
+				Scanner lineScanner = new Scanner(line);
+				lineScanner.useDelimiter(":");
+				int index = 0;
+				while (lineScanner.hasNext()) {
+					String str = lineScanner.next();
+					// If input isn't ".", read the number and insert into array
+					xSums[index] = Integer.parseInt(str);
+					index++;
+
+				}
+				lineScanner.close();
+				line = scanner.nextLine();
+				lineScanner = new Scanner(line);
+				lineScanner.useDelimiter(":");
+				index = 0;
+				while (lineScanner.hasNext()) {
+					String str = lineScanner.next();
+					// If input isn't ".", read the number and insert into array
+					ySums[index] = Integer.parseInt(str);
+					index++;
+				}
+			}
+		}
 	}
-	public SudokuModel(SudokuView view){
+
+	public Model(View view) {
 		this.view = view;
 	}
 
+	public void setValidity(ValidityExtend validity) {
+		this.validity = validity;
+
+	}
 
 	// Methods for returning N and K
 	public int getN() {
@@ -156,7 +167,6 @@ public class SudokuModel {
 		return k;
 	}
 
-	
 	public int[][] createSudoku() {
 
 		List<Integer> chooseNumberList = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9);
@@ -302,6 +312,7 @@ public class SudokuModel {
 			return newVal;
 		}
 	}
+
 	public int[][] getSudoku() {
 		return sudoku;
 	}
@@ -317,8 +328,6 @@ public class SudokuModel {
 		redoStack[redoes] = x;
 		redoes++;
 	}
-
-
 
 	// new pop method
 	public stackObj popStack2() {
@@ -357,7 +366,7 @@ public class SudokuModel {
 	}
 
 	// Method for returning coords of the last change on the sudokuStack
-	public int[] getStackCoords(){
+	public int[] getStackCoords() {
 		int[] result = new int[2];
 		stackObj temp = sudokuStack2[moves - 1];
 		result[0] = temp.getX();
@@ -366,7 +375,7 @@ public class SudokuModel {
 	}
 
 	// Method for returning coords of the last change on the redoStack
-	public int[] getRedoStackCoords(){
+	public int[] getRedoStackCoords() {
 		int[] result = new int[2];
 		stackObj temp = redoStack[redoes - 1];
 		result[0] = temp.getX();
@@ -413,24 +422,23 @@ public class SudokuModel {
 							}
 						}
 					}
-					if((cur == 1 || cur == 9) && !inSandwich){
+					if ((cur == 1 || cur == 9) && !inSandwich) {
 						inSandwich = true;
 						sandwichFilled = true;
 						continue;
 					}
-					if((cur == 1 || cur == 9) && inSandwich){
+					if ((cur == 1 || cur == 9) && inSandwich) {
 						inSandwich = false;
 						continue;
 					}
-					if(inSandwich){
+					if (inSandwich) {
 						rowSum += cur;
 					}
-				}
-				else if (cur == 0 && inSandwich){
+				} else if (cur == 0 && inSandwich) {
 					sandwichFilled = false;
 				}
 			}
-			if(rowSum != ySums[i] && crooks.getSandwich() && sandwichFilled && !inSandwich){
+			if (rowSum != ySums[i] && crooks.getSandwich() && sandwichFilled && !inSandwich) {
 				valid = false;
 			}
 		}
@@ -476,24 +484,23 @@ public class SudokuModel {
 							}
 						}
 					}
-					if((cur == 1 || cur == 9) && !inSandwich){
+					if ((cur == 1 || cur == 9) && !inSandwich) {
 						inSandwich = true;
 						sandwichFilled = true;
 						continue;
 					}
-					if((cur == 1 || cur == 9) && inSandwich){
+					if ((cur == 1 || cur == 9) && inSandwich) {
 						inSandwich = false;
 						continue;
 					}
-					if(inSandwich){
+					if (inSandwich) {
 						rowSum += cur;
 					}
-				}
-				else if (cur == 0 && inSandwich){
+				} else if (cur == 0 && inSandwich) {
 					sandwichFilled = false;
 				}
 			}
-			if(rowSum != xSums[j] && crooks.getSandwich() && sandwichFilled && !inSandwich){
+			if (rowSum != xSums[j] && crooks.getSandwich() && sandwichFilled && !inSandwich) {
 				valid = false;
 			}
 		}
@@ -504,7 +511,6 @@ public class SudokuModel {
 				sortedGrid[i][j] = 0;
 			}
 		}
-
 
 		for (int l = 0; l < k * k; l++) {
 
@@ -557,13 +563,14 @@ public class SudokuModel {
 				// view.getCellCoordinate(failedCoords.get(i))[1] + " ");
 			}
 		}
-		if(changeColours){
+		if (changeColours) {
 			for (int i = 0; i < failedCoords.size(); i++) {
 				failedCoords.get(i).conflict();
 			}
 		}
 		return valid;
 	}
+
 	// Method for checking if the entire board is filled
 	public boolean isFilled() {
 		boolean result = true;
@@ -576,6 +583,7 @@ public class SudokuModel {
 		}
 		return result;
 	}
+
 	public void setSudoku(int[][] board) {
 		sudoku = board;
 	}
@@ -605,7 +613,6 @@ public class SudokuModel {
 			System.out.println();
 		}
 	}
-
 
 	public static ArrayList<Cell> getFailedCells() {
 		return failedCoords;

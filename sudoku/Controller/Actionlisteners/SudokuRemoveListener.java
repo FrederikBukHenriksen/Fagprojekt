@@ -3,18 +3,18 @@ package sudoku.Controller.Actionlisteners;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import sudoku.SudokuController;
+import sudoku.Controller.Controller;
 
 public class SudokuRemoveListener implements ActionListener {
     /**
      *
      */
-    private final SudokuController sudokuController;
+    private final Controller sudokuController;
 
     /**
      * @param sudokuController
      */
-    public SudokuRemoveListener(SudokuController sudokuController) {
+    public SudokuRemoveListener(Controller sudokuController) {
         this.sudokuController = sudokuController;
     }
 
