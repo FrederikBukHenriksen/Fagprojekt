@@ -242,13 +242,16 @@ public class Controller {
 		//BacktrackAlgorithm backtrack = new BacktrackAlgorithm(model.getN(), model.getK(), model.xSums, model.ySums,model.sudoku,model);
 		if(model.getSandwich()) {		
 			model.backtrack.tester(model.backtrack.markUpCells(model.sudoku));
-			int[][] solvedS = model.backtrack.getSolvedSudoku();
 		} else {
 			model.crooks.solver();
 		}
 		
 		if (!model.getSandwich()) {
 			if (model.crooks.getSolvedSudoku()[0][0] == 0) {
+				createPopUp("This sudoku has no solutions \n");
+			} //maybe add for sandwich
+		} else {
+			if (model.backtrack.getSolvedSudoku()[0][0] == 0) {
 				createPopUp("This sudoku has no solutions \n");
 			}
 		}
