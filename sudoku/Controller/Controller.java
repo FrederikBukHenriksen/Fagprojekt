@@ -111,6 +111,7 @@ public class Controller {
 	}
 
 	public void createPopUp(String text) {
+		okPressed = false;
 		JDialog jd = new JDialog();
 		jd.setLayout(new FlowLayout());
 		int x = view.getX();
@@ -159,7 +160,7 @@ public class Controller {
 				// TODO: Generate new puzzle here
 				view.dispose();
 				jd.dispose();
-				Controller controller = new Controller();
+				setOkPressed();
 			}
 		});
 
@@ -236,6 +237,7 @@ public class Controller {
 		view.menuBar.redo.addActionListener(new SudokuRedoListener(this));
 		view.menuBar.solve.addActionListener(new MenuBarMenuActionListener(this));
 		view.menuBar.test.addActionListener(new MenuBarTestActionListener(this));
+		view.menuBar.newPuzzle.addActionListener(new MenuBarMenuActionListener(this));
 
 		model.crooks.solver();
 		if (!model.crooks.isSandwich) {
@@ -244,6 +246,22 @@ public class Controller {
 			}
 		}
 		updateColours();
+
+		while (true) {
+			okPressed = false;
+			while (true) {
+				try {
+					TimeUnit.SECONDS.sleep(1);
+				} catch (InterruptedException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				if (okPressed) {
+					break;
+				}
+			}
+			new Controller();
+		}
 	}
 
 	public void createSimplePopUp(String text) {
@@ -268,7 +286,7 @@ public class Controller {
 				view.dispose();
 				jd.dispose();
 				setOkPressed();
-
+				return;
 			}
 		});
 		jd.add(jLabel);
@@ -326,11 +344,19 @@ public class Controller {
 
 	public void setOkPressed() {
 		okPressed = true;
+
+	}
+
+	public boolean getOkPressed() {
+		return okPressed;
 	}
 
 	public void zoom(int sizeChange) {
 		for (Cell cell : view.sudokuBoard.getCellsLinear()) {
 			cell.adjustSize(sizeChange);
+		}
+		for (NumpadButton numpadButton : view.sudokuNumpad.numpadButtons) {
+			numpadButton.adjustSize(sizeChange);
 		}
 		view.pack();
 	}

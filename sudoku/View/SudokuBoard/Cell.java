@@ -63,10 +63,14 @@ public class Cell extends JToggleButton {
 
     public void adjustSize(int sizeAdjustment) {
         int currentSize = (int) getSize().getWidth();
+        int currentFontSize = (int) getFont().getSize();
         int newSize = currentSize + sizeAdjustment;
+        int newFontSize = currentFontSize + sizeAdjustment;
         setSize(new Dimension(newSize, newSize));
         this.setPreferredSize(new Dimension(newSize, newSize));
+        setFont(new Font("Serif", Font.PLAIN, newFontSize));
     }
+
 
     public void defaultColor() {
         setBackground(def);

@@ -17,6 +17,7 @@ public class MenuBar extends JMenuBar {
     public JMenuItem zoomIn = new JMenuItem("Zoom in");
     public JMenuItem zoomOut = new JMenuItem("Zoom out");
     public JMenuItem test = new JMenuItem("TEST");
+    public JMenuItem newPuzzle = new JMenuItem("Open new Sudoku");
 
     public MenuBar() {
         // create a menu
@@ -29,6 +30,7 @@ public class MenuBar extends JMenuBar {
         zoomIn.setActionCommand("Zoom in");
         zoomOut.setActionCommand("Zoom out");
         solve.setActionCommand("Solve Sudoku");
+        newPuzzle.setActionCommand("Open new Sudoku");
 
         tools.add(zoomIn);
         tools.add(zoomOut);
@@ -36,6 +38,7 @@ public class MenuBar extends JMenuBar {
         // add menu items to menu
         menu.add(solve);
         menu.add(test);
+        menu.add(newPuzzle);
 
         // add menu to menu bar
         this.add(tools);

@@ -1,6 +1,8 @@
 package sudoku.Controller.Actionlisteners;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.concurrent.TimeUnit;
+
 import javax.swing.AbstractButton;
 
 import sudoku.Controller.Controller;
@@ -40,7 +42,14 @@ public class MenuBarMenuActionListener implements ActionListener{
                         sudokuController.updateColours();
                     }
                 }
+                break;
+            case "open new sudoku":
+                sudokuController.view.dispose();
+                sudokuController.setOkPressed();
+                break;
         }
+    	
     }
+
 }
 
