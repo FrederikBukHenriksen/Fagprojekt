@@ -9,7 +9,7 @@ public class SudokuHintListener implements ActionListener {
     /**
      *
      */
-    private final Controller sudokuController;
+    private Controller sudokuController;
 
     /**
      * @param sudokuController
@@ -19,6 +19,6 @@ public class SudokuHintListener implements ActionListener {
     }
 
     public void actionPerformed(ActionEvent e) {
-        sudokuController.getHint();
+        sudokuController.hintPressed = true;
     }
 }
