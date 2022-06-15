@@ -40,8 +40,12 @@ public class Controller {
 	// Creating variables
 	public Model model;
 	public View view;
-	boolean okPressed = false;
-	public SudokuControls sudokuControls;
+
+	public boolean okPressed = false;
+	public boolean hintPressed = false;
+
+	private SudokuExtend sudokuBoard;
+
 
 	public void updateColours() {
 		view.clearMarkedCells();
@@ -71,7 +75,7 @@ public class Controller {
 				}
 			}
 		} catch (Exception e) {
-			new ExceptionPopUp(e);
+			new CreateOkPopUp(e.getMessage(), this);
 		}
 	}
 
@@ -167,7 +171,7 @@ public class Controller {
 				// TODO: Generate new puzzle here
 				view.dispose();
 				jd.dispose();
-				setOkPressed();
+				okPressed = true;
 			}
 		});
 
@@ -210,13 +214,13 @@ public class Controller {
 			// break;
 		} catch (IOException e) {
 			// System.out.println("Wrong filetype");
-			createSimplePopUp("wrong filetype");
+			CreateOkPopUp wrongFile = new CreateOkPopUpExtend("wrong filetype", this);
 		} catch (NumberFormatException ez) {
 			// System.out.println("Wrong filetype");
-			createSimplePopUp("wrong filetype");
+			CreateOkPopUp wrongFile = new CreateOkPopUpExtend("wrong filetype", this);
 		} catch (NoSuchElementException ex) {
 			// System.out.println("Sudoku formatet wrong. Hint: Check for newlines");
-			createSimplePopUp("Illegal file content. Check for newlines");
+			CreateOkPopUp IllegalContent = new CreateOkPopUpExtend("Illegal file content. Check for newlines", this);
 		}
 		// view = new View(model.getSudoku(), model.getN(), model.getK());
 
@@ -249,7 +253,7 @@ public class Controller {
 		try {
 			model.solver.solve();
 		} catch (Exception exc) {
-			new ExceptionPopUp(exc);
+			new CreateOkPopUp(exc.getMessage(), this);
 		}
 
 		for (Cell cell : sudokuControls.getCellsLinear()) {
@@ -285,6 +289,7 @@ public class Controller {
 
 		while (true) {
 			okPressed = false;
+			hintPressed = false;
 			while (true) {
 				try {
 					TimeUnit.SECONDS.sleep(1);
@@ -294,52 +299,16 @@ public class Controller {
 				}
 				if (okPressed) {
 					break;
+				} else if (hintPressed) {
+					break;
 				}
 			}
-			new Controller();
-		}
-	}
-
-	public void createSimplePopUp(String text) {
-		okPressed = false;
-		JDialog jd = new JDialog();
-		jd.setLayout(new FlowLayout());
-		int x = view.getX();
-		int y = view.getY();
-		int height = view.getHeight();
-		int width = view.getWidth();
-		jd.setBounds((width / 2) - 200 + x, (height / 2) - 75 + y, 400, 150);
-		final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		int xScreen = (screenSize.width / 2) - (jd.getWidth() / 2);
-		int yScreen = (screenSize.height / 2) - (jd.getHeight() / 2);
-		jd.setLocation(xScreen, yScreen);
-		JLabel jLabel = new JLabel(text);
-		jLabel.setFont(new Font(jLabel.getFont().getName(), Font.PLAIN, 20));
-		JButton okButton = new JButton("Ok");
-		okButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				view.dispose();
-				jd.dispose();
-				setOkPressed();
-				return;
-			}
-		});
-		jd.add(jLabel);
-		jd.add(okButton);
-		jd.setVisible(true);
-		while (true) {
-			try {
-				TimeUnit.SECONDS.sleep(1);
-			} catch (InterruptedException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
 			if (okPressed) {
-				break;
+				new Controller();
+			} else if (hintPressed) {
+				getHint();
 			}
 		}
-		LoadSudokuBoardFile();
 	}
 
 	public void getHint() {
@@ -368,8 +337,9 @@ public class Controller {
 								}
 							}
 						}
-						createPopUp(
-								"This sudoku can't be solved with current entries!\n Please remove incorrect entries before trying again");
+						new CreateOkPopUp(
+								"This sudoku can't be solved with current entries!\n Please remove incorrect entries before trying again",
+								this);
 					}
 
 					model.setSudokuCell(coordinate[0], coordinate[1],
@@ -386,12 +356,8 @@ public class Controller {
 				updateColours();
 			}
 		} catch (Exception e) {
-			new ExceptionPopUp(e);
+			new CreateOkPopUp(e.getMessage(), this);
 		}
-	}
-
-	public void setOkPressed() {
-		okPressed = true;
 	}
 
 	public boolean getOkPressed() {
