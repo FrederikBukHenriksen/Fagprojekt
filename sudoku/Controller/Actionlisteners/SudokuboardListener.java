@@ -17,7 +17,7 @@ public class SudokuboardListener implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
         Cell pressed = (Cell) e.getSource(); // Grabs the button pressed
-        this.sudokuController.view.sudokuBoard.selectOnlyThisButton(pressed);
+        this.sudokuController.sudokuControls.selectOnlyThisButton(pressed);
         this.sudokuController.updateColours();
     }
 }

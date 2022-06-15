@@ -19,6 +19,7 @@ public class SudokuHintListener implements ActionListener {
     }
 
     public void actionPerformed(ActionEvent e) {
+
         sudokuController.getHint();
     }
 }

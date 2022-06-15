@@ -1,29 +1,17 @@
 package sudoku.Model;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+
 import java.util.NoSuchElementException;
-import java.util.Random;
 import java.util.Scanner;
-
 import javax.swing.JFileChooser;
-
 import sudoku.Model.Solver.BacktrackAlgorithm;
 import sudoku.Model.Solver.CrooksAlgorithm;
 import sudoku.Model.Solver.SolverAbstract;
-import sudoku.Model.Validity.ValidityClassic;
 import sudoku.Model.Validity.ValidityExtend;
-import sudoku.View.View;
-import sudoku.View.SudokuBoard.*;
-import sudoku.Model.Stack;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Collections;
 
 public class Model {
 	public CrooksAlgorithm crooks;
@@ -31,19 +19,15 @@ public class Model {
 	public boolean isSandwich = false;
 	// Setting up variables
 	public int[][] sudoku = new int[0][0];
-	int[][] solvedSudoku = new int[0][0];
 	public static int k = 0;
 	public static int n = 0;
 	public static int[] xSums = new int[n * k];
 	public static int[] ySums = new int[n * k];
-	public Stack stack;
 
-	static ArrayList<Cell> failedCoords = new ArrayList<Cell>();
-
-	static View view;
-
+	// Containers
 	public ValidityExtend validity;
 	public SolverAbstract solver;
+	public Stack stack;
 
 	// constructor for the model
 	public Path findSudokuPath(String s) {// https://stackoverflow.com/questions/51973636/how-to-return-the-file-path-from-the-windows-file-explorer-using-java
@@ -150,11 +134,12 @@ public class Model {
 		}
 	}
 
-	public Model(View view) throws FileNotFoundException, IOException, NumberFormatException, NoSuchElementException {
-		this.view = view;
+	public Model() throws NumberFormatException, FileNotFoundException, NoSuchElementException, IOException {
 		boardCreater();
 		this.stack = new Stack(sudoku);
 	}
+
+	// Set functions
 
 	public void setValidity(ValidityExtend validity) {
 		this.validity = validity;
@@ -164,129 +149,22 @@ public class Model {
 		this.solver = solver;
 	}
 
-	// Methods for returning N and K
+	public void setSudoku(int[][] board) {
+		sudoku = board;
+	}
+
+	public void setSudokuCell(int x, int y, int value) {
+		sudoku[x][y] = value;
+	}
+
+	// Get functions
+
 	public int getN() {
 		return n;
 	}
 
 	public int getK() {
 		return k;
-	}
-
-	public int[][] createSudoku() {
-
-		List<Integer> chooseNumberList = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9);
-		Random random = new Random();
-
-		int[][] newSudoku = new int[n * k][n * k];
-
-		// Generate a board with aprox. 16 randomly places numbers.
-		int numberCounter = 0;
-		int maxAttempts = 50;
-
-		while (numberCounter < 17) { // 17 i while-loopet vil medføre 17 tal.
-			int x = random.nextInt(n * k);
-			int y = random.nextInt(n * k);
-			int cellNumber = random.nextInt(n * k) + 1;
-
-			if (maxAttempts == 0) {
-				newSudoku = new int[n * k][n * k];
-				maxAttempts = 50;
-			}
-
-			if (newSudoku[x][y] == 0) {
-				if (validity.checkValidity(newSudoku)) {
-
-					newSudoku[x][y] = cellNumber;
-					numberCounter++;
-
-				} else {
-					maxAttempts--;
-				}
-			}
-		}
-
-		ArrayList<int[][]> listOfBoards = new ArrayList<>();
-		listOfBoards.add(newSudoku);
-
-		for (int i = 0; i < listOfBoards.size(); i++) {
-			newSudoku = listOfBoards.get(i);
-
-			for (int x = 0; x < (getN() * getK()); x++) {
-				for (int y = 0; y < (getN() * getK()); y++) {
-					int[][] newSudokuTemp = newSudoku.clone();
-
-					boolean numFound = false;
-					for (int num = 0; num < chooseNumberList.size(); num++) {
-						newSudokuTemp[x][y] = chooseNumberList.get(num);
-						if (validity.checkValidity(newSudokuTemp) && !numFound) {
-							int save[][] = newSudoku.clone();
-							save[x][y] = chooseNumberList.get(num);
-							listOfBoards.add(save);
-							// newSudoku[x][y] = chooseNumberList.get(num);
-						}
-
-					}
-				}
-			}
-
-		}
-
-		// for (int i = 0; i < newSudoku[0].length; i++) {
-		// for (int j = 0; j < newSudoku[1].length; j++) {
-
-		// while (true) {
-		// int number = chooseNumberList.get(random.nextInt(chooseNumberList.size()));
-		// int[] square = getSquare(i, j, newSudoku);
-		// int[] peers = getPeers(i, j, newSudoku);
-		// boolean cond1 = Arrays.stream(square).anyMatch(n -> n != number);
-		// boolean cond2 = Arrays.stream(peers).anyMatch(n -> n != number);
-
-		// if (cond1 && cond2) {
-		// newSudoku[i][j] = number;
-		// break;
-		// }
-		// }
-
-		// }
-		// }
-
-		return newSudoku;
-	}
-
-	public int[] getSquare(int axis0, int axis1, int[][] board) {
-		ArrayList<Integer> square = new ArrayList<Integer>();
-
-		// Determent the position of upper left corner of the square
-		int squareX = axis0 / n; // 2
-		int squareY = axis1 / n; // 1
-
-		// Run through the scare
-		for (int i = squareX * n; i < squareX * n + n; i++) {
-			for (int j = squareY * n; j < squareY * n + n; j++) {
-				square.add(board[i][j]);
-			}
-		}
-		// Convert arraylist to primitive array
-		return square.stream().mapToInt(i -> i).toArray();
-
-	}
-
-	public int[] getPeers(int axis0, int axis1, int[][] board) {
-		ArrayList<Integer> peers = new ArrayList<Integer>();
-
-		// Run through the cells two axis
-		for (int i = 0; i < n * k; i++) {
-			peers.add(board[axis0][i]);
-		}
-		for (int i = 0; i < n * k; i++) {
-			peers.add(board[i][axis1]);
-		}
-
-		// Remove the duplicated cell itself.
-		peers.remove((Integer) board[axis0][axis1]);
-
-		return peers.stream().mapToInt(i -> i).toArray();
 	}
 
 	public int[][] getSudoku() {
@@ -304,15 +182,6 @@ public class Model {
 			}
 		}
 		return result;
-	}
-
-	public void setSudoku(int[][] board) {
-		sudoku = board;
-	}
-
-	// Method for changing a single cell in the board
-	public void setSudokuCell(int x, int y, int value) {
-		sudoku[x][y] = value;
 	}
 
 	public boolean isFilledLoop(int[][] sudoku) {

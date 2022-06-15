@@ -3,7 +3,6 @@ package sudoku.Controller;
 import sudoku.Controller.Actionlisteners.*;
 import sudoku.Controller.Actionlisteners.MenuBar.MenuBarMenuActionListener;
 import sudoku.Controller.Actionlisteners.MenuBar.MenuBarNewSudokuActionListener;
-import sudoku.Controller.Actionlisteners.MenuBar.MenuBarTestActionListener;
 import sudoku.Controller.Actionlisteners.MenuBar.MenuBarZoomActionListener;
 import sudoku.Controller.Actionlisteners.MenuBar.SudokuHintListener;
 import sudoku.Controller.Actionlisteners.MenuBar.SudokuRedoListener;
@@ -42,8 +41,7 @@ public class Controller {
 	public Model model;
 	public View view;
 	boolean okPressed = false;
-
-	private SudokuExtend sudokuBoard;
+	public SudokuControls sudokuControls;
 
 	public void updateColours() {
 		view.clearMarkedCells();
@@ -56,7 +54,7 @@ public class Controller {
 
 	public void markConflictCells() {
 		for (Point point : model.validity.getUniqueConflictPoints(model.getSudoku())) {
-			Cell cell = view.sudokuBoard.getCellFromCoord(point.x, point.y);
+			Cell cell = sudokuControls.getCellFromCoord(point.x, point.y);
 			cell.conflict();
 			view.markedCells.add(cell);
 		}
@@ -64,9 +62,9 @@ public class Controller {
 
 	public void markSimilarCells() {
 		try {
-			Cell cellPressed = sudokuBoard.getButtonSelected();
+			Cell cellPressed = sudokuControls.getButtonSelected();
 			if (cellPressed.getText().equals("")) {
-				for (Cell cell : view.sudokuBoard.getCellsLinear()) {
+				for (Cell cell : sudokuControls.getCellsLinear()) {
 					if (cell.getText().equals(cellPressed.getText())) {
 						cell.similar();
 					}
@@ -81,17 +79,17 @@ public class Controller {
 		if (model.stack.redoes > 0) {
 			// System.out.println("Redo"); // Prints "Redo" FOR DEBUG
 			try {
-				view.sudokuBoard.getButtonSelected().setSelected(false);
+				sudokuControls.getButtonSelected().setSelected(false);
 				// TODO: indsæt Rasmus' generelle funktion for farver
 			} catch (Exception exc) {
 				// System.out.println(exc.getMessage());
 			}
-			view.sudokuBoard
+			sudokuControls
 					.getCellFromCoord(model.stack.getRedoStackCoords()[0], model.stack.getRedoStackCoords()[1])
 					.setSelected(true);
 			model.stack.pushStack(model.stack.popRedoStack()); // Removes the last element of the stack
 			// model.setSudoku(model.getSudoku()); // Updates the board
-			view.updateCellValues(model.getSudoku()); // Updates the visuals
+			sudokuControls.updateCellValues(model.getSudoku()); // Updates the visuals
 			// view.updateFrameTitle(model.checkValidity(model.getSudoku(), false),
 			// model.isFilled());
 			updateColours();
@@ -102,16 +100,16 @@ public class Controller {
 		if (model.stack.moves > 0) {
 			// System.out.println("Undo"); // Prints "Undo" FOR DEBUG
 			try {
-				view.sudokuBoard.getButtonSelected().setSelected(false);
+				sudokuControls.getButtonSelected().setSelected(false);
 				// TODO: indsæt Rasmus' generelle funktion for farver
 			} catch (Exception exc) {
 				// System.out.println(exc.getMessage());
 			}
-			view.sudokuBoard.getCellFromCoord(model.stack.getStackCoords()[0], model.stack.getStackCoords()[1])
+			sudokuControls.getCellFromCoord(model.stack.getStackCoords()[0], model.stack.getStackCoords()[1])
 					.setSelected(true);
 			model.stack.pushRedoStack(model.stack.popStack()); // Removes the last element of the stack
 			// model.setSudoku(model.getSudoku()); // Updates the board
-			view.updateCellValues(model.getSudoku()); // Updates the visuals
+			sudokuControls.updateCellValues(model.getSudoku()); // Updates the visuals
 			// view.updateFrameTitle(model.checkValidity(model.getSudoku(), false),
 			// model.isFilled());
 			updateColours();
@@ -207,9 +205,8 @@ public class Controller {
 	}
 
 	public void LoadSudokuBoardFile() {
-		view = new View();
 		try {
-			model = new Model(view);
+			model = new Model();
 			// break;
 		} catch (IOException e) {
 			// System.out.println("Wrong filetype");
@@ -221,13 +218,17 @@ public class Controller {
 			// System.out.println("Sudoku formatet wrong. Hint: Check for newlines");
 			createSimplePopUp("Illegal file content. Check for newlines");
 		}
+		// view = new View(model.getSudoku(), model.getN(), model.getK());
+
 	}
 
 	// Simple constructor
 	public Controller() {
 		LoadSudokuBoardFile();
 		if (model.getSandwich()) {
-			view.setSudoku(new SandwichSudoku(model.getSudoku(), model.getN(), model.getK(), model.xSums, model.ySums));
+
+			view = new View(model.getSudoku(), model.getN(), model.getK(),
+					new SandwichSudoku(model.getSudoku(), model.getN(), model.getK(), model.xSums, model.ySums));
 
 			model.setValidity(
 					new ValiditySandwich(model.getSudoku(), model.getN(), model.getK(), model.xSums, model.ySums));
@@ -236,36 +237,37 @@ public class Controller {
 					new BacktrackAlgorithm(model.getN(), model.getN(), model.xSums, model.ySums, model.getSudoku(),
 							model));
 		} else {
-			view.setSudoku(new ClassicSudokuBoard(model.getSudoku(), model.getN(), model.getK()));
+			view = new View(model.getSudoku(), model.getN(), model.getK(),
+					new ClassicSudokuBoard(model.getSudoku(), model.getN(), model.getK()));
 
 			model.setValidity(new ValidityClassic(model.getSudoku(), model.getN(), model.getK()));
 			model.setSolver(new CrooksAlgorithm(model.getN(), model.getK(), model.getSudoku(), model));
 		}
+
+		sudokuControls = new SudokuControls(view.sudokuBoard.cells);
+
 		try {
 			model.solver.solve();
 		} catch (Exception exc) {
 			new ExceptionPopUp(exc);
 		}
 
-		sudokuBoard = new SandwichSudoku(model.getSudoku(), model.getN(), model.getK(), model.xSums, model.ySums);
-		view.showFrame(model.getSudoku());
-		for (Cell cell : view.sudokuBoard.getCellsLinear()) {
+		for (Cell cell : sudokuControls.getCellsLinear()) {
 			cell.addActionListener(new SudokuboardListener(this));
 			cell.addKeyListener(new KeyboardNumberListener(this));
 			cell.addKeyListener(new KeyboardShortcutListener(this));
 		}
 		view.sudokuNumpad.numpadButtons.forEach(b -> b.addActionListener(new NumboardListener(this)));
-		view.menuBar.zoomIn.addActionListener(new MenuBarZoomActionListener(this));
-		view.menuBar.zoomOut.addActionListener(new MenuBarZoomActionListener(this));
-		view.menuBar.undo.addActionListener(new SudokuUndoListener(this));
-		view.menuBar.remove.addActionListener(new SudokuRemoveListener(this));
+		view.sudokuMenuBar.zoomIn.addActionListener(new MenuBarZoomActionListener(this));
+		view.sudokuMenuBar.zoomOut.addActionListener(new MenuBarZoomActionListener(this));
+		view.sudokuMenuBar.undo.addActionListener(new SudokuUndoListener(this));
+		view.sudokuMenuBar.remove.addActionListener(new SudokuRemoveListener(this));
 
-		view.menuBar.redo.addActionListener(new SudokuRedoListener(this));
-		view.menuBar.solve.addActionListener(new MenuBarMenuActionListener(this));
-		view.menuBar.hint.addActionListener(new SudokuHintListener(this));
+		view.sudokuMenuBar.redo.addActionListener(new SudokuRedoListener(this));
+		view.sudokuMenuBar.solve.addActionListener(new MenuBarMenuActionListener(this));
+		view.sudokuMenuBar.hint.addActionListener(new SudokuHintListener(this));
 
-		view.menuBar.test.addActionListener(new MenuBarTestActionListener(this));
-		view.menuBar.newPuzzle.addActionListener(new MenuBarNewSudokuActionListener(this));
+		view.sudokuMenuBar.newPuzzle.addActionListener(new MenuBarMenuActionListener(this));
 
 		if (!model.getSandwich()) {
 			try {
@@ -342,8 +344,8 @@ public class Controller {
 
 	public void getHint() {
 		try {
-			if (view.sudokuBoard.getButtonSelected().enabled) {
-				int[] coordinate = view.sudokuBoard.getCellCoordinate(view.sudokuBoard.getButtonSelected());
+			if (sudokuControls.getButtonSelected().enabled) {
+				int[] coordinate = sudokuControls.getCellCoordinate(sudokuControls.getButtonSelected());
 				int tempVal = model.getSudoku()[coordinate[0]][coordinate[1]];
 				if (model.getSandwich()) {
 					if (model.backtrack.getUniqueness()) {
@@ -361,7 +363,7 @@ public class Controller {
 							for (int i = 0; i < model.getN() * model.getK(); i++) {
 								for (int j = 0; j < model.getN() * model.getK(); j++) {
 									if (model.getSudoku()[i][j] != tempSudoku[i][j]) {
-										view.sudokuBoard.getCellFromCoord(i, j).conflict();
+										sudokuControls.getCellFromCoord(i, j).conflict();
 									}
 								}
 							}
@@ -380,7 +382,7 @@ public class Controller {
 					model.stack.pushStack(model.stack.createStackObj(coordinate[0], coordinate[1], tempVal,
 							model.crooks.getSolvedSudoku()[coordinate[0]][coordinate[1]]));
 				}
-				view.updateCellValues(model.getSudoku());
+				sudokuControls.updateCellValues(model.getSudoku());
 				updateColours();
 			}
 		} catch (Exception e) {
@@ -390,7 +392,6 @@ public class Controller {
 
 	public void setOkPressed() {
 		okPressed = true;
-
 	}
 
 	public boolean getOkPressed() {
@@ -398,7 +399,7 @@ public class Controller {
 	}
 
 	public void zoom(int sizeChange) {
-		for (Cell cell : view.sudokuBoard.getCellsLinear()) {
+		for (Cell cell : sudokuControls.getCellsLinear()) {
 			cell.adjustSize(sizeChange);
 		}
 		for (NumpadButton numpadButton : view.sudokuNumpad.numpadButtons) {
