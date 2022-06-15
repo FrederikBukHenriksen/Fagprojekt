@@ -32,7 +32,6 @@ public class View extends JFrame {
 
 	public void setSudoku(SudokuExtend sudokuBoard) {
 		this.sudokuBoard = sudokuBoard;
-
 	}
 
 	public void showFrame(int[][] sudoku) {

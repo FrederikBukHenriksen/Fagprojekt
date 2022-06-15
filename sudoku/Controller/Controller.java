@@ -10,7 +10,9 @@ import sudoku.Controller.Actionlisteners.MenuBar.SudokuRemoveListener;
 import sudoku.Controller.Actionlisteners.MenuBar.SudokuUndoListener;
 import sudoku.Model.Model;
 import sudoku.Model.Solver.BacktrackAlgorithm;
+import sudoku.Model.Solver.CrooksAlgorithm;
 import sudoku.Model.Validity.ValidityClassic;
+import sudoku.Model.Validity.ValiditySandwich;
 import sudoku.View.ExceptionPopUp;
 import sudoku.View.View;
 import sudoku.View.SudokuBoard.*;
@@ -18,7 +20,6 @@ import sudoku.View.SudokuBoard.Classic.ClassicSudokuBoard;
 import sudoku.View.SudokuBoard.Sandwich.SandwichSudoku;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.NoSuchElementException;
 import java.util.concurrent.TimeUnit;
 import javax.swing.JButton;
@@ -66,13 +67,13 @@ public class Controller {
 			Cell cellPressed = sudokuBoard.getButtonSelected();
 			if (cellPressed.getText().equals("")) {
 				for (Cell cell : view.sudokuBoard.getCellsLinear()) {
-					if (Integer.valueOf(cell.getText()) == Integer.valueOf(cellPressed.getText())) {
+					if (cell.getText().equals(cellPressed.getText())) {
 						cell.similar();
 					}
 				}
 			}
 		} catch (Exception e) {
-
+			new ExceptionPopUp(e);
 		}
 	}
 
@@ -225,11 +226,28 @@ public class Controller {
 	// Simple constructor
 	public Controller() {
 		LoadSudokuBoardFile();
-		model.setValidity(new ValidityClassic(model.getSudoku(), model.getN(), model.getK()));
-		// sudokuBoard = new ClassicSudokuBoard(model.getSudoku(), model.getN(),
-		// model.getK());
+		if (model.getSandwich()) {
+			view.setSudoku(new SandwichSudoku(model.getSudoku(), model.getN(), model.getK(), model.xSums, model.ySums));
+
+			model.setValidity(
+					new ValiditySandwich(model.getSudoku(), model.getN(), model.getK(), model.xSums, model.ySums));
+
+			model.setSolver(
+					new BacktrackAlgorithm(model.getN(), model.getN(), model.xSums, model.ySums, model.getSudoku(),
+							model));
+		} else {
+			view.setSudoku(new ClassicSudokuBoard(model.getSudoku(), model.getN(), model.getK()));
+
+			model.setValidity(new ValidityClassic(model.getSudoku(), model.getN(), model.getK()));
+			model.setSolver(new CrooksAlgorithm(model.getN(), model.getK(), model.getSudoku(), model));
+		}
+		try {
+			model.solver.solve();
+		} catch (Exception exc) {
+			new ExceptionPopUp(exc);
+		}
+
 		sudokuBoard = new SandwichSudoku(model.getSudoku(), model.getN(), model.getK(), model.xSums, model.ySums);
-		view.setSudoku(sudokuBoard);
 		view.showFrame(model.getSudoku());
 		for (Cell cell : view.sudokuBoard.getCellsLinear()) {
 			cell.addActionListener(new SudokuboardListener(this));
@@ -247,16 +265,13 @@ public class Controller {
 
 		view.menuBar.test.addActionListener(new MenuBarTestActionListener(this));
 		view.menuBar.newPuzzle.addActionListener(new MenuBarMenuActionListener(this));
-		//BacktrackAlgorithm backtrack = new BacktrackAlgorithm(model.getN(), model.getK(), model.xSums, model.ySums,model.sudoku,model);
-		if(model.getSandwich()) {		
-			model.backtrack.tester(model.backtrack.markUpCells(model.sudoku));
-		} else {
-			model.crooks.solver();
-		}
 		
 		if (!model.getSandwich()) {
-			if (model.crooks.getSolvedSudoku()[0][0] == 0) {
-				createPopUp("This sudoku has no solutions \n");
+			try {
+				if (model.crooks.getSolvedSudoku()[0][0] == 0) {
+					createPopUp("This sudoku has no solutions \n");
+				}
+			} catch (Exception e) {
 			} //maybe add for sandwich
 		} else {
 			if (model.backtrack.getSolvedSudoku()[0][0] == 0) {
@@ -340,7 +355,7 @@ public class Controller {
 								model.crooks.getSolvedSudoku()[coordinate[0]][coordinate[1]]);
 					} else {
 						int[][] tempSudoku = model.crooks.getSolvedSudoku();
-						model.crooks.solver();
+						model.crooks.solve();
 						if (model.crooks.getSolvedSudoku()[0][0] == 0) {
 							for (int i = 0; i < model.getN() * model.getK(); i++) {
 								for (int j = 0; j < model.getN() * model.getK(); j++) {

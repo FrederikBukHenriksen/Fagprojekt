@@ -3,12 +3,13 @@ package sudoku.Model.Solver;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import sudoku.Controller.Exceptions.NoSolutionAvailable;
 import sudoku.Model.Model;
 import sudoku.Model.Validity.ValidityClassic;
 import sudoku.Model.Validity.ValidityExtend;
 import sudoku.Model.Validity.ValiditySandwich;
 
-public class CrooksAlgorithm {
+public class CrooksAlgorithm extends SolverAbstract {
 	boolean solved = false;
 	boolean unique = false;
 
@@ -26,7 +27,7 @@ public class CrooksAlgorithm {
 		this.model = model;
 	}
 
-	public void solver() {
+	public void solve() {
 		ValidityExtend validity = new ValidityClassic(sudoku, n, k);
 		solved = false;
 		if (!(model.getSandwich() || n > 4 || n != k)) {
@@ -54,6 +55,7 @@ public class CrooksAlgorithm {
 					}
 				}
 				unique = true;
+				solved = true;
 			}
 			while (!validity.checkValidity(sudokuSimpleArray) || !model.isFilledLoop(sudokuSimpleArray)) {
 				loopCount++;
@@ -506,12 +508,22 @@ public class CrooksAlgorithm {
 		return sudoku2D;
 	}
 
-	public boolean getUniqueness() {
+	public boolean getUniqueness() throws Exception {
+		if (!isSolved()) {
+			throw new NoSolutionAvailable();
+		}
 		return unique;
 	}
 
-	public int[][] getSolvedSudoku() {
+	public int[][] getSolvedSudoku() throws Exception {
+		if (!isSolved()) {
+			throw new NoSolutionAvailable();
+		}
 		return solvedSudoku;
+	}
+
+	public boolean isSolved() {
+		return solved;
 	}
 
 }
