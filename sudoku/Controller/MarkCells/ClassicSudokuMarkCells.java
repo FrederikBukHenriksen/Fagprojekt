@@ -12,7 +12,7 @@ public class ClassicSudokuMarkCells implements MarkCellsInterface {
     public void markCells(Controller controller) {
         this.controller = controller;
         try {
-            Cell cell = controller.view.sudokuBoard.getButtonSelected();
+            Cell cell = controller.sudokuControls.getButtonSelected();
             getPeersHorisontal(cell);
             getPeersVertical(cell);
             getPeersSquare(cell);
