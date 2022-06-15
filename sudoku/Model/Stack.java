@@ -1,7 +1,6 @@
 package sudoku.Model;
 
 public class Stack {
-
     stackObj[] sudokuStack;
     stackObj[] redoStack;
     int[][] sudoku;

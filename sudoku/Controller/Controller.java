@@ -202,9 +202,8 @@ public class Controller {
 
 	public void LoadSudokuBoardFile() {
 		view = new View();
-		model = new Model(view);
 		try {
-			model.boardCreater();
+			model = new Model(view);
 			// break;
 		} catch (IOException e) {
 			// System.out.println("Wrong filetype");

@@ -148,8 +148,9 @@ public class Model {
 		}
 	}
 
-	public Model(View view) {
+	public Model(View view) throws FileNotFoundException, IOException, NumberFormatException, NoSuchElementException {
 		this.view = view;
+		boardCreater();
 		this.stack = new Stack(sudoku);
 	}
 
