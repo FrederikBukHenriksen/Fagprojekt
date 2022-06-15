@@ -7,7 +7,7 @@ import sudoku.Model.Validity.ValidityExtend;
 import sudoku.Model.Validity.ValiditySandwich;
 import sudoku.Model.Model;
 
-public class BacktrackAlgorithm {
+public class BacktrackAlgorithm extends SolverAbstract {
 	int[][] sudoku;
 	int[][] solvedSudoku = new int [0][0];
 	Model model;
@@ -82,7 +82,9 @@ public class BacktrackAlgorithm {
 		//System.out.println(markUpBoard);
 		return markUpBoard;
 	}
-	public void tester(ArrayList<ArrayList<ArrayList<Integer>>> prem){
+
+	public void solve() {
+		ArrayList<ArrayList<ArrayList<Integer>>> prem = model.backtrack.markUpCells(model.sudoku);
 		int loopCount = 0;
 		int [][] sudokuSimpleArray = sudoku;
 		ValidityExtend validity = new ValiditySandwich(sudoku, n, k, xSums, ySums);
@@ -161,7 +163,7 @@ public class BacktrackAlgorithm {
 			sudokuClone = loop(sudokuClone); //It calls recursive
 			sudokuSimpleArray = Converter3D2D(sudokuClone); //Creates simple sudoku array to verify, and then runs all the verification like before
 		
-			if(model.checkValidity(sudokuSimpleArray, false, false) && model.isFilledLoop(sudokuSimpleArray)){
+			if (validity.checkValidity(sudokuSimpleArray) && model.isFilledLoop(sudokuSimpleArray)) {
 				if (solved == true) {
 					unique = false;
 					return sudokuClone;
@@ -216,6 +218,11 @@ public class BacktrackAlgorithm {
 			}
 		}
 		return sudoku2D;
+	}
+
+	@Override
+	public boolean isSolved() {
+		return solved;
 	}
 }
 

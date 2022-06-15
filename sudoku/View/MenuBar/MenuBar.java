@@ -10,10 +10,13 @@ import java.awt.event.ActionListener;
 
 public class MenuBar extends JMenuBar {
     // create menuitems
-    public JButton undo = new JButton("Undo");
-    public JButton redo = new JButton("Redo");
+    public MenuBarButton undo = new MenuBarButton("Undo");
+    public MenuBarButton remove = new MenuBarButton("Remove");
+    public MenuBarButton redo = new MenuBarButton("Redo");
+    public MenuBarButton hint = new MenuBarButton("Hint");
 
     public JMenuItem solve = new JMenuItem("Solve Sudoku");
+
     public JMenuItem zoomIn = new JMenuItem("Zoom in");
     public JMenuItem zoomOut = new JMenuItem("Zoom out");
     public JMenuItem test = new JMenuItem("TEST");
@@ -36,6 +39,7 @@ public class MenuBar extends JMenuBar {
         tools.add(zoomOut);
 
         // add menu items to menu
+        menu.add(hint);
         menu.add(solve);
         menu.add(test);
         menu.add(newPuzzle);
@@ -44,7 +48,9 @@ public class MenuBar extends JMenuBar {
         this.add(tools);
         this.add(menu);
         this.add(undo);
+        this.add(remove);
         this.add(redo);
+        this.add(hint);
 
     }
 }

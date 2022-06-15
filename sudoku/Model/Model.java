@@ -11,6 +11,7 @@ import javax.swing.JFileChooser;
 
 import sudoku.Model.Solver.BacktrackAlgorithm;
 import sudoku.Model.Solver.CrooksAlgorithm;
+import sudoku.Model.Solver.SolverAbstract;
 import sudoku.Model.Validity.ValidityClassic;
 import sudoku.Model.Validity.ValidityExtend;
 import sudoku.View.View;
@@ -42,6 +43,7 @@ public class Model {
 	static View view;
 
 	public ValidityExtend validity;
+	public SolverAbstract solver;
 
 	// constructor for the model
 	public Path findSudokuPath(String s) {// https://stackoverflow.com/questions/51973636/how-to-return-the-file-path-from-the-windows-file-explorer-using-java
@@ -156,7 +158,10 @@ public class Model {
 
 	public void setValidity(ValidityExtend validity) {
 		this.validity = validity;
+	}
 
+	public void setSolver(SolverAbstract solver) {
+		this.solver = solver;
 	}
 
 	// Methods for returning N and K
@@ -190,7 +195,7 @@ public class Model {
 			}
 
 			if (newSudoku[x][y] == 0) {
-				if (checkValidity(newSudoku, false, false)) {
+				if (validity.checkValidity(newSudoku)) {
 
 					newSudoku[x][y] = cellNumber;
 					numberCounter++;
@@ -214,7 +219,7 @@ public class Model {
 					boolean numFound = false;
 					for (int num = 0; num < chooseNumberList.size(); num++) {
 						newSudokuTemp[x][y] = chooseNumberList.get(num);
-						if (checkValidity(newSudokuTemp, false, false) && !numFound) {
+						if (validity.checkValidity(newSudokuTemp) && !numFound) {
 							int save[][] = newSudoku.clone();
 							save[x][y] = chooseNumberList.get(num);
 							listOfBoards.add(save);
@@ -288,194 +293,6 @@ public class Model {
 		return sudoku;
 	}
 
-	// Method for updating the markUp board, given a set of possible entries and
-	// their coordinates
-	public boolean checkValidity(int[][] sudoku, boolean print, boolean changeColours) {
-		failedCoords.clear();
-		boolean valid = new Boolean(true);
-		// Grid for storing already found values
-		// int[][] sortedGrid = new int[sudoku.length+1][sudoku.length+1];
-		int[][] sortedGrid = new int[sudoku.length][sudoku.length];
-		// for(int i = sortedGrid.length-1; i >= 0; i--){
-		for (int i = sortedGrid.length - 1; i >= 0; i--) {
-			for (int j = 0; j < sortedGrid.length; j++) {
-				sortedGrid[i][j] = 0;
-			}
-		}
-
-		// Checking rows for duplicates
-		for (int i = 0; i < sudoku.length; i++) {
-			int rowSum = 0;
-			boolean inSandwich = false;
-			boolean sandwichFilled = false;
-			for (int j = 0; j < sudoku.length; j++) {
-				int cur = (sudoku[i][j]);
-				if (cur != 0) {
-					if (sortedGrid[i][cur - 1] == 0) {
-						sortedGrid[i][cur - 1] = 1;
-					} else {
-						valid = false;
-						if (print) {
-							// System.out.println("Row: x: " + i + ", j: " + j);
-						}
-						failedCoords.add(view.sudokuBoard.getCellFromCoord(i, j));
-						for (int o = 0; o < j; o++) {
-							if (sudoku[i][o] == cur) {
-								if (!(failedCoords.contains(view.sudokuBoard.getCellFromCoord(i, o)))) {
-									failedCoords.add(view.sudokuBoard.getCellFromCoord(i, o));
-								}
-							}
-						}
-					}
-					if ((cur == 1 || cur == 9) && !inSandwich) {
-						inSandwich = true;
-						sandwichFilled = true;
-						continue;
-					}
-					if ((cur == 1 || cur == 9) && inSandwich) {
-						inSandwich = false;
-						continue;
-					}
-					if (inSandwich) {
-						rowSum += cur;
-					}
-				} else if (cur == 0 && inSandwich) {
-					sandwichFilled = false;
-				}
-			}
-			if (rowSum != ySums[i] && getSandwich() && sandwichFilled && !inSandwich) {
-				valid = false;
-			}
-		}
-
-		/*
-		 * for(int i = 0; i < sortedGrid.length; i++){
-		 * for(int k = 0; k < sortedGrid.length; k++){
-		 * System.out.print(sortedGrid[i][k] + " ");
-		 * }
-		 * System.out.println();
-		 * }
-		 * System.out.println();
-		 */
-
-		// Resetting the sorted grid
-		for (int i = sortedGrid.length - 1; i >= 0; i--) {
-			for (int j = 0; j < sortedGrid.length; j++) {
-				sortedGrid[i][j] = 0;
-			}
-		}
-
-		// Checking columns for duplicates
-		for (int j = 0; j < sudoku.length; j++) {
-			int rowSum = 0;
-			boolean inSandwich = false;
-			boolean sandwichFilled = false;
-			for (int i = 0; i < sudoku.length; i++) {
-				int cur = (sudoku[i][j]);
-				if (cur != 0) {
-					if (sortedGrid[j][cur - 1] == 0) {
-						sortedGrid[j][cur - 1] = 1;
-					} else {
-						valid = false;
-						if (print) {
-							// System.out.println("Row: x: " + i + ", y: " + j);
-						}
-						failedCoords.add(view.sudokuBoard.getCellFromCoord(i, j));
-						for (int o = 0; o < i; o++) {
-							if (sudoku[o][j] == cur) {
-								if (!(failedCoords.contains(view.sudokuBoard.getCellFromCoord(o, j)))) {
-									failedCoords.add(view.sudokuBoard.getCellFromCoord(o, j));
-								}
-							}
-						}
-					}
-					if ((cur == 1 || cur == 9) && !inSandwich) {
-						inSandwich = true;
-						sandwichFilled = true;
-						continue;
-					}
-					if ((cur == 1 || cur == 9) && inSandwich) {
-						inSandwich = false;
-						continue;
-					}
-					if (inSandwich) {
-						rowSum += cur;
-					}
-				} else if (cur == 0 && inSandwich) {
-					sandwichFilled = false;
-				}
-			}
-			if (rowSum != xSums[j] && getSandwich() && sandwichFilled && !inSandwich) {
-				valid = false;
-			}
-		}
-
-		// Resetting the sorted grid
-		for (int i = sortedGrid.length - 1; i >= 0; i--) {
-			for (int j = 0; j < sortedGrid.length; j++) {
-				sortedGrid[i][j] = 0;
-			}
-		}
-
-		for (int l = 0; l < k * k; l++) {
-
-			for (int i = 0; i < n; i++) {
-
-				for (int j = 0; j < n; j++) {// l/k benytter sig af hvordan java runder op. det er n hvor mange felter
-												// den skal rygge, og den skal rygge det hver gang l har bev�get sig k
-												// felter.
-					int cur = sudoku[(i + n * (l / k))][(j + n * l) % (k * n)];
-					if (cur != 0) {
-						sortedGrid[l][cur - 1] = sortedGrid[l][cur - 1] + 1;
-					}
-				}
-			}
-		}
-		for (int l = 0; l < k * k; l++) {
-
-			for (int i = 0; i < n; i++) {
-
-				for (int j = 0; j < n; j++) {// l/k benytter sig af hvordan java runder op. det er n hvor mange felter
-												// den skal rygge, og den skal rygge det hver gang l har bev�get sig k
-												// felter.
-					int cur = sudoku[(i + n * (l / k))][(j + n * l) % (k * n)];
-					if (cur != 0) {
-						if (sortedGrid[l][cur - 1] > 1) {
-							valid = false;
-							if (print) {
-								// System.out.println("Square: j: " +(i + n * (l / k))+ ", i: " + (j + n * l) %
-								// (k * n));
-							}
-							failedCoords.add(view.sudokuBoard
-									.getCellFromCoord((i + n * (l / k)), (j + n * l) % (k * n)));
-
-						}
-					}
-				}
-			}
-		}
-		/*
-		 * for(int i = 0; i < sortedGrid.length; i++){
-		 * for(int k = 0; k < sortedGrid.length; k++){
-		 * System.out.print(sortedGrid[i][k] + " ");
-		 * }
-		 * System.out.println();
-		 * }
-		 */
-		if (print) {
-			for (int i = 0; i < failedCoords.size(); i++) {
-				// System.out.print(view.getCellCoordinate(failedCoords.get(i))[0] + "," +
-				// view.getCellCoordinate(failedCoords.get(i))[1] + " ");
-			}
-		}
-		if (changeColours) {
-			for (int i = 0; i < failedCoords.size(); i++) {
-				failedCoords.get(i).conflict();
-			}
-		}
-		return valid;
-	}
-
 	// Method for checking if the entire board is filled
 	public boolean isFilled() {
 		boolean result = true;
@@ -508,19 +325,6 @@ public class Model {
 			}
 		}
 		return result;
-	}
-
-	public void printSudoku(int[][] sudokuBoard) {
-		for (int i = 0; i < sudokuBoard.length; i++) {
-			for (int k = 0; k < sudokuBoard.length; k++) {
-				System.out.print(sudokuBoard[i][k] + " ");
-			}
-			System.out.println();
-		}
-	}
-
-	public static ArrayList<Cell> getFailedCells() {
-		return failedCoords;
 	}
 
 	public boolean getSandwich() {

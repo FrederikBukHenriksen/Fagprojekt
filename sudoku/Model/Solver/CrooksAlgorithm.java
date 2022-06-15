@@ -3,13 +3,13 @@ package sudoku.Model.Solver;
 import java.util.ArrayList;
 import java.util.Collections;
 
-
+import sudoku.Controller.Exceptions.NoSolutionAvailable;
 import sudoku.Model.Model;
 import sudoku.Model.Validity.ValidityClassic;
 import sudoku.Model.Validity.ValidityExtend;
 import sudoku.Model.Validity.ValiditySandwich;
 
-public class CrooksAlgorithm {
+public class CrooksAlgorithm extends SolverAbstract {
 	boolean solved = false;
 	boolean unique = false;
 
@@ -27,7 +27,7 @@ public class CrooksAlgorithm {
 		this.model = model;
 	}
 
-	public void solver() {
+	public void solve() {
 		ValidityExtend validity = new ValidityClassic(sudoku, n, k);
 		solved = false;
 		if (!(model.getSandwich() || n > 4 || n != k)) {
@@ -55,6 +55,7 @@ public class CrooksAlgorithm {
 					}
 				}
 				unique = true;
+				solved = true;
 			}
 			while (!validity.checkValidity(sudokuSimpleArray) || !model.isFilledLoop(sudokuSimpleArray)) {
 				loopCount++;
@@ -407,24 +408,24 @@ public class CrooksAlgorithm {
 		}
 		int[][] sudokuSimpleArray = Converter3D2D(sudokuClone); // create 2d array, to verify
 		if (validity.checkValidity(sudokuSimpleArray) && model.isFilledLoop(sudokuSimpleArray)) { // Checks
-																												// if it
-																												// is
-																												// solved.
-																												// If it
-																												// is
-																												// the
-																												// first
-																												// time
-																												// it is
-																												// solved,
-																												// it
-																												// will
-																												// return
-																												// like
-																												// it
-																												// was
-																												// not
-																												// solved.
+																									// if it
+																									// is
+																									// solved.
+																									// If it
+																									// is
+																									// the
+																									// first
+																									// time
+																									// it is
+																									// solved,
+																									// it
+																									// will
+																									// return
+																									// like
+																									// it
+																									// was
+																									// not
+																									// solved.
 			if (solved == true) {
 				unique = false;
 				return sudokuClone;
@@ -443,20 +444,20 @@ public class CrooksAlgorithm {
 			}
 		}
 		if (!validity.checkValidity(sudokuSimpleArray)) { // checks if invalid, returns original with
-																		// returner if invalid
+															// returner if invalid
 			sudokuLoop.get(currentLoopX).get(currentLoopY).clear();
 			sudokuLoop.get(currentLoopX).get(currentLoopY).addAll(returner);
 			return sudokuLoop;
 		}
 
 		while (!validity.checkValidity(sudokuSimpleArray) || !model.isFilledLoop(sudokuSimpleArray)) {// this
-																													// loop
-																													// runs
-																													// till
-																													// the
-																													// sudoku
-																													// is
-																													// solved
+																										// loop
+																										// runs
+																										// till
+																										// the
+																										// sudoku
+																										// is
+																										// solved
 			sudokuClone = loop(sudokuClone); // It calls recursive
 			sudokuSimpleArray = Converter3D2D(sudokuClone); // Creates simple sudoku array to verify, and then runs all
 															// the verification like before
@@ -507,14 +508,22 @@ public class CrooksAlgorithm {
 		return sudoku2D;
 	}
 
-	public boolean getUniqueness() {
+	public boolean getUniqueness() throws Exception {
+		if (!isSolved()) {
+			throw new NoSolutionAvailable();
+		}
 		return unique;
 	}
 
-	public int[][] getSolvedSudoku() {
+	public int[][] getSolvedSudoku() throws Exception {
+		if (!isSolved()) {
+			throw new NoSolutionAvailable();
+		}
 		return solvedSudoku;
 	}
 
-
+	public boolean isSolved() {
+		return solved;
+	}
 
 }
