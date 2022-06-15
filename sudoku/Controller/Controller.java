@@ -115,7 +115,6 @@ public class Controller {
 			// model.isFilled());
 			updateColours();
 		}
-		System.out.println("UNDO"); // For debug
 		// System.out.println("UNDO"); //For debug
 	}
 
