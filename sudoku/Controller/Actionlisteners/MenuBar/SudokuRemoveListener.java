@@ -1,4 +1,4 @@
-package sudoku.Controller.Actionlisteners;
+package sudoku.Controller.Actionlisteners.MenuBar;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

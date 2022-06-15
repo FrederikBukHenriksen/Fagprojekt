@@ -12,8 +12,6 @@ public class SudokuExtend extends JPanel implements SudokuInterface {
     protected int n; // N antal celler i hver square
     protected int k; // K antal squares
 
-    int cellSize = 60;
-
     // protected ArrayList<ArrayList<Cell>> cells = new ArrayList();
     public Cell[][] cells;
 
