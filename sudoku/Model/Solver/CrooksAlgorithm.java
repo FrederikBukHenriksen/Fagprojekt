@@ -3,15 +3,15 @@ package sudoku.Model.Solver;
 import java.util.ArrayList;
 import java.util.Collections;
 
-
 import sudoku.Model.Model;
 import sudoku.Model.Validity.ValidityClassic;
 import sudoku.Model.Validity.ValidityExtend;
+import sudoku.Model.Validity.ValiditySandwich;
 
 public class CrooksAlgorithm {
 	boolean solved = false;
 	boolean unique = false;
-	public boolean isSandwich = false;
+
 	boolean change = false;
 	int[][] sudoku;
 	int[][] solvedSudoku = new int[0][0];
@@ -27,8 +27,9 @@ public class CrooksAlgorithm {
 	}
 
 	public void solver() {
+		ValidityExtend validity = new ValidityClassic(sudoku, n, k);
 		solved = false;
-		if (!(isSandwich || n > 4 || n != k)) {
+		if (!(model.getSandwich() || n > 4 || n != k)) {
 			ArrayList<ArrayList<ArrayList<Integer>>> prem = preemtiveSets(singleton(markUpCells()));
 			change = true;
 			while (change == true) {
@@ -46,7 +47,7 @@ public class CrooksAlgorithm {
 				}
 			}
 			int loopCount = 0;
-			if (model.checkValidity(sudokuSimpleArray, false, false) && model.isFilledLoop(sudokuSimpleArray)) {
+			if (validity.checkValidity(sudokuSimpleArray) && model.isFilledLoop(sudokuSimpleArray)) {
 				for (int l = 0; l < n * k; l++) {
 					for (int m = 0; m < n * k; m++) {
 						solvedSudoku[l][m] = prem.get(l).get(m).get(0);
@@ -54,7 +55,7 @@ public class CrooksAlgorithm {
 				}
 				unique = true;
 			}
-			while (!model.checkValidity(sudokuSimpleArray, false, false) || !model.isFilledLoop(sudokuSimpleArray)) {
+			while (!validity.checkValidity(sudokuSimpleArray) || !model.isFilledLoop(sudokuSimpleArray)) {
 				loopCount++;
 				prem = loop(prem);
 				for (int l = 0; l < n * k; l++) {
@@ -254,7 +255,7 @@ public class CrooksAlgorithm {
 	}
 
 	public ArrayList<ArrayList<ArrayList<Integer>>> markUpCells() {
-
+		ValidityExtend validity = new ValidityClassic(sudoku, n, k);
 		ArrayList<ArrayList<ArrayList<Integer>>> markUpBoard = new ArrayList<>();
 		for (int j = 0; j < n * k; j++) {
 			ArrayList<ArrayList<Integer>> rows = new ArrayList<>();
@@ -296,7 +297,7 @@ public class CrooksAlgorithm {
 
 						// Indsæt gyldige tal fra 1-9
 						copyOfSudoku[i][j] = q;
-						if (model.checkValidity(copyOfSudoku, false, false)) {
+						if (validity.checkValidity(copyOfSudoku)) {
 							markUpBoard.get(i).get(j).add(q);
 						}
 					}
@@ -346,6 +347,7 @@ public class CrooksAlgorithm {
 
 	public ArrayList<ArrayList<ArrayList<Integer>>> loop(ArrayList<ArrayList<ArrayList<Integer>>> sudokuLoop) {
 		// System.out.println(sudokuLoop);
+		ValidityExtend validity = new ValidityClassic(sudoku, n, k);
 		int sizeOfArrayLoop = 2; // initializing variables
 		int currentLoopX = -1;
 		int currentLoopY = -1;
@@ -403,25 +405,25 @@ public class CrooksAlgorithm {
 			}
 		}
 		int[][] sudokuSimpleArray = Converter3D2D(sudokuClone); // create 2d array, to verify
-		if (model.checkValidity(sudokuSimpleArray, false, false) && model.isFilledLoop(sudokuSimpleArray)) { // Checks
-																												// if it
-																												// is
-																												// solved.
-																												// If it
-																												// is
-																												// the
-																												// first
-																												// time
-																												// it is
-																												// solved,
-																												// it
-																												// will
-																												// return
-																												// like
-																												// it
-																												// was
-																												// not
-																												// solved.
+		if (validity.checkValidity(sudokuSimpleArray) && model.isFilledLoop(sudokuSimpleArray)) { // Checks
+																									// if it
+																									// is
+																									// solved.
+																									// If it
+																									// is
+																									// the
+																									// first
+																									// time
+																									// it is
+																									// solved,
+																									// it
+																									// will
+																									// return
+																									// like
+																									// it
+																									// was
+																									// not
+																									// solved.
 			if (solved == true) {
 				unique = false;
 				return sudokuClone;
@@ -439,26 +441,26 @@ public class CrooksAlgorithm {
 				return sudokuLoop;
 			}
 		}
-		if (!model.checkValidity(sudokuSimpleArray, false, false)) { // checks if invalid, returns original with
-																		// returner if invalid
+		if (!validity.checkValidity(sudokuSimpleArray)) { // checks if invalid, returns original with
+															// returner if invalid
 			sudokuLoop.get(currentLoopX).get(currentLoopY).clear();
 			sudokuLoop.get(currentLoopX).get(currentLoopY).addAll(returner);
 			return sudokuLoop;
 		}
 
-		while (!model.checkValidity(sudokuSimpleArray, false, false) || !model.isFilledLoop(sudokuSimpleArray)) {// this
-																													// loop
-																													// runs
-																													// till
-																													// the
-																													// sudoku
-																													// is
-																													// solved
+		while (!validity.checkValidity(sudokuSimpleArray) || !model.isFilledLoop(sudokuSimpleArray)) {// this
+																										// loop
+																										// runs
+																										// till
+																										// the
+																										// sudoku
+																										// is
+																										// solved
 			sudokuClone = loop(sudokuClone); // It calls recursive
 			sudokuSimpleArray = Converter3D2D(sudokuClone); // Creates simple sudoku array to verify, and then runs all
 															// the verification like before
 
-			if (model.checkValidity(sudokuSimpleArray, false, false) && model.isFilledLoop(sudokuSimpleArray)) {
+			if (validity.checkValidity(sudokuSimpleArray) && model.isFilledLoop(sudokuSimpleArray)) {
 				if (solved == true) {
 					unique = false;
 					return sudokuClone;
@@ -477,7 +479,7 @@ public class CrooksAlgorithm {
 				}
 
 			}
-			if (!model.checkValidity(sudokuSimpleArray, false, false)) {
+			if (!validity.checkValidity(sudokuSimpleArray)) {
 				sudokuLoop.get(currentLoopX).get(currentLoopY).clear();
 				sudokuLoop.get(currentLoopX).get(currentLoopY).addAll(returner);
 				return sudokuLoop;
@@ -510,14 +512,6 @@ public class CrooksAlgorithm {
 
 	public int[][] getSolvedSudoku() {
 		return solvedSudoku;
-	}
-
-	public boolean getSandwich() {
-		return isSandwich;
-	}
-
-	public void setSandwich(boolean sandwich) {
-		isSandwich = sandwich;
 	}
 
 }

@@ -10,6 +10,7 @@ import java.util.Stack;
 
 import javax.swing.JFileChooser;
 
+import sudoku.Model.Solver.BacktrackAlgorithm;
 import sudoku.Model.Solver.CrooksAlgorithm;
 import sudoku.Model.Validity.ValidityClassic;
 import sudoku.Model.Validity.ValidityExtend;
@@ -27,6 +28,8 @@ import java.util.Collections;
 
 public class Model {
 	public CrooksAlgorithm crooks;
+	public BacktrackAlgorithm backtrack;
+	public boolean isSandwich = false;
 	// Setting up variables
 	public int[][] sudoku = new int[0][0];
 	int[][] solvedSudoku = new int[0][0];
@@ -122,7 +125,7 @@ public class Model {
 			}
 			crooks = new CrooksAlgorithm(getN(), getK(), getSudoku(), this);
 			if (scanner.hasNextLine()) {
-				crooks.setSandwich(true);
+				setSandwich(true);
 				String line = scanner.nextLine();
 				Scanner lineScanner = new Scanner(line);
 				lineScanner.useDelimiter(":");
@@ -145,6 +148,7 @@ public class Model {
 					ySums[index] = Integer.parseInt(str);
 					index++;
 				}
+				backtrack = new BacktrackAlgorithm(getN(), getK(), xSums, ySums,sudoku,this);
 			}
 		}
 	}
@@ -437,7 +441,7 @@ public class Model {
 					sandwichFilled = false;
 				}
 			}
-			if (rowSum != ySums[i] && crooks.getSandwich() && sandwichFilled && !inSandwich) {
+			if (rowSum != ySums[i] && getSandwich() && sandwichFilled && !inSandwich) {
 				valid = false;
 			}
 		}
@@ -499,7 +503,7 @@ public class Model {
 					sandwichFilled = false;
 				}
 			}
-			if (rowSum != xSums[j] && crooks.getSandwich() && sandwichFilled && !inSandwich) {
+			if (rowSum != xSums[j] && getSandwich() && sandwichFilled && !inSandwich) {
 				valid = false;
 			}
 		}
@@ -615,5 +619,13 @@ public class Model {
 
 	public static ArrayList<Cell> getFailedCells() {
 		return failedCoords;
+	}
+	
+	public boolean getSandwich() {
+		return isSandwich;
+	}
+
+	public void setSandwich(boolean sandwich) {
+		isSandwich = sandwich;
 	}
 }
