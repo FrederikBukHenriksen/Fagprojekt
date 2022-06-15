@@ -19,7 +19,6 @@ public class View extends JFrame {
 	int[][] sudoku;
 	public SudokuExtend sudokuBoard;
 	public MenuBar menuBar;
-	public SudokuControls sudokuControls;
 	public SudokuNumpad sudokuNumpad;
 
 	Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -42,7 +41,6 @@ public class View extends JFrame {
 		this.sudoku = sudoku;
 
 		menuBar = new MenuBar();
-		sudokuControls = new SudokuControls();
 		sudokuNumpad = new SudokuNumpad(n, k);
 
 		setLayout(new GridBagLayout());
@@ -68,11 +66,6 @@ public class View extends JFrame {
 
 		add(sudokuNumpad, c);
 
-		c.gridx = 0;
-		c.gridy = 2;
-		c.fill = GridBagConstraints.WEST;
-
-		add(sudokuControls, c);
 		pack();
 	}
 

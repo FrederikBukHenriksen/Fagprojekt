@@ -150,7 +150,6 @@ public class Model {
 	}
 
 	public Model(View view) {
-		this.view = view;
 	}
 
 	public void setValidity(ValidityExtend validity) {

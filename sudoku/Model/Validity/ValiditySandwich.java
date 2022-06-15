@@ -42,21 +42,21 @@ public class ValiditySandwich extends ValidityClassic implements ValidityInterfa
     // Class methods
 
     @Override
-    protected ArrayList<ArrayList<Point>> collectConflictPointMatches() {
-        ArrayList<ArrayList<Point>> allConflicts = super.collectConflictPointMatches();
+    protected ArrayList<ArrayList<Point>> collectConflictPointMatches(int[][] sudoku) {
+        ArrayList<ArrayList<Point>> allConflicts = super.collectConflictPointMatches(sudoku);
 
-        for (ArrayList<Point> conflict : findRowSumConflicts()) {
+        for (ArrayList<Point> conflict : findRowSumConflicts(sudoku)) {
             allConflicts.add(conflict);
         }
 
-        for (ArrayList<Point> conflict : findColSumConflicts()) {
+        for (ArrayList<Point> conflict : findColSumConflicts(sudoku)) {
             allConflicts.add(conflict);
         }
 
         return allConflicts;
     }
 
-    protected ArrayList<ArrayList<Point>> findRowSumConflicts() {
+    protected ArrayList<ArrayList<Point>> findRowSumConflicts(int[][] sudoku) {
         ArrayList<ArrayList<Point>> sandwichConflicts = new ArrayList<>();
 
         for (int i = 0; i < sudoku.length; i++) {
@@ -104,7 +104,7 @@ public class ValiditySandwich extends ValidityClassic implements ValidityInterfa
         return sandwichConflicts;
     }
 
-    protected ArrayList<ArrayList<Point>> findColSumConflicts() {
+    protected ArrayList<ArrayList<Point>> findColSumConflicts(int[][] sudoku) {
         ArrayList<ArrayList<Point>> sandwichConflicts = new ArrayList<>();
 
         for (int i = 0; i < sudoku.length; i++) {

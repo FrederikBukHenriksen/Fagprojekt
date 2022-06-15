@@ -1,6 +1,13 @@
 package sudoku.Controller;
 
 import sudoku.Controller.Actionlisteners.*;
+import sudoku.Controller.Actionlisteners.MenuBar.MenuBarMenuActionListener;
+import sudoku.Controller.Actionlisteners.MenuBar.MenuBarTestActionListener;
+import sudoku.Controller.Actionlisteners.MenuBar.MenuBarZoomActionListener;
+import sudoku.Controller.Actionlisteners.MenuBar.SudokuHintListener;
+import sudoku.Controller.Actionlisteners.MenuBar.SudokuRedoListener;
+import sudoku.Controller.Actionlisteners.MenuBar.SudokuRemoveListener;
+import sudoku.Controller.Actionlisteners.MenuBar.SudokuUndoListener;
 import sudoku.Model.Model;
 import sudoku.Model.Validity.ValidityClassic;
 import sudoku.View.ExceptionPopUp;
@@ -17,7 +24,6 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 
-import org.xml.sax.ErrorHandler;
 
 import java.awt.Dimension;
 import java.awt.*;
@@ -41,13 +47,13 @@ public class Controller {
 		view.clearMarkedCells();
 		view.markCells();
 		markConflictCells();
-		if (model.validity.checkValidity() && model.isFilled()) {
+		if (model.validity.checkValidity(model.getSudoku()) && model.isFilled()) {
 			createPopUp("Congratulations, you solved the puzzle!");
 		}
 	}
 
 	public void markConflictCells() {
-		for (Point point : model.validity.getUniqueConflictPoints()) {
+		for (Point point : model.validity.getUniqueConflictPoints(model.getSudoku())) {
 			Cell cell = view.sudokuBoard.getCellFromCoord(point.x, point.y);
 			cell.conflict();
 			view.markedCells.add(cell);
@@ -219,7 +225,9 @@ public class Controller {
 	public Controller() {
 		LoadSudokuBoardFile();
 		model.setValidity(new ValidityClassic(model.getSudoku(), model.getN(), model.getK()));
-		sudokuBoard = new ClassicSudokuBoard(model.getSudoku(), model.getN(), model.getK());
+		// sudokuBoard = new ClassicSudokuBoard(model.getSudoku(), model.getN(),
+		// model.getK());
+		sudokuBoard = new SandwichSudoku(model.getSudoku(), model.getN(), model.getK(), model.xSums, model.ySums);
 		view.setSudoku(sudokuBoard);
 		view.showFrame(model.getSudoku());
 		for (Cell cell : view.sudokuBoard.getCellsLinear()) {
@@ -227,15 +235,15 @@ public class Controller {
 			cell.addKeyListener(new KeyboardSudokuListener(this));
 		}
 		view.sudokuNumpad.numpadButtons.forEach(b -> b.addActionListener(new NumboardListener(this)));
-		view.sudokuControls.undo.addActionListener(new SudokuUndoListener(this));
-		view.sudokuControls.redo.addActionListener(new SudokuRedoListener(this));
-		view.sudokuControls.remove.addActionListener(new SudokuRemoveListener(this));
-		view.sudokuControls.hint.addActionListener(new SudokuHintListener(this));
 		view.menuBar.zoomIn.addActionListener(new MenuBarZoomActionListener(this));
 		view.menuBar.zoomOut.addActionListener(new MenuBarZoomActionListener(this));
 		view.menuBar.undo.addActionListener(new SudokuUndoListener(this));
+		view.menuBar.remove.addActionListener(new SudokuRemoveListener(this));
+
 		view.menuBar.redo.addActionListener(new SudokuRedoListener(this));
 		view.menuBar.solve.addActionListener(new MenuBarMenuActionListener(this));
+		view.menuBar.hint.addActionListener(new SudokuHintListener(this));
+
 		view.menuBar.test.addActionListener(new MenuBarTestActionListener(this));
 		view.menuBar.newPuzzle.addActionListener(new MenuBarMenuActionListener(this));
 

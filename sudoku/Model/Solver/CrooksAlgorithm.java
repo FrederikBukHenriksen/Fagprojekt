@@ -5,6 +5,8 @@ import java.util.Collections;
 
 
 import sudoku.Model.Model;
+import sudoku.Model.Validity.ValidityClassic;
+import sudoku.Model.Validity.ValidityExtend;
 
 public class CrooksAlgorithm {
 	boolean solved = false;
