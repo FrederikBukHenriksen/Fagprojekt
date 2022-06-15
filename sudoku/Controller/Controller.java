@@ -43,6 +43,8 @@ public class Controller {
 	boolean okPressed = false;
 	public SudokuControls sudokuControls;
 
+	int zoomSizeIncrementChange = 5;
+
 	public void updateColours() {
 		view.clearMarkedCells();
 		view.markCells();
@@ -344,47 +346,17 @@ public class Controller {
 
 	public void getHint() {
 		try {
-			if (sudokuControls.getButtonSelected().enabled) {
-				int[] coordinate = sudokuControls.getCellCoordinate(sudokuControls.getButtonSelected());
-				int tempVal = model.getSudoku()[coordinate[0]][coordinate[1]];
-				if (model.getSandwich()) {
-					if (model.backtrack.getUniqueness()) {
-						model.setSudokuCell(coordinate[0], coordinate[1],
-								model.backtrack.getSolvedSudoku()[coordinate[0]][coordinate[1]]);
-					}
-				} else {
-					if (model.crooks.getUniqueness()) {
-						model.setSudokuCell(coordinate[0], coordinate[1],
-								model.crooks.getSolvedSudoku()[coordinate[0]][coordinate[1]]);
-					} else {
-						int[][] tempSudoku = model.crooks.getSolvedSudoku();
-						model.crooks.solve();
-						if (model.crooks.getSolvedSudoku()[0][0] == 0) {
-							for (int i = 0; i < model.getN() * model.getK(); i++) {
-								for (int j = 0; j < model.getN() * model.getK(); j++) {
-									if (model.getSudoku()[i][j] != tempSudoku[i][j]) {
-										sudokuControls.getCellFromCoord(i, j).conflict();
-									}
-								}
-							}
-						}
-						createPopUp(
-								"This sudoku can't be solved with current entries!\n Please remove incorrect entries before trying again");
-					}
-
-					model.setSudokuCell(coordinate[0], coordinate[1],
-							model.crooks.getSolvedSudoku()[coordinate[0]][coordinate[1]]);
-				}
-				if (model.getSandwich()) {
-					model.stack.pushStack(model.stack.createStackObj(coordinate[0], coordinate[1], tempVal,
-							model.backtrack.getSolvedSudoku()[coordinate[0]][coordinate[1]]));
-				} else {
-					model.stack.pushStack(model.stack.createStackObj(coordinate[0], coordinate[1], tempVal,
-							model.crooks.getSolvedSudoku()[coordinate[0]][coordinate[1]]));
-				}
-				sudokuControls.updateCellValues(model.getSudoku());
-				updateColours();
+			int[] coordinate = sudokuControls.getCellCoordinate(sudokuControls.getButtonSelected());
+			int tempVal = model.getSudoku()[coordinate[0]][coordinate[1]];
+			model.solver.solve();
+			int hintValue = model.solver.getSolvedSudoku()[coordinate[0]][coordinate[1]];
+			if (model.solver.isSolved() && model.solver.getUniqueness()) {
+				model.setSudokuCell(coordinate[0], coordinate[1], hintValue);
 			}
+			model.stack.pushStack(model.stack.createStackObj(coordinate[0], coordinate[1], tempVal,
+					hintValue));
+			sudokuControls.updateCellValues(model.getSudoku());
+			updateColours();
 		} catch (Exception e) {
 			new ExceptionPopUp(e);
 		}
@@ -398,13 +370,22 @@ public class Controller {
 		return okPressed;
 	}
 
-	public void zoom(int sizeChange) {
+	public void zoomIn() {
+		zoom(zoomSizeIncrementChange);
+	}
+
+	public void zoomOut() {
+		zoom(-zoomSizeIncrementChange);
+	}
+
+	public void zoom(int size) {
 		for (Cell cell : sudokuControls.getCellsLinear()) {
-			cell.adjustSize(sizeChange);
+			cell.adjustSize(size);
 		}
 		for (NumpadButton numpadButton : view.sudokuNumpad.numpadButtons) {
-			numpadButton.adjustSize(sizeChange);
+			numpadButton.adjustSize(size);
 		}
 		view.pack();
 	}
+
 }
