@@ -18,13 +18,13 @@ public class MenuBarMenuActionListener implements ActionListener {
             if (sudokuController.model.solver.getUniqueness()) {
                 for (int i = 0; i < sudokuController.model.getN() * sudokuController.model.getK(); i++) {
                     for (int j = 0; j < sudokuController.model.getN() * sudokuController.model.getK(); j++) {
-                        if (sudokuController.view.sudokuBoard.getCellFromCoord(i, j).enabled) {
+                        if (sudokuController.sudokuControls.getCellFromCoord(i, j).enabled) {
                             sudokuController.model.setSudokuCell(i, j,
                                     sudokuController.model.solver.getSolvedSudoku()[i][j]);
                         }
                     }
                 }
-                sudokuController.view.updateCellValues(sudokuController.model.getSudoku());
+                sudokuController.sudokuControls.updateCellValues(sudokuController.model.getSudoku());
                 sudokuController.updateColours();
             } else {
                 sudokuController.model.solver.solve();
@@ -32,7 +32,7 @@ public class MenuBarMenuActionListener implements ActionListener {
                     for (int i = 0; i < sudokuController.model.getN() * sudokuController.model.getK(); i++) {
                         for (int j = 0; j < sudokuController.model.getN()
                                 * sudokuController.model.getK(); j++) {
-                            if (sudokuController.view.sudokuBoard.getCellFromCoord(i, j).enabled) {
+                            if (sudokuController.sudokuControls.getCellFromCoord(i, j).enabled) {
                                 sudokuController.model.setSudokuCell(i, j,
                                         sudokuController.model.solver.getSolvedSudoku()[i][j]);
                             }

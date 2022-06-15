@@ -27,7 +27,7 @@ public class NumboardListener implements ActionListener {
         JButton pressedNumboard = (JButton) e.getSource();
         // Find the placement of the pressed board button
         try {
-            Cell pressedSudokuboard = this.sudokuController.view.sudokuBoard.getButtonSelected();
+            Cell pressedSudokuboard = this.sudokuController.sudokuControls.getButtonSelected();
             if (pressedSudokuboard.enabled) {
                 this.sudokuController.model.stack.clearRedoStack();
                 String cellNew = "";
@@ -48,7 +48,7 @@ public class NumboardListener implements ActionListener {
                 }
 
                 // Update sudoku cell
-                int[] coordinate = this.sudokuController.view.sudokuBoard.getCellCoordinate(pressedSudokuboard);
+                int[] coordinate = this.sudokuController.sudokuControls.getCellCoordinate(pressedSudokuboard);
                 int tempVal = this.sudokuController.model.getSudoku()[coordinate[0]][coordinate[1]];
                 this.sudokuController.model.setSudokuCell(coordinate[0], coordinate[1], Integer.valueOf(cellNew));
 
@@ -58,7 +58,7 @@ public class NumboardListener implements ActionListener {
                                 Integer.valueOf(cellNew)));
 
                 // Update the board visuals
-                this.sudokuController.view.updateCellValues(this.sudokuController.model.getSudoku());
+                this.sudokuController.sudokuControls.updateCellValues(this.sudokuController.model.getSudoku());
 
                 // TODO:NEDENSTÅENE BRUGES KUN TIL DE-BUG.
                 // view.updateFrameTitle(model.checkValidity(model.getSudoku(), false),
