@@ -13,9 +13,9 @@ public class MenuBar extends JMenuBar {
     public MenuBarButton undo = new MenuBarButton("Undo");
     public MenuBarButton remove = new MenuBarButton("Remove");
     public MenuBarButton redo = new MenuBarButton("Redo");
+    public MenuBarButton hint = new MenuBarButton("Hint");
 
     public JMenuItem solve = new JMenuItem("Solve Sudoku");
-    public JMenuItem hint = new JMenuItem("Cell hint");
 
     public JMenuItem zoomIn = new JMenuItem("Zoom in");
     public JMenuItem zoomOut = new JMenuItem("Zoom out");
@@ -50,6 +50,7 @@ public class MenuBar extends JMenuBar {
         this.add(undo);
         this.add(remove);
         this.add(redo);
+        this.add(hint);
 
     }
 }
