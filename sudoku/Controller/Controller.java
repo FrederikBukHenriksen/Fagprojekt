@@ -2,6 +2,7 @@ package sudoku.Controller;
 
 import sudoku.Controller.Actionlisteners.*;
 import sudoku.Controller.Actionlisteners.MenuBar.MenuBarMenuActionListener;
+import sudoku.Controller.Actionlisteners.MenuBar.MenuBarNewSudokuActionListener;
 import sudoku.Controller.Actionlisteners.MenuBar.MenuBarTestActionListener;
 import sudoku.Controller.Actionlisteners.MenuBar.MenuBarZoomActionListener;
 import sudoku.Controller.Actionlisteners.MenuBar.SudokuHintListener;
@@ -264,7 +265,7 @@ public class Controller {
 		view.menuBar.hint.addActionListener(new SudokuHintListener(this));
 
 		view.menuBar.test.addActionListener(new MenuBarTestActionListener(this));
-		view.menuBar.newPuzzle.addActionListener(new MenuBarMenuActionListener(this));
+		view.menuBar.newPuzzle.addActionListener(new MenuBarNewSudokuActionListener(this));
 
 		if (!model.getSandwich()) {
 			try {
