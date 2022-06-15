@@ -2,6 +2,7 @@ package sudoku.Controller;
 
 import sudoku.Controller.Actionlisteners.*;
 import sudoku.Controller.Actionlisteners.MenuBar.MenuBarMenuActionListener;
+import sudoku.Controller.Actionlisteners.MenuBar.MenuBarNewSudokuActionListener;
 import sudoku.Controller.Actionlisteners.MenuBar.MenuBarZoomActionListener;
 import sudoku.Controller.Actionlisteners.MenuBar.SudokuHintListener;
 import sudoku.Controller.Actionlisteners.MenuBar.SudokuRedoListener;
