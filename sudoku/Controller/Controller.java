@@ -225,7 +225,8 @@ public class Controller {
 		view.showFrame(model.getSudoku());
 		for (Cell cell : view.sudokuBoard.getCellsLinear()) {
 			cell.addActionListener(new SudokuboardListener(this));
-			cell.addKeyListener(new KeyboardSudokuListener(this));
+			cell.addKeyListener(new KeyboardNumberListener(this));
+			cell.addKeyListener(new KeyboardShortcutListener(this));
 		}
 		view.sudokuNumpad.numpadButtons.forEach(b -> b.addActionListener(new NumboardListener(this)));
 		view.sudokuControls.undo.addActionListener(new SudokuUndoListener(this));
@@ -239,18 +240,19 @@ public class Controller {
 		view.menuBar.solve.addActionListener(new MenuBarMenuActionListener(this));
 		view.menuBar.test.addActionListener(new MenuBarTestActionListener(this));
 		view.menuBar.newPuzzle.addActionListener(new MenuBarMenuActionListener(this));
-		//BacktrackAlgorithm backtrack = new BacktrackAlgorithm(model.getN(), model.getK(), model.xSums, model.ySums,model.sudoku,model);
-		if(model.getSandwich()) {		
+		// BacktrackAlgorithm backtrack = new BacktrackAlgorithm(model.getN(),
+		// model.getK(), model.xSums, model.ySums,model.sudoku,model);
+		if (model.getSandwich()) {
 			model.backtrack.tester(model.backtrack.markUpCells(model.sudoku));
 		} else {
 			model.crooks.solver();
 		}
-		
-		if (!model.getSandwich()) {
+
+		if (!(model.getSandwich() || model.getN() > 4 || model.getN() != model.getK())) {
 			if (model.crooks.getSolvedSudoku()[0][0] == 0) {
 				createPopUp("This sudoku has no solutions \n");
-			} //maybe add for sandwich
-		} else {
+			} // maybe add for sandwich
+		} else if (model.getSandwich()) {
 			if (model.backtrack.getSolvedSudoku()[0][0] == 0) {
 				createPopUp("This sudoku has no solutions \n");
 			}
@@ -326,7 +328,7 @@ public class Controller {
 						model.setSudokuCell(coordinate[0], coordinate[1],
 								model.backtrack.getSolvedSudoku()[coordinate[0]][coordinate[1]]);
 					}
-				}else {
+				} else {
 					if (model.crooks.getUniqueness()) {
 						model.setSudokuCell(coordinate[0], coordinate[1],
 								model.crooks.getSolvedSudoku()[coordinate[0]][coordinate[1]]);
@@ -337,11 +339,11 @@ public class Controller {
 							for (int i = 0; i < model.getN() * model.getK(); i++) {
 								for (int j = 0; j < model.getN() * model.getK(); j++) {
 									if (model.getSudoku()[i][j] != tempSudoku[i][j]) {
-									view.sudokuBoard.getCellFromCoord(i, j).conflict();
+										view.sudokuBoard.getCellFromCoord(i, j).conflict();
+									}
 								}
 							}
 						}
-					}		
 						createPopUp(
 								"This sudoku can't be solved with current entries!\n Please remove incorrect entries before trying again");
 					}
@@ -349,9 +351,9 @@ public class Controller {
 					model.setSudokuCell(coordinate[0], coordinate[1],
 							model.crooks.getSolvedSudoku()[coordinate[0]][coordinate[1]]);
 				}
-				if(model.getSandwich()) {
-				model.pushStack2(model.createStackObj(coordinate[0], coordinate[1], tempVal,
-						model.backtrack.getSolvedSudoku()[coordinate[0]][coordinate[1]]));
+				if (model.getSandwich()) {
+					model.pushStack2(model.createStackObj(coordinate[0], coordinate[1], tempVal,
+							model.backtrack.getSolvedSudoku()[coordinate[0]][coordinate[1]]));
 				} else {
 					model.pushStack2(model.createStackObj(coordinate[0], coordinate[1], tempVal,
 							model.crooks.getSolvedSudoku()[coordinate[0]][coordinate[1]]));
