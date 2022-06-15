@@ -49,7 +49,7 @@ public class KeyboardShortcutListener extends KeyAdapter {
             } else if (yPressed) {
                 this.sudokuController.redoMove();
             } else if (hPressed) {
-                this.sudokuController.getHint();
+                sudokuController.hintPressed = true;
             } else if (plusPressed) {
                 this.sudokuController.zoomIn();
             } else if (minusPressed) {
@@ -145,7 +145,7 @@ public class KeyboardShortcutListener extends KeyAdapter {
             plusPressed = false;
             minusPressed = false;
             if (ctrlPressed) {
-                this.sudokuController.getHint();
+                sudokuController.hintPressed = true;
             }
         } else if (keyCode == KeyEvent.VK_PLUS) {
             yPressed = false;

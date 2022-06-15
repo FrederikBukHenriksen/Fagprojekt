@@ -19,7 +19,7 @@ public class MenuBarNewSudokuActionListener implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         sudokuController.view.dispose();
-        sudokuController.setOkPressed();
+        sudokuController.okPressed = true;
     }
 
 }
