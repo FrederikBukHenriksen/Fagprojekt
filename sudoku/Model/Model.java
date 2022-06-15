@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Random;
 import java.util.Scanner;
-import java.util.Stack;
 
 import javax.swing.JFileChooser;
 
@@ -16,8 +15,7 @@ import sudoku.Model.Validity.ValidityClassic;
 import sudoku.Model.Validity.ValidityExtend;
 import sudoku.View.View;
 import sudoku.View.SudokuBoard.*;
-
-import java.util.Random;
+import sudoku.Model.Stack;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -33,14 +31,11 @@ public class Model {
 	// Setting up variables
 	public int[][] sudoku = new int[0][0];
 	int[][] solvedSudoku = new int[0][0];
-	stackObj[] sudokuStack2 = new stackObj[1000];
-	stackObj[] redoStack = new stackObj[1000];
 	public static int k = 0;
 	public static int n = 0;
 	public static int[] xSums = new int[n * k];
 	public static int[] ySums = new int[n * k];
-	public int moves = 0;
-	public int redoes = 0;
+	public Stack stack;
 
 	static ArrayList<Cell> failedCoords = new ArrayList<Cell>();
 
@@ -148,13 +143,14 @@ public class Model {
 					ySums[index] = Integer.parseInt(str);
 					index++;
 				}
-				backtrack = new BacktrackAlgorithm(getN(), getK(), xSums, ySums,sudoku,this);
+				backtrack = new BacktrackAlgorithm(getN(), getK(), xSums, ySums, sudoku, this);
 			}
 		}
 	}
 
 	public Model(View view) {
 		this.view = view;
+		this.stack = new Stack(sudoku);
 	}
 
 	public void setValidity(ValidityExtend validity) {
@@ -287,104 +283,8 @@ public class Model {
 		return peers.stream().mapToInt(i -> i).toArray();
 	}
 
-	class stackObj {
-		int xCoord = 0;
-		int yCoord = 0;
-		int prevVal = 0;
-		int newVal = 0;
-
-		public stackObj(int a, int b, int c, int d) {
-			xCoord = a;
-			yCoord = b;
-			prevVal = c;
-			newVal = d;
-		}
-
-		public int getX() {
-			return xCoord;
-		}
-
-		public int getY() {
-			return yCoord;
-		}
-
-		public int getPrevVal() {
-			return prevVal;
-		}
-
-		public int getNewVal() {
-			return newVal;
-		}
-	}
-
 	public int[][] getSudoku() {
 		return sudoku;
-	}
-
-	// Push for new stack
-	public void pushStack2(stackObj x) {
-		sudokuStack2[moves] = x;
-		moves++;
-	}
-
-	// Push for redo-stack
-	public void pushRedoStack(stackObj x) {
-		redoStack[redoes] = x;
-		redoes++;
-	}
-
-	// new pop method
-	public stackObj popStack2() {
-		stackObj temp = sudokuStack2[moves - 1];
-		sudoku[temp.getX()][temp.getY()] = temp.prevVal;
-		moves--;
-		return temp;
-	}
-
-	// Pop for redo-stack
-	public stackObj popRedoStack() {
-		stackObj temp = redoStack[redoes - 1];
-		sudoku[temp.getX()][temp.getY()] = temp.newVal;
-		redoes--;
-		return temp;
-	}
-
-	public int[][] peekStack() {
-		return getSudoku();
-	}
-
-	// Method for clearing the redo stack
-	public void clearRedoStack() {
-		redoStack = new stackObj[1000];
-		redoes = 0;
-	}
-
-	// Returns the size of the stack
-	public int getStackSize() {
-		return moves;
-	}
-
-	// CreateStackObject method
-	public stackObj createStackObj(int x, int y, int oldVal, int newVal) {
-		return new stackObj(x, y, oldVal, newVal);
-	}
-
-	// Method for returning coords of the last change on the sudokuStack
-	public int[] getStackCoords() {
-		int[] result = new int[2];
-		stackObj temp = sudokuStack2[moves - 1];
-		result[0] = temp.getX();
-		result[1] = temp.getY();
-		return result;
-	}
-
-	// Method for returning coords of the last change on the redoStack
-	public int[] getRedoStackCoords() {
-		int[] result = new int[2];
-		stackObj temp = redoStack[redoes - 1];
-		result[0] = temp.getX();
-		result[1] = temp.getY();
-		return result;
 	}
 
 	// Method for updating the markUp board, given a set of possible entries and
@@ -621,7 +521,7 @@ public class Model {
 	public static ArrayList<Cell> getFailedCells() {
 		return failedCoords;
 	}
-	
+
 	public boolean getSandwich() {
 		return isSandwich;
 	}

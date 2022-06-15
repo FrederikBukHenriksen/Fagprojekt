@@ -71,14 +71,14 @@ public class KeyboardNumberListener extends KeyAdapter {
                     }
                 }
                 if (!cellNew.equals("")) {
-                    this.sudokuController.model.clearRedoStack();
+                    this.sudokuController.model.stack.clearRedoStack();
                     // Update board both in data and visually
                     int[] coordinate = this.sudokuController.view.sudokuBoard.getCellCoordinate(pressedSudokuboard);
                     int tempVal = this.sudokuController.model.getSudoku()[coordinate[0]][coordinate[1]];
                     this.sudokuController.model.setSudokuCell(coordinate[0], coordinate[1],
                             Integer.valueOf(cellNew));
-                    this.sudokuController.model.pushStack2(
-                            this.sudokuController.model.createStackObj(coordinate[0], coordinate[1], tempVal,
+                    this.sudokuController.model.stack.pushStack(
+                            this.sudokuController.model.stack.createStackObj(coordinate[0], coordinate[1], tempVal,
                                     Integer.valueOf(cellNew)));
                     this.sudokuController.view.updateCellValues(this.sudokuController.model.getSudoku());
                     this.sudokuController.updateColours();

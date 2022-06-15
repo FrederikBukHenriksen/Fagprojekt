@@ -7,6 +7,7 @@ import javax.swing.JButton;
 
 import sudoku.Controller.Controller;
 import sudoku.View.SudokuBoard.Cell;
+import sudoku.Model.Stack;
 
 public class NumboardListener implements ActionListener {
     /**
@@ -28,7 +29,7 @@ public class NumboardListener implements ActionListener {
         try {
             Cell pressedSudokuboard = this.sudokuController.view.sudokuBoard.getButtonSelected();
             if (pressedSudokuboard.enabled) {
-                this.sudokuController.model.clearRedoStack();
+                this.sudokuController.model.stack.clearRedoStack();
                 String cellNew = "";
                 String cellCurrent = pressedSudokuboard.getText();
                 if (!cellCurrent.equals("")) { // Hvis der står noget i cellen
@@ -52,8 +53,8 @@ public class NumboardListener implements ActionListener {
                 this.sudokuController.model.setSudokuCell(coordinate[0], coordinate[1], Integer.valueOf(cellNew));
 
                 // update sudoku Stack
-                this.sudokuController.model.pushStack2(
-                        this.sudokuController.model.createStackObj(coordinate[0], coordinate[1], tempVal,
+                this.sudokuController.model.stack.pushStack(
+                        this.sudokuController.model.stack.createStackObj(coordinate[0], coordinate[1], tempVal,
                                 Integer.valueOf(cellNew)));
 
                 // Update the board visuals

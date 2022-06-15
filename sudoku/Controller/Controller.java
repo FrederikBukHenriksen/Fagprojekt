@@ -71,7 +71,7 @@ public class Controller {
 	}
 
 	public void redoMove() {
-		if (model.redoes > 0) {
+		if (model.stack.redoes > 0) {
 			// System.out.println("Redo"); // Prints "Redo" FOR DEBUG
 			try {
 				view.sudokuBoard.getButtonSelected().setSelected(false);
@@ -80,8 +80,9 @@ public class Controller {
 				// System.out.println(exc.getMessage());
 			}
 			view.sudokuBoard
-					.getCellFromCoord(model.getRedoStackCoords()[0], model.getRedoStackCoords()[1]).setSelected(true);
-			model.pushStack2(model.popRedoStack()); // Removes the last element of the stack
+					.getCellFromCoord(model.stack.getRedoStackCoords()[0], model.stack.getRedoStackCoords()[1])
+					.setSelected(true);
+			model.stack.pushStack(model.stack.popRedoStack()); // Removes the last element of the stack
 			// model.setSudoku(model.getSudoku()); // Updates the board
 			view.updateCellValues(model.getSudoku()); // Updates the visuals
 			// view.updateFrameTitle(model.checkValidity(model.getSudoku(), false),
@@ -91,7 +92,7 @@ public class Controller {
 	}
 
 	public void undoMove() {
-		if (model.moves > 0) {
+		if (model.stack.moves > 0) {
 			// System.out.println("Undo"); // Prints "Undo" FOR DEBUG
 			try {
 				view.sudokuBoard.getButtonSelected().setSelected(false);
@@ -99,8 +100,9 @@ public class Controller {
 			} catch (Exception exc) {
 				// System.out.println(exc.getMessage());
 			}
-			view.sudokuBoard.getCellFromCoord(model.getStackCoords()[0], model.getStackCoords()[1]).setSelected(true);
-			model.pushRedoStack(model.popStack2()); // Removes the last element of the stack
+			view.sudokuBoard.getCellFromCoord(model.stack.getStackCoords()[0], model.stack.getStackCoords()[1])
+					.setSelected(true);
+			model.stack.pushRedoStack(model.stack.popStack()); // Removes the last element of the stack
 			// model.setSudoku(model.getSudoku()); // Updates the board
 			view.updateCellValues(model.getSudoku()); // Updates the visuals
 			// view.updateFrameTitle(model.checkValidity(model.getSudoku(), false),
@@ -352,10 +354,10 @@ public class Controller {
 							model.crooks.getSolvedSudoku()[coordinate[0]][coordinate[1]]);
 				}
 				if (model.getSandwich()) {
-					model.pushStack2(model.createStackObj(coordinate[0], coordinate[1], tempVal,
+					model.stack.pushStack(model.stack.createStackObj(coordinate[0], coordinate[1], tempVal,
 							model.backtrack.getSolvedSudoku()[coordinate[0]][coordinate[1]]));
 				} else {
-					model.pushStack2(model.createStackObj(coordinate[0], coordinate[1], tempVal,
+					model.stack.pushStack(model.stack.createStackObj(coordinate[0], coordinate[1], tempVal,
 							model.crooks.getSolvedSudoku()[coordinate[0]][coordinate[1]]));
 				}
 				view.updateCellValues(model.getSudoku());
