@@ -40,6 +40,7 @@ public class Controller {
 	// Creating variables
 	public Model model;
 	public View view;
+	public SudokuControls sudokuControls;
 
 	public boolean okPressed = false;
 	public boolean hintPressed = false;
