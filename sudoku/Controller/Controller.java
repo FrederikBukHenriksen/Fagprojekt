@@ -1,37 +1,27 @@
 package sudoku.Controller;
 
 import sudoku.Controller.Actionlisteners.*;
-import sudoku.Controller.Actionlisteners.MenuBar.MenuBarMenuActionListener;
-import sudoku.Controller.Actionlisteners.MenuBar.MenuBarNewSudokuActionListener;
-import sudoku.Controller.Actionlisteners.MenuBar.MenuBarZoomActionListener;
-import sudoku.Controller.Actionlisteners.MenuBar.SudokuHintListener;
-import sudoku.Controller.Actionlisteners.MenuBar.SudokuRedoListener;
-import sudoku.Controller.Actionlisteners.MenuBar.SudokuRemoveListener;
-import sudoku.Controller.Actionlisteners.MenuBar.SudokuUndoListener;
+import sudoku.Controller.Actionlisteners.MenuBar.*;
+import sudoku.Controller.MarkCells.ClassicSudokuMarkCells;
+import sudoku.Controller.MarkCells.MarkCellsExtend;
 import sudoku.Model.Model;
-import sudoku.Model.Solver.BacktrackAlgorithm;
-import sudoku.Model.Solver.CrooksAlgorithm;
-import sudoku.Model.Validity.ValidityClassic;
-import sudoku.Model.Validity.ValiditySandwich;
+import sudoku.Model.Solver.*;
+import sudoku.Model.Validity.*;
 import sudoku.View.ExceptionPopUp;
 import sudoku.View.View;
 import sudoku.View.SudokuBoard.*;
 import sudoku.View.SudokuBoard.Classic.ClassicSudokuBoard;
 import sudoku.View.SudokuBoard.Sandwich.SandwichSudoku;
 
-import java.io.IOException;
 import java.util.NoSuchElementException;
 import java.util.concurrent.TimeUnit;
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JLabel;
+import javax.swing.*;
 
-import java.awt.Dimension;
 import java.awt.*;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
+import java.io.IOException;
 import java.awt.Container;
 import java.awt.FlowLayout;
 
@@ -40,88 +30,55 @@ public class Controller {
 	// Creating variables
 	public Model model;
 	public View view;
+	public ValidityExtend validity;
+	public SolverAbstract solver;
+	public SudokuExtend sudokuBoard;
+	public LoadSudokuBoardFile loadSudokuBoardFile;
 	public SudokuControls sudokuControls;
-
+	public MarkCellsExtend markCells;
 	public boolean okPressed = false;
 	public boolean hintPressed = false;
 
-	private SudokuExtend sudokuBoard;
-
-
-	int zoomSizeIncrementChange = 5;
+	int zoomSizeIncrementChange = 5; // Amount of zoom.
 
 	public void updateColours() {
-		view.clearMarkedCells();
-		view.markCells();
-		markConflictCells();
+		markCells.clearMarkedCells();
+		try {
+			markCells.markCells(sudokuControls.getButtonSelected());
+		} catch (Exception e) {
+		}
 		if (model.validity.checkValidity(model.getSudoku()) && model.isFilled()) {
 			createPopUp("Congratulations, you solved the puzzle!");
 		}
 	}
 
-	public void markConflictCells() {
-		for (Point point : model.validity.getUniqueConflictPoints(model.getSudoku())) {
-			Cell cell = sudokuControls.getCellFromCoord(point.x, point.y);
-			cell.conflict();
-			view.markedCells.add(cell);
-		}
-	}
-
-	public void markSimilarCells() {
-		try {
-			Cell cellPressed = sudokuControls.getButtonSelected();
-			if (cellPressed.getText().equals("")) {
-				for (Cell cell : sudokuControls.getCellsLinear()) {
-					if (cell.getText().equals(cellPressed.getText())) {
-						cell.similar();
-					}
-				}
-			}
-		} catch (Exception e) {
-			new CreateOkPopUp(e.getMessage(), this);
-		}
-	}
-
 	public void redoMove() {
 		if (model.stack.redoes > 0) {
-			// System.out.println("Redo"); // Prints "Redo" FOR DEBUG
 			try {
 				sudokuControls.getButtonSelected().setSelected(false);
-				// TODO: indsæt Rasmus' generelle funktion for farver
 			} catch (Exception exc) {
-				// System.out.println(exc.getMessage());
 			}
 			sudokuControls
 					.getCellFromCoord(model.stack.getRedoStackCoords()[0], model.stack.getRedoStackCoords()[1])
 					.setSelected(true);
 			model.stack.pushStack(model.stack.popRedoStack()); // Removes the last element of the stack
-			// model.setSudoku(model.getSudoku()); // Updates the board
 			sudokuControls.updateCellValues(model.getSudoku()); // Updates the visuals
-			// view.updateFrameTitle(model.checkValidity(model.getSudoku(), false),
-			// model.isFilled());
 			updateColours();
 		}
 	}
 
 	public void undoMove() {
 		if (model.stack.moves > 0) {
-			// System.out.println("Undo"); // Prints "Undo" FOR DEBUG
 			try {
 				sudokuControls.getButtonSelected().setSelected(false);
-				// TODO: indsæt Rasmus' generelle funktion for farver
 			} catch (Exception exc) {
-				// System.out.println(exc.getMessage());
 			}
 			sudokuControls.getCellFromCoord(model.stack.getStackCoords()[0], model.stack.getStackCoords()[1])
 					.setSelected(true);
 			model.stack.pushRedoStack(model.stack.popStack()); // Removes the last element of the stack
-			// model.setSudoku(model.getSudoku()); // Updates the board
 			sudokuControls.updateCellValues(model.getSudoku()); // Updates the visuals
-			// view.updateFrameTitle(model.checkValidity(model.getSudoku(), false),
-			// model.isFilled());
 			updateColours();
 		}
-		// System.out.println("UNDO"); //For debug
 	}
 
 	public void createPopUp(String text) {
@@ -139,31 +96,6 @@ public class Controller {
 		closeButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// Rick-roll user on exit?
-				/*
-				 * String url
-				 * ="https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley";
-				 * 
-				 * String myOS = System.getProperty("os.name").toLowerCase();
-				 * 
-				 * try {
-				 * if(Desktop.isDesktopSupported()) { // Probably Windows
-				 * Desktop desktop = Desktop.getDesktop();
-				 * desktop.browse(new URI(url));
-				 * } else { // Definitely Non-windows
-				 * Runtime runtime = Runtime.getRuntime();
-				 * if(myOS.contains("mac")) { // Apples
-				 * runtime.exec("open " + url);
-				 * }
-				 * else if(myOS.contains("nix") || myOS.contains("nux")) { // Linux flavours
-				 * runtime.exec("xdg-open " + url);
-				 * }
-				 * }
-				 * }
-				 * catch(IOException | URISyntaxException eek) {
-				 * }
-				 */
-
 				System.exit(0);
 			}
 		});
@@ -211,11 +143,12 @@ public class Controller {
 
 	}
 
-	public void LoadSudokuBoardFile() {
+	// Simple constructor
+	public Controller() {
+		model = new Model();
 		try {
+			loadSudokuBoardFile.LoadSudokuBoardDoc(this, model);
 
-			model.boardCreater();
-			// break;
 		} catch (IOException e) {
 			// System.out.println("Wrong filetype");
 			CreateOkPopUp wrongFile = new CreateOkPopUpExtend("wrong filetype", this);
@@ -224,42 +157,31 @@ public class Controller {
 			CreateOkPopUp wrongFile = new CreateOkPopUpExtend("wrong filetype", this);
 		} catch (NoSuchElementException ex) {
 			// System.out.println("Sudoku formatet wrong. Hint: Check for newlines");
-			CreateOkPopUp IllegalContent = new CreateOkPopUpExtend("Illegal file content. Check for newlines", this);
+			CreateOkPopUp IllegalContent = new CreateOkPopUpExtend("Illegal file content. Check for newlines",
+					this);
 		}
-		// view = new View(model.getSudoku(), model.getN(), model.getK());
-
-	}
-
-	// Simple constructor
-	public Controller() {
-		model = new Model();
-		LoadSudokuBoardFile();
 		if (model.getSandwich()) {
 
 			view = new View(model.getSudoku(), model.getN(), model.getK(),
 					new SandwichSudoku(model.getSudoku(), model.getN(), model.getK(), model.xSums, model.ySums));
+			validity = new ValiditySandwich(model.getSudoku(), model.getN(), model.getK(), model.xSums, model.ySums);
 
-			model.setValidity(
-					new ValiditySandwich(model.getSudoku(), model.getN(), model.getK(), model.xSums, model.ySums));
-
-			model.setSolver(
-					new BacktrackAlgorithm(model.getN(), model.getN(), model.xSums, model.ySums, model.getSudoku(),
-							model));
+			solver = new BacktrackAlgorithm(model.getN(), model.getN(), model.xSums, model.ySums, model.getSudoku(),
+					model);
 		} else {
 			view = new View(model.getSudoku(), model.getN(), model.getK(),
 					new ClassicSudokuBoard(model.getSudoku(), model.getN(), model.getK()));
 
-			model.setValidity(new ValidityClassic(model.getSudoku(), model.getN(), model.getK()));
-			model.setSolver(new CrooksAlgorithm(model.getN(), model.getK(), model.getSudoku(), model));
+			validity = new ValidityClassic(model.getSudoku(), model.getN(), model.getK());
+			solver = new CrooksAlgorithm(model.getN(), model.getK(), model.getSudoku(), model);
 		}
+		model.setValidity(validity);
+		model.setSolver(solver);
 
 		sudokuControls = new SudokuControls(view.sudokuBoard.cells);
+		markCells = new ClassicSudokuMarkCells(model.getN(), model.getK(), sudokuControls, validity);
 
-		try {
-			model.solver.solve();
-		} catch (Exception exc) {
-			new CreateOkPopUp(exc.getMessage(), this);
-		}
+		// Assign actionlisteners
 
 		for (Cell cell : sudokuControls.getCellsLinear()) {
 			cell.addActionListener(new SudokuboardListener(this));
@@ -278,19 +200,13 @@ public class Controller {
 
 		view.sudokuMenuBar.newPuzzle.addActionListener(new MenuBarMenuActionListener(this));
 
-		if (!model.getSandwich()) {
 			try {
-				if (model.crooks.getSolvedSudoku()[0][0] == 0) {
+				if (model.solver.getSolvedSudoku()[0][0] == 0) {
 					createPopUp("This sudoku has no solutions \n");
 				}
 			} catch (Exception e) {
 			} // maybe add for sandwich
-		} else {
-			if (model.backtrack.getSolvedSudoku()[0][0] == 0) {
-				createPopUp("This sudoku has no solutions \n");
-			}
-		}
-		updateColours();
+
 
 		while (true) {
 			okPressed = false;
@@ -316,11 +232,12 @@ public class Controller {
 		}
 	}
 
+
 	public void getHint() {
 		try {
+			model.runSolver();
 			int[] coordinate = sudokuControls.getCellCoordinate(sudokuControls.getButtonSelected());
 			int tempVal = model.getSudoku()[coordinate[0]][coordinate[1]];
-			model.solver.solve();
 			int hintValue = model.solver.getSolvedSudoku()[coordinate[0]][coordinate[1]];
 			if (model.solver.isSolved() && model.solver.getUniqueness()) {
 				model.setSudokuCell(coordinate[0], coordinate[1], hintValue);
@@ -333,6 +250,7 @@ public class Controller {
 			new CreateOkPopUp(e.getMessage(), this);
 		}
 	}
+
 
 	public boolean getOkPressed() {
 		return okPressed;
@@ -354,6 +272,46 @@ public class Controller {
 			numpadButton.adjustSize(size);
 		}
 		view.pack();
+	}
+
+	public void solveSudoku() {
+		try {
+			model.runSolver();
+			if (model.solver.getUniqueness()) {
+				for (int i = 0; i < model.getN()
+						* model.getK(); i++) {
+					for (int j = 0; j < model.getN()
+							* model.getK(); j++) {
+						if (sudokuControls.getCellFromCoord(i, j).enabled) {
+							model.setSudokuCell(i, j,
+									model.solver.getSolvedSudoku()[i][j]);
+						}
+					}
+				}
+				sudokuControls
+						.updateCellValues(model.getSudoku());
+				updateColours();
+			} else {
+				model.solver.solve();
+				if (model.solver.getSolvedSudoku()[0][0] != 0) {
+					for (int i = 0; i < model.getN()
+							* model.getK(); i++) {
+						for (int j = 0; j < model.getN()
+								* model.getK(); j++) {
+							if (sudokuControls.getCellFromCoord(i,
+									j).enabled) {
+								model.setSudokuCell(i, j,
+										model.solver
+												.getSolvedSudoku()[i][j]);
+							}
+						}
+					}
+					updateColours();
+				}
+			}
+		} catch (Exception exc) {
+			new ExceptionPopUp(exc);
+		}
 	}
 
 }

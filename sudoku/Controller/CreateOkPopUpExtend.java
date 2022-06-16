@@ -56,6 +56,11 @@ public class CreateOkPopUpExtend extends CreateOkPopUp {
     protected void whileLoop() {
         // TODO Auto-generated method stub
         super.whileLoop();
-        sudokuController.LoadSudokuBoardFile();
+        try {
+            sudokuController.loadSudokuBoardFile.LoadSudokuBoardDoc(sudokuController, sudokuController.model);
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 }
