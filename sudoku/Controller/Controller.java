@@ -13,7 +13,6 @@ import sudoku.View.SudokuBoard.*;
 import sudoku.View.SudokuBoard.Classic.ClassicSudokuBoard;
 import sudoku.View.SudokuBoard.Sandwich.SandwichSudoku;
 
-import java.io.IOException;
 import java.util.NoSuchElementException;
 import java.util.concurrent.TimeUnit;
 import javax.swing.*;
@@ -22,7 +21,7 @@ import java.awt.*;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
+import java.io.IOException;
 import java.awt.Container;
 import java.awt.FlowLayout;
 
@@ -34,7 +33,7 @@ public class Controller {
 	public ValidityExtend validity;
 	public SolverAbstract solver;
 	public SudokuExtend sudokuBoard;
-
+	public LoadSudokuBoardFile loadSudokuBoardFile;
 	public SudokuControls sudokuControls;
 	public MarkCellsExtend markCells;
 	public boolean okPressed = false;
@@ -52,9 +51,6 @@ public class Controller {
 			createPopUp("Congratulations, you solved the puzzle!");
 		}
 	}
-
-
-
 
 	public void redoMove() {
 		if (model.stack.redoes > 0) {
@@ -147,11 +143,12 @@ public class Controller {
 
 	}
 
-	public void LoadSudokuBoardFile() {
+	// Simple constructor
+	public Controller() {
+		model = new Model();
 		try {
+			loadSudokuBoardFile.LoadSudokuBoardDoc(this, model);
 
-			model.boardCreater();
-			// break;
 		} catch (IOException e) {
 			// System.out.println("Wrong filetype");
 			CreateOkPopUp wrongFile = new CreateOkPopUpExtend("wrong filetype", this);
@@ -160,16 +157,9 @@ public class Controller {
 			CreateOkPopUp wrongFile = new CreateOkPopUpExtend("wrong filetype", this);
 		} catch (NoSuchElementException ex) {
 			// System.out.println("Sudoku formatet wrong. Hint: Check for newlines");
-			CreateOkPopUp IllegalContent = new CreateOkPopUpExtend("Illegal file content. Check for newlines", this);
+			CreateOkPopUp IllegalContent = new CreateOkPopUpExtend("Illegal file content. Check for newlines",
+					this);
 		}
-		// view = new View(model.getSudoku(), model.getN(), model.getK());
-
-	}
-
-	// Simple constructor
-	public Controller() {
-		model = new Model();
-		LoadSudokuBoardFile();
 		if (model.getSandwich()) {
 
 			view = new View(model.getSudoku(), model.getN(), model.getK(),
@@ -210,18 +200,13 @@ public class Controller {
 
 		view.sudokuMenuBar.newPuzzle.addActionListener(new MenuBarMenuActionListener(this));
 
-		if (!model.getSandwich()) {
 			try {
 				if (model.solver.getSolvedSudoku()[0][0] == 0) {
 					createPopUp("This sudoku has no solutions \n");
 				}
 			} catch (Exception e) {
 			} // maybe add for sandwich
-		} else {
-			if (model.backtrack.getSolvedSudoku()[0][0] == 0) {
-				createPopUp("This sudoku has no solutions \n");
-			}
-		}
+
 
 		while (true) {
 			okPressed = false;
@@ -250,9 +235,9 @@ public class Controller {
 
 	public void getHint() {
 		try {
+			model.runSolver();
 			int[] coordinate = sudokuControls.getCellCoordinate(sudokuControls.getButtonSelected());
 			int tempVal = model.getSudoku()[coordinate[0]][coordinate[1]];
-			model.solver.solve();
 			int hintValue = model.solver.getSolvedSudoku()[coordinate[0]][coordinate[1]];
 			if (model.solver.isSolved() && model.solver.getUniqueness()) {
 				model.setSudokuCell(coordinate[0], coordinate[1], hintValue);
@@ -265,6 +250,7 @@ public class Controller {
 			new CreateOkPopUp(e.getMessage(), this);
 		}
 	}
+
 
 	public boolean getOkPressed() {
 		return okPressed;
@@ -290,6 +276,7 @@ public class Controller {
 
 	public void solveSudoku() {
 		try {
+			model.runSolver();
 			if (model.solver.getUniqueness()) {
 				for (int i = 0; i < model.getN()
 						* model.getK(); i++) {

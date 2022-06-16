@@ -11,8 +11,12 @@ public abstract class MarkCellsExtend {
     public ArrayList<Cell> markedCells = new ArrayList<Cell>();
 
     public void clearMarkedCells() {
+        for (Cell cell : markedCells) {
+            cell.defaultColor();
+        }
         markedCells.clear();
+
     }
 
-    public abstract void markCells(Cell cell) throws NoCellSelected, CellDoesNotExist;
+    public abstract void markCells(Cell cell) throws NoCellSelected, CellDoesNotExist, Exception;
 }

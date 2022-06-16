@@ -25,14 +25,15 @@ public class ClassicSudokuMarkCells extends MarkCellsExtend {
         this.k = k;
     }
 
-    public void markCells(Cell cell) throws NoCellSelected, CellDoesNotExist {
+    public void markCells(Cell cell) throws Exception {
             getPeersHorisontal(cell);
             getPeersVertical(cell);
             getPeersSquare(cell);
             markConflictCells();
         }
 
-        protected void markConflictCells() {
+        protected void markConflictCells() throws Exception {
+            controller.model.runSolver();
             for (Point point : validity.getUniqueConflictPoints(controller.model.getSudoku())) {
                 Cell cell = sudokuControls.getCellFromCoord(point.x, point.y);
                 cell.conflict();
