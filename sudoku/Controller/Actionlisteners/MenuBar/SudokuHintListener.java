@@ -19,7 +19,7 @@ public class SudokuHintListener implements ActionListener {
     }
 
     public void actionPerformed(ActionEvent e) {
-        sudokuController.getHint();
+        // Sets flag for running hint-method in
         sudokuController.hintPressed = true;
     }
 }

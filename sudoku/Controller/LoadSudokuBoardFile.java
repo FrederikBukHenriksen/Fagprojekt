@@ -11,7 +11,9 @@ import sudoku.Model.Solver.CrooksAlgorithm;
 
 public class LoadSudokuBoardFile {
 
-    public static void LoadSudokuBoardDoc(Controller controller, Model model) throws IOException {
+    public static void LoadSudokuBoardDoc(Controller controller, Model model)
+            throws IOException, 
+            NumberFormatException, NoSuchElementException {
 
         Path file = null;
         file = controller.model.findSudokuPath("C:\\");
