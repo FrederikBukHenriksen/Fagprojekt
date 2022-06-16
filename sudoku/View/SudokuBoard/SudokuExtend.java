@@ -24,10 +24,4 @@ public class SudokuExtend extends JPanel {
         return cells;
     }
 
-
-
-
-
-
-
 }
