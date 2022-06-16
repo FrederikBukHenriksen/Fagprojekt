@@ -298,6 +298,25 @@ public class Controller {
 			while (true) {
 				try {
 					TimeUnit.SECONDS.sleep(1);
+					/*
+					System.out.print("{");
+					for (int i = 0; i< 9; i++) {
+						
+						for (int j = 0; j< 9; j++) {
+							if (j == 8) {
+								System.out.print("" + model.getSudoku()[i][j] + "}");
+							}else if (j == 0){
+								System.out.print("{" + model.getSudoku()[i][j] + ",");
+							}else {
+								System.out.print("" + model.getSudoku()[i][j] + ",");
+							}
+							
+						}
+						System.out.print(",");
+					}
+					System.out.print("}");
+					System.out.println("");
+					*/
 				} catch (InterruptedException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
