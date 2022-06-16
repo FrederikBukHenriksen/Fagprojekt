@@ -137,10 +137,10 @@ public class Model {
 	// }
 
 	public Model() {
-		this.stack = new Stack(sudoku);
 	}
 
 	public void runSolver() throws Exception {
+
 		if (!solver.isSolved() || !solver.getUniqueness()) {
 			solver.solve();
 		}
@@ -154,6 +154,10 @@ public class Model {
 
 	public void setSolver(SolverAbstract solver) {
 		this.solver = solver;
+	}
+
+	public void setStack(Stack stack) {
+		this.stack = stack;
 	}
 
 	public void setSudoku(int[][] board) {

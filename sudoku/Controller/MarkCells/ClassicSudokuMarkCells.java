@@ -6,7 +6,6 @@ import sudoku.Controller.SudokuControls;
 import sudoku.Controller.Exceptions.CellDoesNotExist;
 import sudoku.Controller.Exceptions.NoCellSelected;
 import sudoku.Model.Validity.ValidityExtend;
-import sudoku.View.ExceptionPopUp;
 import sudoku.View.SudokuBoard.Cell;
 import java.awt.*;
 

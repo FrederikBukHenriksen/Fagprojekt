@@ -22,21 +22,24 @@ public class CreateOkPopUp extends JDialog {
 
     public CreateOkPopUp(String text, Controller sudokuController) {
         this.sudokuController = sudokuController;
-        moveOn = false;
         this.setLayout(new FlowLayout());
+        moveOn = false;
 
         final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
-        int x = (int) screenSize.getWidth();
-        int y = (int) screenSize.getHeight();
+        int x = (int) screenSize.getWidth() / 2;
+        int y = (int) screenSize.getHeight() / 2;
+        int height = 200;
+        int width = 400;
         try {
             x = sudokuController.view.getX();
             y = sudokuController.view.getY();
+            height = sudokuController.view.getHeight();
+            width = sudokuController.view.getWidth();
         } catch (Exception e) {
         }
-        int height = sudokuController.view.getHeight();
-        int width = sudokuController.view.getWidth();
-        this.setBounds((width / 2) - 200 + x, (height / 2) - 75 + y, 400, 150);
+
+        // this.setBounds((width / 2) - 200 + x, (height / 2) - 75 + y, 400, 150);
         int xScreen = (screenSize.width / 2) - (this.getWidth() / 2);
         int yScreen = (screenSize.height / 2) - (this.getHeight() / 2);
         this.setLocation(xScreen, yScreen);
@@ -54,6 +57,7 @@ public class CreateOkPopUp extends JDialog {
         this.add(jLabel);
         this.add(okButton);
         this.setVisible(true);
+        this.pack();
 
         whileLoop();
     }
@@ -72,11 +76,4 @@ public class CreateOkPopUp extends JDialog {
             }
         }
     }
-
-    // class OkButton extends JButton {
-    // public OkButton(String input) {
-    // super(input);
-    // }
-
-    // }
 }

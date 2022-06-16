@@ -13,7 +13,6 @@ import sudoku.Model.Solver.BacktrackAlgorithm;
 import sudoku.Model.Solver.CrooksAlgorithm;
 import sudoku.Model.Validity.ValidityClassic;
 import sudoku.Model.Validity.ValiditySandwich;
-import sudoku.View.ExceptionPopUp;
 import sudoku.View.View;
 import sudoku.View.SudokuBoard.*;
 import sudoku.View.SudokuBoard.Classic.ClassicSudokuBoard;
@@ -58,9 +57,8 @@ public class CreateOkPopUpExtend extends CreateOkPopUp {
         super.whileLoop();
         try {
             sudokuController.loadSudokuBoardFile.LoadSudokuBoardDoc(sudokuController, sudokuController.model);
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+        } catch (Exception e) {
+            new CreateOkPopUpExtend("wrong filetype", sudokuController);
         }
     }
 }
