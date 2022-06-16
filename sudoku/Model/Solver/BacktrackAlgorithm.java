@@ -28,8 +28,8 @@ public class BacktrackAlgorithm extends SolverAbstract {
 		this.model = model;
 		
 	}
-	public ArrayList<ArrayList<ArrayList<Integer>>> markUpCells(int[][] sudoku) {
-		ValidityExtend validity = new ValiditySandwich(sudoku, n, k, xSums, ySums);
+	public ArrayList<ArrayList<ArrayList<Integer>>> markUpCells(int[][] sudokuMarkUp) {
+		ValidityExtend validity = new ValiditySandwich(sudokuMarkUp, n, k, xSums, ySums);
 
 		ArrayList<ArrayList<ArrayList<Integer>>> markUpBoard = new ArrayList<>();
 		for (int j = 0; j < n * k; j++) {
@@ -45,8 +45,8 @@ public class BacktrackAlgorithm extends SolverAbstract {
 		int SudukoSize = n * k;
 		for (int i = 0; i < SudukoSize; i++) {
 			for (int j = 0; j < SudukoSize; j++) {
-				if (sudoku[i][j] != 0) {
-					markUpBoard.get(i).get(j).add(sudoku[i][j]);
+				if (sudokuMarkUp[i][j] != 0) {
+					markUpBoard.get(i).get(j).add(sudokuMarkUp[i][j]);
 				}
 			}
 		}
@@ -54,17 +54,17 @@ public class BacktrackAlgorithm extends SolverAbstract {
 		// Find mulige tal
 		for (int i = 0; i < SudukoSize; i++) {
 			for (int j = 0; j < SudukoSize; j++) {
-				if (sudoku[i][j] == 0) {
+				if (sudokuMarkUp[i][j] == 0) {
 
 					// KOPIER SUDOKUBOARDET
-					int[][] copyOfSudoku = new int[sudoku.length][];
+					int[][] copyOfSudoku = new int[sudokuMarkUp.length][];
 					for (int p = 0; p < copyOfSudoku.length; ++p) {
 
 						// allocating space for each row of destination array
-						copyOfSudoku[p] = new int[sudoku[p].length];
+						copyOfSudoku[p] = new int[sudokuMarkUp[p].length];
 
 						for (int o = 0; o < copyOfSudoku[p].length; ++o) {
-							copyOfSudoku[p][o] = sudoku[p][o];
+							copyOfSudoku[p][o] = sudokuMarkUp[p][o];
 						}
 					}
 
@@ -84,7 +84,7 @@ public class BacktrackAlgorithm extends SolverAbstract {
 	}
 
 	public void solve() {
-		ArrayList<ArrayList<ArrayList<Integer>>> prem = model.backtrack.markUpCells(model.sudoku);
+		ArrayList<ArrayList<ArrayList<Integer>>> prem = markUpCells(sudoku);
 		int loopCount = 0;
 		int [][] sudokuSimpleArray = sudoku;
 		ValidityExtend validity = new ValiditySandwich(sudoku, n, k, xSums, ySums);
