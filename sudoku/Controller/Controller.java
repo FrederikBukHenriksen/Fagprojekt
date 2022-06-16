@@ -46,6 +46,9 @@ public class Controller {
 		try {
 			markCells.markCells(sudokuControls.getButtonSelected());
 		} catch (Exception e) {
+			if (model.validity.checkValidity(model.getSudoku()) && model.isFilled()) {
+				createPopUp("Congratulations, you solved the puzzle!");
+			}
 		}
 
 	}
@@ -208,9 +211,6 @@ public class Controller {
 			okPressed = false;
 			hintPressed = false;
 			while (true) {
-				if (model.validity.checkValidity(model.getSudoku()) && model.isFilled()) {
-					createPopUp("Congratulations, you solved the puzzle!");
-				}
 				try {
 					Thread.sleep(20);
 				} catch (InterruptedException e1) {
