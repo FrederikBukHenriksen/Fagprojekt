@@ -213,7 +213,8 @@ public class Controller {
 
 	public void LoadSudokuBoardFile() {
 		try {
-			model = new Model();
+
+			model.boardCreater();
 			// break;
 		} catch (IOException e) {
 			// System.out.println("Wrong filetype");
@@ -231,6 +232,7 @@ public class Controller {
 
 	// Simple constructor
 	public Controller() {
+		model = new Model();
 		LoadSudokuBoardFile();
 		if (model.getSandwich()) {
 

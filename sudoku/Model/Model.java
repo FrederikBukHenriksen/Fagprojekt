@@ -134,8 +134,7 @@ public class Model {
 		}
 	}
 
-	public Model() throws NumberFormatException, FileNotFoundException, NoSuchElementException, IOException {
-		boardCreater();
+	public Model() {
 		this.stack = new Stack(sudoku);
 	}
 

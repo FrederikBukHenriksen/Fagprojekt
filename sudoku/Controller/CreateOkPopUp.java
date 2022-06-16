@@ -24,12 +24,19 @@ public class CreateOkPopUp extends JDialog {
         this.sudokuController = sudokuController;
         moveOn = false;
         this.setLayout(new FlowLayout());
-        int x = sudokuController.view.getX();
-        int y = sudokuController.view.getY();
+
+        final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+
+        int x = (int) screenSize.getWidth();
+        int y = (int) screenSize.getHeight();
+        try {
+            x = sudokuController.view.getX();
+            y = sudokuController.view.getY();
+        } catch (Exception e) {
+        }
         int height = sudokuController.view.getHeight();
         int width = sudokuController.view.getWidth();
         this.setBounds((width / 2) - 200 + x, (height / 2) - 75 + y, 400, 150);
-        final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         int xScreen = (screenSize.width / 2) - (this.getWidth() / 2);
         int yScreen = (screenSize.height / 2) - (this.getHeight() / 2);
         this.setLocation(xScreen, yScreen);
