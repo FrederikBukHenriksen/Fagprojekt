@@ -1,4 +1,4 @@
-package sudoku.View.SudokuBoard.Classic;
+package sudoku.View.SudokuBoard;
 
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -37,6 +37,5 @@ public class SudokuNumpad extends JPanel {
                 this.add(spacer);
             }
         }
-
     }
 }

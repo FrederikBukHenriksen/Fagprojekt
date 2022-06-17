@@ -74,7 +74,7 @@ public class ClassicSudokuMarkCells extends MarkCellsExtend {
 
     public void markSimilarCells(Cell pressedCell) {
         if (pressedCell.getText().equals("")) {
-            for (Cell cell : sudokuControls.getCellsLinear()) {
+            for (Cell cell : sudokuControls.getCells1d()) {
                 if (cell.getText().equals(pressedCell.getText())) {
                     cell.similar();
                 }

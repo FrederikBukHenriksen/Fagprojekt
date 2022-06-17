@@ -28,15 +28,10 @@ public class Cell extends JToggleButton {
         setText("");
         setBackground(def);
         setForeground(defFont);
-        setFont(new Font("Serif", Font.PLAIN, 28));
         setBorder(new LineBorder(Color.black, 1));
         setEnabled(true);
-        // UIManager.put("ToggleButton.highlight", Color.red);
         UIManager.put("ToggleButton.select", selected);
         SwingUtilities.updateComponentTreeUI(this);
-
-        setMinimumSize(new Dimension(25, 25));
-        setPreferredSize(new Dimension(40, 40));
     }
 
     @Override
@@ -61,14 +56,14 @@ public class Cell extends JToggleButton {
         }
     }
 
-    public void adjustSize(int sizeAdjustment) {
-        int currentSize = (int) getSize().getWidth();
-        int currentFontSize = (int) getFont().getSize();
-        int newSize = currentSize + sizeAdjustment;
-        int newFontSize = currentFontSize + sizeAdjustment;
-        setSize(new Dimension(newSize, newSize));
-        this.setPreferredSize(new Dimension(newSize, newSize));
-        setFont(new Font("Serif", Font.PLAIN, newFontSize));
+    public void setSize(int size) {
+        // int currentSize = (int) getSize().getWidth();
+        // int currentFontSize = (int) getFont().getSize();
+        // int newSize = currentSize + sizeAdjustment;
+        // int newFontSize = currentFontSize + sizeAdjustment;
+        setSize(new Dimension(size, size));
+        this.setPreferredSize(new Dimension(size, size));
+        setFont(new Font("Serif", Font.PLAIN, (int) (size * 0.8)));
     }
 
 

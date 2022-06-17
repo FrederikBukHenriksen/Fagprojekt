@@ -20,8 +20,25 @@ public class SudokuExtend extends JPanel {
         this.k = k;
     }
 
-    public Cell[][] getCells() {
+    public Cell[][] getCells2d() {
         return cells;
+    }
+
+    public Cell[] getCells1d() {
+        Cell[] list = new Cell[cells.length * 2];
+        for (int i = 0; i < list.length; i++) {
+            for (int j = 0; j < list.length; j++) {
+                list[i * j] = cells[i][j];
+            }
+        }
+
+        // ArrayList<Cell> list = new ArrayList<>();
+        // for (Cell[] arraylist : cells) {
+        // for (Cell cell : arraylist) {
+        // list.add(cell);
+        // }
+        // }
+        return list;
     }
 
 }

@@ -33,7 +33,7 @@ public class SudokuControls {
 
     public Cell getButtonSelected() throws NoCellSelected {
         Cell selected = null;
-        for (Cell cell : getCellsLinear()) {
+        for (Cell cell : getCells1d()) {
             if (cell.isSelected()) {
                 selected = cell;
             }
@@ -61,7 +61,7 @@ public class SudokuControls {
         return coordinate;
     }
 
-    public ArrayList<Cell> getCellsLinear() {
+    public ArrayList<Cell> getCells1d() {
         ArrayList<Cell> list = new ArrayList<>();
         for (Cell[] arraylist : cells) {
             for (Cell cell : arraylist) {
@@ -76,7 +76,7 @@ public class SudokuControls {
         if (!buttonSelected.isSelected()) {
             return;
         }
-        getCellsLinear().forEach(b -> b.setSelected(false));
+        getCells1d().forEach(b -> b.setSelected(false));
         buttonSelected.setSelected(true);
     }
 

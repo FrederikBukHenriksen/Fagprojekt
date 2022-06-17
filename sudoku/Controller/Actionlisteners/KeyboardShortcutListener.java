@@ -51,9 +51,9 @@ public class KeyboardShortcutListener extends KeyAdapter {
             } else if (hPressed) {
                 sudokuController.hintPressed = true;
             } else if (plusPressed) {
-                this.sudokuController.zoomIn();
+                this.sudokuController.zoom.zoomIn();
             } else if (minusPressed) {
-                this.sudokuController.zoomOut();
+                this.sudokuController.zoom.zoomOut();
             }
 
         } else if (keyCode == KeyEvent.VK_DOWN) {
@@ -154,7 +154,7 @@ public class KeyboardShortcutListener extends KeyAdapter {
             plusPressed = true;
             minusPressed = false;
             if (ctrlPressed) {
-                this.sudokuController.zoomIn();
+                this.sudokuController.zoom.zoomIn();
             }
         } else if (keyCode == KeyEvent.VK_MINUS) {
             yPressed = false;
@@ -163,7 +163,7 @@ public class KeyboardShortcutListener extends KeyAdapter {
             plusPressed = false;
             minusPressed = true;
             if (ctrlPressed) {
-                this.sudokuController.zoomOut();
+                this.sudokuController.zoom.zoomOut();
             }
         }
     }
