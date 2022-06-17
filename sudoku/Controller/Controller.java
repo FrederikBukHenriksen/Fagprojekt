@@ -199,12 +199,12 @@ public class Controller {
 		view.sudokuMenuBar.hint.addActionListener(new SudokuHintListener(this));
 		view.sudokuMenuBar.newPuzzle.addActionListener(new MenuBarNewSudokuActionListener(this));
 
-			try {
-				if (model.solver.getSolvedSudoku()[0][0] == 0) {
-					createPopUp("This sudoku has no solutions \n");
-				}
-			} catch (Exception e) {
+		try {
+			if (model.solver.getSolvedSudoku()[0][0] == 0) {
+				createPopUp("This sudoku has no solutions \n");
 			}
+		} catch (Exception e) {
+		}
 
 		while (true) {
 			okPressed = false;
@@ -216,9 +216,7 @@ public class Controller {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				if (okPressed) {
-					break;
-				} else if (hintPressed) {
+				if (okPressed || hintPressed) {
 					break;
 				}
 			}
