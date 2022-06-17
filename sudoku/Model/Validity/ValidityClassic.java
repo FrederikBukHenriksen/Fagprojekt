@@ -149,8 +149,8 @@ public class ValidityClassic extends ValidityExtend {
 
                 for (int c1 = 0; c1 < n; c1++) {
                     for (int c2 = 0; c2 < n; c2++) {
-                        int axis0 = s1 * 3 + c1;
-                        int axis1 = s2 * 3 + c2;
+                        int axis0 = s1 * n + c1;
+                        int axis1 = s2 * n + c2;
 
                         if (sudoku[axis0][axis1] > 0) {
                             numberRangeSquare[(sudoku[axis0][axis1] - 1)].add(new Point(axis0, axis1));
