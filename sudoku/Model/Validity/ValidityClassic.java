@@ -143,7 +143,7 @@ public class ValidityClassic extends ValidityExtend {
 
                 // Set-up array, with empty arraylists inside.
                 ArrayList<Point>[] numberRangeSquare = new ArrayList[n * n];
-                for (int q = 0; q < n * k; q++) {
+                for (int q = 0; q < n * n; q++) {
                     numberRangeSquare[q] = new ArrayList<Point>();
                 }
 
