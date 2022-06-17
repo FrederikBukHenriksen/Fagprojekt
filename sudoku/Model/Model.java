@@ -24,6 +24,7 @@ public class Model {
 	public static int[] xSums = new int[n * k];
 	public static int[] ySums = new int[n * k];
 
+
 	// Containers
 	public ValidityExtend validity;
 	public SolverAbstract solver;

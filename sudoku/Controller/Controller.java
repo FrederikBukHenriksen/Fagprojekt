@@ -36,10 +36,11 @@ public class Controller {
 	public LoadSudokuBoardFile loadSudokuBoardFile;
 	public SudokuControls sudokuControls;
 	public MarkCellsExtend markCells;
+	public Zoom zoom;
 	public boolean okPressed = false;
 	public boolean hintPressed = false;
 
-	int zoomSizeIncrementChange = 5; // Amount of zoom.
+
 
 	public void updateColours() {
 		markCells.clearMarkedCells();
@@ -121,7 +122,6 @@ public class Controller {
 		Container contentPane = new Container();
 
 		Panel outerPanel = new Panel();
-		// outerPanel.setBackground(Color.RED);
 		outerPanel.setLayout(new GridBagLayout());
 		GridBagConstraints gbc = new GridBagConstraints();
 
@@ -141,7 +141,6 @@ public class Controller {
 		jd.add(outerPanel);
 		jd.setVisible(true);
 		jd.pack();
-
 	}
 
 	// Simple constructor
@@ -181,10 +180,10 @@ public class Controller {
 
 		sudokuControls = new SudokuControls(view.sudokuBoard.cells);
 		markCells = new ClassicSudokuMarkCells(model.getN(), model.getK(), sudokuControls, validity);
-
+		zoom = new Zoom(this);
 		// Assign actionlisteners
 
-		for (Cell cell : sudokuControls.getCellsLinear()) {
+		for (Cell cell : sudokuControls.getCells1d()) {
 			cell.addActionListener(new SudokuboardListener(this));
 			cell.addKeyListener(new KeyboardNumberListener(this));
 			cell.addKeyListener(new KeyboardShortcutListener(this));
@@ -235,23 +234,7 @@ public class Controller {
 		return okPressed;
 	}
 
-	public void zoomIn() {
-		zoom(zoomSizeIncrementChange);
-	}
 
-	public void zoomOut() {
-		zoom(-zoomSizeIncrementChange);
-	}
-
-	public void zoom(int size) {
-		for (Cell cell : sudokuControls.getCellsLinear()) {
-			cell.adjustSize(size);
-		}
-		for (NumpadButton numpadButton : view.sudokuNumpad.numpadButtons) {
-			numpadButton.adjustSize(size);
-		}
-		view.pack();
-	}
 
 	public void getHint() {
 		try {
