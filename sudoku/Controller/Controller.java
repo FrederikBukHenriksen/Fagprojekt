@@ -179,7 +179,7 @@ public class Controller {
 		model.setStack(new Stack(model.getSudoku()));
 
 		sudokuControls = new SudokuControls(view.sudokuBoard.cells);
-		markCells = new ClassicSudokuMarkCells(model.getN(), model.getK(), sudokuControls, validity);
+		markCells = new ClassicSudokuMarkCells(model.getSudoku(), model.getN(), model.getK(), sudokuControls, validity);
 		zoom = new Zoom(this);
 		// Assign actionlisteners
 

@@ -1,10 +1,8 @@
 package sudoku.Controller.MarkCells;
 
 import sudoku.Controller.Controller;
-import sudoku.Controller.CreateOkPopUp;
 import sudoku.Controller.SudokuControls;
 import sudoku.Controller.Exceptions.CellDoesNotExist;
-import sudoku.Controller.Exceptions.NoCellSelected;
 import sudoku.Model.Validity.ValidityExtend;
 import sudoku.View.SudokuBoard.Cell;
 import java.awt.*;
@@ -14,12 +12,15 @@ public class ClassicSudokuMarkCells extends MarkCellsExtend {
     Controller controller;
     SudokuControls sudokuControls;
     ValidityExtend validity;
+    int[][] sudoku;
     int n;
     int k;
 
-    public ClassicSudokuMarkCells(int n, int k, SudokuControls sudokuControls, ValidityExtend validityExtend) {
+    public ClassicSudokuMarkCells(int[][] sudoku, int n, int k, SudokuControls sudokuControls,
+            ValidityExtend validityExtend) {
         this.sudokuControls = sudokuControls;
         this.validity = validityExtend;
+        this.sudoku = sudoku;
         this.n = n;
         this.k = k;
     }
@@ -32,8 +33,7 @@ public class ClassicSudokuMarkCells extends MarkCellsExtend {
         }
 
         protected void markConflictCells() throws Exception {
-            controller.model.runSolver();
-            for (Point point : validity.getUniqueConflictPoints(controller.model.getSudoku())) {
+            for (Point point : validity.getUniqueConflictPoints(sudoku)) {
                 Cell cell = sudokuControls.getCellFromCoord(point.x, point.y);
                 cell.conflict();
                 markedCells.add(cell);
