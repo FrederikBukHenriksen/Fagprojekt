@@ -1,10 +1,10 @@
-package sudoku.Controller;
+package sudoku.Controller.Zoom;
 
 import sudoku.View.SudokuBoard.NumpadButton;
-import sudoku.View.SudokuBoard.ZoomObjectInterface;
 
 import java.util.ArrayList;
 
+import sudoku.Controller.Controller;
 import sudoku.View.SudokuBoard.Cell;
 
 public class Zoom {

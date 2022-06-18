@@ -4,6 +4,8 @@ import java.awt.Font;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 
+import sudoku.Controller.Zoom.ZoomObjectInterface;
+
 import java.awt.*;
 
 public class NumpadButton extends JButton implements ZoomObjectInterface {

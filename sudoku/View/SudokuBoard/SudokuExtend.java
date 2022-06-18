@@ -7,7 +7,7 @@ import javax.swing.JPanel;
 import sudoku.Controller.Exceptions.CellDoesNotExist;
 import sudoku.Controller.Exceptions.NoCellSelected;
 
-public class SudokuExtend extends JPanel {
+public class SudokuExtend extends JPanel implements SudokuInterface {
     protected int[][] sudoku;
     protected int n; // N antal celler i hver square
     protected int k; // K antal squares
@@ -31,6 +31,11 @@ public class SudokuExtend extends JPanel {
 
         }
         return list;
+    }
+
+    @Override
+    public void assembleBoard() {
+
     }
 
 }

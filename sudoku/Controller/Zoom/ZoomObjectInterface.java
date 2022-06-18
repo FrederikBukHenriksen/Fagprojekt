@@ -1,4 +1,4 @@
-package sudoku.View.SudokuBoard;
+package sudoku.Controller.Zoom;
 
 public interface ZoomObjectInterface {
 

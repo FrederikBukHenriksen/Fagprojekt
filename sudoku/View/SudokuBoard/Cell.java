@@ -8,6 +8,8 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 
+import sudoku.Controller.Zoom.ZoomObjectInterface;
+
 import java.awt.*;
 import java.awt.Color;
 

@@ -4,6 +4,8 @@ import sudoku.Controller.Actionlisteners.*;
 import sudoku.Controller.Actionlisteners.MenuBar.*;
 import sudoku.Controller.MarkCells.ClassicSudokuMarkCells;
 import sudoku.Controller.MarkCells.MarkCellsExtend;
+import sudoku.Controller.Zoom.Zoom;
+import sudoku.Controller.Zoom.ZoomObjectInterface;
 import sudoku.Model.Model;
 import sudoku.Model.Stack;
 import sudoku.Model.Solver.*;
@@ -175,6 +177,7 @@ public class Controller {
 			validity = new ValidityClassic(model.getSudoku(), model.getN(), model.getK());
 			solver = new CrooksAlgorithm(model.getN(), model.getK(), model.getSudoku(), model);
 		}
+		view.sudokuBoard.assembleBoard();
 		model.setValidity(validity);
 		model.setSolver(solver);
 		model.setStack(new Stack(model.getSudoku()));
