@@ -13,6 +13,7 @@ import sudoku.View.SudokuBoard.*;
 import sudoku.View.SudokuBoard.Classic.ClassicSudokuBoard;
 import sudoku.View.SudokuBoard.Sandwich.SandwichSudoku;
 
+import java.util.ArrayList;
 import java.util.NoSuchElementException;
 import java.util.concurrent.TimeUnit;
 import javax.swing.*;
@@ -180,7 +181,8 @@ public class Controller {
 
 		sudokuControls = new SudokuControls(view.sudokuBoard.cells);
 		markCells = new ClassicSudokuMarkCells(model.getSudoku(), model.getN(), model.getK(), sudokuControls, validity);
-		zoom = new Zoom(this);
+		ZoomObjectInterface[][] objectList = { view.sudokuBoard.getCells1d(), view.sudokuNumpad.numpadButtons };
+		zoom = new Zoom(objectList, this);
 		// Assign actionlisteners
 
 		for (Cell cell : sudokuControls.getCells1d()) {
@@ -188,7 +190,11 @@ public class Controller {
 			cell.addKeyListener(new KeyboardNumberListener(this));
 			cell.addKeyListener(new KeyboardShortcutListener(this));
 		}
-		view.sudokuNumpad.numpadButtons.forEach(b -> b.addActionListener(new NumboardListener(this)));
+		for (NumpadButton numpadButton : view.sudokuNumpad.numpadButtons) {
+			numpadButton.addActionListener(new NumboardListener(this));
+		}
+		// view.sudokuNumpad.numpadButtons.forEach(b -> b.addActionListener(new
+		// NumboardListener(this)));
 
 		view.sudokuMenuBar.zoomIn.addActionListener(new MenuBarZoomActionListener(this));
 		view.sudokuMenuBar.zoomOut.addActionListener(new MenuBarZoomActionListener(this));

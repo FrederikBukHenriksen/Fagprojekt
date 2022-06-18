@@ -11,7 +11,7 @@ import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.Color;
 
-public class Cell extends JToggleButton {
+public class Cell extends JToggleButton implements ZoomObjectInterface {
 
     Color selected = new Color(161, 205, 240);
     Color conflict = new Color(240, 192, 193);
@@ -56,21 +56,26 @@ public class Cell extends JToggleButton {
         }
     }
 
+    @Override
     public void setSize(int size) {
-        // int currentSize = (int) getSize().getWidth();
-        // int currentFontSize = (int) getFont().getSize();
-        // int newSize = currentSize + sizeAdjustment;
-        // int newFontSize = currentFontSize + sizeAdjustment;
-        setSize(new Dimension(size, size));
+        this.setSize(new Dimension(size, size));
         this.setPreferredSize(new Dimension(size, size));
-        setFont(new Font("Serif", Font.PLAIN, (int) (size * 0.8)));
+        this.setFont(new Font("Serif", Font.PLAIN, (int) (size * 0.8)));
     }
 
+    public void setTextColor(Color color) {
+        this.setForeground(color);
+    }
+
+    public void setBackgroundColor(Color color) {
+        this.setForeground(color);
+    }
 
     public void defaultColor() {
         setBackground(def);
         setForeground(defFont);
     }
+
 
     public void conflict() {
         if (enabled) {

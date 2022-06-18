@@ -15,18 +15,19 @@ import java.awt.*;
 
 public class SudokuNumpad extends JPanel {
 
-    public ArrayList<NumpadButton> numpadButtons = new ArrayList();
+    public NumpadButton[] numpadButtons;
 
     public SudokuNumpad(int n, int k) {
         this.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
         this.setBorder(new LineBorder(Color.black, 1));
+        numpadButtons = new NumpadButton[n * n];
 
-        for (int i = 1; i <= k * n; i++) {
-            NumpadButton button = new NumpadButton(String.valueOf(i));// adds number as label to button
+        for (int i = 0; i < k * n; i++) {
+            NumpadButton button = new NumpadButton(String.valueOf(i + 1));// adds number as label to button
             button.setFont(new Font("Serif", Font.PLAIN, 16));
             button.setBorder(new LineBorder(Color.black, 1));
 
-            numpadButtons.add(button);
+            numpadButtons[i] = (button);
 
             this.add(button);
 
