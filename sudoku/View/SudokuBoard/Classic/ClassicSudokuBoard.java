@@ -8,6 +8,7 @@ import javax.swing.border.LineBorder;
 import sudoku.View.View;
 import sudoku.View.SudokuBoard.Cell;
 import sudoku.View.SudokuBoard.SudokuExtend;
+import sudoku.View.SudokuBoard.SudokuInterface;
 
 import java.awt.*;
 import java.awt.Color;
@@ -20,8 +21,14 @@ public class ClassicSudokuBoard extends SudokuExtend {
 
     protected Square[][] squares;
 
+    protected int[][] sudoku;
+    protected int n; // N antal celler i hver square
+    protected int k; // K antal squares
+
     public ClassicSudokuBoard(int[][] sudoku, int n, int k) {
-        super(sudoku, n, k);
+        this.sudoku = sudoku;
+        this.n = n;
+        this.k = k;
 
         this.setLayout(new GridBagLayout());
 
@@ -32,11 +39,11 @@ public class ClassicSudokuBoard extends SudokuExtend {
 
         // Only assemble this design if it is a Classic game
         if (this.getClass().getSimpleName().equals("ClassicSudokuBoard")) {
-            assembleBoard(squares);
+            assembleBoard();
         }
     }
 
-    private void assembleBoard(Square[][] squares) {
+    public void assembleBoard() {
         for (int i = 0; i < squares.length; i++) {
             for (int j = 0; j < squares[0].length; j++) {
                 gbc.gridx = i;

@@ -61,12 +61,15 @@ public class SudokuControls {
         return coordinate;
     }
 
-    public ArrayList<Cell> getCells1d() {
-        ArrayList<Cell> list = new ArrayList<>();
-        for (Cell[] arraylist : cells) {
-            for (Cell cell : arraylist) {
-                list.add(cell);
-            }
+    public Cell[][] getCells2d() {
+        return cells;
+    }
+
+    public Cell[] getCells1d() {
+        Cell[] list = new Cell[cells.length * cells.length];
+        for (int i = 0; i < list.length; i++) {
+            list[i] = cells[i % (cells.length)][i / (cells[0].length)];
+
         }
         return list;
     }
@@ -76,7 +79,9 @@ public class SudokuControls {
         if (!buttonSelected.isSelected()) {
             return;
         }
-        getCells1d().forEach(b -> b.setSelected(false));
+        for (Cell cell : getCells1d()) {
+            cell.setSelected(false);
+        }
         buttonSelected.setSelected(true);
     }
 

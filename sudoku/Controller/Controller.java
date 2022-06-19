@@ -4,6 +4,8 @@ import sudoku.Controller.Actionlisteners.*;
 import sudoku.Controller.Actionlisteners.MenuBar.*;
 import sudoku.Controller.MarkCells.ClassicSudokuMarkCells;
 import sudoku.Controller.MarkCells.MarkCellsExtend;
+import sudoku.Controller.Zoom.Zoom;
+import sudoku.Controller.Zoom.ZoomObjectInterface;
 import sudoku.Model.Model;
 import sudoku.Model.Stack;
 import sudoku.Model.Solver.*;
@@ -14,7 +16,6 @@ import sudoku.View.SudokuBoard.Classic.ClassicSudokuBoard;
 import sudoku.View.SudokuBoard.Sandwich.SandwichSudoku;
 
 import java.util.NoSuchElementException;
-import java.util.concurrent.TimeUnit;
 import javax.swing.*;
 
 import java.awt.*;
@@ -32,7 +33,7 @@ public class Controller {
 	public View view;
 	public ValidityExtend validity;
 	public SolverAbstract solver;
-	public SudokuExtend sudokuBoard;
+	public SudokuInterface sudokuBoard;
 	public LoadSudokuBoardFile loadSudokuBoardFile;
 	public SudokuControls sudokuControls;
 	public MarkCellsExtend markCells;
@@ -48,10 +49,10 @@ public class Controller {
 			markCells.markCells(sudokuControls.getButtonSelected());
 		} catch (Exception e) {
 			if (model.validity.checkValidity(model.getSudoku()) && model.isFilled()) {
-				createPopUp("Congratulations, you solved the puzzle!");
+				// createPopUp("Congratulations, you solved the puzzle!");
+				new SudokuSolvedPopUp("Congtaz", this);
 			}
 		}
-
 	}
 
 	public void redoMove() {
@@ -83,65 +84,65 @@ public class Controller {
 		}
 	}
 
-	public void createPopUp(String text) {
-		okPressed = false;
-		JDialog jd = new JDialog();
-		jd.setLayout(new FlowLayout());
-		int x = view.getX();
-		int y = view.getY();
-		int height = view.getHeight();
-		int width = view.getWidth();
-		// jd.setBounds((width / 2) - 200 + x, (height / 2) - 75 + y, 400, 150);
-		JLabel jLabel = new JLabel(text);
-		jLabel.setFont(new Font(jLabel.getFont().getName(), Font.PLAIN, 20));
-		JButton closeButton = new JButton("Close");
-		closeButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				System.exit(0);
-			}
-		});
-		JButton newButton = new JButton("New puzzle");
-		newButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO: Generate new puzzle here
-				view.dispose();
-				jd.dispose();
-				okPressed = true;
-			}
-		});
+	// public void createPopUp(String text) {
+	// okPressed = false;
+	// JDialog jd = new JDialog();
+	// jd.setLayout(new FlowLayout());
+	// int x = view.getX();
+	// int y = view.getY();
+	// int height = view.getHeight();
+	// int width = view.getWidth();
+	// // jd.setBounds((width / 2) - 200 + x, (height / 2) - 75 + y, 400, 150);
+	// JLabel jLabel = new JLabel(text);
+	// jLabel.setFont(new Font(jLabel.getFont().getName(), Font.PLAIN, 20));
+	// JButton closeButton = new JButton("Close");
+	// closeButton.addActionListener(new ActionListener() {
+	// @Override
+	// public void actionPerformed(ActionEvent e) {
+	// System.exit(0);
+	// }
+	// });
+	// JButton newButton = new JButton("New puzzle");
+	// newButton.addActionListener(new ActionListener() {
+	// @Override
+	// public void actionPerformed(ActionEvent e) {
+	// // TODO: Generate new puzzle here
+	// view.dispose();
+	// jd.dispose();
+	// okPressed = true;
+	// }
+	// });
 
-		JButton continueButton = new JButton("Back to Puzzle");
-		continueButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				jd.dispose();
-			}
-		});
-		Container contentPane = new Container();
+	// JButton continueButton = new JButton("Back to Puzzle");
+	// continueButton.addActionListener(new ActionListener() {
+	// @Override
+	// public void actionPerformed(ActionEvent e) {
+	// jd.dispose();
+	// }
+	// });
+	// // Container contentPane = new Container();
 
-		Panel outerPanel = new Panel();
-		outerPanel.setLayout(new GridBagLayout());
-		GridBagConstraints gbc = new GridBagConstraints();
+	// Panel outerPanel = new Panel();
+	// outerPanel.setLayout(new GridBagLayout());
+	// GridBagConstraints gbc = new GridBagConstraints();
 
-		Panel innerPanel = new Panel();
-		innerPanel.setLayout(new FlowLayout());
-		// innerPanel.setBackground(Color.GREEN);
-		gbc.gridx = 0;
-		gbc.gridy = 0;
-		outerPanel.add(jLabel, gbc);
-		innerPanel.add(closeButton);
-		innerPanel.add(newButton);
-		innerPanel.add(continueButton);
-		gbc.gridx = 0;
-		gbc.gridy = 1;
-		outerPanel.add(innerPanel, gbc);
-		contentPane.add(outerPanel, BorderLayout.CENTER);
-		jd.add(outerPanel);
-		jd.setVisible(true);
-		jd.pack();
-	}
+	// Panel innerPanel = new Panel();
+	// innerPanel.setLayout(new FlowLayout());
+	// // innerPanel.setBackground(Color.GREEN);
+	// gbc.gridx = 0;
+	// gbc.gridy = 0;
+	// outerPanel.add(jLabel, gbc);
+	// innerPanel.add(closeButton);
+	// innerPanel.add(newButton);
+	// innerPanel.add(continueButton);
+	// gbc.gridx = 0;
+	// gbc.gridy = 1;
+	// outerPanel.add(innerPanel, gbc);
+	// // contentPane.add(outerPanel, BorderLayout.CENTER);
+	// jd.add(outerPanel);
+	// jd.setVisible(true);
+	// jd.pack();
+	// }
 
 	// Simple constructor
 	public Controller() {
@@ -150,13 +151,13 @@ public class Controller {
 			loadSudokuBoardFile.LoadSudokuBoardDoc(this, model);
 		} catch (IOException e) {
 			// System.out.println("Wrong filetype");
-			CreateOkPopUp wrongFile = new CreateOkPopUpExtend("wrong filetype", this);
+			new CreateOkPopUpWrongFile("wrong filetype", this);
 		} catch (NumberFormatException ez) {
 			// System.out.println("Wrong filetype");
-			CreateOkPopUp wrongFile = new CreateOkPopUpExtend("wrong filetype", this);
+			new CreateOkPopUpWrongFile("wrong filetype", this);
 		} catch (NoSuchElementException ex) {
 			// System.out.println("Sudoku formatet wrong. Hint: Check for newlines");
-			CreateOkPopUp IllegalContent = new CreateOkPopUpExtend("Illegal file content. Check for newlines",
+			new CreateOkPopUpWrongFile("Illegal file content. Check for newlines",
 					this);
 		}
 
@@ -174,21 +175,28 @@ public class Controller {
 			validity = new ValidityClassic(model.getSudoku(), model.getN(), model.getK());
 			solver = new CrooksAlgorithm(model.getN(), model.getK(), model.getSudoku(), model);
 		}
+		view.sudokuBoard.assembleBoard();
 		model.setValidity(validity);
 		model.setSolver(solver);
 		model.setStack(new Stack(model.getSudoku()));
 
 		sudokuControls = new SudokuControls(view.sudokuBoard.cells);
 		markCells = new ClassicSudokuMarkCells(model.getSudoku(), model.getN(), model.getK(), sudokuControls, validity);
-		zoom = new Zoom(this);
+		ZoomObjectInterface[][] objectList = { sudokuControls.getCells1d(), view.sudokuNumpad.numpadButtons };
+		zoom = new Zoom(objectList, this);
 		// Assign actionlisteners
+		// SudokuSolvedPopUp lolcat = new SudokuSolvedPopUp("DEBUG", this);
 
 		for (Cell cell : sudokuControls.getCells1d()) {
 			cell.addActionListener(new SudokuboardListener(this));
 			cell.addKeyListener(new KeyboardNumberListener(this));
 			cell.addKeyListener(new KeyboardShortcutListener(this));
 		}
-		view.sudokuNumpad.numpadButtons.forEach(b -> b.addActionListener(new NumboardListener(this)));
+		for (NumpadButton numpadButton : view.sudokuNumpad.numpadButtons) {
+			numpadButton.addActionListener(new NumboardListener(this));
+		}
+		// view.sudokuNumpad.numpadButtons.forEach(b -> b.addActionListener(new
+		// NumboardListener(this)));
 
 		view.sudokuMenuBar.zoomIn.addActionListener(new MenuBarZoomActionListener(this));
 		view.sudokuMenuBar.zoomOut.addActionListener(new MenuBarZoomActionListener(this));
@@ -201,7 +209,7 @@ public class Controller {
 
 		try {
 			if (model.solver.getSolvedSudoku()[0][0] == 0) {
-				createPopUp("This sudoku has no solutions \n");
+				new CreateOkPopUp("This sudoku has no solutions \n");
 			}
 		} catch (Exception e) {
 		}
@@ -248,7 +256,7 @@ public class Controller {
 			sudokuControls.updateCellValues(model.getSudoku());
 			updateColours();
 		} catch (Exception e) {
-			new CreateOkPopUp(e.getMessage(), this);
+			new CreateOkPopUp(e.getMessage());
 		}
 	}
 
@@ -288,7 +296,7 @@ public class Controller {
 				}
 			}
 		} catch (Exception exc) {
-			new CreateOkPopUp(exc.getMessage(), this);
+			new CreateOkPopUp(exc.getMessage());
 		}
 	}
 

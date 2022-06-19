@@ -1,9 +1,13 @@
 package sudoku.Controller;
 
+import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
+
+import sudoku.View.View;
 
 import java.awt.Dimension;
 import java.awt.*;
@@ -15,37 +19,41 @@ import java.awt.FlowLayout;
 
 public class CreateOkPopUp extends JDialog {
 
-    protected Controller sudokuController;
 
-    protected JButton okButton;
-    protected boolean moveOn;
+    protected boolean moveOn = false;
 
-    public CreateOkPopUp(String text, Controller sudokuController) {
-        this.sudokuController = sudokuController;
-        this.setLayout(new FlowLayout());
-        moveOn = false;
+    protected GridBagConstraints gbc = new GridBagConstraints();
 
-        final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+    public CreateOkPopUp(String text) {
+        this.setVisible(true);
+        this.setResizable(false);
+        this.setLayout(new GridBagLayout());
 
-        int x = (int) screenSize.getWidth() / 2;
-        int y = (int) screenSize.getHeight() / 2;
-        int height = 200;
-        int width = 400;
-        try {
-            x = sudokuController.view.getX();
-            y = sudokuController.view.getY();
-            height = sudokuController.view.getHeight();
-            width = sudokuController.view.getWidth();
-        } catch (Exception e) {
-        }
+        JLabel label = new JLabel(text);
+        label.setFont(new Font(label.getFont().getName(), Font.PLAIN, 20));
 
-        // this.setBounds((width / 2) - 200 + x, (height / 2) - 75 + y, 400, 150);
-        int xScreen = (screenSize.width / 2) - (this.getWidth() / 2);
-        int yScreen = (screenSize.height / 2) - (this.getHeight() / 2);
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        this.add(label, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        this.add(buttonPanel(), gbc);
+
+        this.pack();
+        centerOnScreen();
+    }
+
+    private void centerOnScreen() {
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        int xScreen = (screenSize.width / 2) - ((int) getSize().getWidth() / 2);
+        int yScreen = (screenSize.height / 2) - ((int) getSize().getHeight() / 2);
         this.setLocation(xScreen, yScreen);
-        JLabel jLabel = new JLabel(text);
-        jLabel.setFont(new Font(jLabel.getFont().getName(), Font.PLAIN, 20));
-        okButton = new JButton("Ok");
+    }
+
+    public JPanel buttonPanel() {
+
+        JButton okButton = new JButton("Ok");
         okButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -54,26 +62,11 @@ public class CreateOkPopUp extends JDialog {
                 return;
             }
         });
-        this.add(jLabel);
-        this.add(okButton);
-        this.setVisible(true);
-        this.pack();
+        JPanel panel = new JPanel();
+        panel.setLayout(new FlowLayout());
+        panel.add(okButton);
 
-        whileLoop();
+        return panel;
     }
 
-    protected void whileLoop() {
-        while (true) {
-            try {
-                TimeUnit.SECONDS.sleep(1);
-            } catch (InterruptedException e1) {
-                // TODO Auto-generated catch block
-                e1.printStackTrace();
-            }
-            if (moveOn) {
-                moveOn = false;
-                break;
-            }
-        }
-    }
 }

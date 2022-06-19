@@ -24,6 +24,7 @@ import java.util.concurrent.TimeUnit;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 import java.awt.Dimension;
 import java.awt.*;
@@ -34,31 +35,53 @@ import java.awt.event.ActionListener;
 import java.awt.Container;
 import java.awt.FlowLayout;
 
-public class CreateOkPopUpExtend extends CreateOkPopUp {
+public class CreateOkPopUpWrongFile extends CreateOkPopUp {
 
-    public CreateOkPopUpExtend(String text, Controller sudokuController) {
-        super(text, sudokuController);
-        // TODO Auto-generated constructor stub
+    protected Controller controller;
 
+    public CreateOkPopUpWrongFile(String text, Controller controller) {
+        super(text);
+        this.controller = controller;
+        // TODO Auto-generated method stub
+        while (true) {
+            try {
+                TimeUnit.SECONDS.sleep(1);
+            } catch (InterruptedException e1) {
+                // TODO Auto-generated catch block
+                e1.printStackTrace();
+            }
+            if (moveOn) {
+                moveOn = false;
+                break;
+            }
+        }
+        try {
+            controller.loadSudokuBoardFile.LoadSudokuBoardDoc(controller, controller.model);
+        } catch (Exception e) {
+            new CreateOkPopUpWrongFile("wrong filetype", controller);
+        }
+    }
+
+    @Override
+    public JPanel buttonPanel() {
+        JButton okButton = new JButton("Ok");
+        JDialog dialog = this;
         okButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                sudokuController.view.dispose();
-                dispose();
+                try {
+                    controller.view.dispose();
+                } catch (Exception exc) {
+                }
+                dialog.dispose();
                 moveOn = true;
                 return;
             }
         });
+        JPanel panel = new JPanel();
+        panel.setLayout(new FlowLayout());
+        panel.add(okButton);
+        return panel;
     }
 
-    @Override
-    protected void whileLoop() {
-        // TODO Auto-generated method stub
-        super.whileLoop();
-        try {
-            sudokuController.loadSudokuBoardFile.LoadSudokuBoardDoc(sudokuController, sudokuController.model);
-        } catch (Exception e) {
-            new CreateOkPopUpExtend("wrong filetype", sudokuController);
-        }
-    }
 }
