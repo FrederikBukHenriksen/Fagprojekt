@@ -10,51 +10,36 @@ import sudoku.View.SudokuBoard.Cell;
 
 public class Zoom {
 
-    private Controller controller;
+    private View view;
 
     private int zoomStatus = 28;
-    private int zoomSizeIncrementChange = 5; // Amount of zoom.
+    private int zoomIncrement = 5; // Amount of zoom.
 
-    private ZoomObjectInterface[][] objectArray;
+    private ZoomObjectInterface[][] zoomObjectArray;
 
-    public Zoom(ZoomObjectInterface[][] objectList, Controller controller) {
-        this.objectArray = objectList;
-        this.controller = controller;
+    public Zoom(ZoomObjectInterface[][] zoomObjectArray, View view) {
+        this.zoomObjectArray = zoomObjectArray;
+        this.view = view;
         zoom();
     }
 
     public void zoomIn() {
-        this.zoomStatus = this.zoomStatus + zoomSizeIncrementChange;
+        this.zoomStatus = this.zoomStatus + zoomIncrement;
         zoom();
     }
 
     public void zoomOut() {
-        this.zoomStatus = this.zoomStatus - zoomSizeIncrementChange;
+        this.zoomStatus = this.zoomStatus - zoomIncrement;
         zoom();
     }
 
     private void zoom() {
-        for (ZoomObjectInterface[] array : objectArray) {
+        for (ZoomObjectInterface[] array : zoomObjectArray) {
             for (ZoomObjectInterface object : array) {
-                object.setZoomedSize(zoomStatus);
+                object.setSize(zoomStatus);
             }
         }
-        controller.view.pack();
-        controller.view.centerOnScreen();
-
+        view.pack();
+        view.centerOnScreen(view.getX() + (view.getWidth() / 2), view.getY() + (view.getHeight() / 2));
     }
 }
-
-// private void zoom(int cellSize) {
-
-// for (Cell cell : controller.sudokuControls.getCells1d()) {
-// cell.setSize(cellSize);
-// }
-
-// for (NumpadButton numpadButton : controller.view.sudokuNumpad.numpadButtons)
-// {
-// numpadButton.setSize(cellSize);
-// }
-// }
-
-// }

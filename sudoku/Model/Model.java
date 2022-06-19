@@ -6,8 +6,8 @@ import java.util.Scanner;
 import javax.swing.JFileChooser;
 import sudoku.Model.Solver.BacktrackAlgorithm;
 import sudoku.Model.Solver.CrooksAlgorithm;
-import sudoku.Model.Solver.SolverAbstract;
-import sudoku.Model.Validity.ValidityExtend;
+import sudoku.Model.Solver.SolverInterface;
+import sudoku.Model.Validity.ValidityInterface;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -26,8 +26,8 @@ public class Model {
 
 
 	// Containers
-	public ValidityExtend validity;
-	public SolverAbstract solver;
+	public ValidityInterface validity;
+	public SolverInterface solver;
 	public Stack stack;
 
 	// constructor for the model
@@ -149,11 +149,11 @@ public class Model {
 
 	// Set functions
 
-	public void setValidity(ValidityExtend validity) {
+	public void setValidity(ValidityInterface validity) {
 		this.validity = validity;
 	}
 
-	public void setSolver(SolverAbstract solver) {
+	public void setSolver(SolverInterface solver) {
 		this.solver = solver;
 	}
 

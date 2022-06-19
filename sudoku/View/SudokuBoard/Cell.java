@@ -15,39 +15,35 @@ import java.awt.Color;
 
 public class Cell extends JToggleButton implements ZoomObjectInterface {
 
-    Color selected = new Color(161, 205, 240);
-    Color conflict = new Color(240, 192, 193);
-    Color square = new Color(199, 219, 235);
-    Color similar = new Color(144, 182, 212);
-    Color peer = new Color(199, 219, 235);
-    Color conflictFont = new Color(230, 67, 70);
-    Color def = Color.white;
-    Color defFont = new Color(80, 110, 242);
+    public static Color colorDefaultBackground = Color.white;
+    public static Color colorDefaultFont = new Color(80, 110, 242);
+    public static Color selected = new Color(161, 205, 240);
 
     public boolean enabled = true;
 
     public Cell() {
         setText("");
-        setBackground(def);
-        setForeground(defFont);
+        setBackground(colorDefaultBackground);
+        setForeground(colorDefaultFont);
         setBorder(new LineBorder(Color.black, 1));
         setEnabled(true);
         UIManager.put("ToggleButton.select", selected);
         SwingUtilities.updateComponentTreeUI(this);
     }
 
+    // Set methods
     @Override
     public void setEnabled(boolean enable) {
         if (enable == true) {
             enabled = true;
-            defFont = new Color(80, 110, 242);
-            setBackground(def);
-            setForeground(defFont);
+            colorDefaultFont = new Color(80, 110, 242);
+            setBackground(colorDefaultBackground);
+            setForeground(colorDefaultFont);
         } else if (enable == false) {
             enabled = false;
-            defFont = Color.black;
-            setBackground(def);
-            setForeground(defFont);
+            colorDefaultFont = Color.black;
+            setBackground(colorDefaultBackground);
+            setForeground(colorDefaultFont);
         }
     }
 
@@ -59,7 +55,7 @@ public class Cell extends JToggleButton implements ZoomObjectInterface {
     }
 
     @Override
-    public void setZoomedSize(int size) {
+    public void setSize(int size) {
         this.setSize(new Dimension(size, size));
         this.setPreferredSize(new Dimension(size, size));
         this.setFont(new Font("Serif", Font.PLAIN, (int) (size * 0.8)));
@@ -70,42 +66,20 @@ public class Cell extends JToggleButton implements ZoomObjectInterface {
     }
 
     public void setBackgroundColor(Color color) {
-        this.setForeground(color);
+        this.setBackground(color);
     }
 
-    public void defaultColor() {
-        setBackground(def);
-        setForeground(defFont);
+    // Get mehtods
+
+    public Color getBackgroundColor() {
+        return this.getBackground();
     }
 
-
-    public void conflict() {
-        if (enabled) {
-            setForeground(conflictFont);
-        }
-        setBackground(conflict);
+    public Color getTextColor() {
+        return this.getForeground();
     }
 
-    public void unSelected() { // TODO: Tjek om vi bruger
-        setForeground(defFont);
-        setBackground(def);
-    }
-
-    public void similar() {
-        if (!(this.getBackground().equals(this.conflict))) {
-            setBackground(similar);
-        }
-    }
-
-    public void peer() {
-        if (!(this.getBackground().equals(this.conflict))) {
-            setBackground(peer);
-        }
-    }
-
-    public void square() {
-        if (!(this.getBackground().equals(this.conflict))) {
-            setBackground(square);
-        }
+    public boolean getEnabled() {
+        return enabled;
     }
 }

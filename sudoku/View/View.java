@@ -10,7 +10,7 @@ import sudoku.View.SudokuBoard.*;
 public class View extends JFrame {
 
 	// Containers
-	public SudokuExtend sudokuBoard;
+	public SudokuBoardExtend sudokuBoard;
 	public SudokuMenuBar sudokuMenuBar;
 	public SudokuNumpad sudokuNumpad;
 
@@ -21,29 +21,30 @@ public class View extends JFrame {
 	GridBagConstraints gbc = new GridBagConstraints();
 
 
-	public View(int[][] sudoku, int n, int k, SudokuExtend sudokuBoard) {
+	public View(int[][] sudoku, int n, int k, SudokuBoardExtend sudokuBoard) {
 		this.sudoku = sudoku;
 		this.n = n;
 		this.k = k;
 
 		this.setDefaultCloseOperation(this.EXIT_ON_CLOSE);
 		this.setResizable(false);
+		// this.setUndecorated(true); // Removes title bar
 		this.setVisible(true);
-		this.setExtendedState(this.getExtendedState());
+		// this.setExtendedState(this.getExtendedState());
 
 		this.sudokuBoard = sudokuBoard;
 		sudokuMenuBar = new SudokuMenuBar();
 		sudokuNumpad = new SudokuNumpad(n, k);
 		assembleBoard();
 
-		centerOnScreen();
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		centerOnScreen((screenSize.width / 2), (screenSize.height / 2));
 
 	}
 
-	public void centerOnScreen() {
-		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		int xScreen = (screenSize.width / 2) - ((int) getSize().getWidth() / 2);
-		int yScreen = (screenSize.height / 2) - ((int) getSize().getHeight() / 2);
+	public void centerOnScreen(int xCenter, int yCenter) {
+		int xScreen = xCenter - ((int) getSize().getWidth() / 2);
+		int yScreen = yCenter - ((int) getSize().getHeight() / 2);
 		this.setLocation(xScreen, yScreen);
 	}
 
@@ -68,7 +69,7 @@ public class View extends JFrame {
 
 
 
-	public SudokuExtend getSudokuBoard() {
+	public SudokuBoardExtend getSudokuBoard() {
 		return sudokuBoard;
 	}
 

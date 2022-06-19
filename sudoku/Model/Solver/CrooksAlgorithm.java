@@ -6,10 +6,10 @@ import java.util.Collections;
 import sudoku.Controller.Exceptions.NoSolutionAvailable;
 import sudoku.Model.Model;
 import sudoku.Model.Validity.ValidityClassic;
-import sudoku.Model.Validity.ValidityExtend;
+import sudoku.Model.Validity.ValidityInterface;
 import sudoku.Model.Validity.ValiditySandwich;
 
-public class CrooksAlgorithm extends SolverAbstract {
+public class CrooksAlgorithm implements SolverInterface {
 	boolean solved = false;
 	boolean unique = false;
 
@@ -28,7 +28,7 @@ public class CrooksAlgorithm extends SolverAbstract {
 	}
 
 	public void solve() {
-		ValidityExtend validity = new ValidityClassic(sudoku, n, k);
+		ValidityInterface validity = new ValidityClassic(sudoku, n, k);
 		solved = false;
 		if (!(model.getSandwich() || n > 4 || n != k)) {
 			ArrayList<ArrayList<ArrayList<Integer>>> prem = preemtiveSets(singleton(markUpCells()));
@@ -257,7 +257,7 @@ public class CrooksAlgorithm extends SolverAbstract {
 	}
 
 	public ArrayList<ArrayList<ArrayList<Integer>>> markUpCells() {
-		ValidityExtend validity = new ValidityClassic(sudoku, n, k);
+		ValidityInterface validity = new ValidityClassic(sudoku, n, k);
 		ArrayList<ArrayList<ArrayList<Integer>>> markUpBoard = new ArrayList<>();
 		for (int j = 0; j < n * k; j++) {
 			ArrayList<ArrayList<Integer>> rows = new ArrayList<>();
@@ -349,7 +349,7 @@ public class CrooksAlgorithm extends SolverAbstract {
 
 	public ArrayList<ArrayList<ArrayList<Integer>>> loop(ArrayList<ArrayList<ArrayList<Integer>>> sudokuLoop) {
 		// System.out.println(sudokuLoop);
-		ValidityExtend validity = new ValidityClassic(sudoku, n, k);
+		ValidityInterface validity = new ValidityClassic(sudoku, n, k);
 		int sizeOfArrayLoop = 2; // initializing variables
 		int currentLoopX = -1;
 		int currentLoopY = -1;

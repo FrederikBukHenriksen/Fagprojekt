@@ -7,35 +7,25 @@ import javax.swing.border.LineBorder;
 
 import sudoku.View.View;
 import sudoku.View.SudokuBoard.Cell;
-import sudoku.View.SudokuBoard.SudokuExtend;
-import sudoku.View.SudokuBoard.SudokuInterface;
+import sudoku.View.SudokuBoard.SudokuBoardExtend;
+import sudoku.View.SudokuBoard.SudokuBoardInterface;
 
 import java.awt.*;
 import java.awt.Color;
 
-public class ClassicSudokuBoard extends SudokuExtend {
-
-    protected GridBagConstraints gbc = new GridBagConstraints();
-
-    double screenOccupationFactor = 0.25;
+public class ClassicSudokuBoard extends SudokuBoardExtend {
 
     protected Square[][] squares;
 
-    protected int[][] sudoku;
-    protected int n; // N antal celler i hver square
-    protected int k; // K antal squares
-
     public ClassicSudokuBoard(int[][] sudoku, int n, int k) {
         this.sudoku = sudoku;
-        this.n = n;
-        this.k = k;
 
         this.setLayout(new GridBagLayout());
 
-        this.cells = createCellsNew(n, k);
+        this.cells = createCells(n, k);
         this.cells = loadSudokuIntoCells(sudoku, this.cells);
         this.squares = createSquares(n, k);
-        this.squares = loadCellsIntoSquares(this.cells, this.squares, k);
+        this.squares = loadCellsIntoSquares(this.cells, this.squares, n, k);
 
         // Only assemble this design if it is a Classic game
         if (this.getClass().getSimpleName().equals("ClassicSudokuBoard")) {
@@ -44,6 +34,7 @@ public class ClassicSudokuBoard extends SudokuExtend {
     }
 
     public void assembleBoard() {
+        GridBagConstraints gbc = new GridBagConstraints();
         for (int i = 0; i < squares.length; i++) {
             for (int j = 0; j < squares[0].length; j++) {
                 gbc.gridx = i;
@@ -53,7 +44,7 @@ public class ClassicSudokuBoard extends SudokuExtend {
         }
     }
 
-    protected Cell[][] createCellsNew(int n, int k) {
+    protected Cell[][] createCells(int n, int k) {
         Cell[][] cells = new Cell[n * k][n * k];
         for (int i = 0; i < cells.length; i++) {
             for (int j = 0; j < cells[0].length; j++) {
@@ -87,7 +78,7 @@ public class ClassicSudokuBoard extends SudokuExtend {
         return squares;
     }
 
-    protected Square[][] loadCellsIntoSquares(Cell[][] cells, Square[][] squares, int k) {
+    protected Square[][] loadCellsIntoSquares(Cell[][] cells, Square[][] squares, int n, int k) {
         for (int i = 0; i < squares.length; i++) {
             for (int j = 0; j < squares[0].length; j++) {
                 Square selectedSquare = squares[i][j];

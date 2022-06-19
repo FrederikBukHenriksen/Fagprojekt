@@ -2,7 +2,7 @@ package sudoku.Model.Solver;
 
 import sudoku.Controller.Exceptions.NoSolutionAvailable;
 
-public abstract class SolverAbstract {
+public interface SolverInterface {
 
     public abstract void solve() throws Exception;
 

@@ -3,11 +3,11 @@ package sudoku.Model.Solver;
 
 import java.util.ArrayList;
 
-import sudoku.Model.Validity.ValidityExtend;
+import sudoku.Model.Validity.ValidityInterface;
 import sudoku.Model.Validity.ValiditySandwich;
 import sudoku.Model.Model;
 
-public class BacktrackAlgorithm extends SolverAbstract {
+public class BacktrackAlgorithm implements SolverInterface {
 	int[][] sudoku;
 	int[][] solvedSudoku = new int [0][0];
 	Model model;
@@ -17,7 +17,7 @@ public class BacktrackAlgorithm extends SolverAbstract {
 	int[] ySums;
   	boolean solved = false;
 	boolean unique = false;
-	ValidityExtend validity;
+	ValidityInterface validity;
 	
 	public BacktrackAlgorithm(int n, int k, int[] xSums, int[] ySums, int[][] sudoku,Model model) {
 		this.n = n;
@@ -28,8 +28,9 @@ public class BacktrackAlgorithm extends SolverAbstract {
 		this.model = model;
 		
 	}
-	public ArrayList<ArrayList<ArrayList<Integer>>> markUpCells(int[][] sudokuMarkUp) {
-		ValidityExtend validity = new ValiditySandwich(sudokuMarkUp, n, k, xSums, ySums);
+
+	protected ArrayList<ArrayList<ArrayList<Integer>>> markUpCells(int[][] sudokuMarkUp) {
+		ValidityInterface validity = new ValiditySandwich(sudokuMarkUp, n, k, xSums, ySums);
 
 		ArrayList<ArrayList<ArrayList<Integer>>> markUpBoard = new ArrayList<>();
 		for (int j = 0; j < n * k; j++) {
@@ -87,7 +88,7 @@ public class BacktrackAlgorithm extends SolverAbstract {
 		ArrayList<ArrayList<ArrayList<Integer>>> prem = markUpCells(sudoku);
 		int loopCount = 0;
 		int [][] sudokuSimpleArray = sudoku;
-		ValidityExtend validity = new ValiditySandwich(sudoku, n, k, xSums, ySums);
+		ValidityInterface validity = new ValiditySandwich(sudoku, n, k, xSums, ySums);
 		while (!validity.checkValidity(sudokuSimpleArray) || !model.isFilledLoop(sudokuSimpleArray)) {
 			loopCount++;
 			prem = loop(prem);
@@ -101,9 +102,9 @@ public class BacktrackAlgorithm extends SolverAbstract {
 		}
 	}
 	
-	public ArrayList<ArrayList<ArrayList<Integer>>> loop(ArrayList<ArrayList<ArrayList<Integer>>> sudokuLoop) {
+	protected ArrayList<ArrayList<ArrayList<Integer>>> loop(ArrayList<ArrayList<ArrayList<Integer>>> sudokuLoop) {
 		//System.out.println(sudokuLoop);
-		ValidityExtend validity = new ValiditySandwich(sudoku, n, k, xSums, ySums);
+		ValidityInterface validity = new ValiditySandwich(sudoku, n, k, xSums, ySums);
 		ArrayList<Integer> returner = new ArrayList<>();	
 		ArrayList<ArrayList<ArrayList<Integer>>> sudokuClone = new ArrayList<>(); //creating a sudoku clone
 		for (int j = 0; j < n * k; j++) {
@@ -198,14 +199,15 @@ public class BacktrackAlgorithm extends SolverAbstract {
 	public int[][] getSolvedSudoku() {
 		return solvedSudoku;
 	}
-	public boolean getSolved() {
-		return solved;
-	}
+
+	// public boolean getSolved() {
+	// return solved;
+	// }
 	public boolean getUniqueness() {
 		return unique;
 	}
 	
-	public int[][] Converter3D2D(ArrayList<ArrayList<ArrayList<Integer>>> sudoku3D){
+	protected int[][] Converter3D2D(ArrayList<ArrayList<ArrayList<Integer>>> sudoku3D) {
 		int[][] sudoku2D = new int[n*k][n*k];
 		for(int l = 0; l< n*k; l++) {
 			for(int m = 0; m<n*k; m++) {
