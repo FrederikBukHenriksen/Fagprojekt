@@ -29,14 +29,14 @@ public class SudokuNumpad extends JPanel {
 
             numpadButtons[i] = (button);
 
-            this.add(button);
-
             // Label spacer at every square border for astetichs.
-            if (i % n == 0 && i < k * n) {
+            if (i % n == 0 && i < k * n && i != 0) {
+                // Layoutmanager ignores padding of button, therefore a spacer is needed.
                 JLabel spacer = new JLabel();
                 spacer.setPreferredSize(new Dimension(2, 0));
                 this.add(spacer);
             }
+            this.add(button);
         }
     }
 }

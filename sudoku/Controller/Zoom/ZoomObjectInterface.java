@@ -2,6 +2,6 @@ package sudoku.Controller.Zoom;
 
 public interface ZoomObjectInterface {
 
-    public void setSize(int size);
+    public void setZoomedSize(int size);
 
 }

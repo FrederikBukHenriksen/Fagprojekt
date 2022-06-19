@@ -35,7 +35,7 @@ public class Controller {
 	public View view;
 	public ValidityExtend validity;
 	public SolverAbstract solver;
-	public SudokuExtend sudokuBoard;
+	public SudokuInterface sudokuBoard;
 	public LoadSudokuBoardFile loadSudokuBoardFile;
 	public SudokuControls sudokuControls;
 	public MarkCellsExtend markCells;
@@ -184,7 +184,7 @@ public class Controller {
 
 		sudokuControls = new SudokuControls(view.sudokuBoard.cells);
 		markCells = new ClassicSudokuMarkCells(model.getSudoku(), model.getN(), model.getK(), sudokuControls, validity);
-		ZoomObjectInterface[][] objectList = { view.sudokuBoard.getCells1d(), view.sudokuNumpad.numpadButtons };
+		ZoomObjectInterface[][] objectList = { sudokuControls.getCells1d(), view.sudokuNumpad.numpadButtons };
 		zoom = new Zoom(objectList, this);
 		// Assign actionlisteners
 

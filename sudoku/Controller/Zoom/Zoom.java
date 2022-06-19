@@ -41,7 +41,7 @@ public class Zoom {
     private void zoom() {
         for (ZoomObjectInterface[] array : objectArray) {
             for (ZoomObjectInterface object : array) {
-                object.setSize(zoomStatus);
+                object.setZoomedSize(zoomStatus);
             }
         }
         controller.view.pack();

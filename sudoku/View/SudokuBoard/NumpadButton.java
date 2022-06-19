@@ -22,7 +22,7 @@ public class NumpadButton extends JButton implements ZoomObjectInterface {
         this.setBorder(new LineBorder(Color.black, 1));
     }
 
-    public void setSize(int size) {
+    public void setZoomedSize(int size) {
         this.setSize(new Dimension(size, size));
         this.setPreferredSize(new Dimension(size, size));
         this.setFont(new Font("Serif", Font.PLAIN, (int) (size * 0.8)));

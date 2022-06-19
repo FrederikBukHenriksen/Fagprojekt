@@ -35,7 +35,6 @@ public class View extends JFrame {
 		sudokuMenuBar = new SudokuMenuBar();
 		sudokuNumpad = new SudokuNumpad(n, k);
 		assembleBoard();
-		System.out.println(sudokuBoard.getCells2d()[0][0].getSize());
 	}
 
 	public void assembleBoard() {
