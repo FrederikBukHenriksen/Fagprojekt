@@ -16,8 +16,9 @@ import java.awt.Color;
 public class Cell extends JToggleButton implements ZoomObjectInterface {
 
     public static Color colorDefaultBackground = Color.white;
-    public static Color colorDefaultFont = new Color(80, 110, 242);
-    public static Color selected = new Color(161, 205, 240);
+    public static Color colorDefaultFont = Color.black;
+    public static Color colorDefaultFontEnabled = new Color(80, 110, 242);
+    public static Color cellSelected = new Color(161, 205, 240);
 
     public boolean enabled = true;
 
@@ -27,7 +28,8 @@ public class Cell extends JToggleButton implements ZoomObjectInterface {
         setForeground(colorDefaultFont);
         setBorder(new LineBorder(Color.black, 1));
         setEnabled(true);
-        UIManager.put("ToggleButton.select", selected);
+        UIManager.put("ToggleButton.select", cellSelected); // Needs to be put into UImanager. Manually coloring
+                                                            // selected cell will be overwritten.
         SwingUtilities.updateComponentTreeUI(this);
     }
 
@@ -36,14 +38,8 @@ public class Cell extends JToggleButton implements ZoomObjectInterface {
     public void setEnabled(boolean enable) {
         if (enable == true) {
             enabled = true;
-            colorDefaultFont = new Color(80, 110, 242);
-            setBackground(colorDefaultBackground);
-            setForeground(colorDefaultFont);
-        } else if (enable == false) {
+        } else {
             enabled = false;
-            colorDefaultFont = Color.black;
-            setBackground(colorDefaultBackground);
-            setForeground(colorDefaultFont);
         }
     }
 
@@ -69,7 +65,7 @@ public class Cell extends JToggleButton implements ZoomObjectInterface {
         this.setBackground(color);
     }
 
-    // Get mehtods
+    // Get methods
 
     public Color getBackgroundColor() {
         return this.getBackground();

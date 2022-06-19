@@ -99,8 +99,12 @@ public class ClassicMarkCells implements MarkCellsInterface {
     }
 
     public void colorDefault(Cell cell) {
+        if (cell.enabled) {
+            cell.setTextColor(Cell.colorDefaultFontEnabled);
+        } else {
+            cell.setTextColor(Cell.colorDefaultFont);
+        }
         cell.setBackgroundColor(Cell.colorDefaultBackground);
-        cell.setTextColor(Cell.colorDefaultFont);
     }
 
     public void colorConflict(Cell cell) {
