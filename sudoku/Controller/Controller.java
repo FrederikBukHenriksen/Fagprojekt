@@ -41,8 +41,6 @@ public class Controller {
 	public boolean okPressed = false;
 	public boolean hintPressed = false;
 
-
-
 	public void updateColours() {
 		markCells.clearMarkedCells();
 		try {
@@ -56,7 +54,7 @@ public class Controller {
 	}
 
 	public void redoMove() {
-		if (model.stack.redoes > 0) {
+		if (model.stack.redoStack.size() > 0) {
 			try {
 				sudokuControls.getButtonSelected().setSelected(false);
 			} catch (Exception exc) {
@@ -71,7 +69,7 @@ public class Controller {
 	}
 
 	public void undoMove() {
-		if (model.stack.moves > 0) {
+		if (model.stack.sudokuStack.size() > 0) {
 			try {
 				sudokuControls.getButtonSelected().setSelected(false);
 			} catch (Exception exc) {
@@ -239,8 +237,6 @@ public class Controller {
 	public boolean getOkPressed() {
 		return okPressed;
 	}
-
-
 
 	public void getHint() {
 		try {
