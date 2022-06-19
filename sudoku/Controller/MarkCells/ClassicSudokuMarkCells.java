@@ -26,14 +26,23 @@ public class ClassicSudokuMarkCells extends MarkCellsExtend {
     }
 
     public void markCells(Cell cell) throws Exception {
-            getPeersHorisontal(cell);
-            getPeersVertical(cell);
-            getPeersSquare(cell);
-            markSimilarCells(cell);
-            markConflictCells();
-        }
+        getPeersHorisontal(cell);
+        getPeersVertical(cell);
+        getPeersSquare(cell);
+        markSimilarCells(cell);
+        markConflictCells();
+    }
 
-        protected void markConflictCells() throws Exception {
+    public void clearMarkedCells() {
+        for (Cell cell : markedCells) {
+            cell.defaultColor();
+        }
+        markedCells.clear();
+        // Redraw conflict cells, even when no cell is pressed
+        markConflictCells();
+    }
+
+    protected void markConflictCells() {
             for (Point point : validity.getUniqueConflictPoints(sudoku)) {
                 Cell cell = sudokuControls.getCellFromCoord(point.x, point.y);
                 cell.conflict();
