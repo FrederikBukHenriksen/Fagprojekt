@@ -1,5 +1,5 @@
 
-package sudoku.View.SudokuBoard;
+package sudoku.View.SudokuBoard.Classic;
 
 import java.util.ArrayList;
 
@@ -7,23 +7,21 @@ import javax.swing.*;
 import javax.swing.border.LineBorder;
 
 import sudoku.View.View;
+import sudoku.View.SudokuBoard.Cell;
 
 import java.awt.*;
 import java.awt.Color;
 
 public class Square extends JPanel {
 
-    protected GridBagConstraints gbc = new GridBagConstraints();
+    private GridBagConstraints gbc = new GridBagConstraints();
 
-    int n;
+    private int n;
 
     public Square(int n) {
         this.n = n;
-        GridBagLayout grid = new GridBagLayout();
-        setBackground(Color.red);
-        setLayout(grid);
-        setBorder(new LineBorder(Color.black, 1));
-
+        this.setLayout(new GridBagLayout());
+        this.setBorder(new LineBorder(Color.black, 1));
     }
 
     public void insertCellintoSquare(Cell cell, int axis0, int axis1) {

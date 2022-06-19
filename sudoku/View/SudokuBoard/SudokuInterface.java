@@ -1,25 +1,9 @@
 package sudoku.View.SudokuBoard;
 
-import java.util.ArrayList;
-
-import javax.swing.JPanel;
-
-import sudoku.View.SudokuBoard.*;
+import javax.swing.*;
 
 public interface SudokuInterface {
 
-    public Cell[][] getCells();
-
-    public Cell getButtonSelected() throws Exception;
-
-    public void selectOnlyThisButton(Cell buttonSelected) throws Exception;
-
-    public int[] getCellCoordinate(Cell selected) throws Exception;
-
-    public Cell getCellFromCoord(int x, int y) throws Exception;
-
-    // public void markCells() throws Exception;
-
-    // public void clearMarkedCells() throws Exception;
+    public void assembleBoard();
 
 }

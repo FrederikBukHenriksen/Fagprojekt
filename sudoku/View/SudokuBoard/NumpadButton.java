@@ -4,34 +4,28 @@ import java.awt.Font;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 
+import sudoku.Controller.Zoom.ZoomObjectInterface;
+
 import java.awt.*;
 
-public class NumpadButton extends JButton {
+public class NumpadButton extends JButton implements ZoomObjectInterface {
 
     Color def = Color.gray;
     Color defFont = Color.white;
 
     public NumpadButton(String text) {
-        setFocusable(false);
-        setText(text);
-        setFocusable(false);
-        setBackground(def);
-        setForeground(defFont);
-        setFont(new Font("Serif", Font.PLAIN, 28));
-        setBorder(new LineBorder(Color.black, 1));
-
-        setMinimumSize(new Dimension(25, 25));
-        setPreferredSize(new Dimension(40, 40));
+        this.setFocusable(false);
+        this.setText(text);
+        this.setFocusable(false);
+        this.setBackground(def);
+        this.setForeground(defFont);
+        this.setBorder(new LineBorder(Color.black, 1));
     }
 
-    public void adjustSize(int sizeAdjustment) {
-        int currentSize = (int) getSize().getWidth();
-        int currentFontSize = (int) getFont().getSize();
-        int newSize = currentSize + sizeAdjustment;
-        int newFontSize = currentFontSize + sizeAdjustment;
-        setSize(new Dimension(newSize, newSize));
-        this.setPreferredSize(new Dimension(newSize, newSize));
-        setFont(new Font("Serif", Font.PLAIN, newFontSize));
+    public void setZoomedSize(int size) {
+        this.setSize(new Dimension(size, size));
+        this.setPreferredSize(new Dimension(size, size));
+        this.setFont(new Font("Serif", Font.PLAIN, (int) (size * 0.8)));
     }
 
 }

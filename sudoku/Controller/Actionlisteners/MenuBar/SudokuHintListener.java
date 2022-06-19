@@ -1,4 +1,4 @@
-package sudoku.Controller.Actionlisteners;
+package sudoku.Controller.Actionlisteners.MenuBar;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,7 +9,7 @@ public class SudokuHintListener implements ActionListener {
     /**
      *
      */
-    private final Controller sudokuController;
+    private Controller sudokuController;
 
     /**
      * @param sudokuController
@@ -19,6 +19,7 @@ public class SudokuHintListener implements ActionListener {
     }
 
     public void actionPerformed(ActionEvent e) {
-        sudokuController.getHint();
+        // Sets flag for running hint-method in
+        sudokuController.hintPressed = true;
     }
 }

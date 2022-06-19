@@ -1,0 +1,60 @@
+package sudoku.Controller.Zoom;
+
+import sudoku.View.SudokuBoard.NumpadButton;
+
+import java.util.ArrayList;
+
+import sudoku.Controller.Controller;
+import sudoku.View.View;
+import sudoku.View.SudokuBoard.Cell;
+
+public class Zoom {
+
+    private Controller controller;
+
+    private int zoomStatus = 28;
+    private int zoomSizeIncrementChange = 5; // Amount of zoom.
+
+    private ZoomObjectInterface[][] objectArray;
+
+    public Zoom(ZoomObjectInterface[][] objectList, Controller controller) {
+        this.objectArray = objectList;
+        this.controller = controller;
+        zoom();
+    }
+
+    public void zoomIn() {
+        this.zoomStatus = this.zoomStatus + zoomSizeIncrementChange;
+        zoom();
+    }
+
+    public void zoomOut() {
+        this.zoomStatus = this.zoomStatus - zoomSizeIncrementChange;
+        zoom();
+    }
+
+    private void zoom() {
+        for (ZoomObjectInterface[] array : objectArray) {
+            for (ZoomObjectInterface object : array) {
+                object.setZoomedSize(zoomStatus);
+            }
+        }
+        controller.view.pack();
+        controller.view.centerOnScreen();
+
+    }
+}
+
+// private void zoom(int cellSize) {
+
+// for (Cell cell : controller.sudokuControls.getCells1d()) {
+// cell.setSize(cellSize);
+// }
+
+// for (NumpadButton numpadButton : controller.view.sudokuNumpad.numpadButtons)
+// {
+// numpadButton.setSize(cellSize);
+// }
+// }
+
+// }

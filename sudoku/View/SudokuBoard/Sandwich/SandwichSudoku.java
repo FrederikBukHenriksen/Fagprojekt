@@ -1,6 +1,7 @@
 package sudoku.View.SudokuBoard.Sandwich;
 
 import sudoku.View.SudokuBoard.Classic.ClassicSudokuBoard;
+import sudoku.View.SudokuBoard.Classic.Square;
 
 import java.util.ArrayList;
 
@@ -9,8 +10,6 @@ import javax.swing.border.LineBorder;
 
 import sudoku.View.View;
 import sudoku.View.SudokuBoard.Cell;
-import sudoku.View.SudokuBoard.Square;
-import sudoku.View.SudokuBoard.SudokuInterface;
 import sudoku.View.SudokuBoard.SudokuExtend;
 
 import java.awt.*;

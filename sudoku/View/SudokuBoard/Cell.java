@@ -8,10 +8,12 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 
+import sudoku.Controller.Zoom.ZoomObjectInterface;
+
 import java.awt.*;
 import java.awt.Color;
 
-public class Cell extends JToggleButton {
+public class Cell extends JToggleButton implements ZoomObjectInterface {
 
     Color selected = new Color(161, 205, 240);
     Color conflict = new Color(240, 192, 193);
@@ -28,15 +30,10 @@ public class Cell extends JToggleButton {
         setText("");
         setBackground(def);
         setForeground(defFont);
-        setFont(new Font("Serif", Font.PLAIN, 28));
         setBorder(new LineBorder(Color.black, 1));
         setEnabled(true);
-        // UIManager.put("ToggleButton.highlight", Color.red);
         UIManager.put("ToggleButton.select", selected);
         SwingUtilities.updateComponentTreeUI(this);
-
-        setMinimumSize(new Dimension(25, 25));
-        setPreferredSize(new Dimension(40, 40));
     }
 
     @Override
@@ -61,21 +58,26 @@ public class Cell extends JToggleButton {
         }
     }
 
-    public void adjustSize(int sizeAdjustment) {
-        int currentSize = (int) getSize().getWidth();
-        int currentFontSize = (int) getFont().getSize();
-        int newSize = currentSize + sizeAdjustment;
-        int newFontSize = currentFontSize + sizeAdjustment;
-        setSize(new Dimension(newSize, newSize));
-        this.setPreferredSize(new Dimension(newSize, newSize));
-        setFont(new Font("Serif", Font.PLAIN, newFontSize));
+    @Override
+    public void setZoomedSize(int size) {
+        this.setSize(new Dimension(size, size));
+        this.setPreferredSize(new Dimension(size, size));
+        this.setFont(new Font("Serif", Font.PLAIN, (int) (size * 0.8)));
     }
 
+    public void setTextColor(Color color) {
+        this.setForeground(color);
+    }
+
+    public void setBackgroundColor(Color color) {
+        this.setForeground(color);
+    }
 
     public void defaultColor() {
         setBackground(def);
         setForeground(defFont);
     }
+
 
     public void conflict() {
         if (enabled) {

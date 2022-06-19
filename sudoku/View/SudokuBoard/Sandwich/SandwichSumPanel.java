@@ -8,8 +8,6 @@ import javax.swing.border.LineBorder;
 import sudoku.Controller.Controller;
 import sudoku.View.View;
 import sudoku.View.SudokuBoard.Cell;
-import sudoku.View.SudokuBoard.SudokuControls;
-import sudoku.View.SudokuBoard.SudokuInterface;
 import sudoku.View.SudokuBoard.SudokuExtend;
 
 import java.awt.*;

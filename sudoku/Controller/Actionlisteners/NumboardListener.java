@@ -7,6 +7,7 @@ import javax.swing.JButton;
 
 import sudoku.Controller.Controller;
 import sudoku.View.SudokuBoard.Cell;
+import sudoku.Model.Stack;
 
 public class NumboardListener implements ActionListener {
     /**
@@ -26,9 +27,9 @@ public class NumboardListener implements ActionListener {
         JButton pressedNumboard = (JButton) e.getSource();
         // Find the placement of the pressed board button
         try {
-            Cell pressedSudokuboard = this.sudokuController.view.sudokuBoard.getButtonSelected();
+            Cell pressedSudokuboard = this.sudokuController.sudokuControls.getButtonSelected();
             if (pressedSudokuboard.enabled) {
-                this.sudokuController.model.clearRedoStack();
+                this.sudokuController.model.stack.clearRedoStack();
                 String cellNew = "";
                 String cellCurrent = pressedSudokuboard.getText();
                 if (!cellCurrent.equals("")) { // Hvis der står noget i cellen
@@ -47,17 +48,17 @@ public class NumboardListener implements ActionListener {
                 }
 
                 // Update sudoku cell
-                int[] coordinate = this.sudokuController.view.sudokuBoard.getCellCoordinate(pressedSudokuboard);
+                int[] coordinate = this.sudokuController.sudokuControls.getCellCoordinate(pressedSudokuboard);
                 int tempVal = this.sudokuController.model.getSudoku()[coordinate[0]][coordinate[1]];
                 this.sudokuController.model.setSudokuCell(coordinate[0], coordinate[1], Integer.valueOf(cellNew));
 
                 // update sudoku Stack
-                this.sudokuController.model.pushStack2(
-                        this.sudokuController.model.createStackObj(coordinate[0], coordinate[1], tempVal,
+                this.sudokuController.model.stack.pushStack(
+                        this.sudokuController.model.stack.createStackObj(coordinate[0], coordinate[1], tempVal,
                                 Integer.valueOf(cellNew)));
 
                 // Update the board visuals
-                this.sudokuController.view.updateCellValues(this.sudokuController.model.getSudoku());
+                this.sudokuController.sudokuControls.updateCellValues(this.sudokuController.model.getSudoku());
 
                 // TODO:NEDENSTÅENE BRUGES KUN TIL DE-BUG.
                 // view.updateFrameTitle(model.checkValidity(model.getSudoku(), false),
