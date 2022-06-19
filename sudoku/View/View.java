@@ -35,6 +35,16 @@ public class View extends JFrame {
 		sudokuMenuBar = new SudokuMenuBar();
 		sudokuNumpad = new SudokuNumpad(n, k);
 		assembleBoard();
+
+		centerOnScreen();
+
+	}
+
+	public void centerOnScreen() {
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		int xScreen = (screenSize.width / 2) - ((int) getSize().getWidth() / 2);
+		int yScreen = (screenSize.height / 2) - ((int) getSize().getHeight() / 2);
+		this.setLocation(xScreen, yScreen);
 	}
 
 	public void assembleBoard() {

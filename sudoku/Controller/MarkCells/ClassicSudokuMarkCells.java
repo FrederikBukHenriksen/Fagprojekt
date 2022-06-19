@@ -29,6 +29,7 @@ public class ClassicSudokuMarkCells extends MarkCellsExtend {
             getPeersHorisontal(cell);
             getPeersVertical(cell);
             getPeersSquare(cell);
+            markSimilarCells(cell);
             markConflictCells();
         }
 
@@ -72,11 +73,15 @@ public class ClassicSudokuMarkCells extends MarkCellsExtend {
         }
     }
 
-    public void markSimilarCells(Cell pressedCell) {
-        if (pressedCell.getText().equals("")) {
+    public void markSimilarCells(Cell pressedCell) throws CellDoesNotExist {
+
+        if (!pressedCell.getText().equals("")) {
             for (Cell cell : sudokuControls.getCells1d()) {
                 if (cell.getText().equals(pressedCell.getText())) {
                     cell.similar();
+                    int[] coordinates = sudokuControls.getCellCoordinate(cell);
+                    markedCells.add(sudokuControls.getCellFromCoord(coordinates[0], coordinates[1]));
+
                 }
             }
         }

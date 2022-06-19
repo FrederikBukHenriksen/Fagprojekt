@@ -25,8 +25,6 @@ public class ClassicSudokuBoard extends SudokuExtend {
     protected int n; // N antal celler i hver square
     protected int k; // K antal squares
 
-    public Cell[][] cells;
-
     public ClassicSudokuBoard(int[][] sudoku, int n, int k) {
         this.sudoku = sudoku;
         this.n = n;

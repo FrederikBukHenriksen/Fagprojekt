@@ -5,6 +5,7 @@ import sudoku.View.SudokuBoard.NumpadButton;
 import java.util.ArrayList;
 
 import sudoku.Controller.Controller;
+import sudoku.View.View;
 import sudoku.View.SudokuBoard.Cell;
 
 public class Zoom {
@@ -21,12 +22,6 @@ public class Zoom {
         this.controller = controller;
         zoom();
     }
-
-    // public Zoom(Controller controller) {
-    // this.controller = controller;
-    // zoom(zoomStatus);
-
-    // }
 
     public void zoomIn() {
         this.zoomStatus = this.zoomStatus + zoomSizeIncrementChange;
@@ -45,6 +40,8 @@ public class Zoom {
             }
         }
         controller.view.pack();
+        controller.view.centerOnScreen();
+
     }
 }
 
