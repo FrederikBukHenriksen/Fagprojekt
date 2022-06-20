@@ -13,6 +13,7 @@ import sudoku.View.SudokuBoard.*;
 import sudoku.View.SudokuBoard.Classic.ClassicSudokuBoard;
 import sudoku.View.SudokuBoard.Sandwich.SandwichSudoku;
 
+import java.util.ArrayList;
 import java.util.NoSuchElementException;
 import java.io.IOException;
 
@@ -71,8 +72,9 @@ public class Controller {
 
 	public Controller() {
 		model = new Model();
+		ArrayList<Object> gameInfo = new ArrayList<>();
 		try {
-			fileLoader.LoadSudokuBoardDoc(model);
+			gameInfo = fileLoader.LoadSudokuBoardDoc();
 		} catch (IOException e) {
 			new PopUpWrongFile("wrong filetype", this);
 		} catch (NumberFormatException ez) {
@@ -80,26 +82,40 @@ public class Controller {
 		} catch (NoSuchElementException ex) {
 			new PopUpWrongFile("Illegal file content. Check for newlines",
 					this);
+		} finally {
+			// Import the data from the fileloader into model.
+			switch (String.valueOf(gameInfo.get(0)).toLowerCase()) {
+				case "classic":
+					int[][] sudoku = (int[][]) gameInfo.get(1);
+					int n = (int) gameInfo.get(2);
+					int k = (int) gameInfo.get(3);
+					validity = new ValidityClassic(sudoku, n, k);
+					solver = new CrooksAlgorithm(n, k, sudoku, model);
+
+					model = new Model(sudoku, n, k, validity, solver);
+
+					view = new View(model.getN(), model.getK(),
+							new ClassicSudokuBoard(model.getSudoku(), model.getN(), model.getK()));
+					break;
+
+				case "sandwich":
+					sudoku = (int[][]) gameInfo.get(1);
+					n = (int) gameInfo.get(2);
+					k = (int) gameInfo.get(3);
+					int[] xSums = (int[]) gameInfo.get(4);
+					int[] ySums = (int[]) gameInfo.get(5);
+					validity = new ValiditySandwich(sudoku, n, k, xSums, ySums);
+					solver = new BacktrackAlgorithm(n, k, xSums, ySums, sudoku, model);
+					model = new Model(sudoku, n, k, xSums, ySums, validity, solver);
+
+					view = new View(model.getN(), model.getK(),
+							new SandwichSudoku(model.getSudoku(), model.getN(), model.getK(), model.xSums,
+									model.ySums));
+					break;
+				default:
+					break;
+			}
 		}
-
-		if (model.getSandwich()) {
-			view = new View(model.getN(), model.getK(),
-					new SandwichSudoku(model.getSudoku(), model.getN(), model.getK(), model.xSums, model.ySums));
-			validity = new ValiditySandwich(model.getSudoku(), model.getN(), model.getK(), model.xSums, model.ySums);
-
-			solver = new BacktrackAlgorithm(model.getN(), model.getN(), model.xSums, model.ySums, model.getSudoku(),
-					model);
-		} else {
-			view = new View(model.getN(), model.getK(),
-					new ClassicSudokuBoard(model.getSudoku(), model.getN(), model.getK()));
-
-			validity = new ValidityClassic(model.getSudoku(), model.getN(), model.getK());
-			solver = new CrooksAlgorithm(model.getN(), model.getK(), model.getSudoku(), model);
-		}
-		view.sudokuBoard.assembleBoard();
-		model.setValidity(validity);
-		model.setSolver(solver);
-		model.setStack(new Stack(model.getSudoku()));
 
 		sudokuControls = new ClassicSudokuControls(view.sudokuBoard.getCells());
 		markCells = new ClassicMarkCells(model.getSudoku(), model.getN(), model.getK(), sudokuControls, validity);
@@ -133,35 +149,10 @@ public class Controller {
 		} catch (Exception e) {
 		}
 
-		while (true) {
-			okPressed = false;
-			hintPressed = false;
-			while (true) {
-				if (model.validity.checkValidity(model.getSudoku()) && model.isFilled() && !isSolved) {
-					isSolved = true;
-					new PopUpSudokuSolved("Congratulations, you solved the puzzle!", this);
-				}
-				try {
-					Thread.sleep(20);
-				} catch (InterruptedException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				if (okPressed || hintPressed) {
-					break;
-				}
-			}
-			if (okPressed) {
-				new Controller();
-			} else if (hintPressed) {
-				getHint();
-			}
-		}
+		whileLoop();
 	}
 
-	public boolean getOkPressed() {
-		return okPressed;
-	}
+
 
 	public void getHint() {
 		try {
@@ -220,6 +211,33 @@ public class Controller {
 			}
 		} catch (Exception exc) {
 			new PopUp(exc.getMessage());
+		}
+	}
+
+	private void whileLoop() {
+		while (true) {
+			okPressed = false;
+			hintPressed = false;
+			while (true) {
+				if (model.validity.checkValidity(model.getSudoku()) && model.isFilled() && !isSolved) {
+					isSolved = true;
+					new PopUpSudokuSolved("Congratulations, you solved the puzzle!", this);
+				}
+				try {
+					Thread.sleep(20);
+				} catch (InterruptedException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				if (okPressed || hintPressed) {
+					break;
+				}
+			}
+			if (okPressed) {
+				new Controller();
+			} else if (hintPressed) {
+				getHint();
+			}
 		}
 	}
 

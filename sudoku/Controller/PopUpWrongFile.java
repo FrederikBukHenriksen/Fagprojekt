@@ -56,7 +56,7 @@ public class PopUpWrongFile extends PopUp {
             }
         }
         try {
-            controller.fileLoader.LoadSudokuBoardDoc(controller.model);
+            controller.fileLoader.LoadSudokuBoardDoc();
         } catch (Exception e) {
             new PopUpWrongFile("wrong filetype", controller);
         }
