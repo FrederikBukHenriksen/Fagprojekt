@@ -40,23 +40,18 @@ public class Controller {
 	public Zoom zoom;
 	public boolean okPressed = false;
 	public boolean hintPressed = false;
-
-
+	public boolean isSolved = false;
 
 	public void updateColours() {
 		markCells.clearMarkedCells();
 		try {
 			markCells.markCells(sudokuControls.getButtonSelected());
 		} catch (Exception e) {
-			if (model.validity.checkValidity(model.getSudoku()) && model.isFilled()) {
-				// createPopUp("Congratulations, you solved the puzzle!");
-				new SudokuSolvedPopUp("Congtaz", this);
-			}
 		}
 	}
 
 	public void redoMove() {
-		if (model.stack.redoes > 0) {
+		if (model.stack.redoStack.size() > 0) {
 			try {
 				sudokuControls.getButtonSelected().setSelected(false);
 			} catch (Exception exc) {
@@ -71,7 +66,7 @@ public class Controller {
 	}
 
 	public void undoMove() {
-		if (model.stack.moves > 0) {
+		if (model.stack.sudokuStack.size() > 0) {
 			try {
 				sudokuControls.getButtonSelected().setSelected(false);
 			} catch (Exception exc) {
@@ -219,6 +214,10 @@ public class Controller {
 			okPressed = false;
 			hintPressed = false;
 			while (true) {
+				if (model.validity.checkValidity(model.getSudoku()) && model.isFilled() && !isSolved) {
+					isSolved = true;
+					new SudokuSolvedPopUp("Congratulations, you solved the puzzle!", this);
+				}
 				try {
 					Thread.sleep(20);
 				} catch (InterruptedException e1) {
@@ -240,8 +239,6 @@ public class Controller {
 	public boolean getOkPressed() {
 		return okPressed;
 	}
-
-
 
 	public void getHint() {
 		try {
