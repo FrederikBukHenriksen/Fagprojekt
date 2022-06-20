@@ -17,15 +17,15 @@ import java.awt.Color;
 
 public class SandwichSudoku extends ClassicSudokuBoard {
 
-    SandwichSumPanel xSumPanel;
     SandwichSumPanel ySumPanel;
+    SandwichSumPanel xSumPanel;
 
     ClassicSudokuBoard classicSudokuBoard;
 
     public SandwichSudoku(int[][] sudoku, int n, int k, int[] xSum, int[] ySum) {
         super(sudoku, n, k);
-        xSumPanel = new SandwichSumPanel(xSum, 1);
-        ySumPanel = new SandwichSumPanel(ySum, 0);
+        ySumPanel = new SandwichSumPanel(xSum, 1);
+        xSumPanel = new SandwichSumPanel(ySum, 0);
     }
 
     @Override
@@ -52,13 +52,13 @@ public class SandwichSudoku extends ClassicSudokuBoard {
         gbc.gridy = 0;
         gbc.insets = new Insets(0, 0, 0, 0);
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        panel.add(xSumPanel, gbc);
+        panel.add(ySumPanel, gbc);
 
         gbc.gridx = 1;
         gbc.gridy = 1;
         gbc.insets = new Insets(0, 0, 0, 0);
         gbc.fill = GridBagConstraints.VERTICAL;
-        panel.add(ySumPanel, gbc);
+        panel.add(xSumPanel, gbc);
 
         gbc.gridx = 0;
         gbc.gridy = 1;
