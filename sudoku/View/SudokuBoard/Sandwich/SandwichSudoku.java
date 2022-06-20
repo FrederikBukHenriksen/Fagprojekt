@@ -1,7 +1,7 @@
 package sudoku.View.SudokuBoard.Sandwich;
 
 import sudoku.View.SudokuBoard.Classic.ClassicSudokuBoard;
-import sudoku.View.SudokuBoard.Classic.Square;
+import sudoku.View.SudokuBoard.Classic.ClassicSquare;
 
 import java.util.ArrayList;
 
@@ -17,10 +17,8 @@ import java.awt.Color;
 
 public class SandwichSudoku extends ClassicSudokuBoard {
 
-    SandwichSumPanel ySumPanel;
-    SandwichSumPanel xSumPanel;
-
-    ClassicSudokuBoard classicSudokuBoard;
+    protected SandwichSumPanel ySumPanel;
+    protected SandwichSumPanel xSumPanel;
 
     public SandwichSudoku(int[][] sudoku, int n, int k, int[] xSum, int[] ySum) {
         super(sudoku, n, k);
@@ -40,7 +38,7 @@ public class SandwichSudoku extends ClassicSudokuBoard {
         gbc.gridy = 1;
         gbc.insets = new Insets(0, 0, 0, 0);
         gbc.anchor = GridBagConstraints.WEST;
-        this.add(sudokuNumpad, gbc);
+        this.add(numpad, gbc);
     }
 
     protected JPanel createBoardPanel() {

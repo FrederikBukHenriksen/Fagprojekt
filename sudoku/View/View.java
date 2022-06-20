@@ -6,26 +6,15 @@ import java.awt.*;
 
 import sudoku.View.MenuBar.SudokuMenuBar;
 import sudoku.View.SudokuBoard.*;
-import sudoku.View.SudokuBoard.Classic.ClassicSudokuNumpad;
+import sudoku.View.SudokuBoard.Classic.ClassicNumpadBar;
 
 public class View extends JFrame {
 
 	// Containers
 	public SudokuBoardAbstract sudokuBoard;
-	public SudokuMenuBar sudokuMenuBar;
-	public ClassicSudokuNumpad sudokuNumpad;
+	public SudokuMenuBar menuBar;
 
-	// Class variables
-	private int n;
-	private int k;
-	private int[][] sudoku;
-	GridBagConstraints gbc = new GridBagConstraints();
-
-
-	public View(int[][] sudoku, int n, int k, SudokuBoardAbstract sudokuBoard) {
-		this.sudoku = sudoku;
-		this.n = n;
-		this.k = k;
+	public View(int n, int k, SudokuBoardAbstract sudokuBoard) {
 
 		this.setDefaultCloseOperation(this.EXIT_ON_CLOSE);
 		this.setResizable(false);
@@ -33,8 +22,8 @@ public class View extends JFrame {
 		this.setVisible(true);
 		// this.setExtendedState(this.getExtendedState());
 
-		sudokuMenuBar = new SudokuMenuBar();
-		this.setJMenuBar(sudokuMenuBar);
+		menuBar = new SudokuMenuBar();
+		this.setJMenuBar(menuBar);
 
 		this.sudokuBoard = sudokuBoard;
 		this.add(sudokuBoard);
@@ -50,15 +39,4 @@ public class View extends JFrame {
 		int yScreen = yCenter - ((int) getSize().getHeight() / 2);
 		this.setLocation(xScreen, yScreen);
 	}
-
-
-
-	public SudokuBoardAbstract getSudokuBoard() {
-		return sudokuBoard;
-	}
-
-	public ClassicSudokuNumpad getSudokuNumpad() {
-		return sudokuNumpad;
-	}
-
 }

@@ -9,7 +9,7 @@ import sudoku.View.SudokuBoard.Cell;
 // ACTIONLISTENER FOR SUDOKUBOARDET.
 public class SudokuboardListener implements ActionListener {
 
-    private final Controller sudokuController;
+    private Controller sudokuController;
 
     public SudokuboardListener(Controller sudokuController) {
         this.sudokuController = sudokuController;

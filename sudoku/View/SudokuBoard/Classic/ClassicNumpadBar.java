@@ -13,11 +13,9 @@ import sudoku.View.SudokuBoard.*;
 
 import java.awt.*;
 
-public class ClassicSudokuNumpad extends JPanel {
+public class ClassicNumpadBar extends SudokuNumpadBarAbstract {
 
-    public NumpadButton[] numpadButtons;
-
-    public ClassicSudokuNumpad(int n, int k) {
+    public ClassicNumpadBar(int n, int k) {
         this.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
         this.setBorder(new LineBorder(Color.black, 1));
         numpadButtons = new NumpadButton[n * n];

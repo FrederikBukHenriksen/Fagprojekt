@@ -16,8 +16,8 @@ import java.awt.Color;
 
 public class Cell extends JToggleButton implements ZoomObjectInterface {
 
-    public boolean enabled = true;
-    ClassicSudokuColors sudokuColors = new ClassicSudokuColors();
+    private boolean enabled = true;
+    private ClassicSudokuColors sudokuColors = new ClassicSudokuColors();
 
     public Cell() {
         setText("");
@@ -33,8 +33,8 @@ public class Cell extends JToggleButton implements ZoomObjectInterface {
 
     // Set methods
     @Override
-    public void setEnabled(boolean enable) {
-        if (enable == true) {
+    public void setEnabled(boolean state) {
+        if (state == true) {
             enabled = true;
         } else {
             enabled = false;

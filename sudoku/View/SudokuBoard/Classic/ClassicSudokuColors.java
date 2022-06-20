@@ -12,7 +12,7 @@ public class ClassicSudokuColors {
     public Color cellSelected = new Color(161, 205, 240);
 
     public void colorDefault(Cell cell) {
-        if (cell.enabled) {
+        if (cell.getEnabled()) {
             cell.setTextColor(colorDefaultFontEnabled);
         } else {
             cell.setTextColor(colorDefaultFont);

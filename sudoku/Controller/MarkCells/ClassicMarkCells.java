@@ -2,7 +2,7 @@ package sudoku.Controller.MarkCells;
 
 import sudoku.Controller.Controller;
 import sudoku.Controller.ClassicSudokuControls;
-import sudoku.Controller.Exceptions.CellDoesNotExist;
+import sudoku.Controller.Exceptions.ExceptionCellDoesNotExist;
 import sudoku.Model.Validity.ValidityInterface;
 import sudoku.View.SudokuBoard.Cell;
 import sudoku.View.SudokuBoard.Classic.ClassicSudokuColors;
@@ -55,7 +55,7 @@ public class ClassicMarkCells implements MarkCellsInterface {
         }
     }
 
-    protected void getPeersSquare(Cell pressedCell) throws CellDoesNotExist {
+    protected void getPeersSquare(Cell pressedCell) throws ExceptionCellDoesNotExist {
 
         int[] coordinates = sudokuControls.getCellCoordinate(pressedCell);
 
@@ -71,7 +71,7 @@ public class ClassicMarkCells implements MarkCellsInterface {
         }
     }
 
-    protected void getPeersVertical(Cell pressedCell) throws CellDoesNotExist {
+    protected void getPeersVertical(Cell pressedCell) throws ExceptionCellDoesNotExist {
         int[] coordinates = sudokuControls.getCellCoordinate(pressedCell);
         for (int i = 0; i < (n * k); i++) {
             sudokuColor.colorPeer(sudokuControls.getCellFromCoord(coordinates[0], i));
@@ -79,7 +79,7 @@ public class ClassicMarkCells implements MarkCellsInterface {
         }
     }
 
-    protected void getPeersHorisontal(Cell pressedCell) throws CellDoesNotExist {
+    protected void getPeersHorisontal(Cell pressedCell) throws ExceptionCellDoesNotExist {
         int[] coordinates = sudokuControls.getCellCoordinate(pressedCell);
         for (int i = 0; i < (n * k); i++) {
             sudokuColor.colorPeer(sudokuControls.getCellFromCoord(i, coordinates[1]));
@@ -87,7 +87,7 @@ public class ClassicMarkCells implements MarkCellsInterface {
         }
     }
 
-    protected void markSimilarCells(Cell pressedCell) throws CellDoesNotExist {
+    protected void markSimilarCells(Cell pressedCell) throws ExceptionCellDoesNotExist {
 
         if (!pressedCell.getText().equals("")) {
             for (Cell cell : sudokuControls.getCells1d()) {
