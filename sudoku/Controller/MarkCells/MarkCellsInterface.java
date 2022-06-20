@@ -6,12 +6,9 @@ import sudoku.Controller.Exceptions.CellDoesNotExist;
 import sudoku.Controller.Exceptions.NoCellSelected;
 import sudoku.View.SudokuBoard.Cell;
 
-public abstract class MarkCellsExtend {
-
-    public ArrayList<Cell> markedCells = new ArrayList<Cell>();
+public interface MarkCellsInterface {
 
     public abstract void clearMarkedCells();
 
-
-    public abstract void markCells(Cell cell) throws NoCellSelected, CellDoesNotExist, Exception;
+    public abstract void markCells(Cell pressedCell) throws NoCellSelected, CellDoesNotExist, Exception;
 }

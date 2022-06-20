@@ -10,7 +10,7 @@ import javax.swing.border.LineBorder;
 
 import sudoku.View.View;
 import sudoku.View.SudokuBoard.Cell;
-import sudoku.View.SudokuBoard.SudokuExtend;
+import sudoku.View.SudokuBoard.SudokuBoardExtend;
 
 import java.awt.*;
 import java.awt.Color;
@@ -51,6 +51,7 @@ public class SandwichSudoku extends ClassicSudokuBoard {
     // Create the board as a JPanel-object
     protected JPanel assembleBoard(Square[][] squares) {
         // Use createBoard to make a panel
+        GridBagConstraints gbc = new GridBagConstraints();
         JPanel panel = new JPanel();
         GridBagLayout grid = new GridBagLayout();
         panel.setLayout(grid);

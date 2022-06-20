@@ -25,6 +25,7 @@ public class CreateOkPopUp extends JDialog {
     protected GridBagConstraints gbc = new GridBagConstraints();
 
     public CreateOkPopUp(String text) {
+        // this.setUndecorated(true); // Removes title bar
         this.setVisible(true);
         this.setResizable(false);
         this.setLayout(new GridBagLayout());

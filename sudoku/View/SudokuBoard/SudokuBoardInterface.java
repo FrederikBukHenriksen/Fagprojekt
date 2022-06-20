@@ -2,7 +2,7 @@ package sudoku.View.SudokuBoard;
 
 import javax.swing.*;
 
-public interface SudokuInterface {
+public interface SudokuBoardInterface {
 
     public void assembleBoard();
 

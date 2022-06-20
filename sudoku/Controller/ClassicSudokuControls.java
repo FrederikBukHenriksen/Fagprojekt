@@ -6,13 +6,13 @@ import sudoku.Controller.Exceptions.CellDoesNotExist;
 import sudoku.Controller.Exceptions.NoCellSelected;
 import sudoku.View.SudokuBoard.Cell;
 
-public class SudokuControls {
+public class ClassicSudokuControls {
 
-    protected Controller controller;
+    // protected Controller controller;
 
-    Cell[][] cells;
+    protected Cell[][] cells;
 
-    public SudokuControls(Cell[][] cells) {
+    public ClassicSudokuControls(Cell[][] cells) {
         this.cells = cells;
     }
 

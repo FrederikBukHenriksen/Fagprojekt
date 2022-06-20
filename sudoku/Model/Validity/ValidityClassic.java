@@ -3,7 +3,7 @@ package sudoku.Model.Validity;
 import java.util.ArrayList;
 import java.awt.Point;
 
-public class ValidityClassic extends ValidityExtend {
+public class ValidityClassic implements ValidityInterface {
 
     // Class variables
 
@@ -33,26 +33,6 @@ public class ValidityClassic extends ValidityExtend {
     public ArrayList<Point> getUniqueConflictPoints(int[][] sudoku) {
         return uniquePoints(collectConflictPointMatches(sudoku));
     }
-
-    // // Set methods
-
-    // public void setN(int n) {
-    // this.n = n;
-    // }
-
-    // public void setK(int k) {
-    // this.k = k;
-    // }
-
-    // // Get methods
-
-    // public int getN() {
-    // return n;
-    // }
-
-    // public int getK() {
-    // return k;
-    // }
 
     // Class methods
 

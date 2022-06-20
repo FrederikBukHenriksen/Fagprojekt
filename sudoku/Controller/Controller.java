@@ -2,8 +2,8 @@ package sudoku.Controller;
 
 import sudoku.Controller.Actionlisteners.*;
 import sudoku.Controller.Actionlisteners.MenuBar.*;
-import sudoku.Controller.MarkCells.ClassicSudokuMarkCells;
-import sudoku.Controller.MarkCells.MarkCellsExtend;
+import sudoku.Controller.MarkCells.ClassicMarkCells;
+import sudoku.Controller.MarkCells.MarkCellsInterface;
 import sudoku.Controller.Zoom.Zoom;
 import sudoku.Controller.Zoom.ZoomObjectInterface;
 import sudoku.Model.Model;
@@ -31,12 +31,12 @@ public class Controller {
 	// Creating variables
 	public Model model;
 	public View view;
-	public ValidityExtend validity;
-	public SolverAbstract solver;
-	public SudokuInterface sudokuBoard;
+	public ValidityInterface validity;
+	public SolverInterface solver;
+	public SudokuBoardInterface sudokuBoard;
 	public LoadSudokuBoardFile loadSudokuBoardFile;
-	public SudokuControls sudokuControls;
-	public MarkCellsExtend markCells;
+	public ClassicSudokuControls sudokuControls;
+	public MarkCellsInterface markCells;
 	public Zoom zoom;
 	public boolean okPressed = false;
 	public boolean hintPressed = false;
@@ -180,10 +180,10 @@ public class Controller {
 		model.setSolver(solver);
 		model.setStack(new Stack(model.getSudoku()));
 
-		sudokuControls = new SudokuControls(view.sudokuBoard.cells);
-		markCells = new ClassicSudokuMarkCells(model.getSudoku(), model.getN(), model.getK(), sudokuControls, validity);
+		sudokuControls = new ClassicSudokuControls(view.sudokuBoard.getCells());
+		markCells = new ClassicMarkCells(model.getSudoku(), model.getN(), model.getK(), sudokuControls, validity);
 		ZoomObjectInterface[][] objectList = { sudokuControls.getCells1d(), view.sudokuNumpad.numpadButtons };
-		zoom = new Zoom(objectList, this);
+		zoom = new Zoom(objectList, view);
 		// Assign actionlisteners
 		// SudokuSolvedPopUp lolcat = new SudokuSolvedPopUp("DEBUG", this);
 
