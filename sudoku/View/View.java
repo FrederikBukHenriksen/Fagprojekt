@@ -27,10 +27,12 @@ public class View extends JFrame {
 
 		this.sudokuBoard = sudokuBoard;
 		this.add(sudokuBoard);
+		sudokuBoard.assembleBoard();
 
 		this.pack();
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		centerOnScreen((screenSize.width / 2), (screenSize.height / 2));
+
 
 	}
 
