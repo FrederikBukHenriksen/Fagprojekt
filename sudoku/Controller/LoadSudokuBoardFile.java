@@ -10,7 +10,11 @@ import sudoku.Model.Solver.BacktrackAlgorithm;
 import sudoku.Model.Solver.CrooksAlgorithm;
 
 public class LoadSudokuBoardFile {
-
+	/*
+	 * Author: Christian
+	 * Function: Loads sudokuboard, and assign if it is a sandwich or normal sudoku
+	 * Inputs: Takes model and controller
+	 */
     public static void LoadSudokuBoardDoc(Controller controller, Model model)
             throws IOException,
             NumberFormatException, NoSuchElementException {

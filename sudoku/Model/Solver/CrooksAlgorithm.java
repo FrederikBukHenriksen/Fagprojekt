@@ -26,7 +26,13 @@ public class CrooksAlgorithm implements SolverInterface {
 		this.sudoku = sudoku;
 		this.model = model;
 	}
-
+	
+	/*
+	 * Author: Christian
+	 * Function: Starts the solving progress.
+	 * Inputs: void, but uses sudoku, n and k as global variables
+	 * Outputs: void, but creates a solved sudoku, that can be got with a get function
+	 */
 	public void solve() {
 		ValidityInterface validity = new ValidityClassic(sudoku, n, k);
 		solved = false;
@@ -77,24 +83,17 @@ public class CrooksAlgorithm implements SolverInterface {
 				}
 			}
 
-			/*
-			 * for(int i = 0; i<n*k;i++) {
-			 * for(int j = 0; j<n*k;j++) {
-			 * System.out.print("[" +solvedSudoku[i][j]+"]");
-			 * 
-			 * }
-			 * System.out.println("");
-			 * 
-			 * }
-			 */
-			// de-comment below lines for uniqueness and solution
-			// System.out.println("It is unique = " + unique);
-			// System.out.println(prem);
 		}
 	}
 
 	// Method for getting the board
 
+	/*
+	 * Author: Christian
+	 * Function: runs all base functions for as long as there are changes
+	 * Inputs: Takes 3d array of sudoku
+	 * Outputs: Updated 3d array of sudoku
+	 */
 	public ArrayList<ArrayList<ArrayList<Integer>>> createPreemtiveSets() {
 		ArrayList<ArrayList<ArrayList<Integer>>> prem = preemtiveSets(singleton(markUpCells()));
 		while (change) {
@@ -104,7 +103,12 @@ public class CrooksAlgorithm implements SolverInterface {
 	}
 
 	// Method for setting the entire board
-
+	/*
+	 * Author: Christian
+	 * Function: creates preemtive sets..
+	 * Inputs: Takes 3d array of sudoku
+	 * Outputs: Updated 3d array of sudoku
+	 */
 	public ArrayList<ArrayList<ArrayList<Integer>>> preemtiveSets(ArrayList<ArrayList<ArrayList<Integer>>> sudokuPre) {
 		change = false;
 		int sizeOfSet = 2;
@@ -201,6 +205,12 @@ public class CrooksAlgorithm implements SolverInterface {
 		return sudokuPre;
 	}
 
+	/*
+	 * Author: Rasmus
+	 * Function: Updates Markup of sudoku
+	 * Inputs: Takes 3d array of sudoku and mode, that explains what the code needs to do.
+	 * Outputs: Updated 3d array of sudoku
+	 */
 	public ArrayList<ArrayList<ArrayList<Integer>>> updateMarkup(ArrayList<ArrayList<ArrayList<Integer>>> markupBoard,
 			ArrayList<Integer> set, ArrayList<Integer> xCoords, ArrayList<Integer> yCoords, int mode) {
 
@@ -255,7 +265,13 @@ public class CrooksAlgorithm implements SolverInterface {
 		}
 		return markupBoard;
 	}
-
+	
+	/*
+	 * Author: Frederik
+	 * Function: Create original markup, is only run once per sudoku
+	 * Inputs: Uses global sudoku, and n and k.
+	 * Outputs: Creates 3d array list of sudoku with markups
+	 */
 	public ArrayList<ArrayList<ArrayList<Integer>>> markUpCells() {
 		ValidityInterface validity = new ValidityClassic(sudoku, n, k);
 		ArrayList<ArrayList<ArrayList<Integer>>> markUpBoard = new ArrayList<>();
@@ -308,7 +324,12 @@ public class CrooksAlgorithm implements SolverInterface {
 		}
 		return markUpBoard;
 	}
-
+	/*
+	 * Author: Christian
+	 * Function: Creates singleton variables. 
+	 * Inputs: 3d array list of sudoku
+	 * Outputs: updated 3d array list of sudoku
+	 */
 	public ArrayList<ArrayList<ArrayList<Integer>>> singleton(ArrayList<ArrayList<ArrayList<Integer>>> sudokuSing) {
 		// System.out.println("start: "+sudokuSing);
 		for (int i = 0; i < n * k; i++) {
@@ -347,6 +368,12 @@ public class CrooksAlgorithm implements SolverInterface {
 		return sudokuSing;
 	}
 
+	/*
+	 * Author: Christian
+	 * Function: Does Backtracking on crooks algorithm 
+	 * Inputs: 3d array list of sudoku
+	 * Outputs: updated 3d array list of sudoku
+	 */
 	public ArrayList<ArrayList<ArrayList<Integer>>> loop(ArrayList<ArrayList<ArrayList<Integer>>> sudokuLoop) {
 		// System.out.println(sudokuLoop);
 		ValidityInterface validity = new ValidityClassic(sudoku, n, k);
@@ -494,6 +521,12 @@ public class CrooksAlgorithm implements SolverInterface {
 		return sudokuLoop;
 	}
 
+	/*
+	 * Author: Christian
+	 * Function: Converts 3d array list to 2d array
+	 * Inputs: 3d array list of sudoku
+	 * Outputs: simple 2d array
+	 */
 	public int[][] Converter3D2D(ArrayList<ArrayList<ArrayList<Integer>>> sudoku3D) {
 		int[][] sudoku2D = new int[n * k][n * k];
 		for (int l = 0; l < n * k; l++) {
@@ -507,14 +540,24 @@ public class CrooksAlgorithm implements SolverInterface {
 		}
 		return sudoku2D;
 	}
-
+	/*
+	 * Author: Christian, Updates by Frederik
+	 * Function: Getter function for uniqueness
+	 * Inputs: Takes nothing
+	 * Outputs: returns if sudoku is unique
+	 */
 	public boolean getUniqueness() throws Exception {
 		if (!isSolved()) {
 			throw new NoSolutionAvailable();
 		}
 		return unique;
 	}
-
+	/*
+	 * Author: Christian, Updates by Frederik
+	 * Function: Getter function for solved sudoku
+	 * Inputs: Takes nothing
+	 * Outputs: returns solved sudoku
+	 */
 	public int[][] getSolvedSudoku() throws Exception {
 		if (!isSolved()) {
 			throw new NoSolutionAvailable();
@@ -522,6 +565,12 @@ public class CrooksAlgorithm implements SolverInterface {
 		return solvedSudoku;
 	}
 
+	/*
+	 * Author: Christian
+	 * Function: Getter function for if sudoku is solved
+	 * Inputs: Takes nothing
+	 * Outputs: returns if sudoku is solved
+	 */
 	public boolean isSolved() {
 		return solved;
 	}
