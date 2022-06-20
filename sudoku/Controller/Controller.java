@@ -48,7 +48,7 @@ public class Controller {
 		} catch (Exception e) {
 			if (model.validity.checkValidity(model.getSudoku()) && model.isFilled()) {
 				// createPopUp("Congratulations, you solved the puzzle!");
-				new SudokuSolvedPopUp("Congtaz", this);
+				new SudokuSolvedPopUp("Congratulations, you solved the puzzle!", this);
 			}
 		}
 	}
