@@ -289,6 +289,8 @@ public class Controller {
 							}
 						}
 					}
+					sudokuControls
+							.updateCellValues(model.getSudoku());
 					updateColours();
 				}
 			}
