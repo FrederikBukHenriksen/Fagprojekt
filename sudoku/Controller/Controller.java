@@ -181,7 +181,6 @@ public class Controller {
 				view.sudokuBoard.getNumpadButtons() };
 		zoom = new Zoom(objectList, view);
 		// Assign actionlisteners
-		// SudokuSolvedPopUp lolcat = new SudokuSolvedPopUp("DEBUG", this);
 
 		for (Cell cell : sudokuControls.getCells1d()) {
 			cell.addActionListener(new SudokuboardListener(this));
@@ -191,8 +190,6 @@ public class Controller {
 		for (NumpadButton numpadButton : view.sudokuBoard.getNumpadButtons()) {
 			numpadButton.addActionListener(new NumboardListener(this));
 		}
-		// view.sudokuNumpad.numpadButtons.forEach(b -> b.addActionListener(new
-		// NumboardListener(this)));
 
 		view.sudokuMenuBar.zoomIn.addActionListener(new MenuBarZoomActionListener(this));
 		view.sudokuMenuBar.zoomOut.addActionListener(new MenuBarZoomActionListener(this));
