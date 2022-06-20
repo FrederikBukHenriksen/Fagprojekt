@@ -6,18 +6,17 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.FlowLayout;
 
-public class SudokuSolvedPopUp extends CreateOkPopUp {
+public class PopUpSudokuSolved extends PopUp {
 
     protected Controller controller;
 
-    public SudokuSolvedPopUp(String text, Controller controller) {
+    public PopUpSudokuSolved(String text, Controller controller) {
         super(text);
-
         this.controller = controller;
     }
 
     @Override
-    public JPanel buttonPanel() {
+    protected JPanel buttonPanel() {
         JDialog dialog = this;
         JButton closeButton = new JButton("Close");
         closeButton.addActionListener(new ActionListener() {

@@ -7,11 +7,11 @@ import javax.swing.AbstractButton;
 
 import sudoku.Controller.Controller;
 
-public class MenuBarZoomActionListener implements ActionListener {
+public class MenuBarZoomListener implements ActionListener {
 
-    Controller sudokuController;
+    private Controller sudokuController;
 
-    public MenuBarZoomActionListener(Controller sudokuController) {
+    public MenuBarZoomListener(Controller sudokuController) {
         this.sudokuController = sudokuController;
     }
 

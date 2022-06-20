@@ -2,18 +2,24 @@ package sudoku.Controller.Actionlisteners.MenuBar;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import sudoku.Controller.Controller;
 
-public class MenuBarMenuActionListener implements ActionListener {
+import javax.swing.AbstractButton;
+
+import sudoku.Controller.Controller;
+import sudoku.View.SudokuBoard.*;
+
+public class MenuBarNewSudokuListener implements ActionListener {
 
     Controller sudokuController;
 
-    public MenuBarMenuActionListener(Controller sudokuController) {
+    public MenuBarNewSudokuListener(Controller sudokuController) {
         this.sudokuController = sudokuController;
     }
 
+    @Override
     public void actionPerformed(ActionEvent e) {
-        sudokuController.solveSudoku();
+        sudokuController.view.dispose();
+        sudokuController.okPressed = true;
     }
 
 }

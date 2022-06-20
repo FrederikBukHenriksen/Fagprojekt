@@ -4,7 +4,7 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
-public class ValiditySandwich extends ValidityClassic implements ValidityInterface {
+public class ValiditySandwich extends ValidityClassic {
 
     // Class variables
 
@@ -17,26 +17,6 @@ public class ValiditySandwich extends ValidityClassic implements ValidityInterfa
         super(sudoku, n, k);
         this.xSums = xSums;
         this.ySums = ySums;
-    }
-
-    // Set methods
-
-    public void setSandwichX(int[] xSums) {
-        this.xSums = xSums;
-    }
-
-    public void setSandwichY(int[] ySums) {
-        this.ySums = ySums;
-    }
-
-    // Get methods
-
-    public int[] getSandwichX() {
-        return xSums;
-    }
-
-    public int[] getSandwichY() {
-        return ySums;
     }
 
     // Class methods

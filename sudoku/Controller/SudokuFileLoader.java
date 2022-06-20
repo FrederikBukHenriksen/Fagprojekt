@@ -5,18 +5,35 @@ import java.nio.file.Path;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
+import javax.swing.JFileChooser;
+
 import sudoku.Model.Model;
 import sudoku.Model.Solver.BacktrackAlgorithm;
 import sudoku.Model.Solver.CrooksAlgorithm;
 
-public class LoadSudokuBoardFile {
+public class SudokuFileLoader {
 
-    public static void LoadSudokuBoardDoc(Controller controller, Model model)
+    public static Path findSudokuPath(String s) {// https://stackoverflow.com/questions/51973636/how-to-return-the-file-path-from-the-windows-file-explorer-using-java
+        // File file = new
+        // File("C:\\Users\\Candytom\\Documents\\GitHub\\sudoku\\Puzzles_1\\Puzzle_3_evil.dat");
+        Path file = null;
+        JFileChooser jd = s == null ? new JFileChooser() : new JFileChooser(s);
+        jd.setDialogTitle("Choose Sudoku you wish to solve");
+        int returnVal = jd.showOpenDialog(null);
+        /* If user didn't select a file and click ok, return null Path object */
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            return file = jd.getSelectedFile().toPath();
+        }
+        return null;
+
+    }
+
+    public static void LoadSudokuBoardDoc(Model model)
             throws IOException,
             NumberFormatException, NoSuchElementException {
 
         Path file = null;
-        file = controller.model.findSudokuPath("C:\\");
+        file = findSudokuPath("C:\\");
         // System.out.println(file);
         if (file == null) {
             System.exit(0);
@@ -38,7 +55,7 @@ public class LoadSudokuBoardFile {
         setupScanner.close();
         if (model.k > model.n) {
         } else {// Creating the board
-            controller.model.sudoku = new int[model.n * model.k][model.n * model.k];
+            model.sudoku = new int[model.n * model.k][model.n * model.k];
             // Creating variables for sandwich Sums
             model.xSums = new int[model.n * model.k];
             model.ySums = new int[model.n * model.k];
@@ -56,12 +73,12 @@ public class LoadSudokuBoardFile {
                     String str = lineScanner.next();
                     if (str.equals(".")) {
                         // If input is ".", convert to a "0"
-                        controller.model.sudoku[c][d] = 0;
+                        model.sudoku[c][d] = 0;
                         // Go to next entry
                         d++;
                     } else {
                         // If input isn't ".", read the number and insert into array
-                        controller.model.sudoku[c][d] = Integer.parseInt(str);
+                        model.sudoku[c][d] = Integer.parseInt(str);
                         // Go to next entry
                         d++;
                     }
@@ -71,10 +88,8 @@ public class LoadSudokuBoardFile {
                 d = 0;
                 lineScanner.close();
             }
-            controller.model.crooks = new CrooksAlgorithm(controller.model.getN(), controller.model.getK(),
-                    controller.model.getSudoku(), controller.model);
             if (scanner.hasNextLine()) {
-                controller.model.setSandwich(true);
+                model.setSandwich(true);
                 String line = scanner.nextLine();
                 Scanner lineScanner = new Scanner(line);
                 lineScanner.useDelimiter(":");
@@ -97,9 +112,9 @@ public class LoadSudokuBoardFile {
                     model.ySums[index] = Integer.parseInt(str);
                     index++;
                 }
-                controller.model.backtrack = new BacktrackAlgorithm(controller.model.getN(),
-                        controller.model.getK(), model.xSums, model.ySums, controller.model.sudoku,
-                        controller.model);
+                model.backtrack = new BacktrackAlgorithm(model.getN(),
+                        model.getK(), model.xSums, model.ySums, model.sudoku,
+                        model);
             }
         }
         // break;

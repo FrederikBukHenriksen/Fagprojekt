@@ -9,17 +9,18 @@ import sudoku.View.View;
 import sudoku.View.SudokuBoard.Cell;
 import sudoku.View.SudokuBoard.SudokuBoardAbstract;
 import sudoku.View.SudokuBoard.SudokuBoardInterface;
+import sudoku.View.SudokuBoard.SudokuNumpadBarAbstract;
 
 import java.awt.*;
 import java.awt.Color;
 
 public class ClassicSudokuBoard extends SudokuBoardAbstract {
 
-    protected Square[][] squares;
+    protected ClassicSquare[][] squares;
 
     public ClassicSudokuBoard(int[][] sudoku, int n, int k) {
         // this.setLayout(new BorderLayout(0, 0)); // No gap to outer panel.
-        sudokuNumpad = new ClassicSudokuNumpad(n, k);
+        numpad = new ClassicNumpadBar(n, k);
         this.sudoku = sudoku;
         this.cells = createCells(n, k);
         this.cells = loadSudokuIntoCells(sudoku, this.cells);
@@ -39,7 +40,7 @@ public class ClassicSudokuBoard extends SudokuBoardAbstract {
         gbc.gridy = 1;
         gbc.insets = new Insets(0, 0, 0, 0);
         gbc.anchor = GridBagConstraints.WEST;
-        this.add(sudokuNumpad, gbc);
+        this.add(numpad, gbc);
     }
 
     protected JPanel createBoardPanel() {
@@ -82,20 +83,20 @@ public class ClassicSudokuBoard extends SudokuBoardAbstract {
         return cells;
     }
 
-    protected Square[][] createSquares(int n, int k) {
-        Square[][] squares = new Square[k][k];
+    protected ClassicSquare[][] createSquares(int n, int k) {
+        ClassicSquare[][] squares = new ClassicSquare[k][k];
         for (int i = 0; i < squares.length; i++) {
             for (int j = 0; j < squares[0].length; j++) {
-                squares[i][j] = new Square(n);
+                squares[i][j] = new ClassicSquare(n);
             }
         }
         return squares;
     }
 
-    protected Square[][] loadCellsIntoSquares(Cell[][] cells, Square[][] squares, int n, int k) {
+    protected ClassicSquare[][] loadCellsIntoSquares(Cell[][] cells, ClassicSquare[][] squares, int n, int k) {
         for (int i = 0; i < squares.length; i++) {
             for (int j = 0; j < squares[0].length; j++) {
-                Square selectedSquare = squares[i][j];
+                ClassicSquare selectedSquare = squares[i][j];
                 for (int l = 0; l < n; l++) {
                     for (int m = 0; m < n; m++) {
                         selectedSquare.insertCellintoSquare(cells[j * n + m][i * k + l], l, m);

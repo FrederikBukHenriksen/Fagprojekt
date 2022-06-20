@@ -10,7 +10,7 @@ public class SudokuUndoListener implements ActionListener {
     /**
      *
      */
-    private final Controller sudokuController;
+    private Controller sudokuController;
 
     /**
      * @param sudokuController

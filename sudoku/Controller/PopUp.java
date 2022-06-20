@@ -17,18 +17,14 @@ import java.awt.event.ActionListener;
 
 import java.awt.FlowLayout;
 
-public class CreateOkPopUp extends JDialog {
+public class PopUp extends JDialog {
 
-
-    protected boolean moveOn = false;
-
-    protected GridBagConstraints gbc = new GridBagConstraints();
-
-    public CreateOkPopUp(String text) {
-        // this.setUndecorated(true); // Removes title bar
+    public PopUp(String text) {
         this.setVisible(true);
         this.setResizable(false);
         this.setLayout(new GridBagLayout());
+
+        GridBagConstraints gbc = new GridBagConstraints();
 
         JLabel label = new JLabel(text);
         label.setFont(new Font(label.getFont().getName(), Font.PLAIN, 20));
@@ -45,21 +41,20 @@ public class CreateOkPopUp extends JDialog {
         centerOnScreen();
     }
 
-    private void centerOnScreen() {
+    protected void centerOnScreen() {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         int xScreen = (screenSize.width / 2) - ((int) getSize().getWidth() / 2);
         int yScreen = (screenSize.height / 2) - ((int) getSize().getHeight() / 2);
         this.setLocation(xScreen, yScreen);
     }
 
-    public JPanel buttonPanel() {
+    protected JPanel buttonPanel() {
 
         JButton okButton = new JButton("Ok");
         okButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
-                moveOn = true;
                 return;
             }
         });

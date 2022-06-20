@@ -2,8 +2,8 @@ package sudoku.Controller;
 
 import java.util.ArrayList;
 
-import sudoku.Controller.Exceptions.CellDoesNotExist;
-import sudoku.Controller.Exceptions.NoCellSelected;
+import sudoku.Controller.Exceptions.ExceptionCellDoesNotExist;
+import sudoku.Controller.Exceptions.ExceptionNoCellSelected;
 import sudoku.View.SudokuBoard.Cell;
 
 public class ClassicSudokuControls {
@@ -31,7 +31,7 @@ public class ClassicSudokuControls {
 
     }
 
-    public Cell getButtonSelected() throws NoCellSelected {
+    public Cell getButtonSelected() throws ExceptionNoCellSelected {
         Cell selected = null;
         for (Cell cell : getCells1d()) {
             if (cell.isSelected()) {
@@ -39,12 +39,12 @@ public class ClassicSudokuControls {
             }
         }
         if (selected == null) {
-            throw new NoCellSelected();
+            throw new ExceptionNoCellSelected();
         }
         return selected;
     }
 
-    public int[] getCellCoordinate(Cell selected) throws CellDoesNotExist {
+    public int[] getCellCoordinate(Cell selected) throws ExceptionCellDoesNotExist {
         int[] coordinate = new int[] { -1, -1 };
         for (int x = 0; x < cells.length; x++) {
             for (int y = 0; y < cells.length; y++) {
@@ -56,7 +56,7 @@ public class ClassicSudokuControls {
             }
         }
         if (coordinate[0] == -1 || coordinate[1] == -1) {
-            throw new CellDoesNotExist();
+            throw new ExceptionCellDoesNotExist();
         }
         return coordinate;
     }

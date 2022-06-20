@@ -1,9 +1,9 @@
 package sudoku.Controller;
 
 import sudoku.Controller.Actionlisteners.*;
-import sudoku.Controller.Actionlisteners.MenuBar.MenuBarMenuActionListener;
-import sudoku.Controller.Actionlisteners.MenuBar.MenuBarNewSudokuActionListener;
-import sudoku.Controller.Actionlisteners.MenuBar.MenuBarZoomActionListener;
+import sudoku.Controller.Actionlisteners.MenuBar.MenuBarSolveListener;
+import sudoku.Controller.Actionlisteners.MenuBar.MenuBarNewSudokuListener;
+import sudoku.Controller.Actionlisteners.MenuBar.MenuBarZoomListener;
 import sudoku.Controller.Actionlisteners.MenuBar.SudokuHintListener;
 import sudoku.Controller.Actionlisteners.MenuBar.SudokuRedoListener;
 import sudoku.Controller.Actionlisteners.MenuBar.SudokuRemoveListener;
@@ -35,20 +35,20 @@ import java.awt.event.ActionListener;
 import java.awt.Container;
 import java.awt.FlowLayout;
 
-public class CreateOkPopUpWrongFile extends CreateOkPopUp {
+public class PopUpWrongFile extends PopUp {
 
     protected Controller controller;
 
-    public CreateOkPopUpWrongFile(String text, Controller controller) {
+    protected boolean moveOn = false;
+
+    public PopUpWrongFile(String text, Controller controller) {
         super(text);
         this.controller = controller;
-        // TODO Auto-generated method stub
-        while (true) {
+
+        while (true) { // Wait-loop. Implementing into actionlistener causes bugs.
             try {
-                TimeUnit.SECONDS.sleep(1);
+                Thread.sleep(20);
             } catch (InterruptedException e1) {
-                // TODO Auto-generated catch block
-                e1.printStackTrace();
             }
             if (moveOn) {
                 moveOn = false;
@@ -56,14 +56,14 @@ public class CreateOkPopUpWrongFile extends CreateOkPopUp {
             }
         }
         try {
-            controller.loadSudokuBoardFile.LoadSudokuBoardDoc(controller, controller.model);
+            controller.fileLoader.LoadSudokuBoardDoc(controller.model);
         } catch (Exception e) {
-            new CreateOkPopUpWrongFile("wrong filetype", controller);
+            new PopUpWrongFile("wrong filetype", controller);
         }
     }
 
     @Override
-    public JPanel buttonPanel() {
+    protected JPanel buttonPanel() {
         JButton okButton = new JButton("Ok");
         JDialog dialog = this;
         okButton.addActionListener(new ActionListener() {
@@ -71,7 +71,7 @@ public class CreateOkPopUpWrongFile extends CreateOkPopUp {
             public void actionPerformed(ActionEvent e) {
                 try {
                     controller.view.dispose();
-                } catch (Exception exc) {
+                } catch (Exception exc) { // If no view is present
                 }
                 dialog.dispose();
                 moveOn = true;
