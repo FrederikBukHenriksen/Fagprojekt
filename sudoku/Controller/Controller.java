@@ -40,16 +40,13 @@ public class Controller {
 	public Zoom zoom;
 	public boolean okPressed = false;
 	public boolean hintPressed = false;
+	public boolean isSolved = false;
 
 	public void updateColours() {
 		markCells.clearMarkedCells();
 		try {
 			markCells.markCells(sudokuControls.getButtonSelected());
 		} catch (Exception e) {
-			if (model.validity.checkValidity(model.getSudoku()) && model.isFilled()) {
-				// createPopUp("Congratulations, you solved the puzzle!");
-				new SudokuSolvedPopUp("Congratulations, you solved the puzzle!", this);
-			}
 		}
 	}
 
@@ -216,6 +213,10 @@ public class Controller {
 			okPressed = false;
 			hintPressed = false;
 			while (true) {
+				if (model.validity.checkValidity(model.getSudoku()) && model.isFilled() && !isSolved) {
+					isSolved = true;
+					new SudokuSolvedPopUp("Congratulations, you solved the puzzle!", this);
+				}
 				try {
 					Thread.sleep(20);
 				} catch (InterruptedException e1) {
