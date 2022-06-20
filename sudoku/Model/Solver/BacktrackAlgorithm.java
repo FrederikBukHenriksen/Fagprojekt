@@ -200,9 +200,7 @@ public class BacktrackAlgorithm implements SolverInterface {
 		return solvedSudoku;
 	}
 
-	// public boolean getSolved() {
-	// return solved;
-	// }
+
 	public boolean getUniqueness() {
 		return unique;
 	}

@@ -182,7 +182,8 @@ public class Controller {
 
 		sudokuControls = new ClassicSudokuControls(view.sudokuBoard.getCells());
 		markCells = new ClassicMarkCells(model.getSudoku(), model.getN(), model.getK(), sudokuControls, validity);
-		ZoomObjectInterface[][] objectList = { sudokuControls.getCells1d(), view.sudokuNumpad.numpadButtons };
+		ZoomObjectInterface[][] objectList = { sudokuControls.getCells1d(),
+				view.sudokuBoard.getNumpadButtons() };
 		zoom = new Zoom(objectList, view);
 		// Assign actionlisteners
 		// SudokuSolvedPopUp lolcat = new SudokuSolvedPopUp("DEBUG", this);
@@ -192,7 +193,7 @@ public class Controller {
 			cell.addKeyListener(new KeyboardNumberListener(this));
 			cell.addKeyListener(new KeyboardShortcutListener(this));
 		}
-		for (NumpadButton numpadButton : view.sudokuNumpad.numpadButtons) {
+		for (NumpadButton numpadButton : view.sudokuBoard.getNumpadButtons()) {
 			numpadButton.addActionListener(new NumboardListener(this));
 		}
 		// view.sudokuNumpad.numpadButtons.forEach(b -> b.addActionListener(new
