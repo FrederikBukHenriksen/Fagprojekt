@@ -12,7 +12,7 @@ import sudoku.Model.Solver.CrooksAlgorithm;
 public class LoadSudokuBoardFile {
 
     public static void LoadSudokuBoardDoc(Controller controller, Model model)
-            throws IOException, 
+            throws IOException,
             NumberFormatException, NoSuchElementException {
 
         Path file = null;
@@ -37,7 +37,6 @@ public class LoadSudokuBoardFile {
         }
         setupScanner.close();
         if (model.k > model.n) {
-            System.out.println("Not a valid sudoku-size, k cannot exceed n");
         } else {// Creating the board
             controller.model.sudoku = new int[model.n * model.k][model.n * model.k];
             // Creating variables for sandwich Sums
