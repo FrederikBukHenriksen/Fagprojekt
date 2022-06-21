@@ -2,25 +2,32 @@ package sudoku.Controller;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
+
+import javax.swing.JFileChooser;
 
 import sudoku.Model.Model;
 import sudoku.Model.Solver.BacktrackAlgorithm;
 import sudoku.Model.Solver.CrooksAlgorithm;
 
-public class LoadSudokuBoardFile {
-	/*
-	 * Author: Christian
-	 * Function: Loads sudokuboard, and assign if it is a sandwich or normal sudoku
-	 * Inputs: Takes model and controller
-	 */
-    public static void LoadSudokuBoardDoc(Controller controller, Model model)
+public class SudokuFileLoader {
+
+    static int n;
+    static int k;
+    static int[][] sudoku;
+    static int[] xSums;
+    static int[] ySums;
+
+    public static ArrayList<Object> LoadSudokuBoardDoc()
             throws IOException,
             NumberFormatException, NoSuchElementException {
 
+        String gameMode = "classic"; // Standard value
+
         Path file = null;
-        file = controller.model.findSudokuPath("C:\\");
+        file = findSudokuPath("C:\\");
         // System.out.println(file);
         if (file == null) {
             System.exit(0);
@@ -34,23 +41,23 @@ public class LoadSudokuBoardFile {
         // reading k & n
         while (setupScanner.hasNext()) {
             String str = setupScanner.next();
-            model.k = Integer.parseInt(str);
+            k = Integer.parseInt(str);
             str = setupScanner.next();
-            model.n = Integer.parseInt(str);
+            n = Integer.parseInt(str);
 
         }
         setupScanner.close();
-        if (model.k > model.n) {
+        if (k > n) {
         } else {// Creating the board
-            controller.model.sudoku = new int[model.n * model.k][model.n * model.k];
+            sudoku = new int[n * k][n * k];
             // Creating variables for sandwich Sums
-            model.xSums = new int[model.n * model.k];
-            model.ySums = new int[model.n * model.k];
+            xSums = new int[n * k];
+            ySums = new int[n * k];
             // Creating variables for looping through input
             int c = 0;
             int d = 0;
             scanner.nextLine();
-            for (int j = 0; j < model.n * model.k; j++) {
+            for (int j = 0; j < n * k; j++) {
                 // Reads the next line
                 String line = scanner.nextLine();
                 Scanner lineScanner = new Scanner(line);
@@ -60,12 +67,12 @@ public class LoadSudokuBoardFile {
                     String str = lineScanner.next();
                     if (str.equals(".")) {
                         // If input is ".", convert to a "0"
-                        controller.model.sudoku[c][d] = 0;
+                        sudoku[c][d] = 0;
                         // Go to next entry
                         d++;
                     } else {
                         // If input isn't ".", read the number and insert into array
-                        controller.model.sudoku[c][d] = Integer.parseInt(str);
+                        sudoku[c][d] = Integer.parseInt(str);
                         // Go to next entry
                         d++;
                     }
@@ -75,10 +82,9 @@ public class LoadSudokuBoardFile {
                 d = 0;
                 lineScanner.close();
             }
-            controller.model.crooks = new CrooksAlgorithm(controller.model.getN(), controller.model.getK(),
-                    controller.model.getSudoku(), controller.model);
             if (scanner.hasNextLine()) {
-                controller.model.setSandwich(true);
+                gameMode = "sandwich";
+                // model.setSandwich(true);
                 String line = scanner.nextLine();
                 Scanner lineScanner = new Scanner(line);
                 lineScanner.useDelimiter(":");
@@ -86,7 +92,7 @@ public class LoadSudokuBoardFile {
                 while (lineScanner.hasNext()) {
                     String str = lineScanner.next();
                     // If input isn't ".", read the number and insert into array
-                    model.xSums[index] = Integer.parseInt(str);
+                    xSums[index] = Integer.parseInt(str);
                     index++;
 
                 }
@@ -98,17 +104,51 @@ public class LoadSudokuBoardFile {
                 while (lineScanner.hasNext()) {
                     String str = lineScanner.next();
                     // If input isn't ".", read the number and insert into array
-                    model.ySums[index] = Integer.parseInt(str);
+                    ySums[index] = Integer.parseInt(str);
                     index++;
                 }
-                controller.model.backtrack = new BacktrackAlgorithm(controller.model.getN(),
-                        controller.model.getK(), model.xSums, model.ySums, controller.model.sudoku,
-                        controller.model);
             }
         }
-        // break;
 
-        // view = new View(model.getSudoku(), model.getN(), model.getK());
+        // JSON object or similar with a connection between indexname and value would be
+        // a better solution.
+        ArrayList<Object> returnArray = new ArrayList<>();
+        switch (gameMode.toLowerCase()) {
+            case "classic":
+                returnArray.add(gameMode);
+                returnArray.add(sudoku);
+                returnArray.add(n);
+                returnArray.add(k);
+                break;
+
+            case "sandwich":
+                returnArray.add(gameMode);
+                returnArray.add(sudoku);
+                returnArray.add(n);
+                returnArray.add(k);
+                returnArray.add(xSums);
+                returnArray.add(ySums);
+                break;
+
+            default:
+                break;
+        }
+        return returnArray;
+
+    }
+
+    public static Path findSudokuPath(String s) {// https://stackoverflow.com/questions/51973636/how-to-return-the-file-path-from-the-windows-file-explorer-using-java
+        // File file = new
+        // File("C:\\Users\\Candytom\\Documents\\GitHub\\sudoku\\Puzzles_1\\Puzzle_3_evil.dat");
+        Path file = null;
+        JFileChooser jd = s == null ? new JFileChooser() : new JFileChooser(s);
+        jd.setDialogTitle("Choose Sudoku you wish to solve");
+        int returnVal = jd.showOpenDialog(null);
+        /* If user didn't select a file and click ok, return null Path object */
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            return file = jd.getSelectedFile().toPath();
+        }
+        return null;
 
     }
 

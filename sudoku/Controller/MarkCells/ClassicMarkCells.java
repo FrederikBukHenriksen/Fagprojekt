@@ -1,24 +1,29 @@
 package sudoku.Controller.MarkCells;
 
 import sudoku.Controller.Controller;
-import sudoku.Controller.ClassicSudokuControls;
-import sudoku.Controller.Exceptions.CellDoesNotExist;
+import sudoku.Controller.Exceptions.ExceptionCellDoesNotExist;
+import sudoku.Controller.SudokuControls.ClassicSudokuControls;
+import sudoku.Controller.SudokuControls.SudokuControlsInterface;
 import sudoku.Model.Validity.ValidityInterface;
 import sudoku.View.SudokuBoard.Cell;
+import sudoku.View.SudokuBoard.Classic.ClassicSudokuColors;
+
 import java.awt.*;
 import java.util.ArrayList;
 
 public class ClassicMarkCells implements MarkCellsInterface {
 
-    protected ClassicSudokuControls sudokuControls;
+    protected SudokuControlsInterface sudokuControls;
     protected ValidityInterface validity;
+    protected ClassicSudokuColors sudokuColor = new ClassicSudokuColors();
     protected int[][] sudoku;
     protected int n;
     protected int k;
 
     protected ArrayList<Cell> markedCells = new ArrayList<Cell>();
 
-    public ClassicMarkCells(int[][] sudoku, int n, int k, ClassicSudokuControls sudokuControls,
+    public ClassicMarkCells(int[][] sudoku, int n, int k,
+            SudokuControlsInterface sudokuControls,
             ValidityInterface validity) {
         this.sudokuControls = sudokuControls;
         this.validity = validity;
@@ -37,7 +42,7 @@ public class ClassicMarkCells implements MarkCellsInterface {
 
     public void clearMarkedCells() {
         for (Cell cell : markedCells) {
-            colorDefault(cell);
+            sudokuColor.colorDefault(cell);
         }
         markedCells.clear();
         // Redraw conflict cells, even when no cell is pressed
@@ -47,12 +52,12 @@ public class ClassicMarkCells implements MarkCellsInterface {
     protected void markConflictCells() {
         for (Point point : validity.getUniqueConflictPoints(sudoku)) {
             Cell cell = sudokuControls.getCellFromCoord(point.x, point.y);
-            colorConflict(cell);
+            sudokuColor.colorConflict(cell);
             markedCells.add(cell);
         }
     }
 
-    protected void getPeersSquare(Cell pressedCell) throws CellDoesNotExist {
+    protected void getPeersSquare(Cell pressedCell) throws ExceptionCellDoesNotExist {
 
         int[] coordinates = sudokuControls.getCellCoordinate(pressedCell);
 
@@ -62,67 +67,39 @@ public class ClassicMarkCells implements MarkCellsInterface {
         // Run through the square
         for (int i = squareX * n; i < squareX * n + n; i++) {
             for (int j = squareY * n; j < squareY * n + n; j++) {
-                colorSquare(sudokuControls.getCellFromCoord(i, j));
+                sudokuColor.colorSquare(sudokuControls.getCellFromCoord(i, j));
                 markedCells.add(sudokuControls.getCellFromCoord(i, j));
             }
         }
     }
 
-    protected void getPeersVertical(Cell pressedCell) throws CellDoesNotExist {
+    protected void getPeersVertical(Cell pressedCell) throws ExceptionCellDoesNotExist {
         int[] coordinates = sudokuControls.getCellCoordinate(pressedCell);
         for (int i = 0; i < (n * k); i++) {
-            colorPeer(sudokuControls.getCellFromCoord(coordinates[0], i));
+            sudokuColor.colorPeer(sudokuControls.getCellFromCoord(coordinates[0], i));
             markedCells.add(sudokuControls.getCellFromCoord(coordinates[0], i));
         }
     }
 
-    protected void getPeersHorisontal(Cell pressedCell) throws CellDoesNotExist {
+    protected void getPeersHorisontal(Cell pressedCell) throws ExceptionCellDoesNotExist {
         int[] coordinates = sudokuControls.getCellCoordinate(pressedCell);
         for (int i = 0; i < (n * k); i++) {
-            colorPeer(sudokuControls.getCellFromCoord(i, coordinates[1]));
+            sudokuColor.colorPeer(sudokuControls.getCellFromCoord(i, coordinates[1]));
             markedCells.add(sudokuControls.getCellFromCoord(i, coordinates[1]));
         }
     }
 
-    protected void markSimilarCells(Cell pressedCell) throws CellDoesNotExist {
+    protected void markSimilarCells(Cell pressedCell) throws ExceptionCellDoesNotExist {
 
         if (!pressedCell.getText().equals("")) {
             for (Cell cell : sudokuControls.getCells1d()) {
                 if (cell.getText().equals(pressedCell.getText())) {
-                    colorSimilar(cell);
+                    sudokuColor.colorSimilar(cell);
                     int[] coordinates = sudokuControls.getCellCoordinate(cell);
                     markedCells.add(sudokuControls.getCellFromCoord(coordinates[0], coordinates[1]));
 
                 }
             }
         }
-    }
-
-    public void colorDefault(Cell cell) {
-        if (cell.enabled) {
-            cell.setTextColor(Cell.colorDefaultFontEnabled);
-        } else {
-            cell.setTextColor(Cell.colorDefaultFont);
-        }
-        cell.setBackgroundColor(Cell.colorDefaultBackground);
-    }
-
-    public void colorConflict(Cell cell) {
-        if (cell.getEnabled()) {
-            cell.setTextColor(new Color(230, 67, 70));
-        }
-        cell.setBackgroundColor(new Color(240, 192, 193));
-    }
-
-    public void colorSimilar(Cell cell) {
-        cell.setBackgroundColor(new Color(144, 182, 212));
-    }
-
-    public void colorPeer(Cell cell) {
-        cell.setBackgroundColor(new Color(199, 219, 235));
-    }
-
-    public void colorSquare(Cell cell) {
-        cell.setBackgroundColor(new Color(199, 219, 235));
     }
 }

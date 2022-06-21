@@ -3,7 +3,7 @@ package sudoku.Model.Solver;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import sudoku.Controller.Exceptions.NoSolutionAvailable;
+import sudoku.Controller.Exceptions.ExceptionNoSolutionAvailable;
 import sudoku.Model.Model;
 import sudoku.Model.Validity.ValidityClassic;
 import sudoku.Model.Validity.ValidityInterface;
@@ -548,7 +548,7 @@ public class CrooksAlgorithm implements SolverInterface {
 	 */
 	public boolean getUniqueness() throws Exception {
 		if (!isSolved()) {
-			throw new NoSolutionAvailable();
+			throw new ExceptionNoSolutionAvailable();
 		}
 		return unique;
 	}
@@ -560,7 +560,7 @@ public class CrooksAlgorithm implements SolverInterface {
 	 */
 	public int[][] getSolvedSudoku() throws Exception {
 		if (!isSolved()) {
-			throw new NoSolutionAvailable();
+			throw new ExceptionNoSolutionAvailable();
 		}
 		return solvedSudoku;
 	}

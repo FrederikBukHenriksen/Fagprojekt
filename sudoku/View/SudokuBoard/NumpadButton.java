@@ -10,15 +10,13 @@ import java.awt.*;
 
 public class NumpadButton extends JButton implements ZoomObjectInterface {
 
-    Color def = Color.gray;
-    Color defFont = Color.white;
 
     public NumpadButton(String text) {
         this.setFocusable(false);
         this.setText(text);
         this.setFocusable(false);
-        this.setBackground(def);
-        this.setForeground(defFont);
+        this.setBackground(Color.gray);
+        this.setForeground(Color.white);
         this.setBorder(new LineBorder(Color.black, 1));
     }
 

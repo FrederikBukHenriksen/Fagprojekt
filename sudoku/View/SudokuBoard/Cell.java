@@ -9,38 +9,37 @@ import javax.swing.*;
 import javax.swing.border.LineBorder;
 
 import sudoku.Controller.Zoom.ZoomObjectInterface;
+import sudoku.View.SudokuBoard.Classic.ClassicSudokuColors;
 
 import java.awt.*;
 import java.awt.Color;
 
 public class Cell extends JToggleButton implements ZoomObjectInterface {
 
-    public static Color colorDefaultBackground = Color.white;
-    public static Color colorDefaultFont = Color.black;
-    public static Color colorDefaultFontEnabled = new Color(80, 110, 242);
-    public static Color cellSelected = new Color(161, 205, 240);
-
-    public boolean enabled = true;
+    private boolean enabled = true;
+    private ClassicSudokuColors sudokuColors = new ClassicSudokuColors();
 
     public Cell() {
         setText("");
-        setBackground(colorDefaultBackground);
-        setForeground(colorDefaultFont);
         setBorder(new LineBorder(Color.black, 1));
         setEnabled(true);
-        UIManager.put("ToggleButton.select", cellSelected); // Needs to be put into UImanager. Manually coloring
+        sudokuColors.colorDefault(this);
+        UIManager.put("ToggleButton.select", sudokuColors.cellSelected); // Needs to be put into UImanager.
+                                                                         // Manually
+        // coloring
                                                             // selected cell will be overwritten.
         SwingUtilities.updateComponentTreeUI(this);
     }
 
     // Set methods
     @Override
-    public void setEnabled(boolean enable) {
-        if (enable == true) {
+    public void setEnabled(boolean state) {
+        if (state == true) {
             enabled = true;
         } else {
             enabled = false;
         }
+        sudokuColors.colorDefault(this);
     }
 
     @Override

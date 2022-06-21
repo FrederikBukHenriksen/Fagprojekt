@@ -7,14 +7,28 @@ import javax.swing.AbstractButton;
 
 import sudoku.Controller.Controller;
 
-public class MenuBarZoomActionListener implements ActionListener {
+public class MenuBarZoomListener implements ActionListener {
 
-    Controller sudokuController;
+    private Controller sudokuController;
 
-    public MenuBarZoomActionListener(Controller sudokuController) {
+    /*
+     * Author: Frederik, Rasmus
+     * Function: Constructs an ActionListener for the "zoom in" and "zoom out" menu
+     * items
+     * Inputs: Controller
+     * Outputs: None
+     */
+    public MenuBarZoomListener(Controller sudokuController) {
         this.sudokuController = sudokuController;
     }
 
+    /*
+     * Author: Frederik, Rasmus
+     * Function: Selects what to do depending on which of the two menu items that
+     * were pressed
+     * Inputs: The ActionEvent e, used to determine which button was pressed
+     * Outputs: None
+     */
     public void actionPerformed(ActionEvent e) {
         switch (((AbstractButton) e.getSource()).getActionCommand().toLowerCase()) {
             case "zoom in":
