@@ -24,7 +24,7 @@ public class NumboardListener implements ActionListener {
         JButton pressedNumboard = (JButton) e.getSource();
         // Find the placement of the pressed board button
         try {
-            Cell pressedSudokuboard = this.sudokuController.sudokuControls.getButtonSelected();
+            Cell pressedSudokuboard = this.sudokuController.sudokuControls.getCellSelected();
             if (pressedSudokuboard.getEnabled()) {
                 this.sudokuController.model.stack.clearRedoStack();
                 String cellNew = "";

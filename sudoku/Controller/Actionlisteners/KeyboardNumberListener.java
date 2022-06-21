@@ -18,7 +18,7 @@ public class KeyboardNumberListener extends KeyAdapter {
     public void keyPressed(KeyEvent e) {
         int keyCode = e.getKeyCode();
         try {
-            Cell pressedSudokuboard = this.sudokuController.sudokuControls.getButtonSelected();
+            Cell pressedSudokuboard = this.sudokuController.sudokuControls.getCellSelected();
             if (pressedSudokuboard.getEnabled()) { // Only the available buttons
                 // Variables for the new cell-content and the button pressed
                 String cellNew = "";

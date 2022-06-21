@@ -3,6 +3,8 @@ package sudoku.Controller;
 import sudoku.Controller.Actionlisteners.*;
 import sudoku.Controller.Actionlisteners.MenuBar.*;
 import sudoku.Controller.MarkCells.*;
+import sudoku.Controller.SudokuControls.ClassicSudokuControls;
+import sudoku.Controller.SudokuControls.SudokuControlsInterface;
 import sudoku.Controller.Zoom.*;
 import sudoku.Model.*;
 import sudoku.Model.Stack;
@@ -26,7 +28,7 @@ public class Controller {
 	public SolverInterface solver;
 	public SudokuBoardAbstract sudokuBoard;
 	public SudokuFileLoader fileLoader;
-	public ClassicSudokuControls sudokuControls;
+	public SudokuControlsInterface sudokuControls;
 	public MarkCellsInterface markCells;
 	public Zoom zoom;
 	public boolean okPressed = false;
@@ -36,7 +38,7 @@ public class Controller {
 	public void updateColours() {
 		markCells.clearMarkedCells();
 		try {
-			markCells.markCells(sudokuControls.getButtonSelected());
+			markCells.markCells(sudokuControls.getCellSelected());
 		} catch (Exception e) {
 		}
 	}
@@ -44,7 +46,7 @@ public class Controller {
 	public void redoMove() {
 		if (model.stack.getRedoStackSize() > 0) {
 			try {
-				sudokuControls.getButtonSelected().setSelected(false);
+				sudokuControls.getCellSelected().setSelected(false);
 			} catch (Exception exc) {
 			}
 			sudokuControls
@@ -59,7 +61,7 @@ public class Controller {
 	public void undoMove() {
 		if (model.stack.getUndoStackSize() > 0) {
 			try {
-				sudokuControls.getButtonSelected().setSelected(false);
+				sudokuControls.getCellSelected().setSelected(false);
 			} catch (Exception exc) {
 			}
 			sudokuControls.getCellFromCoord(model.stack.getUndoStackCoords()[0], model.stack.getUndoStackCoords()[1])
@@ -157,7 +159,7 @@ public class Controller {
 	public void getHint() {
 		try {
 			model.runSolver();
-			int[] coordinate = sudokuControls.getCellCoordinate(sudokuControls.getButtonSelected());
+			int[] coordinate = sudokuControls.getCellCoordinate(sudokuControls.getCellSelected());
 			int tempVal = model.getSudoku()[coordinate[0]][coordinate[1]];
 			int hintValue = model.solver.getSolvedSudoku()[coordinate[0]][coordinate[1]];
 			if (model.solver.isSolved() && model.solver.getUniqueness()) {
