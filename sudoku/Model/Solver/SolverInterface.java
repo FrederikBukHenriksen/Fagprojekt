@@ -1,7 +1,10 @@
 package sudoku.Model.Solver;
 
 public interface SolverInterface {
-
+	/*
+	 * Author: Frederik
+	 * Function: Interface, the rest of the code uses to get solver
+	 */
     public abstract void solve() throws Exception;
 
     public abstract boolean isSolved();

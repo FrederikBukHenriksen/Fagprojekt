@@ -5,7 +5,10 @@ import sudoku.Controller.Exceptions.ExceptionNoCellSelected;
 import sudoku.View.SudokuBoard.Cell;
 
 public interface SudokuControlsInterface {
-
+	/*
+	 * Author: Frederik
+	 * Function: Interface, the rest of the code uses to get cells
+	 */
     public Cell getCellSelected() throws ExceptionNoCellSelected;
 
     public int[] getCellCoordinate(Cell cell) throws ExceptionCellDoesNotExist;

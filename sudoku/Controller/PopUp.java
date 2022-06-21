@@ -14,7 +14,12 @@ import java.awt.event.ActionListener;
 import java.awt.FlowLayout;
 
 public class PopUp extends JDialog {
-
+	/*
+	 * Author: Rasmus, Edit by Frederik
+	 * Function: Creates pop up
+	 * Inputs: None
+     * Outputs: None
+	 */
     public PopUp(String text) {
         this.setVisible(true);
         this.setResizable(false);
@@ -36,14 +41,24 @@ public class PopUp extends JDialog {
         this.pack();
         centerOnScreen();
     }
-
+	/*
+	 * Author: Frederik
+	 * Function: Centers popup
+	 * Inputs: None
+     * Outputs: None
+	 */
     protected void centerOnScreen() {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         int xScreen = (screenSize.width / 2) - ((int) getSize().getWidth() / 2);
         int yScreen = (screenSize.height / 2) - ((int) getSize().getHeight() / 2);
         this.setLocation(xScreen, yScreen);
     }
-
+	/*
+	 * Author: Rasmus, edited by Frederik
+	 * Function: Creates button, and actionlistener for button
+	 * Inputs: None
+     * Outputs: None
+	 */
     protected JPanel buttonPanel() {
 
         JButton okButton = new JButton("Ok");

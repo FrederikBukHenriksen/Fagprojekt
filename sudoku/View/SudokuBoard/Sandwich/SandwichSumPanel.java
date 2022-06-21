@@ -2,7 +2,11 @@ package sudoku.View.SudokuBoard.Sandwich;
 
 import javax.swing.*;
 import java.awt.*;
-
+/*
+ * Author: Frederik
+ * Function: Shows sandwich sums in the outskirts of sudoku view
+ * Input: Array of sums, and axis 0 or 1
+ */
 public class SandwichSumPanel extends JPanel {
     public SandwichSumPanel(int[] sums, int axis) {
         if (axis == 0) {

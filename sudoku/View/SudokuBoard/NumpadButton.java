@@ -10,7 +10,11 @@ import java.awt.*;
 
 public class NumpadButton extends JButton implements ZoomObjectInterface {
 
-
+	/*
+	 * Author: Frederik
+	 * Function: Creates numpad buttons
+	 * Input: string
+	 */
     public NumpadButton(String text) {
         this.setFocusable(false);
         this.setText(text);
@@ -19,7 +23,11 @@ public class NumpadButton extends JButton implements ZoomObjectInterface {
         this.setForeground(Color.white);
         this.setBorder(new LineBorder(Color.black, 1));
     }
-
+	/*
+	 * Author: Frederik
+	 * Function: set size of numpad buttons
+	 * Input: int
+	 */
     public void setSize(int size) {
         this.setSize(new Dimension(size, size));
         this.setPreferredSize(new Dimension(size, size));

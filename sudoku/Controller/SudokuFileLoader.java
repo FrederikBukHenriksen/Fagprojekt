@@ -15,7 +15,12 @@ public class SudokuFileLoader {
     static int[][] sudoku;
     static int[] xSums;
     static int[] ySums;
-
+	/*
+	 * Author: Christian, edited by all
+	 * Function: Opens sudoku file, and creates sudoku in simple array
+	 * Inputs: ArrayList
+     * Outputs: None
+	 */
     public static ArrayList<Object> LoadSudokuBoardDoc()
             throws IOException,
             NumberFormatException, NoSuchElementException {
@@ -132,7 +137,12 @@ public class SudokuFileLoader {
         return returnArray;
 
     }
-
+	/*
+	 * Author: Christian, Originally by Stackoverflow
+	 * Function: Creates filebrowser, and returns path
+	 * Inputs: Starting string, we use the C:/ drive
+     * Outputs: Path
+	 */
     public static Path findSudokuPath(String s) {// https://stackoverflow.com/questions/51973636/how-to-return-the-file-path-from-the-windows-file-explorer-using-java
         // File file = new
         // File("C:\\Users\\Candytom\\Documents\\GitHub\\sudoku\\Puzzles_1\\Puzzle_3_evil.dat");

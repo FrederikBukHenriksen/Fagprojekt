@@ -19,7 +19,10 @@ public class ClassicMarkCells implements MarkCellsInterface {
     protected int k;
 
     protected ArrayList<Cell> markedCells = new ArrayList<Cell>();
-
+	/*
+	 * Author: Frederik, Originally Rasmus
+	 * Function: Constructor for markedcells
+	 */
     public ClassicMarkCells(int[][] sudoku, int n, int k,
             SudokuControlsInterface sudokuControls,
             ValidityInterface validity) {
@@ -29,7 +32,11 @@ public class ClassicMarkCells implements MarkCellsInterface {
         this.n = n;
         this.k = k;
     }
-
+	/*
+	 * Author: Frederik, Originally Rasmus
+	 * Function:Marker cells in horisontal, vertical and square form
+	 * Input: Marked cell
+	 */
     public void markCells(Cell cell) throws Exception {
         getPeersHorisontal(cell);
         getPeersVertical(cell);
@@ -37,7 +44,10 @@ public class ClassicMarkCells implements MarkCellsInterface {
         markSimilarCells(cell);
         markConflictCells(); // Conflict cells at last, in order to see the conflict color
     }
-
+	/*
+	 * Author: Frederik, edited by Rasmus
+	 * Function: Clear currently marked cells
+	 */
     public void clearMarkedCells() {
         for (Cell cell : markedCells) {
             sudokuColor.colorDefault(cell);
@@ -46,7 +56,10 @@ public class ClassicMarkCells implements MarkCellsInterface {
         // Redraw conflict cells, even when no cell is pressed
         markConflictCells();
     }
-
+	/*
+	 * Author: Rasmus, edited by Frederik
+	 * Function: Gets cells that creates errors in sudoku
+	 */
     protected void markConflictCells() {
         for (Point point : validity.getUniqueConflictPoints(sudoku)) {
             Cell cell = sudokuControls.getCellFromCoord(point.x, point.y);
@@ -54,7 +67,11 @@ public class ClassicMarkCells implements MarkCellsInterface {
             markedCells.add(cell);
         }
     }
-
+	/*
+	 * Author: Frederik
+	 * Function: Gets cell from current cells square
+	 * Input: Currently selected cell
+	 */
     protected void getPeersSquare(Cell pressedCell) throws ExceptionCellDoesNotExist {
 
         int[] coordinates = sudokuControls.getCellCoordinate(pressedCell);
@@ -70,7 +87,11 @@ public class ClassicMarkCells implements MarkCellsInterface {
             }
         }
     }
-
+	/*
+	 * Author: Frederik
+	 * Function: Gets cells vertically from selected cell
+	 * Input: Currently selected cell
+	 */
     protected void getPeersVertical(Cell pressedCell) throws ExceptionCellDoesNotExist {
         int[] coordinates = sudokuControls.getCellCoordinate(pressedCell);
         for (int i = 0; i < (n * k); i++) {
@@ -78,7 +99,11 @@ public class ClassicMarkCells implements MarkCellsInterface {
             markedCells.add(sudokuControls.getCellFromCoord(coordinates[0], i));
         }
     }
-
+	/*
+	 * Author: Frederik
+	 * Function: Gets cells Horisontally from selected cell
+	 * Input: Currently selected cell
+	 */
     protected void getPeersHorisontal(Cell pressedCell) throws ExceptionCellDoesNotExist {
         int[] coordinates = sudokuControls.getCellCoordinate(pressedCell);
         for (int i = 0; i < (n * k); i++) {
@@ -86,7 +111,11 @@ public class ClassicMarkCells implements MarkCellsInterface {
             markedCells.add(sudokuControls.getCellFromCoord(i, coordinates[1]));
         }
     }
-
+	/*
+	 * Author: Frederik
+	 * Function: Gets cells with the same number, as currently marked
+	 * Input: Currently selected cell
+	 */
     protected void markSimilarCells(Cell pressedCell) throws ExceptionCellDoesNotExist {
 
         if (!pressedCell.getText().equals("")) {
