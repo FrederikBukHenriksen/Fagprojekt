@@ -1,6 +1,5 @@
 package sudoku.Controller;
 
-import java.util.ArrayList;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

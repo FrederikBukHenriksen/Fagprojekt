@@ -1,12 +1,10 @@
 package sudoku.View;
 
-import java.util.ArrayList;
 import javax.swing.*;
 import java.awt.*;
 
 import sudoku.View.MenuBar.SudokuMenuBar;
 import sudoku.View.SudokuBoard.*;
-import sudoku.View.SudokuBoard.Classic.ClassicNumpadBar;
 
 public class View extends JFrame {
 

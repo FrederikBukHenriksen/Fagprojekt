@@ -1,18 +1,10 @@
 package sudoku.View.SudokuBoard.Classic;
 
-import java.util.ArrayList;
-
 import javax.swing.*;
-import javax.swing.border.LineBorder;
-
-import sudoku.View.View;
 import sudoku.View.SudokuBoard.Cell;
 import sudoku.View.SudokuBoard.SudokuBoardAbstract;
-import sudoku.View.SudokuBoard.SudokuBoardInterface;
-import sudoku.View.SudokuBoard.SudokuNumpadBarAbstract;
 
 import java.awt.*;
-import java.awt.Color;
 
 public class ClassicSudokuBoard extends SudokuBoardAbstract {
 
@@ -57,7 +49,6 @@ public class ClassicSudokuBoard extends SudokuBoardAbstract {
         }
         return panel;
     }
-
 
     protected Cell[][] createCells(int n, int k) {
         Cell[][] cells = new Cell[n * k][n * k];

@@ -1,17 +1,10 @@
 package sudoku.Model;
 
-import java.util.NoSuchElementException;
-import java.util.Scanner;
-import javax.swing.JFileChooser;
 import sudoku.Model.Solver.BacktrackAlgorithm;
 import sudoku.Model.Solver.CrooksAlgorithm;
 import sudoku.Model.Solver.SolverInterface;
 import sudoku.Model.Validity.ValidityClassic;
 import sudoku.Model.Validity.ValidityInterface;
-
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.nio.file.Path;
 
 public class Model {
 	public CrooksAlgorithm crooks;

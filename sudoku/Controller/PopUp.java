@@ -1,13 +1,9 @@
 package sudoku.Controller;
 
-import java.util.ArrayList;
-import java.util.concurrent.TimeUnit;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-
-import sudoku.View.View;
 
 import java.awt.Dimension;
 import java.awt.*;

@@ -8,10 +8,6 @@ import java.util.Scanner;
 
 import javax.swing.JFileChooser;
 
-import sudoku.Model.Model;
-import sudoku.Model.Solver.BacktrackAlgorithm;
-import sudoku.Model.Solver.CrooksAlgorithm;
-
 public class SudokuFileLoader {
 
     static int n;

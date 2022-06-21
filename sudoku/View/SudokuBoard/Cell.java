@@ -1,10 +1,5 @@
 package sudoku.View.SudokuBoard;
 
-import java.util.ArrayList;
-
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 
@@ -27,7 +22,7 @@ public class Cell extends JToggleButton implements ZoomObjectInterface {
         UIManager.put("ToggleButton.select", sudokuColors.cellSelected); // Needs to be put into UImanager.
                                                                          // Manually
         // coloring
-                                                            // selected cell will be overwritten.
+        // selected cell will be overwritten.
         SwingUtilities.updateComponentTreeUI(this);
     }
 
