@@ -28,7 +28,12 @@ public class BacktrackAlgorithm implements SolverInterface {
 		this.model = model;
 		
 	}
-
+	/*
+	 * Author: Frederik
+	 * Function: Create original markup, is only run once per sudoku
+	 * Inputs: Uses global sudoku, and n and k.
+	 * Outputs: Creates 3d array list of sudoku with markups
+	 */
 	protected ArrayList<ArrayList<ArrayList<Integer>>> markUpCells(int[][] sudokuMarkUp) {
 		ValidityInterface validity = new ValiditySandwich(sudokuMarkUp, n, k, xSums, ySums);
 
@@ -83,7 +88,12 @@ public class BacktrackAlgorithm implements SolverInterface {
 		//System.out.println(markUpBoard);
 		return markUpBoard;
 	}
-
+	/*
+	 * Author: Christian
+	 * Function: Starts the solving progress.
+	 * Inputs: void, but uses sudoku, n and k as global variables
+	 * Outputs: void, but creates a solved sudoku, that can be got with a get function
+	 */
 	public void solve() {
 		ArrayList<ArrayList<ArrayList<Integer>>> prem = markUpCells(sudoku);
 		int loopCount = 0;
@@ -101,7 +111,12 @@ public class BacktrackAlgorithm implements SolverInterface {
 			}
 		}
 	}
-	
+	/*
+	 * Author: Christian
+	 * Function: Does Backtracking on crooks algorithm 
+	 * Inputs: 3d array list of sudoku
+	 * Outputs: updated 3d array list of sudoku
+	 */
 	protected ArrayList<ArrayList<ArrayList<Integer>>> loop(ArrayList<ArrayList<ArrayList<Integer>>> sudokuLoop) {
 		//System.out.println(sudokuLoop);
 		ValidityInterface validity = new ValiditySandwich(sudoku, n, k, xSums, ySums);
@@ -195,16 +210,34 @@ public class BacktrackAlgorithm implements SolverInterface {
 		sudokuLoop.get(currentLoopX).get(currentLoopY).addAll(returner);
 		return sudokuLoop;
 	}
-	
+	/*
+	 * Author: Christian
+	 * Function: Getter function for solved sudoku
+	 * Inputs: Takes nothing
+	 * Outputs: returns solved sudoku
+	 */
 	public int[][] getSolvedSudoku() {
 		return solvedSudoku;
 	}
 
-
+	// public boolean getSolved() {
+	// return solved;
+	// }
+	/*
+	 * Author: Christian
+	 * Function: Getter function for uniqueness
+	 * Inputs: Takes nothing
+	 * Outputs: returns if sudoku is unique
+	 */
 	public boolean getUniqueness() {
 		return unique;
 	}
-	
+	/*
+	 * Author: Christian
+	 * Function: Converts 3d array list to 2d array
+	 * Inputs: 3d array list of sudoku
+	 * Outputs: simple 2d array
+	 */
 	protected int[][] Converter3D2D(ArrayList<ArrayList<ArrayList<Integer>>> sudoku3D) {
 		int[][] sudoku2D = new int[n*k][n*k];
 		for(int l = 0; l< n*k; l++) {
@@ -219,7 +252,12 @@ public class BacktrackAlgorithm implements SolverInterface {
 		}
 		return sudoku2D;
 	}
-
+	/*
+	 * Author: Christian
+	 * Function: Getter function for if sudoku is solved
+	 * Inputs: Takes nothing
+	 * Outputs: returns if sudoku is solved
+	 */
 	@Override
 	public boolean isSolved() {
 		return solved;
