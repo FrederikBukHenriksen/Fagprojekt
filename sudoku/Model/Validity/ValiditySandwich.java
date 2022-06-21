@@ -7,12 +7,17 @@ import java.util.stream.Collectors;
 public class ValiditySandwich extends ValidityClassic {
 
     // Class variables
-
     protected int[] xSums;
     protected int[] ySums;
 
     // Constructor
-
+    /*
+     * Author: Rasmus, updated by Frederik
+     * Function: Constructs a Validity Checker for sandwich Sudoku's
+     * Inputs: The sudoku board to be examined
+     * Outputs: The ArrayList of points, containing all conflicts found (including
+     * duplicates)
+     */
     public ValiditySandwich(int[][] sudoku, int n, int k, int[] xSums, int[] ySums) {
         super(sudoku, n, k);
         this.xSums = xSums;
@@ -20,7 +25,14 @@ public class ValiditySandwich extends ValidityClassic {
     }
 
     // Class methods
-
+    /*
+     * Author: Rasmus, updated by Frederik
+     * Function: Goes through all the standard row, column and square checks, and
+     * then adds the new sandwich checks for rows and columns
+     * Inputs: The sudoku board to be examined
+     * Outputs: The ArrayList of points, containing all conflicts found (including
+     * duplicates)
+     */
     @Override
     protected ArrayList<ArrayList<Point>> collectConflictPointMatches(int[][] sudoku) {
         ArrayList<ArrayList<Point>> allConflicts = super.collectConflictPointMatches(sudoku);
@@ -36,6 +48,14 @@ public class ValiditySandwich extends ValidityClassic {
         return allConflicts;
     }
 
+    /*
+     * Author: Rasmus, updated by Frederik
+     * Function: Goes through all rows, and checks if the sum between 1 and 9 (if
+     * they exist) is equal to the expected sum
+     * Inputs: The sudoku board to be examined
+     * Outputs: The ArrayList of points, containing all conflicts found (including
+     * duplicates)
+     */
     protected ArrayList<ArrayList<Point>> findRowSumConflicts(int[][] sudoku) {
         ArrayList<ArrayList<Point>> sandwichConflicts = new ArrayList<>();
 
@@ -46,7 +66,7 @@ public class ValiditySandwich extends ValidityClassic {
             Point sandwichEnd = null;
 
             for (int j = 0; j < sudoku.length; j++) {
-                // Der fundet en start, men ingen ende.
+                // A start has been found, but no ending
                 if (sandwichStart != null && sandwichEnd == null) {
                     if ((sudoku[i][j]) == 1 || (sudoku[i][j]) == n * k) {
                         sandwichEnd = new Point(i, j);
@@ -54,7 +74,7 @@ public class ValiditySandwich extends ValidityClassic {
                         sandwichRow.add(new Point(i, j));
                     }
                 }
-                // Der ikke fundet en start
+                // A start hasn't been found
                 if (sandwichStart == null) {
                     if ((sudoku[i][j]) == 1 || (sudoku[i][j]) == n * k) {
                         sandwichStart = new Point(i, j);
@@ -84,6 +104,14 @@ public class ValiditySandwich extends ValidityClassic {
         return sandwichConflicts;
     }
 
+    /*
+     * Author: Rasmus, updated by Frederik
+     * Function: Goes through all columns, and checks if the sum between 1 and 9 (if
+     * they exist) is equal to the expected sum
+     * Inputs: The sudoku board to be examined
+     * Outputs: The ArrayList of points, containing all conflicts found (including
+     * duplicates)
+     */
     protected ArrayList<ArrayList<Point>> findColSumConflicts(int[][] sudoku) {
         ArrayList<ArrayList<Point>> sandwichConflicts = new ArrayList<>();
 

@@ -33,7 +33,6 @@ public class View extends JFrame {
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		centerOnScreen((screenSize.width / 2), (screenSize.height / 2));
 
-
 	}
 
 	public void centerOnScreen(int xCenter, int yCenter) {

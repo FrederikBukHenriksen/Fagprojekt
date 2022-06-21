@@ -1,6 +1,5 @@
 package sudoku.Model;
 
-
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 import javax.swing.JFileChooser;
@@ -24,7 +23,6 @@ public class Model {
 	public static int n = 0;
 	public static int[] xSums = new int[n * k];
 	public static int[] ySums = new int[n * k];
-
 
 	// Containers
 	public ValidityInterface validity;

@@ -11,13 +11,25 @@ public class SudokuRemoveListener implements ActionListener {
      */
     private Controller controller;
 
-    /**
-     * @param sudokuController
+    /*
+     * Author: Rasmus, updates by Frederik
+     * Function: Constructs an ActionListener for the "Remove" menu item
+     * Inputs: The Controller, used for calling a couple of different methods below
+     * Outputs: None
      */
     public SudokuRemoveListener(Controller sudokuController) {
         this.controller = sudokuController;
     }
 
+    /*
+     * Author: Rasmus
+     * Function: This determines what to do when "Remove" is pressed. If the chosen
+     * cell is not active (I.E. it contains a number from start, and cannot be
+     * altered), nothing is done. Otherwise, if the cell is active, and isn't empty,
+     * the content of the cell is removed, and the change is pushed to the stack.
+     * Inputs: The ActionEvent e
+     * Outputs: None
+     */
     public void actionPerformed(ActionEvent e) {
         // System.out.println("Remove"); //Prints "Remove" for DEBUG
         try {

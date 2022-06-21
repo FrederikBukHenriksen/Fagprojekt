@@ -11,10 +11,24 @@ public class KeyboardNumberListener extends KeyAdapter {
 
     private Controller sudokuController;
 
+    /*
+     * Author: Frederik, Rasmus
+     * Function: Constructs an ActionListener for the number buttons on the keyboard
+     * Inputs: Controller
+     * Outputs: None
+     */
     public KeyboardNumberListener(Controller sudokuController) {
         this.sudokuController = sudokuController;
     }
 
+    /*
+     * Author: Frederik, Rasmus
+     * Function: Determines which number key was pressed, and inserts the number in
+     * the selected cell if possible
+     * Inputs: The KeyEvent e, which contains information about which key was
+     * pressed
+     * Outputs: None
+     */
     public void keyPressed(KeyEvent e) {
         int keyCode = e.getKeyCode();
         try {
