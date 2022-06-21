@@ -20,7 +20,6 @@ public class View extends JFrame {
 	private int[][] sudoku;
 	GridBagConstraints gbc = new GridBagConstraints();
 
-
 	public View(int[][] sudoku, int n, int k, SudokuBoardExtend sudokuBoard) {
 		this.sudoku = sudoku;
 		this.n = n;
@@ -66,8 +65,6 @@ public class View extends JFrame {
 
 		this.pack();
 	}
-
-
 
 	public SudokuBoardExtend getSudokuBoard() {
 		return sudokuBoard;

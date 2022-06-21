@@ -12,10 +12,23 @@ public class MenuBarNewSudokuActionListener implements ActionListener {
 
     Controller sudokuController;
 
+    /*
+     * Author: Frederik, Rasmus
+     * Function: Constructs an ActionListener for the "Open new Sudoku" menu item
+     * Inputs: The Controller, used to call methods below
+     * Outputs: None
+     */
     public MenuBarNewSudokuActionListener(Controller sudokuController) {
         this.sudokuController = sudokuController;
     }
 
+    /*
+     * Author: Rasmus
+     * Function: Closes the window with view.dispose, and sets the flag okPressed to
+     * true
+     * Inputs: The ActionEvent e
+     * Outputs: None
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         sudokuController.view.dispose();

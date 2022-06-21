@@ -11,6 +11,13 @@ public class KeyboardShortcutListener extends KeyAdapter {
 
     private final Controller sudokuController;
 
+    /*
+     * Author: Rasmus
+     * Function: Constructs an ActionListener for the shortcuts activated with the
+     * keyboard
+     * Inputs: Controller
+     * Outputs: None
+     */
     public KeyboardShortcutListener(Controller sudokuController) {
         this.sudokuController = sudokuController;
     }
@@ -22,8 +29,16 @@ public class KeyboardShortcutListener extends KeyAdapter {
     boolean plusPressed = false;
     boolean minusPressed = false;
 
+    /*
+     * Author: Rasmus
+     * Function: Contains the actions for all the different shortcut buttons
+     * pressed, calls the relevant method from Controller
+     * Inputs: The KeyEvent e, used to determine which buttons were pressed
+     * Outputs: None
+     */
     public void keyPressed(KeyEvent e) {
         int keyCode = e.getKeyCode();
+        // Z was pressed, undo if CTRL is also pressed
         if (keyCode == KeyEvent.VK_Z) {
             zPressed = true;
             yPressed = false;
@@ -33,7 +48,9 @@ public class KeyboardShortcutListener extends KeyAdapter {
             if (ctrlPressed) {
                 this.sudokuController.undoMove();
             }
-        } else if (keyCode == KeyEvent.VK_Y) {
+        }
+        // Y was pressed, redo if CTRL is also pressed
+        else if (keyCode == KeyEvent.VK_Y) {
             yPressed = true;
             zPressed = false;
             hPressed = false;
@@ -42,7 +59,9 @@ public class KeyboardShortcutListener extends KeyAdapter {
             if (ctrlPressed) {
                 this.sudokuController.redoMove();
             }
-        } else if (keyCode == KeyEvent.VK_CONTROL) {
+        }
+        // CTRL was pressed, determine action based on other button pressed
+        else if (keyCode == KeyEvent.VK_CONTROL) {
             ctrlPressed = true;
             if (zPressed) {
                 this.sudokuController.undoMove();
@@ -56,7 +75,9 @@ public class KeyboardShortcutListener extends KeyAdapter {
                 this.sudokuController.zoom.zoomOut();
             }
 
-        } else if (keyCode == KeyEvent.VK_DOWN) {
+        }
+        // Arrow down was pressed, move active cell down
+        else if (keyCode == KeyEvent.VK_DOWN) {
             int[] tempCoords = { -1, 0 };
             try {
                 tempCoords = this.sudokuController.sudokuControls
@@ -65,18 +86,16 @@ public class KeyboardShortcutListener extends KeyAdapter {
             }
             Cell pressed = null;
             if (tempCoords[0] != (this.sudokuController.model.getN() * this.sudokuController.model.getK()) - 1) {
-                pressed = this.sudokuController.sudokuControls.getCellFromCoord(tempCoords[0] + 1, tempCoords[1]); // Grabs
-                                                                                                                     // the
-                // button
-                // pressed
+                pressed = this.sudokuController.sudokuControls.getCellFromCoord(tempCoords[0] + 1, tempCoords[1]);
             } else {
                 pressed = this.sudokuController.sudokuControls.getCellFromCoord(0, tempCoords[1]);
             }
             pressed.setSelected(true);
             this.sudokuController.sudokuControls.selectOnlyThisButton(pressed);
             this.sudokuController.updateColours();
-
-        } else if (keyCode == KeyEvent.VK_UP) {
+        }
+        // Arrow up was pressed, move active cell up
+        else if (keyCode == KeyEvent.VK_UP) {
             int[] tempCoords = { 1, 0 };
             try {
                 tempCoords = this.sudokuController.sudokuControls
@@ -85,10 +104,7 @@ public class KeyboardShortcutListener extends KeyAdapter {
             }
             Cell pressed = null;
             if (tempCoords[0] != 0) {
-                pressed = this.sudokuController.sudokuControls.getCellFromCoord(tempCoords[0] - 1, tempCoords[1]); // Grabs
-                                                                                                                     // the
-                // button
-                // pressed
+                pressed = this.sudokuController.sudokuControls.getCellFromCoord(tempCoords[0] - 1, tempCoords[1]);
             } else {
                 pressed = this.sudokuController.sudokuControls.getCellFromCoord(
                         this.sudokuController.model.getN() * this.sudokuController.model.getK() - 1, tempCoords[1]);
@@ -97,7 +113,9 @@ public class KeyboardShortcutListener extends KeyAdapter {
             this.sudokuController.sudokuControls.selectOnlyThisButton(pressed);
             this.sudokuController.updateColours();
 
-        } else if (keyCode == KeyEvent.VK_LEFT) {
+        }
+        // Arrow left was pressed, move active cell left
+        else if (keyCode == KeyEvent.VK_LEFT) {
             int[] tempCoords = { 0, 1 };
             try {
                 tempCoords = this.sudokuController.sudokuControls
@@ -106,10 +124,7 @@ public class KeyboardShortcutListener extends KeyAdapter {
             }
             Cell pressed = null;
             if (tempCoords[1] != 0) {
-                pressed = this.sudokuController.sudokuControls.getCellFromCoord(tempCoords[0], tempCoords[1] - 1); // Grabs
-                                                                                                                     // the
-                // button
-                // pressed
+                pressed = this.sudokuController.sudokuControls.getCellFromCoord(tempCoords[0], tempCoords[1] - 1);
             } else {
                 pressed = this.sudokuController.sudokuControls.getCellFromCoord(tempCoords[0],
                         this.sudokuController.model.getN() * this.sudokuController.model.getK() - 1);
@@ -118,7 +133,9 @@ public class KeyboardShortcutListener extends KeyAdapter {
             this.sudokuController.sudokuControls.selectOnlyThisButton(pressed);
             this.sudokuController.updateColours();
 
-        } else if (keyCode == KeyEvent.VK_RIGHT) {
+        }
+        // Arrow right was pressed, move active cell right
+        else if (keyCode == KeyEvent.VK_RIGHT) {
             int[] tempCoords = { 0, -1 };
             try {
                 tempCoords = this.sudokuController.sudokuControls
@@ -127,18 +144,17 @@ public class KeyboardShortcutListener extends KeyAdapter {
             }
             Cell pressed = null;
             if (tempCoords[1] != this.sudokuController.model.getN() * this.sudokuController.model.getK() - 1) {
-                pressed = this.sudokuController.sudokuControls.getCellFromCoord(tempCoords[0], tempCoords[1] + 1); // Grabs
-                                                                                                                     // the
-                // button
-                // pressed
+                pressed = this.sudokuController.sudokuControls.getCellFromCoord(tempCoords[0], tempCoords[1] + 1);
             } else {
                 pressed = this.sudokuController.sudokuControls.getCellFromCoord(tempCoords[0], 0);
             }
             pressed.setSelected(true);
             this.sudokuController.sudokuControls.selectOnlyThisButton(pressed);
             this.sudokuController.updateColours();
+        }
 
-        } else if (keyCode == KeyEvent.VK_H) {
+        // H was pressed, give hint if CTRL is also pressed
+        else if (keyCode == KeyEvent.VK_H) {
             yPressed = false;
             zPressed = false;
             hPressed = true;
@@ -147,7 +163,9 @@ public class KeyboardShortcutListener extends KeyAdapter {
             if (ctrlPressed) {
                 sudokuController.hintPressed = true;
             }
-        } else if (keyCode == KeyEvent.VK_PLUS) {
+        }
+        // + was pressed, zoom in if CTRL is also pressed
+        else if (keyCode == KeyEvent.VK_PLUS) {
             yPressed = false;
             zPressed = false;
             hPressed = false;
@@ -156,7 +174,9 @@ public class KeyboardShortcutListener extends KeyAdapter {
             if (ctrlPressed) {
                 this.sudokuController.zoom.zoomIn();
             }
-        } else if (keyCode == KeyEvent.VK_MINUS) {
+        }
+        // - was pressed, zoom out if CTRL is also pressed
+        else if (keyCode == KeyEvent.VK_MINUS) {
             yPressed = false;
             zPressed = false;
             hPressed = false;
@@ -168,6 +188,7 @@ public class KeyboardShortcutListener extends KeyAdapter {
         }
     }
 
+    // Resets the flags for each key when it is released
     public void keyReleased(KeyEvent e) {
         try {
             // Gets the digit entered
