@@ -8,12 +8,22 @@ import java.awt.FlowLayout;
 public class PopUpSudokuSolved extends PopUp {
 
     protected Controller controller;
-
+	/*
+	 * Author: Rasmus, Edit by Frederik
+	 * Function: Creates pop up
+	 * Inputs: None
+     * Outputs: None
+	 */
     public PopUpSudokuSolved(String text, Controller controller) {
         super(text);
         this.controller = controller;
     }
-
+	/*
+	 * Author: Rasmus, edited by Frederik
+	 * Function: Creates button, and actionlistener for button
+	 * Inputs: None
+     * Outputs: None
+	 */
     @Override
     protected JPanel buttonPanel() {
         JDialog dialog = this;

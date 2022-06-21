@@ -9,7 +9,11 @@ import java.awt.*;
 public class ClassicSudokuBoard extends SudokuBoardAbstract {
 
     protected ClassicSquare[][] squares;
-
+	/*
+	 * Author: Frederik
+	 * Function: Creates sudoku board
+	 * Input: Simple 2d sudoku array, n and k
+	 */
     public ClassicSudokuBoard(int[][] sudoku, int n, int k) {
         // this.setLayout(new BorderLayout(0, 0)); // No gap to outer panel.
         numpad = new ClassicNumpadBar(n, k);
@@ -20,6 +24,10 @@ public class ClassicSudokuBoard extends SudokuBoardAbstract {
         this.squares = loadCellsIntoSquares(this.cells, this.squares, n, k);
     }
 
+	/*
+	 * Author: Frederik
+	 * Function: Creates layout of main sudoku board, and adds numpad
+	 */
     @Override
     public void assembleBoard() {
         GridBagConstraints gbc = new GridBagConstraints();
@@ -34,7 +42,11 @@ public class ClassicSudokuBoard extends SudokuBoardAbstract {
         gbc.anchor = GridBagConstraints.WEST;
         this.add(numpad, gbc);
     }
-
+	/*
+	 * Author: Frederik
+	 * Function: Assemples squares in one panel
+	 * output: Assempled squares as panel
+	 */
     protected JPanel createBoardPanel() {
         JPanel panel = new JPanel();
         panel.setLayout(new GridBagLayout());
@@ -49,7 +61,12 @@ public class ClassicSudokuBoard extends SudokuBoardAbstract {
         }
         return panel;
     }
-
+	/*
+	 * Author: Frederik
+	 * Function: Creates correct amount of cells
+	 * Input: n and k
+	 * Output: 2d Array of all cells
+	 */
     protected Cell[][] createCells(int n, int k) {
         Cell[][] cells = new Cell[n * k][n * k];
         for (int i = 0; i < cells.length; i++) {
@@ -59,7 +76,12 @@ public class ClassicSudokuBoard extends SudokuBoardAbstract {
         }
         return cells;
     }
-
+	/*
+	 * Author: Frederik
+	 * Function: Loads all numbers into cells 
+	 * Input: Sudoku in simple 2d array and cell 2d array 
+	 * Output: Filled cell 2d array
+	 */
     protected Cell[][] loadSudokuIntoCells(int[][] sudoku, Cell[][] cells) {
         for (int i = 0; i < sudoku.length; i++) {
             for (int j = 0; j < sudoku.length; j++) {
@@ -73,7 +95,12 @@ public class ClassicSudokuBoard extends SudokuBoardAbstract {
         }
         return cells;
     }
-
+    /*
+	 * Author: Frederik
+	 * Function: Creates correct amount of squares
+	 * Input: n and k 
+	 * Output: Correct amount of squares in 2d array
+	 */
     protected ClassicSquare[][] createSquares(int n, int k) {
         ClassicSquare[][] squares = new ClassicSquare[k][k];
         for (int i = 0; i < squares.length; i++) {
@@ -83,7 +110,12 @@ public class ClassicSudokuBoard extends SudokuBoardAbstract {
         }
         return squares;
     }
-
+    /*
+	 * Author: Frederik
+	 * Function: Loads cells into squares
+	 * Input: Cell 2d array, Square 2d array, n and k
+	 * Output: Squares with correct cells, as a 2d square array
+	 */
     protected ClassicSquare[][] loadCellsIntoSquares(Cell[][] cells, ClassicSquare[][] squares, int n, int k) {
         for (int i = 0; i < squares.length; i++) {
             for (int j = 0; j < squares[0].length; j++) {

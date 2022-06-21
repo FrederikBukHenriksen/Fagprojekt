@@ -13,7 +13,10 @@ public class Cell extends JToggleButton implements ZoomObjectInterface {
 
     private boolean enabled = true;
     private ClassicSudokuColors sudokuColors = new ClassicSudokuColors();
-
+	/*
+	 * Author: Frederik
+	 * Function: Creates Cell
+	 */
     public Cell() {
         setText("");
         setBorder(new LineBorder(Color.black, 1));

@@ -14,7 +14,12 @@ public class PopUpWrongFile extends PopUp {
     protected Controller controller;
 
     protected boolean moveOn = false;
-
+	/*
+	 * Author: Rasmus, Edit by Frederik
+	 * Function: Creates pop up
+	 * Inputs: None
+     * Outputs: None
+	 */
     public PopUpWrongFile(String text, Controller controller) {
         super(text);
         this.controller = controller;
@@ -35,7 +40,12 @@ public class PopUpWrongFile extends PopUp {
             new PopUpWrongFile("wrong filetype", controller);
         }
     }
-
+	/*
+	 * Author: Rasmus, edited by Frederik
+	 * Function: Creates button, and actionlistener for button
+	 * Inputs: None
+     * Outputs: None
+	 */
     @Override
     protected JPanel buttonPanel() {
         JButton okButton = new JButton("Ok");

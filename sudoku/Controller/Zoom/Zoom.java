@@ -10,23 +10,36 @@ public class Zoom {
     private int zoomIncrement = 5; // Amount of zoom.
 
     private ZoomObjectInterface[][] zoomObjectArray;
-
+	/*
+	 * Author: Frederik
+	 * Function: Create zoom object
+	 * Input: Objects that can zoom and View 
+	 */
     public Zoom(ZoomObjectInterface[][] zoomObjectArray, View view) {
         this.zoomObjectArray = zoomObjectArray;
         this.view = view;
         zoom();
     }
-
+	/*
+	 * Author: Frederik
+	 * Function: Zooms in
+	 */
     public void zoomIn() {
         this.zoomStatus = this.zoomStatus + zoomIncrement;
         zoom();
     }
-
+	/*
+	 * Author: Frederik
+	 * Function: Zooms out
+	 */
     public void zoomOut() {
         this.zoomStatus = this.zoomStatus - zoomIncrement;
         zoom();
     }
-
+	/*
+	 * Author: Frederik
+	 * Function: Runs through all objects that zooms. Zooming either in or out
+	 */
     private void zoom() {
         for (ZoomObjectInterface[] array : zoomObjectArray) {
             for (ZoomObjectInterface object : array) {

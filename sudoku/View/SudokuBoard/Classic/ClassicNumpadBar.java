@@ -9,7 +9,11 @@ import sudoku.View.SudokuBoard.*;
 import java.awt.*;
 
 public class ClassicNumpadBar extends SudokuNumpadBarAbstract {
-
+	/*
+	 * Author: Frederik
+	 * Function:Creates the numpad bar at the button of the sudoku
+	 * Input: n and k
+	 */
     public ClassicNumpadBar(int n, int k) {
         this.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
         this.setBorder(new LineBorder(Color.black, 1));

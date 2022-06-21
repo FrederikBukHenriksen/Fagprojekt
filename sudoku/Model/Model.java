@@ -25,7 +25,10 @@ public class Model {
 	// Is used by the test:
 	public Model() {
 	}
-
+	/*
+	 * Author: Frederik
+	 * Function: creates model for classic sudoku
+	 */
 	public Model(int[][] sudoku, int n, int k, ValidityInterface validity, SolverInterface solver) {
 		this.sudoku = sudoku;
 		this.n = n;
@@ -37,7 +40,10 @@ public class Model {
 		solver = new CrooksAlgorithm(n, k, sudoku, this);
 		stack = new Stack(getSudoku());
 	}
-
+	/*
+	 * Author: Frederik
+	 * Function: creates model for sandwich sudoku
+	 */
 	public Model(int[][] sudoku, int n, int k, int[] xSums, int[] ySums, ValidityInterface validity,
 			SolverInterface solver) {
 		this.sudoku = sudoku;

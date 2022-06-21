@@ -5,6 +5,10 @@ import java.awt.Color;
 import sudoku.View.SudokuBoard.Cell;
 
 public class ClassicSudokuColors {
+    /*
+	 * Author: Frederik
+	 * Function: Sets all colors we use
+	 */
 
     public Color colorDefaultBackground = Color.white;
     public Color colorDefaultFont = Color.black;

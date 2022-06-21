@@ -8,7 +8,11 @@ import org.junit.jupiter.api.Test;
 import sudoku.Model.Model;
 import sudoku.Model.Validity.*;
 import sudoku.Model.Solver.*;
-
+/*
+ * Author: Christian
+ * Function: Junit test, testing the solver of the sudoku. Last test is in comments
+ * because it takes a long time to run
+ */
 class SolverTest {
 	public Model model = new Model();
 

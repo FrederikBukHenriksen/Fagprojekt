@@ -33,7 +33,12 @@ public class Controller {
 	public boolean okPressed = false;
 	public boolean hintPressed = false;
 	public boolean isSolved = false;
-
+	/*
+     * Author: Rasmus. Edited by Frederik
+     * Function: Updates board colors
+     * Inputs: None
+     * Outputs: None
+     */
 	public void updateColours() {
 		markCells.clearMarkedCells();
 		try {
@@ -41,7 +46,13 @@ public class Controller {
 		} catch (Exception e) {
 		}
 	}
-
+	/*
+	 * Author: Rasmus
+	 * Function: Gets last element in redo stack, and updates board
+	 * accordingly
+	 * Inputs: None
+     * Outputs: None
+	 */
 	public void redoMove() {
 		if (model.stack.getRedoStackSize() > 0) {
 			try {
@@ -56,7 +67,13 @@ public class Controller {
 			updateColours();
 		}
 	}
-
+	/*
+	 * Author: Rasmus
+	 * Function: Gets last element in undo stack, and updates board
+	 * accordingly
+	 * Inputs: None
+     * Outputs: None
+	 */
 	public void undoMove() {
 		if (model.stack.getUndoStackSize() > 0) {
 			try {
@@ -70,10 +87,16 @@ public class Controller {
 			updateColours();
 		}
 	}
-
+	/*
+	 * Author: All
+	 * Function: Creates controller object. This were everything happens from
+	 * accordingly
+	 * Inputs: None
+     * Outputs: None
+	 */
 	public Controller() {
-		model = new Model();
-		ArrayList<Object> gameInfo = new ArrayList<>();
+		model = new Model();//constructs model 
+		ArrayList<Object> gameInfo = new ArrayList<>();//Creates gameboard, if possible, from file
 		try {
 			gameInfo = fileLoader.LoadSudokuBoardDoc();
 		} catch (IOException e) {
@@ -86,46 +109,46 @@ public class Controller {
 		} finally {
 			// Import the data from the fileloader into model.
 			switch (String.valueOf(gameInfo.get(0)).toLowerCase()) {
-				case "classic":
+				case "classic": //checks if classic mode
 					int[][] sudoku = (int[][]) gameInfo.get(1);
 					int n = (int) gameInfo.get(2);
 					int k = (int) gameInfo.get(3);
-					validity = new ValidityClassic(sudoku, n, k);
-					solver = new CrooksAlgorithm(n, k, sudoku, model);
+					validity = new ValidityClassic(sudoku, n, k); //starts validity
+					solver = new CrooksAlgorithm(n, k, sudoku, model); //starts solver
 
-					model = new Model(sudoku, n, k, validity, solver);
+					model = new Model(sudoku, n, k, validity, solver); //starts model from values
 
-					view = new View(model.getN(), model.getK(),
+					view = new View(model.getN(), model.getK(), //starts view from values
 							new ClassicSudokuBoard(model.getSudoku(), model.getN(), model.getK()));
 					break;
 
-				case "sandwich":
+				case "sandwich": //checks if sandwich mode
 					sudoku = (int[][]) gameInfo.get(1);
 					n = (int) gameInfo.get(2);
 					k = (int) gameInfo.get(3);
 					int[] xSums = (int[]) gameInfo.get(4);
 					int[] ySums = (int[]) gameInfo.get(5);
-					validity = new ValiditySandwich(sudoku, n, k, xSums, ySums);
-					solver = new BacktrackAlgorithm(n, k, xSums, ySums, sudoku, model);
-					model = new Model(sudoku, n, k, xSums, ySums, validity, solver);
+					validity = new ValiditySandwich(sudoku, n, k, xSums, ySums); //starts validity
+					solver = new BacktrackAlgorithm(n, k, xSums, ySums, sudoku, model); //starts solver
+					model = new Model(sudoku, n, k, xSums, ySums, validity, solver); //starts model
 
 					view = new View(model.getN(), model.getK(),
 							new SandwichSudoku(model.getSudoku(), model.getN(), model.getK(), model.xSums,
-									model.ySums));
+									model.ySums)); //starts view
 					break;
 				default:
 					break;
 			}
 		}
 
-		sudokuControls = new ClassicSudokuControls(view.sudokuBoard.getCells());
-		markCells = new ClassicMarkCells(model.getSudoku(), model.getN(), model.getK(), sudokuControls, validity);
+		sudokuControls = new ClassicSudokuControls(view.sudokuBoard.getCells()); //creates controls for sudoku
+		markCells = new ClassicMarkCells(model.getSudoku(), model.getN(), model.getK(), sudokuControls, validity); //creates cellmarking
 		ZoomObjectInterface[][] objectList = { sudokuControls.getCells1d(),
 				view.sudokuBoard.numpad.getNumpadButtons() };
-		zoom = new Zoom(objectList, view);
+		zoom = new Zoom(objectList, view); //adds zoom
 		// Assign actionlisteners
 
-		for (Cell cell : sudokuControls.getCells1d()) {
+		for (Cell cell : sudokuControls.getCells1d()) { //creates all the action listeners
 			cell.addActionListener(new SudokuboardListener(this));
 			cell.addKeyListener(new KeyboardNumberListener(this));
 			cell.addKeyListener(new KeyboardShortcutListener(this));
@@ -144,15 +167,20 @@ public class Controller {
 		view.menuBar.newPuzzle.addActionListener(new MenuBarNewSudokuListener(this));
 
 		try {
-			if (model.solver.getSolvedSudoku()[0][0] == 0) {
+			if (model.solver.getSolvedSudoku()[0][0] == 0) { //checks if sudoku has no solution
 				new PopUp("This sudoku has no solutions \n");
 			}
 		} catch (Exception e) {
 		}
 
-		whileLoop();
+		whileLoop(); //creates while loop where sudoku is stuck
 	}
-
+	/*
+	 * Author: Rasmus
+	 * Function: Runs solver, solves cell for user, if possible
+	 * Inputs: None
+     * Outputs: None
+	 */
 	public void getHint() {
 		try {
 			model.runSolver();
@@ -170,7 +198,12 @@ public class Controller {
 			new PopUp(e.getMessage());
 		}
 	}
-
+	/*
+	 * Author: All
+	 * Function: Runs solver
+	 * Inputs: None
+     * Outputs: None
+	 */
 	public void solveSudoku() {
 		try {
 			model.runSolver();
@@ -212,7 +245,12 @@ public class Controller {
 			new PopUp(exc.getMessage());
 		}
 	}
-
+	/*
+	 * Author: Christian, Edits by all
+	 * Function: This is where the code ends up, when it is not in a listener. 
+	 * Inputs: None
+     * Outputs: None
+	 */
 	private void whileLoop() {
 		while (true) {
 			okPressed = false;
