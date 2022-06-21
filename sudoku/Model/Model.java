@@ -6,6 +6,7 @@ import javax.swing.JFileChooser;
 import sudoku.Model.Solver.BacktrackAlgorithm;
 import sudoku.Model.Solver.CrooksAlgorithm;
 import sudoku.Model.Solver.SolverInterface;
+import sudoku.Model.Validity.ValidityClassic;
 import sudoku.Model.Validity.ValidityInterface;
 
 import java.io.FileNotFoundException;
@@ -28,23 +29,36 @@ public class Model {
 	public SolverInterface solver;
 	public Stack stack;
 
-	// constructor for the model
-	public Path findSudokuPath(String s) {// https://stackoverflow.com/questions/51973636/how-to-return-the-file-path-from-the-windows-file-explorer-using-java
-		// File file = new
-		// File("C:\\Users\\Candytom\\Documents\\GitHub\\sudoku\\Puzzles_1\\Puzzle_3_evil.dat");
-		Path file = null;
-		JFileChooser jd = s == null ? new JFileChooser() : new JFileChooser(s);
-		jd.setDialogTitle("Choose Sudoku you wish to solve");
-		int returnVal = jd.showOpenDialog(null);
-		/* If user didn't select a file and click ok, return null Path object */
-		if (returnVal == JFileChooser.APPROVE_OPTION) {
-			return file = jd.getSelectedFile().toPath();
-		}
-		return null;
-
+	// Is used by the test:
+	public Model() {
 	}
 
-	public Model() {
+	public Model(int[][] sudoku, int n, int k, ValidityInterface validity, SolverInterface solver) {
+		this.sudoku = sudoku;
+		this.n = n;
+		this.k = k;
+		this.validity = validity;
+		this.solver = solver;
+		this.isSandwich = false;
+		validity = new ValidityClassic(sudoku, n, k);
+		solver = new CrooksAlgorithm(n, k, sudoku, this);
+		stack = new Stack(getSudoku());
+	}
+
+	public Model(int[][] sudoku, int n, int k, int[] xSums, int[] ySums, ValidityInterface validity,
+			SolverInterface solver) {
+		this.sudoku = sudoku;
+		this.n = n;
+		this.k = k;
+		this.xSums = xSums;
+		this.ySums = ySums;
+		this.validity = validity;
+		this.solver = solver;
+		this.isSandwich = true;
+		validity = new ValidityClassic(sudoku, n, k);
+		solver = new BacktrackAlgorithm(n, k, xSums, ySums, sudoku, this);
+		stack = new Stack(getSudoku());
+
 	}
 
 	public void runSolver() throws Exception {

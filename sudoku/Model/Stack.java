@@ -3,9 +3,11 @@ package sudoku.Model;
 import java.util.ArrayList;
 
 public class Stack {
-    public ArrayList<stackObj> sudokuStack;
-    public ArrayList<stackObj> redoStack;
-    int[][] sudoku;
+    private ArrayList<StackObj> undoStack;
+    private ArrayList<StackObj> redoStack;
+    private int[][] sudoku;
+    // public int moves = 0;
+    // public int redoes = 0;
 
     /*
      * Author: Rasmus
@@ -15,22 +17,22 @@ public class Stack {
      * Outputs: None
      */
     public Stack(int[][] sudoku) {
-        sudokuStack = new ArrayList<stackObj>();
-        redoStack = new ArrayList<stackObj>();
+        undoStack = new ArrayList<StackObj>();
+        redoStack = new ArrayList<StackObj>();
         this.sudoku = sudoku;
     }
 
-    class stackObj {
+    class StackObj {
         int xCoord = 0;
         int yCoord = 0;
         int prevVal = 0;
         int newVal = 0;
 
-        public stackObj(int a, int b, int c, int d) {
-            xCoord = a;
-            yCoord = b;
-            prevVal = c;
-            newVal = d;
+        public StackObj(int xCoord, int yCoord, int prevVal, int newVal) {
+            this.xCoord = xCoord;
+            this.yCoord = yCoord;
+            this.prevVal = prevVal;
+            this.newVal = newVal;
         }
 
         // Getter methods
@@ -58,8 +60,8 @@ public class Stack {
      * Inputs: The stackObject to be added to the stack
      * Outputs: None
      */
-    public void pushStack(stackObj x) {
-        sudokuStack.add(x);
+    public void pushStack(StackObj input) {
+        undoStack.add(input);
         // moves++;
     }
 
@@ -70,8 +72,8 @@ public class Stack {
      * Inputs: The stackObject to be added to the stack
      * Outputs: None
      */
-    public void pushRedoStack(stackObj x) {
-        redoStack.add(x);
+    public void pushRedoStack(StackObj input) {
+        redoStack.add(input);
         // redoes++;
     }
 
@@ -84,10 +86,10 @@ public class Stack {
      * Inputs: None
      * Outputs: The popped stackObj
      */
-    public stackObj popStack() {
-        stackObj temp = sudokuStack.get(sudokuStack.size() - 1);
+    public StackObj popStack() {
+        StackObj temp = undoStack.get(undoStack.size() - 1);
         sudoku[temp.getX()][temp.getY()] = temp.prevVal;
-        sudokuStack.remove(sudokuStack.size() - 1);
+        undoStack.remove(undoStack.size() - 1);
         return temp;
     }
 
@@ -100,8 +102,8 @@ public class Stack {
      * Inputs: None
      * Outputs: The popped stackObj
      */
-    public stackObj popRedoStack() {
-        stackObj temp = redoStack.get(redoStack.size() - 1);
+    public StackObj popRedoStack() {
+        StackObj temp = redoStack.get(redoStack.size() - 1);
         sudoku[temp.getX()][temp.getY()] = temp.newVal;
         redoStack.remove(redoStack.size() - 1);
         return temp;
@@ -120,8 +122,12 @@ public class Stack {
     }
 
     // Returns the size of the stack
-    public int getStackSize() {
-        return sudokuStack.size();
+    public int getUndoStackSize() {
+        return undoStack.size();
+    }
+
+    public int getRedoStackSize() {
+        return redoStack.size();
     }
 
     // CreateStackObject method
@@ -132,8 +138,8 @@ public class Stack {
      * as oldVal, and the value after the change as newVal
      * Outputs: the newly created stackObject
      */
-    public stackObj createStackObj(int x, int y, int oldVal, int newVal) {
-        return new stackObj(x, y, oldVal, newVal);
+    public StackObj createStackObj(int x, int y, int oldVal, int newVal) {
+        return new StackObj(x, y, oldVal, newVal);
     }
 
     // Method for returning coords of the last change on the sudokuStack
@@ -144,9 +150,9 @@ public class Stack {
      * Outputs: an int array containing the x-coordinate at index 0, and the
      * y-coordinate at index 1
      */
-    public int[] getStackCoords() {
+    public int[] getUndoStackCoords() {
         int[] result = new int[2];
-        stackObj temp = sudokuStack.get(sudokuStack.size() - 1);
+        StackObj temp = undoStack.get(undoStack.size() - 1);
         result[0] = temp.getX();
         result[1] = temp.getY();
         return result;
@@ -163,7 +169,7 @@ public class Stack {
      */
     public int[] getRedoStackCoords() {
         int[] result = new int[2];
-        stackObj temp = redoStack.get(redoStack.size() - 1);
+        StackObj temp = redoStack.get(redoStack.size() - 1);
         result[0] = temp.getX();
         result[1] = temp.getY();
         return result;

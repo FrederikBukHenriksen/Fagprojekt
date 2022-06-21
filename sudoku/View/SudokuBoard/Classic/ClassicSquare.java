@@ -12,13 +12,11 @@ import sudoku.View.SudokuBoard.Cell;
 import java.awt.*;
 import java.awt.Color;
 
-public class Square extends JPanel {
-
-    private GridBagConstraints gbc = new GridBagConstraints();
+public class ClassicSquare extends JPanel {
 
     private int n;
 
-    public Square(int n) {
+    public ClassicSquare(int n) {
         this.n = n;
         this.setLayout(new GridBagLayout());
         this.setBorder(new LineBorder(Color.black, 1));
@@ -28,6 +26,7 @@ public class Square extends JPanel {
         if (axis0 >= n || axis1 >= n) {
             throw new ArrayIndexOutOfBoundsException();
         }
+        GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = axis0;
         gbc.gridy = axis1;
 

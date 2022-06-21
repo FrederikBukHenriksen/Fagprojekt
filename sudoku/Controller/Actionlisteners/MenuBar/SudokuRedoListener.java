@@ -10,7 +10,7 @@ public class SudokuRedoListener implements ActionListener {
     /**
      *
      */
-    private final Controller sudokuController;
+    private Controller sudokuController;
 
     /*
      * Author: Rasmus

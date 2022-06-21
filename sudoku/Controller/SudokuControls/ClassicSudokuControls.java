@@ -1,14 +1,12 @@
-package sudoku.Controller;
+package sudoku.Controller.SudokuControls;
 
 import java.util.ArrayList;
 
-import sudoku.Controller.Exceptions.CellDoesNotExist;
-import sudoku.Controller.Exceptions.NoCellSelected;
+import sudoku.Controller.Exceptions.ExceptionCellDoesNotExist;
+import sudoku.Controller.Exceptions.ExceptionNoCellSelected;
 import sudoku.View.SudokuBoard.Cell;
 
-public class ClassicSudokuControls {
-
-    // protected Controller controller;
+public class ClassicSudokuControls implements SudokuControlsInterface {
 
     protected Cell[][] cells;
 
@@ -28,10 +26,9 @@ public class ClassicSudokuControls {
                 }
             }
         }
-
     }
 
-    public Cell getButtonSelected() throws NoCellSelected {
+    public Cell getCellSelected() throws ExceptionNoCellSelected {
         Cell selected = null;
         for (Cell cell : getCells1d()) {
             if (cell.isSelected()) {
@@ -39,24 +36,24 @@ public class ClassicSudokuControls {
             }
         }
         if (selected == null) {
-            throw new NoCellSelected();
+            throw new ExceptionNoCellSelected();
         }
         return selected;
     }
 
-    public int[] getCellCoordinate(Cell selected) throws CellDoesNotExist {
+    public int[] getCellCoordinate(Cell cell) throws ExceptionCellDoesNotExist {
         int[] coordinate = new int[] { -1, -1 };
         for (int x = 0; x < cells.length; x++) {
             for (int y = 0; y < cells.length; y++) {
                 Cell button = cells[x][y];
-                if (button.equals(selected)) {
+                if (button.equals(cell)) {
                     coordinate[0] = x;
                     coordinate[1] = y;
                 }
             }
         }
         if (coordinate[0] == -1 || coordinate[1] == -1) {
-            throw new CellDoesNotExist();
+            throw new ExceptionCellDoesNotExist();
         }
         return coordinate;
     }
@@ -86,11 +83,6 @@ public class ClassicSudokuControls {
     }
 
     public Cell getCellFromCoord(int x, int y) {
-        // try {
         return cells[x][y];
-        // } catch (ArrayIndexOutOfBoundsException e) {
-        // throw new CellDoesNotExist();
-        // }
     }
-
 }

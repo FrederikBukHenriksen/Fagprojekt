@@ -4,9 +4,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import sudoku.Controller.Controller;
 
-public class MenuBarMenuActionListener implements ActionListener {
+public class MenuBarSolveListener implements ActionListener {
 
-    Controller sudokuController;
+    private Controller sudokuController;
 
     /*
      * Author: Frederik, Rasmus
@@ -14,7 +14,7 @@ public class MenuBarMenuActionListener implements ActionListener {
      * Inputs: The Controller, used to call solveSudoku below
      * Outputs: None
      */
-    public MenuBarMenuActionListener(Controller sudokuController) {
+    public MenuBarSolveListener(Controller sudokuController) {
         this.sudokuController = sudokuController;
     }
 

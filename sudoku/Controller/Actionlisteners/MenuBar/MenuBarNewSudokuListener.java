@@ -8,7 +8,7 @@ import javax.swing.AbstractButton;
 import sudoku.Controller.Controller;
 import sudoku.View.SudokuBoard.*;
 
-public class MenuBarNewSudokuActionListener implements ActionListener {
+public class MenuBarNewSudokuListener implements ActionListener {
 
     Controller sudokuController;
 
@@ -18,7 +18,7 @@ public class MenuBarNewSudokuActionListener implements ActionListener {
      * Inputs: The Controller, used to call methods below
      * Outputs: None
      */
-    public MenuBarNewSudokuActionListener(Controller sudokuController) {
+    public MenuBarNewSudokuListener(Controller sudokuController) {
         this.sudokuController = sudokuController;
     }
 

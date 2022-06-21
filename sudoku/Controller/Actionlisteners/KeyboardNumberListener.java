@@ -9,7 +9,7 @@ import sudoku.View.SudokuBoard.Cell;
 // KEY EVENT FOR ALLE JTOGGLEBUTTONS PÅ BOARDET.
 public class KeyboardNumberListener extends KeyAdapter {
 
-    private final Controller sudokuController;
+    private Controller sudokuController;
 
     /*
      * Author: Frederik, Rasmus
@@ -32,8 +32,8 @@ public class KeyboardNumberListener extends KeyAdapter {
     public void keyPressed(KeyEvent e) {
         int keyCode = e.getKeyCode();
         try {
-            Cell pressedSudokuboard = this.sudokuController.sudokuControls.getButtonSelected();
-            if (pressedSudokuboard.enabled) { // Only the available buttons
+            Cell pressedSudokuboard = this.sudokuController.sudokuControls.getCellSelected();
+            if (pressedSudokuboard.getEnabled()) { // Only the available buttons
                 // Variables for the new cell-content and the button pressed
                 String cellNew = "";
                 String keyPressed = "";

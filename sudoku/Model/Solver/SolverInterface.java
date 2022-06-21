@@ -1,6 +1,6 @@
 package sudoku.Model.Solver;
 
-import sudoku.Controller.Exceptions.NoSolutionAvailable;
+import sudoku.Controller.Exceptions.ExceptionNoSolutionAvailable;
 
 public interface SolverInterface {
 

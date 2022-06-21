@@ -7,8 +7,10 @@ import sudoku.Controller.Controller;
 
 // Code for undo-button
 public class SudokuUndoListener implements ActionListener {
-
-    private final Controller sudokuController;
+    /**
+     *
+     */
+    private Controller sudokuController;
 
     /*
      * Author: Rasmus

@@ -13,11 +13,8 @@ public class NumboardListener implements ActionListener {
     /**
      *
      */
-    private final Controller sudokuController;
+    private Controller sudokuController;
 
-    /**
-     * @param sudokuController
-     */
     public NumboardListener(Controller sudokuController) {
         this.sudokuController = sudokuController;
     }
@@ -27,8 +24,8 @@ public class NumboardListener implements ActionListener {
         JButton pressedNumboard = (JButton) e.getSource();
         // Find the placement of the pressed board button
         try {
-            Cell pressedSudokuboard = this.sudokuController.sudokuControls.getButtonSelected();
-            if (pressedSudokuboard.enabled) {
+            Cell pressedSudokuboard = this.sudokuController.sudokuControls.getCellSelected();
+            if (pressedSudokuboard.getEnabled()) {
                 this.sudokuController.model.stack.clearRedoStack();
                 String cellNew = "";
                 String cellCurrent = pressedSudokuboard.getText();

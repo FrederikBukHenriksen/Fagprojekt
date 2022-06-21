@@ -1,7 +1,7 @@
 package sudoku.View.SudokuBoard.Sandwich;
 
 import sudoku.View.SudokuBoard.Classic.ClassicSudokuBoard;
-import sudoku.View.SudokuBoard.Classic.Square;
+import sudoku.View.SudokuBoard.Classic.ClassicSquare;
 
 import java.util.ArrayList;
 
@@ -10,59 +10,59 @@ import javax.swing.border.LineBorder;
 
 import sudoku.View.View;
 import sudoku.View.SudokuBoard.Cell;
-import sudoku.View.SudokuBoard.SudokuBoardExtend;
+import sudoku.View.SudokuBoard.SudokuBoardAbstract;
 
 import java.awt.*;
 import java.awt.Color;
 
 public class SandwichSudoku extends ClassicSudokuBoard {
 
-    // protected GridBagConstraints lolcat = new GridBagConstraints();
-
-    protected GridBagConstraints sandwichGcb = new GridBagConstraints();
+    protected SandwichSumPanel ySumPanel;
+    protected SandwichSumPanel xSumPanel;
 
     public SandwichSudoku(int[][] sudoku, int n, int k, int[] xSum, int[] ySum) {
-
         super(sudoku, n, k);
-        this.setLayout(new GridBagLayout());
-
-        sandwichGcb.gridx = 0;
-        sandwichGcb.gridy = 0;
-        sandwichGcb.fill = GridBagConstraints.HORIZONTAL;
-        this.add(new SandwichSumPanel(ySum, 1), sandwichGcb);
-
-        sandwichGcb.gridx = 1;
-        sandwichGcb.gridy = 1;
-        sandwichGcb.fill = GridBagConstraints.VERTICAL;
-
-        this.add(new SandwichSumPanel(xSum, 0), sandwichGcb);
-
-        // Only assemble this design if it is a Sandeich game
-        if (this.getClass().getSimpleName().equals("SandwichSudoku")) {
-
-            sandwichGcb.gridx = 0;
-            sandwichGcb.gridy = 1;
-
-            this.add(assembleBoard(squares), sandwichGcb);
-        }
-
+        ySumPanel = new SandwichSumPanel(xSum, 1);
+        xSumPanel = new SandwichSumPanel(ySum, 0);
     }
 
-    // Create the board as a JPanel-object
-    protected JPanel assembleBoard(Square[][] squares) {
-        // Use createBoard to make a panel
+    @Override
+    public void assembleBoard() {
         GridBagConstraints gbc = new GridBagConstraints();
-        JPanel panel = new JPanel();
-        GridBagLayout grid = new GridBagLayout();
-        panel.setLayout(grid);
+        this.setLayout(new GridBagLayout());
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.insets = new Insets(0, 0, 0, 0);
+        this.add(createBoardPanel(), gbc);
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.insets = new Insets(0, 0, 0, 0);
+        gbc.anchor = GridBagConstraints.WEST;
+        this.add(numpad, gbc);
+    }
 
-        for (int i = 0; i < squares.length; i++) {
-            for (int j = 0; j < squares[0].length; j++) {
-                gbc.gridx = i;
-                gbc.gridy = j;
-                panel.add(squares[i][j], gbc);
-            }
-        }
+    protected JPanel createBoardPanel() {
+        JPanel panel = new JPanel();
+        panel.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.insets = new Insets(0, 0, 0, 0);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        panel.add(ySumPanel, gbc);
+
+        gbc.gridx = 1;
+        gbc.gridy = 1;
+        gbc.insets = new Insets(0, 0, 0, 0);
+        gbc.fill = GridBagConstraints.VERTICAL;
+        panel.add(xSumPanel, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.insets = new Insets(0, 0, 0, 0);
+        panel.add(super.createBoardPanel(), gbc);
+
         return panel;
     }
 
