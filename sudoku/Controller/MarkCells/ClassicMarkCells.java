@@ -1,8 +1,9 @@
 package sudoku.Controller.MarkCells;
 
 import sudoku.Controller.Controller;
-import sudoku.Controller.ClassicSudokuControls;
 import sudoku.Controller.Exceptions.ExceptionCellDoesNotExist;
+import sudoku.Controller.SudokuControls.ClassicSudokuControls;
+import sudoku.Controller.SudokuControls.SudokuControlsInterface;
 import sudoku.Model.Validity.ValidityInterface;
 import sudoku.View.SudokuBoard.Cell;
 import sudoku.View.SudokuBoard.Classic.ClassicSudokuColors;
@@ -12,7 +13,7 @@ import java.util.ArrayList;
 
 public class ClassicMarkCells implements MarkCellsInterface {
 
-    protected ClassicSudokuControls sudokuControls;
+    protected SudokuControlsInterface sudokuControls;
     protected ValidityInterface validity;
     protected ClassicSudokuColors sudokuColor = new ClassicSudokuColors();
     protected int[][] sudoku;
@@ -21,7 +22,8 @@ public class ClassicMarkCells implements MarkCellsInterface {
 
     protected ArrayList<Cell> markedCells = new ArrayList<Cell>();
 
-    public ClassicMarkCells(int[][] sudoku, int n, int k, ClassicSudokuControls sudokuControls,
+    public ClassicMarkCells(int[][] sudoku, int n, int k,
+            SudokuControlsInterface sudokuControls,
             ValidityInterface validity) {
         this.sudokuControls = sudokuControls;
         this.validity = validity;

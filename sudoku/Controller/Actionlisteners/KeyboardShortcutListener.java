@@ -60,7 +60,7 @@ public class KeyboardShortcutListener extends KeyAdapter {
             int[] tempCoords = { -1, 0 };
             try {
                 tempCoords = this.sudokuController.sudokuControls
-                        .getCellCoordinate(this.sudokuController.sudokuControls.getButtonSelected());
+                        .getCellCoordinate(this.sudokuController.sudokuControls.getCellSelected());
             } catch (Exception h) {
             }
             Cell pressed = null;
@@ -80,7 +80,7 @@ public class KeyboardShortcutListener extends KeyAdapter {
             int[] tempCoords = { 1, 0 };
             try {
                 tempCoords = this.sudokuController.sudokuControls
-                        .getCellCoordinate(this.sudokuController.sudokuControls.getButtonSelected());
+                        .getCellCoordinate(this.sudokuController.sudokuControls.getCellSelected());
             } catch (Exception h) {
             }
             Cell pressed = null;
@@ -101,7 +101,7 @@ public class KeyboardShortcutListener extends KeyAdapter {
             int[] tempCoords = { 0, 1 };
             try {
                 tempCoords = this.sudokuController.sudokuControls
-                        .getCellCoordinate(this.sudokuController.sudokuControls.getButtonSelected());
+                        .getCellCoordinate(this.sudokuController.sudokuControls.getCellSelected());
             } catch (Exception h) {
             }
             Cell pressed = null;
@@ -122,7 +122,7 @@ public class KeyboardShortcutListener extends KeyAdapter {
             int[] tempCoords = { 0, -1 };
             try {
                 tempCoords = this.sudokuController.sudokuControls
-                        .getCellCoordinate(this.sudokuController.sudokuControls.getButtonSelected());
+                        .getCellCoordinate(this.sudokuController.sudokuControls.getCellSelected());
             } catch (Exception h) {
             }
             Cell pressed = null;
