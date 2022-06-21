@@ -14,7 +14,6 @@ import sudoku.Model.Solver.CrooksAlgorithm;
 
 public class SudokuFileLoader {
 
-    static String gameMode = "classic"; // Standard value
     static int n;
     static int k;
     static int[][] sudoku;
@@ -24,6 +23,8 @@ public class SudokuFileLoader {
     public static ArrayList<Object> LoadSudokuBoardDoc()
             throws IOException,
             NumberFormatException, NoSuchElementException {
+
+        String gameMode = "classic"; // Standard value
 
         Path file = null;
         file = findSudokuPath("C:\\");
