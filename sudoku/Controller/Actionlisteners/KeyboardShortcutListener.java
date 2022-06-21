@@ -189,6 +189,13 @@ public class KeyboardShortcutListener extends KeyAdapter {
     }
 
     // Resets the flags for each key when it is released
+    /*
+     * Author: Rasmus
+     * Function: Gets the key that is released, and resets the flag for that key
+     * keyboard
+     * Inputs: The KeyEvent e, used to determine which key was released
+     * Outputs: None
+     */
     public void keyReleased(KeyEvent e) {
         try {
             // Gets the digit entered
