@@ -1,12 +1,6 @@
 package sudoku.Controller.Zoom;
 
-import sudoku.View.SudokuBoard.NumpadButton;
-
-import java.util.ArrayList;
-
-import sudoku.Controller.Controller;
 import sudoku.View.View;
-import sudoku.View.SudokuBoard.Cell;
 
 public class Zoom {
 

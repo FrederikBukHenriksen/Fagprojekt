@@ -1,8 +1,6 @@
 package sudoku.Controller.MarkCells;
 
-import sudoku.Controller.Controller;
 import sudoku.Controller.Exceptions.ExceptionCellDoesNotExist;
-import sudoku.Controller.SudokuControls.ClassicSudokuControls;
 import sudoku.Controller.SudokuControls.SudokuControlsInterface;
 import sudoku.Model.Validity.ValidityInterface;
 import sudoku.View.SudokuBoard.Cell;

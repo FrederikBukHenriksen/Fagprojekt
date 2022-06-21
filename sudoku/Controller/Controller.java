@@ -7,7 +7,6 @@ import sudoku.Controller.SudokuControls.ClassicSudokuControls;
 import sudoku.Controller.SudokuControls.SudokuControlsInterface;
 import sudoku.Controller.Zoom.*;
 import sudoku.Model.*;
-import sudoku.Model.Stack;
 import sudoku.Model.Solver.*;
 import sudoku.Model.Validity.*;
 import sudoku.View.View;

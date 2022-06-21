@@ -2,7 +2,6 @@ package sudoku.Model.Validity;
 
 import java.awt.Point;
 import java.util.ArrayList;
-import java.util.stream.Collectors;
 
 public class ValiditySandwich extends ValidityClassic {
 

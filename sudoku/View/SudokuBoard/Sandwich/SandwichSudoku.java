@@ -1,19 +1,10 @@
 package sudoku.View.SudokuBoard.Sandwich;
 
 import sudoku.View.SudokuBoard.Classic.ClassicSudokuBoard;
-import sudoku.View.SudokuBoard.Classic.ClassicSquare;
-
-import java.util.ArrayList;
 
 import javax.swing.*;
-import javax.swing.border.LineBorder;
-
-import sudoku.View.View;
-import sudoku.View.SudokuBoard.Cell;
-import sudoku.View.SudokuBoard.SudokuBoardAbstract;
 
 import java.awt.*;
-import java.awt.Color;
 
 public class SandwichSudoku extends ClassicSudokuBoard {
 

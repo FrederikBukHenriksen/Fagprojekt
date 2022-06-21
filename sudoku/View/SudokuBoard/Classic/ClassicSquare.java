@@ -1,12 +1,9 @@
 
 package sudoku.View.SudokuBoard.Classic;
 
-import java.util.ArrayList;
-
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 
-import sudoku.View.View;
 import sudoku.View.SudokuBoard.Cell;
 
 import java.awt.*;

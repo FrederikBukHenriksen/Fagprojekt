@@ -7,7 +7,6 @@ import sudoku.Controller.Exceptions.ExceptionNoSolutionAvailable;
 import sudoku.Model.Model;
 import sudoku.Model.Validity.ValidityClassic;
 import sudoku.Model.Validity.ValidityInterface;
-import sudoku.Model.Validity.ValiditySandwich;
 
 public class CrooksAlgorithm implements SolverInterface {
 	boolean solved = false;
@@ -26,12 +25,13 @@ public class CrooksAlgorithm implements SolverInterface {
 		this.sudoku = sudoku;
 		this.model = model;
 	}
-	
+
 	/*
 	 * Author: Christian
 	 * Function: Starts the solving progress.
 	 * Inputs: void, but uses sudoku, n and k as global variables
-	 * Outputs: void, but creates a solved sudoku, that can be got with a get function
+	 * Outputs: void, but creates a solved sudoku, that can be got with a get
+	 * function
 	 */
 	public void solve() {
 		ValidityInterface validity = new ValidityClassic(sudoku, n, k);
@@ -208,7 +208,8 @@ public class CrooksAlgorithm implements SolverInterface {
 	/*
 	 * Author: Rasmus
 	 * Function: Updates Markup of sudoku
-	 * Inputs: Takes 3d array of sudoku and mode, that explains what the code needs to do.
+	 * Inputs: Takes 3d array of sudoku and mode, that explains what the code needs
+	 * to do.
 	 * Outputs: Updated 3d array of sudoku
 	 */
 	public ArrayList<ArrayList<ArrayList<Integer>>> updateMarkup(ArrayList<ArrayList<ArrayList<Integer>>> markupBoard,
@@ -265,7 +266,7 @@ public class CrooksAlgorithm implements SolverInterface {
 		}
 		return markupBoard;
 	}
-	
+
 	/*
 	 * Author: Frederik
 	 * Function: Create original markup, is only run once per sudoku
@@ -324,9 +325,10 @@ public class CrooksAlgorithm implements SolverInterface {
 		}
 		return markUpBoard;
 	}
+
 	/*
 	 * Author: Christian
-	 * Function: Creates singleton variables. 
+	 * Function: Creates singleton variables.
 	 * Inputs: 3d array list of sudoku
 	 * Outputs: updated 3d array list of sudoku
 	 */
@@ -370,7 +372,7 @@ public class CrooksAlgorithm implements SolverInterface {
 
 	/*
 	 * Author: Christian
-	 * Function: Does Backtracking on crooks algorithm 
+	 * Function: Does Backtracking on crooks algorithm
 	 * Inputs: 3d array list of sudoku
 	 * Outputs: updated 3d array list of sudoku
 	 */
@@ -540,6 +542,7 @@ public class CrooksAlgorithm implements SolverInterface {
 		}
 		return sudoku2D;
 	}
+
 	/*
 	 * Author: Christian, Updates by Frederik
 	 * Function: Getter function for uniqueness
@@ -552,6 +555,7 @@ public class CrooksAlgorithm implements SolverInterface {
 		}
 		return unique;
 	}
+
 	/*
 	 * Author: Christian, Updates by Frederik
 	 * Function: Getter function for solved sudoku
