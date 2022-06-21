@@ -154,8 +154,6 @@ public class Controller {
 		whileLoop();
 	}
 
-
-
 	public void getHint() {
 		try {
 			model.runSolver();
